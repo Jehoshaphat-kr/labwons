@@ -1,4 +1,4 @@
-from labwons.common.config import OECD, FRED
+from labwons.common.config import OECD, FRED, URL
 # from labwons.common.base import xml2df
 from stocksymbol import StockSymbol
 from pykrx.stock import (
@@ -17,40 +17,61 @@ import requests, json
 import urllib.request as req
 
 
-class krse(pd.DataFrame):
-    def __init__(self, api:str):
+class metadata(pd.DataFrame):
+    _api_ss = ''
+    _api_ec = ''
+    def __init__(self):
+        data = pd.read_pickle(URL.metadata)
+        super().__init__(data=data.values, index=data.index, columns=data.columns)
+        return
+
+    @property
+    def API_STOCK_SYMBOL(self) -> str:
+        return self._api_ss
+
+    @API_STOCK_SYMBOL.setter
+    def API_STOCK_SYMBOL(self, api:str):
+        self._api_ss = api
+
+    @property
+    def API_ECOS(self) -> str:
+        return self._api_ec
+
+    @API_ECOS.setter
+    def API_ECOS(self, api:str):
+        self._api_ec = api
+
+    def getKrse(self) -> pd.DataFrame:
         """
         Korean Stock Exchange(KRSE) Listed Company
-        :param api: [str] Stock Symbol api key(https://pypi.org/project/stocksymbol/)
         """
 
-        """
-        WISE WI26 Industry-Configured by ticker
-        [DataFrame *index]   : 'ticker'
-        [DataFrame *columns] : ['korName', 'sector']
-        """
+        # ------------------------------------------------------------------------------------
+        # WISE WI26 Industry-Configured by ticker
+        # [DataFrame *index]   : 'ticker'
+        # [DataFrame *columns] : ['korName', 'sector']
+        # ------------------------------------------------------------------------------------
         from labwons.common.config import WI26
         from labwons.common.metadata.basis import fetchWiseDate, fetchWiseIndustry
         meta = pd.DataFrame(data=WI26).set_index(keys='id')
         date = fetchWiseDate()
         data = pd.concat(objs=[fetchWiseIndustry(date, cd) for cd in meta.index], axis=0)
 
-
-        """
-        Stock Symbol API: Get English Name of Listed Companies
-        [DataFrame *index]   : 'ticker' 
-        [DataFrame *columns] : ['shortName', 'longName', 'quoteType', 'market']
-        """
+        # ------------------------------------------------------------------------------------
+        # Stock Symbol API: Get English Name of Listed Companies
+        # [DataFrame *index]   : 'ticker'
+        # [DataFrame *columns] : ['shortName', 'longName', 'quoteType', 'market']
+        # ------------------------------------------------------------------------------------
         from labwons.common.metadata.basis import fetchKrxEnglish
-        data = data.join(fetchKrxEnglish(api), how='left')
+        data = data.join(fetchKrxEnglish(self.API_STOCK_SYMBOL), how='left')
 
-
-        """
-        Post Process
-        1) Join English Name: ['name', 'korName', 'shortName', 'longName']
-        2) Set Representative Name: ['name'] ('shortName' is prior to 'korName')
-        3) Set Exchange: KOSPI / KOSDAQ
-        """
+        # ------------------------------------------------------------------------------------
+        # Post Process
+        # 1) Join English Name: ['name', 'korName', 'shortName', 'longName']
+        # 2) Set Representative Name: ['name'] ('shortName' is prior to 'korName')
+        # 3) Set Exchange: KOSPI / KOSDAQ
+        # 4) Set Benchmark
+        # ------------------------------------------------------------------------------------
         from pykrx.stock import get_index_portfolio_deposit_file
         ks = get_index_portfolio_deposit_file('1001', alternative=True)
         kq = get_index_portfolio_deposit_file('2001', alternative=True)
@@ -59,16 +80,20 @@ class krse(pd.DataFrame):
         data['name'] = data[['shortName', 'korName']].apply(fdef, axis=1)
         data['exchange'] = ['KOSPI' if t in ks else 'KOSDAQ' if t in kq else 'Unknown' for t in data.index]
 
-        super().__init__(index=data.index, columns=data.columns, data=data.values)
-        return
+        bench = meta[['name', 'benchmarkTicker', 'benchmarkName']].set_index(keys='name').to_dict(orient='index')
+        data['benchmarkTicker'] = data['industry'].apply(lambda x:bench[x.replace("WI26 ", "")]['benchmarkTicker'])
+        data['benchmarkName'] = data['industry'].apply(lambda x:bench[x.replace("WI26 ", "")]['benchmarkName'])
+        return data
 
 
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
 
     _api = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
-    _krx = krse(_api)
-    print(_krx)
+    # _krx = krse(_api)
+    # print(_krx)
+
+    print(metadata())
 
 
 # class _metadata(pd.DataFrame):

@@ -619,7 +619,12 @@ FRED = [
     ),
 ]
 
+class url(object):
+    metadata = "https://github.com/Jehoshaphat-kr/labwons/raw/master/labwons/common/metadata/metadata.pkl"
+
+
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE']), rf'Desktop/labwons')
 os.makedirs(DESKTOP, exist_ok=True)
 
 MAX_TRY_COUNT = 5
+URL = url()

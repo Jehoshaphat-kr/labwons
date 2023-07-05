@@ -32,7 +32,7 @@ def fetchWiseIndustry(date:str, sec_cd:str) -> pd.DataFrame:
     :return:
     """
     from labwons.common.config import MAX_TRY_COUNT
-    columns = dict(CMP_CD='ticker', CMP_KOR='korName', SEC_NM_KOR='sector')
+    columns = dict(CMP_CD='ticker', CMP_KOR='korName', SEC_NM_KOR='sector', IDX_NM_KOR='industry')
     for try_count in range(MAX_TRY_COUNT):
         req = requests.get(f'http://www.wiseindex.com/Index/GetIndexComponets?ceil_yn=0&dt={date}&sec_cd={sec_cd}')
         if req.status_code == 200:
@@ -53,49 +53,6 @@ def fetchKrxEnglish(api:str) -> pd.DataFrame:
     kr['market'] = 'KOR'
     return kr.set_index(keys='ticker')[['shortName', 'longName', 'quoteType', 'market']]
 
-    # df['exchange'] = ['KOSPI' if t in ks else 'KOSDAQ' if t in kq else 'Unknown' for t in df.index]
-    # df['quoteType'] = 'EQUITY'
-    # df['unit'] = 'KRW'
-    # df['country'] = 'KOR'
-
-# def fetchWi26(date:str) -> pd.DataFrame:
-#     """
-#     WISE INDEX industrial category : WI26 with Benchmark
-#     :return:
-#     """
-#     from labwons.common.config import WI26, MAX_TRY_COUNT
-#
-#
-#
-#
-#     wi26 = pd.DataFrame(data=WI26).set_index(keys='id')
-#     data, cols = list(), dict(CMP_CD='ticker', CMP_KOR='korName', SEC_NM_KOR='sector')
-#     for sec_cd in wi26.index:
-#         data += industry(sec_cd)
-#
-#     df = pd.DataFrame(data=data).rename(columns=cols).set_index(keys='ticker').drop_duplicates()
-#     df['benchmarkTicker'] = df['IDX_CD'].apply(lambda x: wi26.loc[x, 'benchmarkTicker'])
-#     df['benchmarkName'] = df['IDX_CD'].apply(lambda x: wi26.loc[x, 'benchmarkName'])
-#     return df[['korName', 'sector', 'benchmarkTicker', 'benchmarkName']]
-
-
-def fetchKrseEnglish(apiKey:str) -> pd.DataFrame:
-    from stocksymbol import StockSymbol
-    from pykrx.stock import get_index_portfolio_deposit_file
-
-    kr = pd.DataFrame(data=StockSymbol(apiKey).get_symbol_list(market='kr'))
-    kr['ticker'] = kr.symbol.str.split('.').str[0]
-    # df = df.join(kr.set_index(keys='ticker'), how='left')
-    # df['name'] = df.apply(lambda x: x['korName'] if pd.isna(x['shortName']) else x['shortName'], axis=1)
-
-    ks = get_index_portfolio_deposit_file('1001', alternative=True)
-    kq = get_index_portfolio_deposit_file('2001', alternative=True)
-    df['exchange'] = ['KOSPI' if t in ks else 'KOSDAQ' if t in kq else 'Unknown' for t in df.index]
-    df['quoteType'] = 'EQUITY'
-    df['unit'] = 'KRW'
-    df['country'] = 'KOR'
-    return
-
 
 
 if __name__ == "__main__":
@@ -103,14 +60,7 @@ if __name__ == "__main__":
 
     # print(fetchWiseIndustry('230627', 'WI100'))
     print(fetchKrxEnglish("95012214-44b0-4664-813f-a7ef5ad3b0b4"))
-#
-#
-#
-#
-#
-#
-#
-#
+
 #     def getKrse() -> pd.DataFrame:
 #         """
 #         Fetch <WI26 Category> from WISE INDEX

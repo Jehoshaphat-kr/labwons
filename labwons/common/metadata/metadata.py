@@ -15,6 +15,7 @@ from labwons.common.metadata.basis import (
 )
 from pykrx.stock import get_index_portfolio_deposit_file
 import pandas as pd
+import os
 
 
 class metadata(pd.DataFrame):
@@ -37,8 +38,8 @@ class metadata(pd.DataFrame):
     ]
     def __init__(self):
         data = pd.read_csv(
-            # "https://github.com/Jehoshaphat-kr/labwons/raw/master/labwons/common/metadata/metadata.pkl"
-            r"./metadata.csv",
+            # "https://raw.githubusercontent.com/Jehoshaphat-kr/labwons/master/labwons/common/metadata/metadata.csv"
+            os.path.join(os.path.dirname(__file__), r'metadata.csv'),
             encoding='utf-8',
             index_col='ticker'
         )

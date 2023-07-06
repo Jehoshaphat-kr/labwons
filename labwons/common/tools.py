@@ -35,15 +35,15 @@ def xml2df(url: str) -> pd.DataFrame:
 
 def normalize(series:pd.Series, lim:Union[list, tuple]=None) -> pd.Series:
     """
-    :param series : 시계열(index 날짜/시간) 1D 데이터
-    :param lim    : 정규화 범위
+    :param series :
+    :param lim    :
     :return:
     """
     lim = lim if lim else [0, 1]
     minima, maxima = tuple(lim)
     return (maxima - minima) * (series - series.min()) / (series.max() - series.min()) + minima
 
-def normdist(series:pd.Series or np.array) -> pd.Series:
+def normalDistribution(series:pd.Series or np.array) -> pd.Series:
     """
     Normal Distribution of Single Series Data
     :param series: Series data
@@ -54,7 +54,12 @@ def normdist(series:pd.Series or np.array) -> pd.Series:
     data = 1 / (std * np.sqrt(2 * np.pi)) * np.exp(-(series - mean) ** 2 / (2 * std ** 2))
     return pd.Series(data=data.values, index=series)
 
-def series_split(sr) -> list:
+def splitSeries(sr) -> list:
+    """
+    Split pandas Series by NaN data
+    :param sr:
+    :return:
+    """
     index = list(sr.index[sr.isnull().any(axis=1)]) + [sr.index[-1]]
     data = list()
     for i in range(len(index) - 2):

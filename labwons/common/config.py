@@ -330,7 +330,7 @@ OECD = [
         ticker='BSCICP03',
         name='BCI',
         exchange='OECD',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='OECD Standard BCI, Amplitude adjusted (Long term average=100)'
     ),
@@ -338,7 +338,7 @@ OECD = [
         ticker='CSCICP03',
         name='CCI',
         exchange='OECD',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='OECD Standard CCI, Amplitude adjusted (Long term average=100)'
     ),
@@ -346,7 +346,7 @@ OECD = [
         ticker='LOLITOAA',
         name='CLI(AA)',
         exchange='OECD',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='Amplitude adjusted (CLI)'
     ),
@@ -354,7 +354,7 @@ OECD = [
         ticker='LOLITONO',
         name='CLI(Norm)',
         exchange='OECD',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='Normalised (CLI)'
     ),
@@ -362,7 +362,7 @@ OECD = [
         ticker='LOLITOTR_STSA',
         name='CLI(TR)',
         exchange='OECD',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='Trend restored (CLI)'
     ),
@@ -370,7 +370,7 @@ OECD = [
         ticker='LOLITOTR_GYSA',
         name='CLI(%TR)',
         exchange='OECD',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='12-month rate of change of the trend restored CLI'
     ),
@@ -378,7 +378,7 @@ OECD = [
         ticker='LORSGPNO',
         name='GDP(Norm)',
         exchange='OECD',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='Ratio to trend (GDP)'
     ),
@@ -386,7 +386,7 @@ OECD = [
         ticker='LORSGPTD',
         name='GDP(T)',
         exchange='OECD',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='Normalised (GDP)'
     ),
@@ -394,7 +394,7 @@ OECD = [
         ticker='LORSGPRT',
         name='GDP(%T)',
         exchange='OECD',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='Trend (GDP)'
     ),
@@ -407,7 +407,7 @@ FRED = [
         ticker='FEDFUNDS',
         name='Federal Funds Effective Rate(M)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='Federal Funds Effective Rate (Monthly)'
     ),
@@ -415,7 +415,7 @@ FRED = [
         ticker='DFF',
         name='Federal Funds Effective Rate(D)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='Federal Funds Effective Rate (Daily)'
     ),
@@ -423,7 +423,7 @@ FRED = [
         ticker='DGS10',
         name='10-Year Constant Maturity(IB)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis (Daily)'
     ),
@@ -431,7 +431,7 @@ FRED = [
         ticker='DGS5',
         name='5-Year Constant Maturity(IB)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis (Daily)'
     ),
@@ -439,7 +439,7 @@ FRED = [
         ticker='DGS2',
         name='2-Year Constant Maturity(IB)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='Market Yield on U.S. Treasury Securities at 2-Year Constant Maturity, Quoted on an Investment Basis (Daily)'
     ),
@@ -447,7 +447,7 @@ FRED = [
         ticker='DGS1',
         name='1-Year Constant Maturity(IB)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='Market Yield on U.S. Treasury Securities at 1-Year Constant Maturity, Quoted on an Investment Basis (Daily)'
     ),
@@ -455,7 +455,7 @@ FRED = [
         ticker='T10Y2Y',
         name='Treasury Yield Difference(10Y-2Y)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity (Daily)'
     ),
@@ -463,7 +463,7 @@ FRED = [
         ticker='T10Y3M',
         name='Treasury Yield Difference(10Y-3M)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='10-Year Treasury Constant Maturity Minus 3-Month Treasury Constant Maturity (Daily)'
     ),
@@ -471,7 +471,7 @@ FRED = [
         ticker='BAMLH0A0HYM2',
         name='High Yield Spread',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='ICE BofA US High Yield Index Option-Adjusted Spread (Daily)'
     ),
@@ -479,7 +479,7 @@ FRED = [
         ticker='MORTGAGE30US',
         name='30-Year Fixed Rate Mortgage',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='30-Year Fixed Rate Mortgage Average in the United States (Weekly)'
     ),
@@ -489,7 +489,7 @@ FRED = [
         ticker='M2SL',
         name='M2',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='USD(xB)',
         comment='M2: Billions of Dollars (Monthly)'
     ),
@@ -497,7 +497,7 @@ FRED = [
         ticker='M2V',
         name='Velocity of M2 Money Stock',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='Velocity of M2 Money Stock (Seasonally Adjusted, Quarterly)'
     ),
@@ -507,7 +507,7 @@ FRED = [
         ticker='CPIAUCSL',
         name='CPI(SA)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='Consumer Price Index for All Urban Consumers: All Items in U.S. City Average (Seasonally Adjusted, Monthly)'
     ),
@@ -515,7 +515,7 @@ FRED = [
         ticker='CPIAUCNS',
         name='CPI(Not SA)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='Consumer Price Index for All Urban Consumers: All Items in U.S. City Average (Not Seasonally Adjusted, Monthly)'
     ),
@@ -523,7 +523,7 @@ FRED = [
         ticker='CORESTICKM159SFRBATL',
         name='CPI(Sticky Price, YoY)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='Sticky Price Consumer Price Index less Food and Energy (Monthly)'
     ),
@@ -531,7 +531,7 @@ FRED = [
         ticker='CPILFESL',
         name='CPI(without Food, Energy)',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='Consumer Price Index for All Urban Consumers: All Items Less Food and Energy in U.S. City Average (Seasonally Adjusted, Monthly)'
     ),
@@ -539,7 +539,7 @@ FRED = [
         ticker='T10YIE',
         name='10-Year Breakeven Inflation Rate',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='10-Year Breakeven Inflation Rate (Daily, Not Seasonally Adjusted)'
     ),
@@ -547,7 +547,7 @@ FRED = [
         ticker='T5YIE',
         name='5-Year Breakeven Inflation Rate',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='5-Year Breakeven Inflation Rate (Daily, Not Seasonally Adjusted)'
     ),
@@ -555,7 +555,7 @@ FRED = [
         ticker='T5YIFR',
         name='5-Year Forward Inflation Expectation Rate',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='5-Year, 5-Year Forward Inflation Expectation Rate (Not Seasonally Adjusted, Daily)'
     ),
@@ -565,7 +565,7 @@ FRED = [
         ticker='UNRATE',
         name='Unemployment Rate',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='Unemployment Rate(Seasonally Adjusted, Monthly)'
     ),
@@ -573,7 +573,7 @@ FRED = [
         ticker='ICSA',
         name='Initial Claims',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='Initial Claims, individual claims for Unemployment Insurance Program (Seasonally Adjusted, Weekly)'
     ),
@@ -581,7 +581,7 @@ FRED = [
         ticker='GDP',
         name='Gross Domestic Product',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='USD(xB)',
         comment='Gross Domestic Product (Seasonally Adjusted, Quarterly)'
     ),
@@ -589,7 +589,7 @@ FRED = [
         ticker='GDPC1',
         name='Real Gross Domestic Product',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='USD(xB)',
         comment='Real Gross Domestic Product (Seasonally Adjusted, Quarterly)'
     ),
@@ -597,7 +597,7 @@ FRED = [
         ticker='PSAVERT',
         name='Personal Saving Rate',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='%',
         comment='Personal Saving Rate (Monthly)'
     ),
@@ -605,7 +605,7 @@ FRED = [
         ticker='UMCSENT',
         name='Consumer Sentiment',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='University of Michigan: Consumer Sentiment (Monthly)'
     ),
@@ -613,18 +613,14 @@ FRED = [
         ticker='VIXCLS',
         name='VIX',
         exchange='FRED',
-        quoteType='INDEX',
+        quoteType='INDICATOR',
         unit='-',
         comment='CBOE Volatility Index: VIX (Daily)'
     ),
 ]
-
-class url(object):
-    metadata = "https://github.com/Jehoshaphat-kr/labwons/raw/master/labwons/common/metadata/metadata.pkl"
 
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE']), rf'Desktop/labwons')
 os.makedirs(DESKTOP, exist_ok=True)
 
 MAX_TRY_COUNT = 5
-URL = url()

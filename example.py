@@ -11,3 +11,4 @@ print(rReceipt)
 
 cliKR = lw.Indicator(ticker='LORSGPRT', country='KOR')
 print(cliKR)
+cliKR.show()

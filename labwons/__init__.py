@@ -7,6 +7,7 @@ License : MIT
 """
 from labwons.common.metadata.metadata import MetaData
 from labwons.indicator.indicator import Indicator
+from labwons.equity.equity import Equity
 
 """ API Settings """
 class __apikey__(object):

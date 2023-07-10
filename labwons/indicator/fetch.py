@@ -1,7 +1,7 @@
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.tools import xml2df
 from pandas_datareader import get_data_fred
-from datetime import datetime
+from datetime import datetime, timedelta
 from pytz import timezone
 import pandas as pd
 import requests
@@ -61,3 +61,51 @@ def fetchOecd(ticker:str, startdate:str, enddate:str, country:str) -> pd.Series:
     series = pd.Series(data=value, index=times, name=ticker, dtype=float)
     series.index = pd.to_datetime(series.index).to_period('M').to_timestamp('M')
     return series
+
+
+class _fetch(pd.Series):
+
+    def __init__(
+        self,
+        ticker: str,
+        *args,
+        source: str='',
+        country: str='',
+        period: int=20,
+        enddate: str='',
+        dformat: str='.2f',
+        unit: str=''
+    ):
+        if not ticker in MetaData.index and not source:
+            raise KeyError(f'@ticker: "{ticker}" NOT FOUND in metadata, @source must be specified')
+
+        source = source if source else MetaData.loc[ticker, 'exchange']
+        if source.lower() == 'oecd' and not country:
+            raise KeyError(f"OECD data requires @country symbol: ex) KOR, USA, G-20...")
+        if source.lower() == 'ecos' and not args:
+            raise KeyError(f"ECOS data requires specific parameters")
+
+        enddate = enddate if enddate else datetime.today().strftime("%Y%m%d")
+        startdate = (datetime.strptime(enddate, "%Y%m%d") - timedelta(20 * 365)).strftime("%Y%m%d")
+        if source.lower() == 'ecos':
+            series = fetchEcos(MetaData.API_ECOS, ticker, startdate, *args)
+        elif source.lower() == 'oecd':
+            series = fetchOecd(ticker, startdate, enddate, country)
+        elif source.lower() == 'fred':
+            series = fetchFred(ticker, startdate, enddate)
+        else:
+            raise KeyError(f'Invalid @source: "{source}", possible source is ["fred", "ecos", "oecd"]')
+        super().__init__(index=series.index, data=series.values, name=args[-1] if source.lower() == 'ecos' else ticker)
+
+        self.ticker = ticker
+        self.startdate = startdate
+        self.enddate = enddate
+        self.period = period
+        self.source = source
+        self.dformat = dformat
+        self.unit = unit
+        if ticker in MetaData.index:
+            self.unit = MetaData.loc[ticker, 'unit']
+            if pd.isna(self.unit):
+                self.unit = ''
+        return

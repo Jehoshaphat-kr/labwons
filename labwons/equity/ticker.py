@@ -1,5 +1,5 @@
 from labwons.common.metadata.metadata import MetaData
-from labwons.equity.base.fnguide import (
+from labwons.equity.basis.fnguide import (
     fnguide_business_summary,
     fnguide_etf
 )
@@ -9,7 +9,7 @@ import pandas as pd
 import requests
 
 
-class Ticker(object):
+class _ticker(object):
     _valid_args = [
         'KOSPI', 'KOSDAQ',
         'NYSE', 'NASDAQ', 'OTC', 'PCX', 'AMEX', 'CBOE', 'NCM', 'NMS'
@@ -50,10 +50,10 @@ class Ticker(object):
     }
 
     def __init__(self, ticker:str, **kwargs):
-        self.ticker = ticker
+        if not ticker:
+            return
 
-        self._isin_meta = isin_meta = ticker in MetaData.index
-        if not isin_meta:
+        if not ticker in MetaData.index:
             if 'exchange' not in kwargs:
                 raise KeyError(f"Ticker Not Found Error: @exchange must be specified for ticker, {ticker}")
             if not kwargs['exchange'].lower() in [v.lower for v in self._valid_args]:
@@ -66,6 +66,7 @@ class Ticker(object):
         if self.exchange in ['FRED', 'OECD', 'ECOS']:
             return
 
+        self.ticker = ticker
         self._is_etf = self.quoteType == 'ETF'
         self._dtype = ',d' if self.market == 'KOR' else '.2f'
         if self.market == 'KOR':
@@ -348,5 +349,5 @@ if __name__ == "__main__":
     samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)
     for sample in samples:
         print(f'\n{sample}', "=" * 75)
-        stock = Ticker(sample)
+        stock = _ticker(sample)
         print(stock.description())

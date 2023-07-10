@@ -1,34 +1,34 @@
 from labwons.common.config import DESKTOP
-from labwons.indicator.fetch import _fetch
-from datetime import datetime, timedelta
 from plotly import graph_objects as go
 from plotly.offline import plot
-import pandas as pd
+from pandas import Series
 
-
-class Indicator(_fetch):
+class lines(Series):
+    def __init__(self, base:Series, **kwargs):
+        super().__init__(
+            index=base.index,
+            data=base.values
+        )
+        self._kwargs = kwargs
+        return
 
     def __call__(self) -> go.Scatter:
         return self.trace()
 
     def trace(self) -> go.Scatter:
-        if not hasattr(self, '__trace'):
-            self.__setattr__(
-                '__trace',
-                go.Scatter(
-                    name=self.name,
-                    x=self.index,
-                    y=self.values,
-                    visible=True,
-                    showlegend=True,
-                    mode='lines',
-                    connectgaps=True,
-                    xhoverformat='%Y/%m/%d',
-                    yhoverformat=self.dformat,
-                    hovertemplate=self.ticker + '<br>%{y}' + self.unit + '@%{x}<extra></extra>'
-                )
-            )
-        return self.__getattribute__('__trace')
+        _trace = go.Scatter(
+            name=f'{self.name}',
+            x=self.index,
+            y=self,
+            visible=True,
+            showlegend=True,
+            xhoverformat='%Y/%m/%d',
+            yhoverformat='.2f',
+        )
+        for key in self._kwargs:
+            if key in vars(go.Scatter).keys():
+                setattr(_trace, key, self._kwargs[key])
+        return _trace
 
     def figure(self) -> go.Figure:
         layout = go.Layout(
@@ -57,20 +57,24 @@ class Indicator(_fetch):
                 zerolinewidth=0.8
             )
         )
+        for key in self._kwargs:
+            if key in vars(go.Layout).keys():
+                setattr(layout, key, self._kwargs[key])
         fig = go.Figure(data=self.trace(), layout=layout)
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
 
     def save(self, **kwargs):
         setter = kwargs.copy()
         kwargs = dict(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{DESKTOP}/{self.name}.html'
+            filename=f'{DESKTOP}/{self._base_.ticker}_{self._base_.name}_OHLCV.html'
         )
         kwargs.update(setter)
         plot(**kwargs)
         return
+
+    def show(self):
+        self.figure().show()
+        return
+

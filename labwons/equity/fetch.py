@@ -1,4 +1,4 @@
-from labwons.equity.ticker import Ticker
+from labwons.equity.ticker import _ticker
 from pykrx.stock import get_market_ohlcv_by_date
 from datetime import datetime, timedelta
 from pytz import timezone
@@ -6,25 +6,41 @@ import pandas as pd
 import yfinance as yf
 
 
-class _fetch(Ticker):
+class _fetch(_ticker):
 
     def __init__(self, ticker:str, **kwargs):
-        if not ticker:
-            kwargs['exchange'] = None
         super().__init__(ticker=ticker, **kwargs)
-
-        if 'market' in kwargs:
-            self.market = kwargs['market']
 
         self._period = 20
         self._ddate = datetime.now(timezone('Asia/Seoul')).date()
-        self._sdate = dict()
         self._freq = 'd' if self.market == 'KOR' else '1d'
-
-        for key in ['ohlcv', 'series', 'data']:
-            if key in kwargs:
-                self.__setattr__(f'_fetch_{self.enddate}_{self.startdate}_{self.freq}', kwargs[key])
         return
+
+    @staticmethod
+    def fetchKrse(ticker: str = '', startdate: str = '', enddate: str = '', freq: str = '') -> pd.DataFrame:
+        ohlcv = get_market_ohlcv_by_date(
+            fromdate=startdate,
+            todate=enddate,
+            ticker=ticker,
+            freq=freq
+        )
+        ohlcv = ohlcv.rename(columns=dict(시가='open', 고가='high', 저가='low', 종가='close', 거래량='volume'))
+
+        trade_stop = ohlcv[ohlcv.open == 0].copy()
+        if not trade_stop.empty:
+            ohlcv.loc[trade_stop.index, ['open', 'high', 'low']] = trade_stop['close']
+        ohlcv.index.name = 'date'
+        return ohlcv
+
+    @staticmethod
+    def fetchNyse(ticker: str, period: int, freq: str) -> pd.DataFrame:
+        columns = ['Open', 'High', 'Low', 'Close', 'Volume']
+        ohlcv = yf.Ticker(ticker).history(period=f'{period}y', interval=freq)[columns]
+        ohlcv = ohlcv.rename(columns=dict(zip(columns, [n.lower() for n in columns])))
+        ohlcv['date'] = pd.to_datetime(ohlcv.index)
+        ohlcv['date'] = ohlcv['date'].dt.tz_convert('Asia/Seoul')
+        ohlcv.index = ohlcv['date'].dt.date
+        return ohlcv.drop(columns=['date'])
 
     @property
     def enddate(self) -> str:
@@ -32,17 +48,11 @@ class _fetch(Ticker):
 
     @enddate.setter
     def enddate(self, enddate:str or datetime):
-        if isinstance(enddate, str):
-            self._ddate = datetime.strptime(enddate, "%Y%m%d")
-        else:
-            self._ddate = enddate
-        return
+        self._ddate = datetime.strptime(enddate, "%Y%m%d") if isinstance(enddate, str) else enddate
 
     @property
     def startdate(self) -> str:
-        if not f"{self.enddate}_{self.period}" in self._sdate:
-            self._sdate[f"{self.enddate}_{self.period}"] = self._ddate - timedelta(365 * self._period)
-        return self._sdate[f"{self.enddate}_{self.period}"].strftime("%Y%m%d")
+        return (self._ddate - timedelta(365 * self.period)).strftime("%Y%m%d")
 
     @property
     def period(self) -> int:
@@ -63,90 +73,64 @@ class _fetch(Ticker):
             raise KeyError(f"Frequency key error for market: {self.market}: {freq}")
         self._freq = freq
 
-    def fetchKrse(self, ticker: str='', startdate: str='', enddate: str='', freq: str='') -> pd.DataFrame:
-        ohlcv = get_market_ohlcv_by_date(
-            fromdate=startdate,
-            todate=enddate,
-            ticker=ticker,
-            freq=freq
-        )
-        ohlcv = ohlcv.rename(columns=dict(시가='open', 고가='high', 저가='low', 종가='close', 거래량='volume'))
-
-        trade_stop = ohlcv[ohlcv.open == 0].copy()
-        if not trade_stop.empty:
-            ohlcv.loc[trade_stop.index, ['open', 'high', 'low']] = trade_stop['close']
-        ohlcv.index.name = 'date'
-        return ohlcv
-    
-    @staticmethod
-    def fetchNyse(ticker: str, period: int, freq: str) -> pd.DataFrame:
-        columns = ['Open', 'High', 'Low', 'Close', 'Volume']
-        ohlcv = yf.Ticker(ticker).history(period=f'{period}y', interval=freq)[columns]
-        ohlcv = ohlcv.rename(columns=dict(zip(columns, [n.lower() for n in columns])))
-        ohlcv['date'] = pd.to_datetime(ohlcv.index)
-        ohlcv['date'] = ohlcv['date'].dt.tz_convert('Asia/Seoul')
-        ohlcv.index = ohlcv['date'].dt.date
-        return ohlcv.drop(columns=['date'])
-
-    @property
-    def ohlcv(self) -> pd.DataFrame:
-        attr = f'_fetch_{self.enddate}_{self.startdate}_{self.freq}'
+    def getOhlcv(self) -> pd.DataFrame:
+        attr = f'_fetch_{self.enddate}_{self.period}_{self.freq}'
         if not hasattr(self, attr):
             if self.market == 'KOR':
                 self.__setattr__(attr, self.fetchKrse(self.ticker, self.startdate, self.enddate, self.freq))
             elif self.market == 'USA':
                 self.__setattr__(attr, self.fetchNyse(self.ticker, self.period, self.freq))
             else:
-                raise AttributeError(f"Exchange: {self.exchange} is invalid attribute.")
+                raise AttributeError(f"Unknown Market: {self.market}({self.exchange}) is an invalid attribute.")
         return self.__getattribute__(attr)
 
-    @property
-    def benchmark(self) -> pd.DataFrame:
-        attr = f'_bench_{self.enddate}_{self.startdate}_{self.freq}'
-        if not hasattr(self, attr):
-            if self.market == 'KOR' and self.benchmarkTicker:
-                df = self.fetchKrse(self.benchmarkTicker, self.startdate, self.enddate, self.freq)
-            elif self.market == 'USA' and self.benchmarkTicker:
-                df = self.fetchNyse(self.benchmarkTicker, self.period, self.freq)
-            else:
-                df = pd.DataFrame(columns=['open', 'close', 'high', 'low', 'volume'])
+    # @property
+    # def benchmark(self) -> pd.DataFrame:
+    #     attr = f'_bench_{self.enddate}_{self.period}_{self.freq}'
+    #     if not hasattr(self, attr):
+    #         if self.market == 'KOR' and self.benchmarkTicker:
+    #             df = self.fetchKrse(self.benchmarkTicker, self.startdate, self.enddate, self.freq)
+    #         elif self.market == 'USA' and self.benchmarkTicker:
+    #             df = self.fetchNyse(self.benchmarkTicker, self.period, self.freq)
+    #         else:
+    #             df = pd.DataFrame(columns=['open', 'close', 'high', 'low', 'volume'])
+    #
+    #         objs = dict()
+    #         for col in self.ohlcv.columns:
+    #             objs[(col, self.name)] = self.ohlcv[col]
+    #             objs[(col, self.benchmarkName)] = df[col]
+    #         self.__setattr__(attr, pd.concat(objs=objs, axis=1))
+    #     return self.__getattribute__(attr)
 
-            objs = dict()
-            for col in self.ohlcv.columns:
-                objs[(col, self.name)] = self.ohlcv[col]
-                objs[(col, self.benchmarkName)] = df[col]
-            self.__setattr__(attr, pd.concat(objs=objs, axis=1))
-        return self.__getattribute__(attr)
+    # @property
+    # def open(self) -> pd.Series:
+    #     _ = self.ohlcv.open
+    #     _.name = f"{self.name}(O)"
+    #     return _
+    #
+    # @property
+    # def high(self) -> pd.Series:
+    #     _ = self.ohlcv.high
+    #     _.name = f"{self.name}(H)"
+    #     return _
+    #
+    # @property
+    # def low(self) -> pd.Series:
+    #     _ = self.ohlcv.low
+    #     _.name = f"{self.name}(L)"
+    #     return _
+    #
+    # @property
+    # def close(self) -> pd.Series:
+    #     _ = self.ohlcv.close
+    #     _.name = f"{self.name}(C)"
+    #     return _
 
-    @property
-    def open(self) -> pd.Series:
-        _ = self.ohlcv.open
-        _.name = f"{self.name}(O)"
-        return _
-
-    @property
-    def high(self) -> pd.Series:
-        _ = self.ohlcv.high
-        _.name = f"{self.name}(H)"
-        return _
-
-    @property
-    def low(self) -> pd.Series:
-        _ = self.ohlcv.low
-        _.name = f"{self.name}(L)"
-        return _
-
-    @property
-    def close(self) -> pd.Series:
-        _ = self.ohlcv.close
-        _.name = f"{self.name}(C)"
-        return _
-
-    @property
-    def typical(self) -> pd.Series:
-        _ = (self.ohlcv['high'] + self.ohlcv['low'] + self.ohlcv['close']) / 3
-        _.name = f"{self.name}(T)"
-        return _
+    # @property
+    # def typical(self) -> pd.Series:
+    #     _ = (self.ohlcv['high'] + self.ohlcv['low'] + self.ohlcv['close']) / 3
+    #     _.name = f"{self.name}(T)"
+    #     return _
 
 
 if __name__ == "__main__":

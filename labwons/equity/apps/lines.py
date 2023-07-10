@@ -7,7 +7,8 @@ class lines(Series):
     def __init__(self, base:Series, **kwargs):
         super().__init__(
             index=base.index,
-            data=base.values
+            data=base.values,
+            name=base.name
         )
         self._kwargs = kwargs
         return
@@ -22,6 +23,7 @@ class lines(Series):
             y=self,
             visible=True,
             showlegend=True,
+            connectgaps=True,
             xhoverformat='%Y/%m/%d',
             yhoverformat='.2f',
         )
@@ -49,7 +51,7 @@ class lines(Series):
                 zerolinewidth=0.8,
             ),
             yaxis=dict(
-                title=self.unit,
+                title=self._kwargs['unit'],
                 showgrid=True,
                 gridcolor='lightgrey',
                 zeroline=True,
@@ -68,7 +70,7 @@ class lines(Series):
         kwargs = dict(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{DESKTOP}/{self._base_.ticker}_{self._base_.name}_OHLCV.html'
+            filename=f'{DESKTOP}/{self._base_.ticker}_{self._base_.name}.html'
         )
         kwargs.update(setter)
         plot(**kwargs)

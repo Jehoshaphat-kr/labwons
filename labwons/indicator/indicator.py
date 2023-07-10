@@ -1,9 +1,8 @@
 from labwons.common.config import DESKTOP
 from labwons.indicator.fetch import _fetch
-from datetime import datetime, timedelta
+from labwons.equity.apps.lines import lines
 from plotly import graph_objects as go
 from plotly.offline import plot
-import pandas as pd
 
 
 class Indicator(_fetch):
@@ -74,3 +73,21 @@ class Indicator(_fetch):
         kwargs.update(setter)
         plot(**kwargs)
         return
+
+    @property
+    def Monthly(self) -> lines:
+        series = self.resample('M').ffill()
+        series.name = f"{self.name}(M)"
+        return lines(series, unit=self.unit)
+
+    @property
+    def MoM(self) -> lines:
+        series = 100 * self.resample('M').ffill().pct_change()
+        series.name = f"{self.name}(MoM)"
+        return lines(series, unit='%')
+
+    @property
+    def YoY(self) -> lines:
+        series = 100 * self.resample('M').ffill().pct_change(12)
+        series.name = f"{self.name}(YoY)"
+        return lines(series, unit='%')

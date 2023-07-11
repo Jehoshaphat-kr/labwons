@@ -1,6 +1,8 @@
 from labwons.equity.refine import _refine
 from labwons.equity.apps.ohlcv import ohlcv
-from labwons.equity.apps.lines import lines
+from labwons.equity.apps.lines import line, lines
+from labwons.equity.apps.benchmark import benchmark
+from labwons.equity.apps.drawdown import drawdown
 import pandas as pd
 
 
@@ -13,7 +15,47 @@ class Equity(_refine):
         return self.__getattribute__('__ohlcv__')
 
     @property
-    def typical(self) -> lines:
+    def typical(self) -> line:
         base = (self.ohlcv['close'] + self.ohlcv['high'] + self.ohlcv['low']) / 3
         base.name = f"{self.name}(T)"
-        return lines(base)
+        return line(base)
+
+    @property
+    def open(self) -> line:
+        base = self.ohlcv['open']
+        base.name = f"{self.name}(O)"
+        return line(base)
+
+    @property
+    def high(self) -> line:
+        base = self.ohlcv['high']
+        base.name = f"{self.name}(H)"
+        return line(base)
+
+    @property
+    def low(self) -> line:
+        base = self.ohlcv['low']
+        base.name = f"{self.name}(L)"
+        return line(base)
+
+    @property
+    def close(self) -> line:
+        base = self.ohlcv['close']
+        base.name = f"{self.name}(C)"
+        return line(base)
+
+    @property
+    def benchmark(self) -> benchmark:
+        return benchmark(self)
+
+    @property
+    def drawdown(self) -> drawdown:
+        return drawdown(self)
+
+    @property
+    def sma(self) -> lines:
+        return lines(self.calcMA(), base=self, title='SMA')
+
+    @property
+    def trend(self) -> lines:
+        return lines(self.calcTrend(), base=self, title='TREND')

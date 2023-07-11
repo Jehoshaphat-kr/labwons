@@ -1,6 +1,6 @@
 from labwons.common.config import DESKTOP
 from labwons.indicator.fetch import _fetch
-from labwons.equity.apps.lines import lines
+from labwons.equity.apps.lines import line
 from plotly import graph_objects as go
 from plotly.offline import plot
 
@@ -75,19 +75,19 @@ class Indicator(_fetch):
         return
 
     @property
-    def Monthly(self) -> lines:
+    def Monthly(self) -> line:
         series = self.resample('M').ffill()
         series.name = f"{self.name}(M)"
-        return lines(series, unit=self.unit)
+        return line(series, unit=self.unit)
 
     @property
-    def MoM(self) -> lines:
+    def MoM(self) -> line:
         series = 100 * self.resample('M').ffill().pct_change()
         series.name = f"{self.name}(MoM)"
-        return lines(series, unit='%')
+        return line(series, unit='%')
 
     @property
-    def YoY(self) -> lines:
+    def YoY(self) -> line:
         series = 100 * self.resample('M').ffill().pct_change(12)
         series.name = f"{self.name}(YoY)"
-        return lines(series, unit='%')
+        return line(series, unit='%')

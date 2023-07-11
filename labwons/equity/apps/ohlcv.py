@@ -16,8 +16,12 @@ class ohlcv(DataFrame):
         self._base_ = base
         return
 
-    def __call__(self):
-        return
+    def __call__(self, key:str='ohlcv'):
+        if key.lower() in ['candle', 'ohlcv', 'price']:
+            return self.traceCandle()
+        if key.lower() in ['volume', 'bar']:
+            return self.traceBar()
+        raise KeyError(f"Unknown parameter: {key}")
 
     def traceCandle(self) -> go.Candlestick:
         return go.Candlestick(
@@ -39,7 +43,7 @@ class ohlcv(DataFrame):
             yhoverformat=self._base_.dtype,
         )
 
-    def traceBar(self):
+    def traceBar(self) -> go.Bar:
         series = self['volume']
         return go.Bar(
             name=series.name,
@@ -123,6 +127,10 @@ class ohlcv(DataFrame):
             )
         )
         return fig
+
+    def show(self):
+        self.figure().show()
+        return
 
     def save(self, **kwargs):
         setter = kwargs.copy()

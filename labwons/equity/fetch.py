@@ -11,9 +11,9 @@ class _fetch(_ticker):
     def __init__(self, ticker:str, **kwargs):
         super().__init__(ticker=ticker, **kwargs)
 
-        self._period = 20
-        self._ddate = datetime.now(timezone('Asia/Seoul')).date()
-        self._freq = 'd' if self.market == 'KOR' else '1d'
+        self._period = kwargs['period'] if 'period' in kwargs else 20
+        self._ddate = kwargs['enddate'] if 'enddate' in kwargs else datetime.now(timezone('Asia/Seoul')).date()
+        self._freq = kwargs['freq'] if 'freq' in kwargs else 'd' if self.market == 'KOR' else '1d'
         return
 
     @staticmethod
@@ -84,53 +84,6 @@ class _fetch(_ticker):
                 raise AttributeError(f"Unknown Market: {self.market}({self.exchange}) is an invalid attribute.")
         return self.__getattribute__(attr)
 
-    # @property
-    # def benchmark(self) -> pd.DataFrame:
-    #     attr = f'_bench_{self.enddate}_{self.period}_{self.freq}'
-    #     if not hasattr(self, attr):
-    #         if self.market == 'KOR' and self.benchmarkTicker:
-    #             df = self.fetchKrse(self.benchmarkTicker, self.startdate, self.enddate, self.freq)
-    #         elif self.market == 'USA' and self.benchmarkTicker:
-    #             df = self.fetchNyse(self.benchmarkTicker, self.period, self.freq)
-    #         else:
-    #             df = pd.DataFrame(columns=['open', 'close', 'high', 'low', 'volume'])
-    #
-    #         objs = dict()
-    #         for col in self.ohlcv.columns:
-    #             objs[(col, self.name)] = self.ohlcv[col]
-    #             objs[(col, self.benchmarkName)] = df[col]
-    #         self.__setattr__(attr, pd.concat(objs=objs, axis=1))
-    #     return self.__getattribute__(attr)
-
-    # @property
-    # def open(self) -> pd.Series:
-    #     _ = self.ohlcv.open
-    #     _.name = f"{self.name}(O)"
-    #     return _
-    #
-    # @property
-    # def high(self) -> pd.Series:
-    #     _ = self.ohlcv.high
-    #     _.name = f"{self.name}(H)"
-    #     return _
-    #
-    # @property
-    # def low(self) -> pd.Series:
-    #     _ = self.ohlcv.low
-    #     _.name = f"{self.name}(L)"
-    #     return _
-    #
-    # @property
-    # def close(self) -> pd.Series:
-    #     _ = self.ohlcv.close
-    #     _.name = f"{self.name}(C)"
-    #     return _
-
-    # @property
-    # def typical(self) -> pd.Series:
-    #     _ = (self.ohlcv['high'] + self.ohlcv['low'] + self.ohlcv['close']) / 3
-    #     _.name = f"{self.name}(T)"
-    #     return _
 
 
 if __name__ == "__main__":
@@ -146,8 +99,7 @@ if __name__ == "__main__":
     # test = _fetch(ticker='LORSGPRT', market='KOR')
     print(test.ticker)
     print(test.exchange)
-    print(test.ohlcv)
-    print(test.benchmark)
+
 
     """
     1) BSCICP03: OECD Standardised BCI, Amplitude adjusted(Long term average = 100), sa

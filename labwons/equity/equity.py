@@ -1,8 +1,8 @@
 from labwons.equity.refine import _refine
-from labwons.equity.apps.ohlcv import ohlcv
-from labwons.equity.apps.lines import line, lines
-from labwons.equity.apps.benchmark import benchmark
-from labwons.equity.apps.drawdown import drawdown
+from labwons.equity.technical.ohlcv import ohlcv
+from labwons.equity.technical.lines import line, lines
+from labwons.equity.technical.benchmark import benchmark
+from labwons.equity.technical.drawdown import drawdown
 import pandas as pd
 
 

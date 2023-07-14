@@ -50,3 +50,6 @@ class paper(object):
 
 # Alias
 Paper = paper()
+
+if __name__ == "__main__":
+    Paper.figure1x1s().show()

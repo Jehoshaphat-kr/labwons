@@ -93,7 +93,7 @@ class _refine(_fetch):
             self.__setattr__(attr, round(pd.concat(objs=objs, axis=1), 2))
         return self.__getattribute__(attr)
 
-    def calcBound(self, minInterval:int=-1, samplePoint:int=-1):
+    def calcBound(self, minInterval:int=-1, samplePoint:int=-1) -> pd.DataFrame:
         attr = f'_bound_{self.enddate}_{self.period}_{self.freq}'
         if not hasattr(self, attr):
             ohlcv = self.getOhlcv().copy()
@@ -113,6 +113,25 @@ class _refine(_fetch):
                 objs[(f'({tag})', 'Resist')] = self._boundFit(ohlcv[c], 'high', minInterval, samplePoint)
                 objs[(f'({tag})', 'Support')] = self._boundFit(ohlcv[c], 'low', minInterval, samplePoint)
             self.__setattr__(attr, pd.concat(objs=objs, axis=1))
+        return self.__getattribute__(attr)
+
+    def calcBollingerBand(self) -> pd.DataFrame:
+        attr = f'_band_{self.enddate}_{self.period}_{self.freq}'
+        if not hasattr(self, attr):
+            bb = self.getOhlcv().copy()
+
+            bb['typical'] = _t = (bb.close + bb.high + bb.low) / 3
+            bb['middle'] = _t.typical.rolling(window=20).mean()
+            bb['stdev'] = _t.typical.rolling(window=20).std()
+            bb['upperband'] = bb.middle + 2 * bb.stdev
+            bb['uppertrend'] = bb.middle + bb.stdev
+            bb['lowertrend'] = bb.middle - bb.stdev
+            bb['lowerband'] = bb.middle - 2 * bb.stdev
+            bb['width'] = 100 * (4 * bb.stdev) / bb.middle
+            bb['pctb'] = (
+                    (bb.typical - bb.lowerband) / (bb.upperband - bb.lowerband)
+            ).where(bb.upperband != bb.lowerband, np.nan)
+            self.__setattr__(attr, bb)
         return self.__getattribute__(attr)
 
 

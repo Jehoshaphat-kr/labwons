@@ -1,6 +1,6 @@
 from labwons.common.config import DESKTOP
 from labwons.indicator.fetch import _fetch
-from labwons.equity.apps.lines import line
+from labwons.equity.technical.lines import line
 from plotly import graph_objects as go
 from plotly.offline import plot
 

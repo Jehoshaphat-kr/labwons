@@ -1,5 +1,5 @@
 from labwons.common.metadata.metadata import MetaData
-from labwons.equity.basis.fnguide import (
+from labwons.equity.fundamental.fnguide import (
     fnguide_business_summary,
     fnguide_etf
 )

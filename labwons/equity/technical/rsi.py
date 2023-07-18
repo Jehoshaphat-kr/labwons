@@ -5,23 +5,30 @@ from plotly.subplots import make_subplots
 from plotly.offline import plot
 from pandas import DataFrame
 import numpy as np
+import warnings
+
+warnings.filterwarnings(
+    "ignore",
+    message="invalid value encountered in scalar divide"
+)
+warnings.filterwarnings(
+    "ignore",
+    message="invalid value encountered in cast"
+)
 
 
-class bollingerband(DataFrame):
+class rsi(DataFrame):
+
     def __init__(self, base:_refine):
-        baseData = base.getOhlcv()
-        typical = (baseData.high + baseData.low + baseData.close) / 3
-        baseData['typical'] = typical
-        baseData['middle'] = typical.rolling(window=20).mean()
-        baseData['stdev'] = typical.rolling(window=20).std()
-        baseData['upperband'] = baseData.middle + 2 * baseData.stdev
-        baseData['uppertrend'] = baseData.middle + baseData.stdev
-        baseData['lowertrend'] = baseData.middle - baseData.stdev
-        baseData['lowerband'] = baseData.middle - 2 * baseData.stdev
-        baseData['width'] = 100 * (4 * baseData.stdev) / baseData.middle
-        baseData['pctb'] = (
-                (baseData.typical - baseData.lowerband) / (baseData.upperband - baseData.lowerband)
-        ).where(baseData.upperband != baseData.lowerband, np.nan)
+        COLUMNS = dict(
+            momentum_rsi = 'rsi',
+            momentum_stoch = 'stoch-osc',
+            momentum_stoch_signal = 'stoch-osc-sig',
+            momentum_stoch_rsi = 'stoch-rsi',
+            momentum_stoch_rsi_k = 'stoch-rsi-k',
+            momentum_stoch_rsi_d = 'stoch-rsi-d'
+        )
+        baseData = base.calcTA()[COLUMNS.keys()].rename(columns=COLUMNS)
         super().__init__(
             index=baseData.index,
             columns=baseData.columns,
@@ -30,60 +37,54 @@ class bollingerband(DataFrame):
         self._base_ = base
         return
 
-    def __call__(self, col:str):
+    def __call__(self, col:str) -> go.Scatter:
         return self.trace(col)
 
     def trace(self, col:str) -> go.Scatter:
         basis = self[col].dropna()
-        unit = '%' if col == 'width' else '' if col == 'pctb' else self._base_.unit
-        trace = go.Scatter(
-            name=col,
+        unit = '%' if col == 'rsi' else ''
+        return go.Scatter(
+            name=col.upper(),
             x=basis.index,
             y=basis,
             visible=True,
             showlegend=True,
             mode='lines',
-            xhoverformat='%Y/%m/%d',
-            yhoverformat='.2f',
-            hovertemplate=col + "<br>%{y}" + unit + " @%{x}<extra></extra>"
+            xhoverformat="%Y/%m/%d",
+            yhoverformat=".2f",
+            hovertemplate=col + "<br>%{y} " + unit + " @%{x}<extra></extra>"
         )
-        if col.endswith('band'):
-            trace.name = 'x2 Band'
-            trace.line = dict(dash='dash', color='magenta')
-            trace.showlegend = True if col.startswith('upper') else False
-            trace.legendgroup = '_band'
-        if col.endswith('trend'):
-            trace.name = 'x1 Trend'
-            trace.line = dict(dash='dot', color='maroon')
-            trace.showlegend = True if col.startswith('upper') else False
-            trace.legendgroup = f'_trend'
-        return trace
 
     def figure(self) -> go.Figure:
         fig = make_subplots(
-            rows=4,
+            rows=5,
             cols=1,
             shared_xaxes=True,
-            row_width=[0.2, 0.2, 0.1, 0.5],
+            row_width=[0.15, 0.15, 0.15, 0.1, 0.45],
             vertical_spacing=0.01
         )
         fig.add_traces(
             data=[
                 self._base_.ohlcv('candle'),
                 self._base_.ohlcv('volume'),
-                self.trace('middle'),
-                self.trace('upperband'),
-                self.trace('uppertrend'),
-                self.trace('lowertrend'),
-                self.trace('lowerband'),
-                self.trace('width'),
-                self.trace('pctb')
+                self.trace('rsi'),
+                self.trace('stoch-osc'),
+                self.trace('stoch-osc-sig'),
+                self.trace('stoch-rsi'),
+                self.trace('stoch-rsi-k'),
+                self.trace('stoch-rsi-d'),
             ],
-            rows=[1, 2, 1, 1, 1, 1, 1, 3, 4],
-            cols=[1, 1, 1, 1, 1, 1, 1, 1, 1]
+            rows=[1, 2, 3, 4, 4, 5, 5, 5],
+            cols=[1, 1, 1, 1, 1, 1, 1, 1]
         )
+        fig.add_hrect(y0=70, y1=100, line_width=0, fillcolor='red', opacity=0.2, row=3, col=1)
+        fig.add_hrect(y0=0, y1=30, line_width=0, fillcolor='green', opacity=0.2, row=3, col=1)
+        fig.add_hrect(y0=80, y1=100, line_width=0, fillcolor='red', opacity=0.2, row=4, col=1)
+        fig.add_hrect(y0=0, y1=20, line_width=0, fillcolor='green', opacity=0.2, row=4, col=1)
+        fig.add_hrect(y0=0.8, y1=1.0, line_width=0, fillcolor='red', opacity=0.2, row=5, col=1)
+        fig.add_hrect(y0=0, y1=0.2, line_width=0, fillcolor='green', opacity=0.2, row=5, col=1)
         fig.update_layout(
-            title=f"{self._base_.name}({self._base_.ticker}) Bollinger-Band",
+            title=f"{self._base_.name}({self._base_.ticker}) RSI Family",
             plot_bgcolor="white",
             legend=dict(tracegroupgap=5),
             xaxis_rangeslider=dict(visible=False),
@@ -198,8 +199,11 @@ class bollingerband(DataFrame):
         kwargs = dict(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{self._base_.path}/B-BAND.html'
+            filename=f'{self._base_.path}/RSI.html'
         )
         kwargs.update(setter)
         plot(**kwargs)
         return
+
+
+

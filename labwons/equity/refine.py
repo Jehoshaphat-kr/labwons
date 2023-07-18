@@ -1,6 +1,7 @@
 from labwons.equity.fetch import _fetch
 from datetime import timedelta
 from scipy.stats import linregress
+from ta import add_all_ta_features
 import pandas as pd
 import numpy as np
 
@@ -133,6 +134,57 @@ class _refine(_fetch):
             ).where(bb.upperband != bb.lowerband, np.nan)
             self.__setattr__(attr, bb)
         return self.__getattribute__(attr)
+
+    def calcTA(self) -> pd.DataFrame:
+        """
+        Technical Analysis
+        volume          volatility        trend                       momentum               others
+        -------------   ---------------   -------------------------   --------------------   --------
+        volume_adi      volatility_bbm    trend_macd                  momentum_rsi           others_dr
+        volume_obv      volatility_bbh    trend_macd_signal           momentum_stoch_rsi     others_dlr
+        volume_cmf      volatility_bbl    trend_macd_diff             momentum_stoch_rsi_k   others_cr
+        volume_fi       volatility_bbw    trend_sma_fast              momentum_stoch_rsi_d
+        volume_em       volatility_bbp    trend_sma_slow              momentum_tsi
+        volume_sma_em   volatility_bbhi   trend_ema_fast              momentum_uo
+        volume_vpt      volatility_bbli   trend_ema_slow              momentum_stoch
+        volume_vwap     volatility_kcc    trend_vortex_ind_pos        momentum_stoch_signal
+        volume_mfi      volatility_kch    trend_vortex_ind_neg        momentum_wr
+        volume_nvi      volatility_kcl    trend_vortex_ind_diff       momentum_ao
+                        volatility_kcw    trend_trix                  momentum_roc
+                        volatility_kcp    trend_mass_index            momentum_ppo
+                        volatility_kchi   trend_dpo                   momentum_ppo_signal
+                        volatility_kcli   trend_kst                   momentum_ppo_hist
+                        volatility_dcl    trend_kst_sig               momentum_pvo
+                        volatility_dch    trend_kst_diff              momentum_pvo_signal
+                        volatility_dcm    trend_ichimoku_conv         momentum_pvo_hist
+                        volatility_dcw    trend_ichimoku_base         momentum_kama
+                        volatility_dcp    trend_ichimoku_a
+                        volatility_atr    trend_ichimoku_b
+                        volatility_ui     trend_stc
+                                          trend_adx
+                                          trend_adx_pos
+                                          trend_adx_neg
+                                          trend_cci
+                                          trend_visual_ichimoku_a
+                                          trend_visual_ichimoku_b
+                                          trend_aroon_up
+                                          trend_aroon_down
+                                          trend_aroon_ind
+                                          trend_psar_up
+                                          trend_psar_down
+                                          trend_psar_up_indicator
+                                          trend_psar_down_indicator
+        """
+        attr = f"_ta_{self.enddate}_{self.period}_{self.freq}"
+        if not hasattr(self, attr):
+            ohlcv = self.getOhlcv()
+            self.__setattr__(attr, add_all_ta_features(ohlcv.copy(), 'open', 'high', 'low', 'close', 'volume'))
+        return self.__getattribute__(attr)
+
+    @property
+    def ohlcv(self):
+        """ Shadow Property """
+        return object
 
 
 if __name__ == "__main__":

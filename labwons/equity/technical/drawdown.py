@@ -1,4 +1,4 @@
-from labwons.common.config import DESKTOP, COLORS
+from labwons.common.config import PATH, COLORS
 from labwons.equity.refine import _refine
 from datetime import timedelta
 from plotly.offline import plot
@@ -130,7 +130,7 @@ class drawdown(pd.DataFrame):
         kwargs = dict(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{DESKTOP}/{self._base_.ticker}_{self._base_.name}_DRAWDOWN.html'
+            filename=f'{self._base_.path}/DRAWDOWN.html'
         )
         kwargs.update(setter)
         plot(**kwargs)

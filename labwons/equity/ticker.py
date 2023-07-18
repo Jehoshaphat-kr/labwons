@@ -1,4 +1,5 @@
 from labwons.common.metadata.metadata import MetaData
+from labwons.common.config import PATH
 from labwons.equity.fundamental.fnguide import (
     fnguide_business_summary,
     fnguide_etf
@@ -6,7 +7,7 @@ from labwons.equity.fundamental.fnguide import (
 import xml.etree.ElementTree as xml
 import yfinance as yf
 import pandas as pd
-import requests
+import requests, os
 
 
 class _ticker(object):
@@ -75,6 +76,9 @@ class _ticker(object):
             self.__us__()
         else:
             pass
+
+        self.path = os.path.join(PATH.BASE, f"{self.ticker}_{self.name}")
+        os.makedirs(self.path, exist_ok=True)
         return
 
     def __kr__(self):

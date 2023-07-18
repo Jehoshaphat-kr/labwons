@@ -619,8 +619,40 @@ FRED = [
     ),
 ]
 
-
-DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE']), rf'Desktop/labwons')
-os.makedirs(DESKTOP, exist_ok=True)
-
 MAX_TRY_COUNT = 5
+
+# class __path__(object):
+#     _download_ = os.path.join(os.path.join(os.environ['USERPROFILE']), rf'Downloads')
+#     _desktop_ = os.path.join(os.path.join(os.environ['USERPROFILE']), rf'Desktop/labwons')
+#     _default_ = _download_
+#     os.makedirs(_default_, exist_ok=True)
+#     def __str__(self):
+#         return self._default_
+#
+#     @property
+#     def SAVE(self) -> str:
+#         return self._default_
+#
+#     @SAVE.setter
+#     def SAVE(self, path:str):
+#         self._default_ = path
+#         os.makedirs(path, exist_ok=True)
+#         return
+
+class __path__(object):
+    _base_ = os.path.join(os.path.join(os.environ['USERPROFILE']), rf'Downloads')
+    _desk_ = os.path.join(os.path.join(os.environ['USERPROFILE']), rf'Desktop')
+    def __call__(self):
+        return self._base_
+
+    @property
+    def BASE(self) -> str:
+        return self._base_
+
+    @BASE.setter
+    def BASE(self, path:str):
+        os.makedirs(path, exist_ok=True)
+        self._base_ = path
+
+# Alias
+PATH = __path__()

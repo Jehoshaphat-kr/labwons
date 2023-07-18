@@ -1,4 +1,4 @@
-from labwons.common.config import DESKTOP
+from labwons.common.config import PATH
 from labwons.equity.refine import _refine
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
@@ -137,7 +137,7 @@ class ohlcv(DataFrame):
         kwargs = dict(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{DESKTOP}/{self._base_.ticker}_{self._base_.name}_OHLCV.html'
+            filename=f'{self._base_.path}/OHLCV.html'
         )
         kwargs.update(setter)
         plot(**kwargs)

@@ -1,4 +1,4 @@
-from labwons.common.config import DESKTOP
+from labwons.common.config import PATH
 from labwons.indicator.fetch import _fetch
 from labwons.equity.technical.lines import line
 from plotly import graph_objects as go
@@ -68,7 +68,7 @@ class Indicator(_fetch):
         kwargs = dict(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{DESKTOP}/{self.name}.html'
+            filename=f'{PATH.BASE}/{self.name}.html'
         )
         kwargs.update(setter)
         plot(**kwargs)

@@ -3,6 +3,8 @@ from labwons.equity.technical.ohlcv import ohlcv
 from labwons.equity.technical.lines import line, lines
 from labwons.equity.technical.benchmark import benchmark
 from labwons.equity.technical.drawdown import drawdown
+from labwons.equity.technical.bollingerband import bollingerband
+from labwons.equity.technical.rsi import rsi
 import pandas as pd
 
 
@@ -59,3 +61,11 @@ class Equity(_refine):
     @property
     def trend(self) -> lines:
         return lines(self.calcTrend(), base=self, title='TREND')
+
+    @property
+    def bollingerband(self) -> bollingerband:
+        return bollingerband(self)
+
+    @property
+    def rsi(self) -> rsi:
+        return rsi(self)

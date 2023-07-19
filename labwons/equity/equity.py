@@ -5,6 +5,7 @@ from labwons.equity.technical.benchmark import benchmark
 from labwons.equity.technical.drawdown import drawdown
 from labwons.equity.technical.bollingerband import bollingerband
 from labwons.equity.technical.rsi import rsi
+from labwons.equity.technical.moneyflow import moneyflow
 import pandas as pd
 
 
@@ -51,7 +52,7 @@ class Equity(_refine):
         return benchmark(self)
 
     @property
-    def drawdown(self) -> drawdown:
+    def drawDown(self) -> drawdown:
         return drawdown(self)
 
     @property
@@ -63,9 +64,13 @@ class Equity(_refine):
         return lines(self.calcTrend(), base=self, title='TREND')
 
     @property
-    def bollingerband(self) -> bollingerband:
+    def bollingerBand(self) -> bollingerband:
         return bollingerband(self)
 
     @property
     def rsi(self) -> rsi:
         return rsi(self)
+
+    @property
+    def moneyFlow(self) -> moneyflow:
+        return moneyflow(self)

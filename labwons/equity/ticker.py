@@ -1,9 +1,6 @@
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.config import PATH
-from labwons.equity.fundamental.fnguide import (
-    fnguide_business_summary,
-    fnguide_etf
-)
+from bs4 import BeautifulSoup as Soup
 import xml.etree.ElementTree as xml
 import yfinance as yf
 import pandas as pd
@@ -81,6 +78,45 @@ class _ticker(object):
         os.makedirs(self.path, exist_ok=True)
         return
 
+    @staticmethod
+    def _fnguideSummary(ticker:str):
+        url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?pGB=1&gicode=A" \
+              f"{ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=Y&stkGb=701"
+        html = Soup(requests.get(url).content, 'lxml').find('ul', id='bizSummaryContent').find_all('li')
+        t = '\n\n '.join([e.text for e in html])
+        w = [
+            '.\n' if t[n] == '.' and not any([t[n - 1].isdigit(), t[n + 1].isdigit(), t[n + 1].isalpha()]) else t[n]
+            for n in range(1, len(t) - 2)
+        ]
+        s = ' ' + t[0] + ''.join(w) + t[-2] + t[-1]
+        return s.replace(' ', '').replace('\xa0\xa0', ' ').replace('\xa0', ' ').replace('\n ', '\n')
+
+    @staticmethod
+    def _fnguideEtf(ticker: str):
+        """
+        FuGuide provided ETF general information
+        :return:
+        [Example: 091160]
+
+        """
+        url = f"http://comp.fnguide.com/SVO2/ASP/" \
+            f"etf_snapshot.asp?pGB=1&gicode=A{ticker}&cID=&MenuYn=Y&ReportGB=&NewMenuID=401&stkGb=770"
+
+        key = ''
+        dataset = {'price': [], 'comp': [], 'sector': []}
+        for line in requests.get(url).text.split('\n'):
+            if "etf1PriceData" in line:
+                key = 'price'
+            if "etf1StyleInfoStkData" in line:
+                key = 'comp'
+            if "etf1StockInfoData" in line:
+                key = 'sector'
+            if "]" in line and key:
+                key = ''
+            if key:
+                dataset[key].append(line)
+        return (pd.DataFrame(data=eval(f"[{''.join(dataset[k][1:])}]")).set_index(keys='val01')['val02'] for k in dataset)
+
     def __kr__(self):
         str2int = lambda x: int(x.replace(', ', '').replace(',', ''))
         nav2num = lambda x, n: float(x.replace(' ', '').replace('배', '').replace('원', '').replace(',', '').split('l')[n])
@@ -103,7 +139,7 @@ class _ticker(object):
                 io=f"https://finance.naver.com/item/main.naver?code={self.ticker}", encoding='euc-kr'
             ))
             self._valid_prop.update({
-                'businessSummary': fnguide_business_summary(self.ticker),
+                'businessSummary': self._fnguideSummary(self.ticker),
                 "dividendYield": str(mul.iloc[3, 1]).replace('%', ''),
                 "trailingPE": None if mul.iloc[0, 1].startswith('N/A') else nav2num(mul.iloc[0, 1], 0),
                 "trailingEps": None if mul.iloc[0, 1].startswith('N/A') else nav2num(mul.iloc[0, 1], 1),
@@ -117,7 +153,7 @@ class _ticker(object):
                 "shares": str2int(src.find('listed_stock_1').text),
             })
         if self._is_etf:
-            price, mul, sec = fnguide_etf(self.ticker)
+            price, mul, sec = self._fnguideEtf(self.ticker)
             self._valid_prop.update({
                 "trailingPE": mul['PER'],
                 "bookValue": mul['PBR'],

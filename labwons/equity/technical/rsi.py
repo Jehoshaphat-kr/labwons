@@ -234,7 +234,7 @@ class rsi(DataFrame):
                 autorange=True
             ),
             yaxis3=dict(
-                title='[%]',
+                title='RSI [%]',
                 showgrid=True,
                 gridwidth=0.5,
                 gridcolor="lightgrey",
@@ -245,7 +245,7 @@ class rsi(DataFrame):
                 autorange=True
             ),
             yaxis4=dict(
-                title='[%]',
+                title='STOCH-OSC[%]',
                 showgrid=True,
                 gridwidth=0.5,
                 gridcolor="lightgrey",
@@ -259,7 +259,7 @@ class rsi(DataFrame):
                 autorange=True
             ),
             yaxis5=dict(
-                title='[-]',
+                title='STOCH-RSI[-]',
                 showgrid=True,
                 gridwidth=0.5,
                 gridcolor="lightgrey",

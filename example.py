@@ -14,10 +14,10 @@ lw.PATH.BASE = r"\\kefico\keti\ENT\Softroom\Temp\J.H.Lee\labwons"
 # DGS10.MoM.show()
 # DGS10.YoY.show()
 
-rReceipt = lw.Indicator("121Y002", "저축성수신")
+# rReceipt = lw.Indicator("121Y002", "저축성수신")
 # print(rReceipt)
 # print(rReceipt())
-rReceipt.save()
+# rReceipt.save()
 
 # cliKR = lw.Indicator(ticker='LORSGPNO', country='KOR')
 # print(cliKR)
@@ -25,14 +25,23 @@ rReceipt.save()
 # cliKR.show()
 
 hynix = lw.Equity('000660', period=5)
+# print(hynix.longName)
+# print(hynix.businessSummary)
 # print(hynix.ohlcv)
 # print(hynix.benchmark)
 # print(hynix.drawDown)
 # print(hynix.sma)
 # print(hynix.trend)
 # print(hynix.bollingerBand)
-print(hynix.rsi)
+# print(hynix.rsi)
 # print(hynix.moneyFlow)
+# print(hynix.psar)
+# for up in hynix.psar.upsides:
+#     print(up)
+# for dn in hynix.psar.downsides:
+#     print(dn)
+# print(hynix.macd)
+# print(hynix.foreigner)
 
 # hynix.ohlcv.save()
 # hynix.benchmark.save()
@@ -40,20 +49,7 @@ print(hynix.rsi)
 # hynix.sma.save()
 # hynix.bollingerBand.save()
 # hynix.rsi.save()
-
-# fit = hynix.calcBound()
-# from plotly import graph_objects as go
-#
-# fig = hynix.ohlcv.figure()
-# for col in fit.columns:
-#     fig.add_trace(
-#         go.Scatter(
-#             name=f"{col[1]}{col[0]}",
-#             x=fit.index,
-#             y=fit[col],
-#             visible=True if col[0] == '(A)' else 'legendonly',
-#             legendgroup=col[0],
-#             line=dict(dash='dash', color='red' if col[1] == 'Resist' else 'blue')
-#         )
-#     )
-# fig.show()
+# hynix.moneyFlow.save()
+# hynix.psar.save()
+# hynix.macd.save()
+hynix.foreigner.save()

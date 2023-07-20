@@ -9,7 +9,7 @@ class line(Series):
         super().__init__(
             index=base.index,
             data=base.values,
-            name=base.name
+            name=kwargs['name'] if 'name' in kwargs else base.name
         )
         self._attr_ = kwargs
         return

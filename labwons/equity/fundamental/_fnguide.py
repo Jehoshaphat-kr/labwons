@@ -18,7 +18,8 @@ def get_summary_table(ticker:str, **kwargs) -> pd.DataFrame:
     4         시가총액(보통주,억원)                     3934087                   액면가                    100
     5    발행주식수(보통주/ 우선주)  5,969,782,550/ 822,886,700  유동주식수/비율(보통주)  4,525,915,719 / 75.81
     """
-    url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?pGB=1&gicode=A{ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=Y&stkGb=701"
+    url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?" \
+          f"pGB=1&gicode=A{ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=Y&stkGb=701"
     html = kwargs['html'] if 'html' in kwargs.keys() else pd.read_html(url, header=0)
     df = html[0]
     data = [df.columns.tolist()] + [list(r) for r in df.to_numpy() if len([_ for _ in r if str(_) == 'nan']) < 3]
@@ -58,38 +59,6 @@ def get_statement(ticker:str, by:str='annual') -> pd.DataFrame:
         s.columns = s.iloc[0]
         s.drop(index=s.index[0], inplace=True)
     return s.T.astype(float)
-
-def get_products(ticker: str) -> pd.DataFrame:
-    """
-    Business Model Products
-    :return:
-                IM 반도체     CE     DP  기타(계)
-    기말
-    2019/12  46.56  28.19  19.43  13.48     -7.66
-    2020/12  42.05  30.77  20.34  12.92     -6.08
-    2021/12  39.07  33.68  19.97  11.34     -4.06
-    """
-    url = f"http://cdn.fnguide.com/SVO2//json/chart/02/chart_A{ticker}_01_N.json"
-    src = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'), strict=False)
-    header = pd.DataFrame(src['chart_H'])[['ID', 'NAME']].set_index(keys='ID').to_dict()['NAME']
-    header.update({'PRODUCT_DATE': '기말'})
-    products = pd.DataFrame(src['chart']).rename(columns=header).set_index(keys='기말')
-    products = products.drop(columns=[c for c in products.columns if products[c].astype(float).sum() == 0])
-
-    i = products.columns[-1]
-    products['Sum'] = products.astype(float).sum(axis=1)
-    products = products[(90 <= products.Sum) & (products.Sum < 110)].astype(float)
-    products[i] = products[i] - (products.Sum - 100)
-    return products.drop(columns=['Sum'])
-
-def get_products_recent(ticker: str = str(), products: pd.DataFrame = None) -> pd.DataFrame:
-    if not isinstance(products, pd.DataFrame):
-        products = get_products(ticker=ticker)
-    i = -1 if products.iloc[-1].astype(float).sum() > 10 else -2
-    df = products.iloc[i].T.dropna().astype(float)
-    df.drop(index=df[df < 0].index, inplace=True)
-    df[df.index[i]] += (100 - df.sum())
-    return df[df.values != 0]
 
 def get_expenses(ticker:str) -> pd.DataFrame:
     url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Corp.asp?pGB=1&gicode=A{ticker}&cID=&MenuYn=Y&ReportGB=&NewMenuID=102&stkGb=701"

@@ -12,7 +12,9 @@ from labwons.equity.technical import (
     macd
 )
 from labwons.equity.fundamental import (
-    foreigner
+    foreigner,
+    products,
+    consensus
 )
 
 
@@ -138,3 +140,15 @@ class Equity(_refine):
         if not self.__hasattr__('__foreigner__'):
             self.__setattr__('__foreigner__', foreigner(self))
         return self.__getattribute__('__foreigner__')
+
+    @property
+    def products(self) -> foreigner:
+        if not self.__hasattr__('__products__'):
+            self.__setattr__('__products__', products(self))
+        return self.__getattribute__('__products__')
+
+    @property
+    def consensus(self) -> consensus:
+        if not self.__hasattr__('__concensus__'):
+            self.__setattr__('__concensus__', consensus(self))
+        return self.__getattribute__('__concensus__')

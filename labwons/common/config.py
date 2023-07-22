@@ -3,16 +3,9 @@ import os
 
 # CSS COLOR CODE
 COLORS = [
-    'aliceblue',
-    'antiquewhite',
     'aqua',
     'aquamarine',
-    'azure',
-    'beige',
-    'bisque',
-    'black',
     'blanchedalmond',
-    'blue',
     'blueviolet',
     'brown',
     'burlywood',
@@ -49,11 +42,9 @@ COLORS = [
     'dimgrey',
     'dodgerblue',
     'firebrick',
-    'floralwhite',
     'forestgreen',
     'fuchsia',
     'gainsboro',
-    'ghostwhite',
     'gold',
     'goldenrod',
     'gray',
@@ -103,7 +94,6 @@ COLORS = [
     'mintcream',
     'mistyrose',
     'moccasin',
-    'navajowhite',
     'navy',
     'oldlace',
     'olive',
@@ -146,8 +136,6 @@ COLORS = [
     'turquoise',
     'violet',
     'wheat',
-    'white',
-    'whitesmoke',
     'yellow',
     'yellowgreen'
 ]

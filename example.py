@@ -40,10 +40,13 @@ equity = lw.Equity('058470', period=5)
 #     print(up)
 # for dn in equity.psar.downsides:
 #     print(dn)
+
 # print(equity.macd)
 # print(equity.foreigner)
 # print(equity.products)
-print(equity.consensus)
+# print(equity.consensus)
+# print(equity.short)
+print(equity.expense)
 
 # equity.ohlcv.save()
 # equity.benchmark.save()
@@ -58,4 +61,5 @@ print(equity.consensus)
 
 # equity.foreigner.show()
 # equity.products.show()
-equity.consensus.show()
+# equity.consensus.show()
+# equity.short.show()

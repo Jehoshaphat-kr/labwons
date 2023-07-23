@@ -60,53 +60,6 @@ def get_statement(ticker:str, by:str='annual') -> pd.DataFrame:
         s.drop(index=s.index[0], inplace=True)
     return s.T.astype(float)
 
-def get_expenses(ticker:str) -> pd.DataFrame:
-    url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Corp.asp?pGB=1&gicode=A{ticker}&cID=&MenuYn=Y&ReportGB=&NewMenuID=102&stkGb=701"
-    html = pd.read_html(url, header=0)
-
-    sales_cost = html[4].set_index(keys=['항목'])
-    sales_cost.index.name = None
-
-    sg_n_a = html[5].set_index(keys=['항목'])
-    sg_n_a.index.name = None
-
-    r_n_d = html[8].set_index(keys=['회계연도'])
-    r_n_d.index.name = None
-    r_n_d = r_n_d[['R&D 투자 총액 / 매출액 비중.1', '무형자산 처리 / 매출액 비중.1', '당기비용 처리 / 매출액 비중.1']]
-    r_n_d = r_n_d.rename(columns={
-        'R&D 투자 총액 / 매출액 비중.1': 'R&D투자비중',
-        '무형자산 처리 / 매출액 비중.1': '무형자산처리비중',
-        '당기비용 처리 / 매출액 비중.1': '당기비용처리비중'
-    })
-    if '관련 데이터가 없습니다.' in r_n_d.index:
-        r_n_d.drop(index=['관련 데이터가 없습니다.'], inplace=True)
-    return pd.concat(objs=[sales_cost.T, sg_n_a.T, r_n_d], axis=1).sort_index(ascending=True).astype(float)
-
-def get_consensus(ticker:str) -> pd.DataFrame:
-    url = f"http://cdn.fnguide.com/SVO2/json/chart/01_02/chart_A{ticker}.json"
-    raw = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
-    frm = pd.DataFrame(raw['CHART'])
-    frm = frm.rename(columns={'TRD_DT': '날짜', 'VAL1': '투자의견', 'VAL2': '목표주가', 'VAL3': '종가'})
-    frm = frm.set_index(keys='날짜')
-    frm.index = pd.to_datetime(frm.index)
-    frm['목표주가'] = frm['목표주가'].apply(lambda x: int(x) if x else np.nan)
-    frm['종가'] = frm['종가'].astype(int)
-    frm['괴리율'] = round(100 * (frm.종가/frm.목표주가 - 1), 2)
-    return frm
-
-def get_foreign_rate(ticker:str) -> pd.DataFrame:
-    objs = dict()
-    for dt in ['3M', '1Y', '3Y']:
-        url = f"http://cdn.fnguide.com/SVO2/json/chart/01_01/chart_A{ticker}_{dt}.json"
-        data = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
-        frm = pd.DataFrame(data["CHART"])[['TRD_DT', 'J_PRC', 'FRG_RT']]
-        frm = frm.rename(columns={'TRD_DT':'date', 'J_PRC':'close', 'FRG_RT':'rate'}).set_index(keys='date')
-        frm.index = pd.to_datetime(frm.index)
-        frm = frm.replace('', '0.0')
-        frm['close'] = frm['close'].astype(int)
-        frm['rate'] = frm['rate'].astype(float)
-        objs[dt] = frm
-    return pd.concat(objs=objs, axis=1)
 
 def get_nps(ticker:str) -> pd.DataFrame:
     url = f"http://cdn.fnguide.com/SVO2/json/chart/05/chart_A{ticker}_D.json"
@@ -177,23 +130,3 @@ def get_benchmark_multiple(ticker:str) -> pd.DataFrame:
             inner1[col] = inner1[col].apply(lambda x: np.nan if x == '-' else x)
         objs[label] = inner1.T
     return pd.concat(objs=objs, axis=1).astype(float)
-
-def get_short_sell(ticker:str) -> pd.DataFrame:
-    url = f"http://cdn.fnguide.com/SVO2/json/chart/11_01/chart_A{ticker}_SELL1Y.json"
-    data = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
-    frm = pd.DataFrame(data['CHART'])
-    frm = frm.rename(columns={'TRD_DT': '날짜', 'VAL': '차입공매도비중', 'ADJ_PRC': '수정종가'}).set_index(keys='날짜')
-    frm.index = pd.to_datetime(frm.index)
-    frm['수정종가'] = frm['수정종가'].astype(int)
-    frm['차입공매도비중'] = frm['차입공매도비중'].astype(float)
-    return frm
-
-def get_short_balance(ticker:str) -> pd.DataFrame:
-    url = f"http://cdn.fnguide.com/SVO2/json/chart/11_01/chart_A{ticker}_BALANCE1Y.json"
-    data = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
-    frm = pd.DataFrame(data['CHART'])[['TRD_DT', 'BALANCE_RT', 'ADJ_PRC']]
-    frm = frm.rename(columns={'TRD_DT': '날짜', 'BALANCE_RT': '대차잔고비중', 'ADJ_PRC': '수정종가'}).set_index(keys='날짜')
-    frm.index = pd.to_datetime(frm.index)
-    frm['수정종가'] = frm['수정종가'].astype(int)
-    frm['대차잔고비중'] = frm['대차잔고비중'].astype(float)
-    return frm

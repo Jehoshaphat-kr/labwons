@@ -14,7 +14,9 @@ from labwons.equity.technical import (
 from labwons.equity.fundamental import (
     foreigner,
     products,
-    consensus
+    consensus,
+    short,
+    expense
 )
 
 
@@ -152,3 +154,15 @@ class Equity(_refine):
         if not self.__hasattr__('__concensus__'):
             self.__setattr__('__concensus__', consensus(self))
         return self.__getattribute__('__concensus__')
+
+    @property
+    def short(self) -> short:
+        if not self.__hasattr__('__short__'):
+            self.__setattr__('__short__', short(self))
+        return self.__getattribute__('__short__')
+
+    @property
+    def expense(self) -> expense:
+        if not self.__hasattr__('__expense__'):
+            self.__setattr__('__expense__', expense(self))
+        return self.__getattribute__('__expense__')

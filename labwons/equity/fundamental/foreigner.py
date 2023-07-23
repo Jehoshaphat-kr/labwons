@@ -1,14 +1,26 @@
 from labwons.equity.refine import _refine
-from labwons.equity.fundamental._fnguide import get_foreign_rate
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
+from urllib.request import urlopen
 import pandas as pd
+import json
 
 
 class foreigner(pd.DataFrame):
     def __init__(self, base:_refine):
-        basis = get_foreign_rate(base.ticker)
+        objs = dict()
+        for dt in ['3M', '1Y', '3Y']:
+            url = f"http://cdn.fnguide.com/SVO2/json/chart/01_01/chart_A{base.ticker}_{dt}.json"
+            data = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
+            frm = pd.DataFrame(data["CHART"])[['TRD_DT', 'J_PRC', 'FRG_RT']]
+            frm = frm.rename(columns={'TRD_DT': 'date', 'J_PRC': 'close', 'FRG_RT': 'rate'}).set_index(keys='date')
+            frm.index = pd.to_datetime(frm.index)
+            frm = frm.replace('', '0.0')
+            frm['close'] = frm['close'].astype(int)
+            frm['rate'] = frm['rate'].astype(float)
+            objs[dt] = frm
+        basis = pd.concat(objs=objs, axis=1)
         super().__init__(
             index=basis.index,
             columns=basis.columns,
@@ -30,7 +42,7 @@ class foreigner(pd.DataFrame):
             mode='lines',
             line=dict(
                 color='royalblue' if 'close' in c2 else 'black',
-                dash='dot' if 'close' in c2 else None
+                dash='solid' if 'close' in c2 else 'dot'
             ),
             xhoverformat="%Y/%m/%d",
             yhoverformat=',d' if 'close' in c2 else '.2f',

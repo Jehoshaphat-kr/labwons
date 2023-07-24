@@ -13,6 +13,11 @@ class benchmarkmultiple(pd.DataFrame):
         """
         Benchmark Multiple
         :return:
+                                        PER                     EV/EBITDA                           ROE
+               LEENO  KOSDAQ-IT&H/W  KOSDAQ  LEENO  KOSDAQ-IT&H/W  KOSDAQ  LEENO  KOSDAQ-IT&H/W  KOSDAQ
+        2021   29.12          28.08   35.68  23.35          15.23  16.88   27.50           9.51    7.32
+        2022   20.72          19.88   41.02  15.73           9.40  12.19   25.11           7.77    3.94
+        2023E    NaN          20.94   26.89    NaN           9.93  13.48     NaN          11.61   11.65
         """
         url = f"http://cdn.fnguide.com/SVO2/json/chart/01_04/chart_A{base.ticker}_D.json"
         data = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
@@ -37,64 +42,53 @@ class benchmarkmultiple(pd.DataFrame):
         self._base_ = base
         return
 
-    def __call__(self, col:str):
-        return self.trace(col)
+    def __call__(self, col1:str, col2:str):
+        return self.trace(col1, col2)
 
-    def trace(self, col:str) -> go.Scatter:
-        name = col.upper().replace('_', ' ')
-        color = dict(close='royalblue', short_sell='brown', short_balance='red')[col]
-        return go.Scatter(
-            name=name,
+    def trace(self, col1:str, col2:str) -> go.Bar:
+        index = self.columns.tolist().index((col1, col2))
+        color = ['royalblue', 'brown', 'green'][index % 3]
+        return go.Bar(
+            name=col1.upper(),
             x=self.index,
-            y=self[col],
-            showlegend=True,
-            visible='legendonly' if 'balance' in col else True,
-            mode='lines',
-            line=dict(
+            y=self[col1][col2],
+            showlegend=True if index in [0, 3, 6] else False,
+            legendgroup=col1,
+            visible=True if col1 == 'PER' else 'legendonly',
+            texttemplate=col2 + '<br>%{y}' + ('%' if col1 == 'ROE' else ''),
+            marker=dict(
                 color=color,
-                dash='solid' if col == 'close' else 'dot'
+                opacity=0.8
             ),
-            xhoverformat='%Y/%m/%d',
-            yhoverformat=',d' if col == 'close' else '.2f',
-            hovertemplate=name + '%{y}' + ('KRW' if col == 'close' else '%') + '<extra></extra>'
+            yhoverformat='.2f',
+            hovertemplate=col2 + '<br>%{y}<extra></extra>'
         )
 
     def figure(self) -> go.Figure:
-        fig = make_subplots(
-            rows=1, cols=1,
-            specs=[[{'secondary_y': True}]]
-        )
-        fig.add_traces(
-            data=[self.trace(c) for c in self.columns],
-            rows=[1, 1, 1], cols=[1, 1, 1],
-            secondary_ys=[False, True, True]
-        )
-        fig.update_layout(
-            title=f"<b>{self._base_.name}({self._base_.ticker})</b> SHORT",
-            plot_bgcolor='white',
-            legend=dict(
-                orientation="h",
-                xanchor="right",
-                yanchor="bottom",
-                x=1,
-                y=1
-            ),
-            hovermode="x unified",
-            xaxis=dict(
-                title='날짜',
-                tickformat="%Y/%m/%d",
-                showticklabels=True,
-                showgrid=True,
-                gridcolor='lightgrey',
-            ),
-            yaxis=dict(
-                title='[KRW]',
-                showgrid=True,
-                gridcolor='lightgrey'
-            ),
-            yaxis2=dict(
-                title='[%]',
-            ),
+        data = [self.trace(col1, col2) for col1, col2 in self.columns]
+        fig = go.Figure(
+            data=data,
+            layout=go.Layout(
+                title=f"<b>{self._base_.name}({self._base_.ticker})</b> Benchmark Multiple",
+                plot_bgcolor='white',
+                legend=dict(
+                    orientation="h",
+                    xanchor="right",
+                    yanchor="bottom",
+                    x=1,
+                    y=1
+                ),
+                xaxis=dict(
+                    title='기말',
+                    showticklabels=True,
+                    showgrid=False,
+                ),
+                yaxis=dict(
+                    title='[-, %]',
+                    showgrid=True,
+                    gridcolor='lightgrey'
+                ),
+            )
         )
         return fig
 
@@ -107,7 +101,7 @@ class benchmarkmultiple(pd.DataFrame):
         kwargs = dict(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{self._base_.path}/SHORT.html'
+            filename=f'{self._base_.path}/BENCHMARK-MULTIPLE.html'
         )
         kwargs.update(setter)
         plot(**kwargs)

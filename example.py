@@ -4,7 +4,7 @@ pd.set_option('display.expand_frame_repr', False)
 
 lw.API.STOCK_SYMBOL = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
 lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
-lw.PATH.BASE = r"\\kefico\keti\ENT\Softroom\Temp\J.H.Lee\labwons"
+# lw.PATH.BASE = r"\\kefico\keti\ENT\Softroom\Temp\J.H.Lee\labwons"
 
 # DGS10 = lw.Indicator('DGS10')
 # print(DGS10)
@@ -47,7 +47,7 @@ equity = lw.Equity('058470', period=5)
 # print(equity.short)
 # print(equity.expense)
 # print(equity.multipleBand)
-print(equity.benchmarkMultiple)
+# print(equity.benchmarkMultiple)
 
 # equity.ohlcv.save()
 # equity.benchmark.save()
@@ -67,3 +67,4 @@ print(equity.benchmarkMultiple)
 # equity.consensus.show()
 # equity.short.show()
 # equity.expense.show()
+equity.benchmarkMultiple.show()

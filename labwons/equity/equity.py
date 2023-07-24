@@ -16,7 +16,9 @@ from labwons.equity.fundamental import (
     products,
     consensus,
     short,
-    expense
+    expense,
+    multipleband,
+    benchmarkmultiple
 )
 
 
@@ -166,3 +168,15 @@ class Equity(_refine):
         if not self.__hasattr__('__expense__'):
             self.__setattr__('__expense__', expense(self))
         return self.__getattribute__('__expense__')
+
+    @property
+    def multipleBand(self) -> multipleband:
+        if not self.__hasattr__('__multipleband__'):
+            self.__setattr__('__multipleband__', multipleband(self))
+        return self.__getattribute__('__multipleband__')
+
+    @property
+    def benchmarkMultiple(self) -> benchmarkmultiple:
+        if not self.__hasattr__('__benchmarkmultiple__'):
+            self.__setattr__('__benchmarkmultiple__', benchmarkmultiple(self))
+        return self.__getattribute__('__benchmarkmultiple__')

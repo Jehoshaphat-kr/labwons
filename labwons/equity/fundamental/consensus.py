@@ -1,6 +1,4 @@
-from labwons.common.config import COLORS
 from labwons.equity.refine import _refine
-from typing import Union
 from plotly import graph_objects as go
 from plotly.offline import plot
 from urllib.request import urlopen

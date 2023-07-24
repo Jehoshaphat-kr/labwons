@@ -3,3 +3,5 @@ from labwons.equity.fundamental.products import products
 from labwons.equity.fundamental.consensus import consensus
 from labwons.equity.fundamental.short import short
 from labwons.equity.fundamental.expense import expense
+from labwons.equity.fundamental.multipleband import multipleband
+from labwons.equity.fundamental.benchmarkmultiple import benchmarkmultiple

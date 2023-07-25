@@ -18,7 +18,8 @@ from labwons.equity.fundamental import (
     short,
     expense,
     multipleband,
-    benchmarkmultiple
+    benchmarkmultiple,
+    performance
 )
 
 
@@ -180,3 +181,9 @@ class Equity(_refine):
         if not self.__hasattr__('__benchmarkmultiple__'):
             self.__setattr__('__benchmarkmultiple__', benchmarkmultiple(self))
         return self.__getattribute__('__benchmarkmultiple__')
+
+    @property
+    def performance(self) -> performance:
+        if not self.__hasattr__('__performance__'):
+            self.__setattr__('__performance__', performance(self))
+        return self.__getattribute__('__performance__')

@@ -1,4 +1,6 @@
 from labwons.equity.refine import _refine
+from datetime import datetime, timedelta
+from pykrx.stock import get_market_cap_by_date
 from plotly import graph_objects as go
 from plotly.offline import plot
 from urllib.request import urlopen
@@ -7,32 +9,41 @@ import numpy as np
 import json
 
 
-class benchmarkmultiple(pd.DataFrame):
-    def __init__(self, base:_refine):
+class performance(pd.DataFrame):
+    def __init__(self, base:_refine, by:str='annual'):
         """
-        Benchmark Multiple
+        Performance
         :return:
-                                        PER                     EV/EBITDA                           ROE
-               LEENO  KOSDAQ-IT&H/W  KOSDAQ  LEENO  KOSDAQ-IT&H/W  KOSDAQ  LEENO  KOSDAQ-IT&H/W  KOSDAQ
-        2021   29.12          28.08   35.68  23.35          15.23  16.88   27.50           9.51    7.32
-        2022   20.72          19.88   41.02  15.73           9.40  12.19   25.11           7.77    3.94
-        2023E    NaN          20.94   26.89    NaN           9.93  13.48     NaN          11.61   11.65
-        """
-        url = f"http://cdn.fnguide.com/SVO2/json/chart/01_04/chart_A{base.ticker}_D.json"
-        data = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
-        objs = dict()
-        for label, index in (('PER', '02'), ('EV/EBITDA', '03'), ('ROE', '04')):
-            header1 = pd.DataFrame(data[f'{index}_H'])[['ID', 'NAME']].set_index(keys='ID')
-            header1['NAME'] = header1['NAME'].astype(str).str.replace("'", "20")
-            header1 = header1.to_dict()['NAME']
-            header1.update({'CD_NM': '이름'})
 
-            inner1 = pd.DataFrame(data[index])[list(header1.keys())].rename(columns=header1).set_index(keys='이름')
-            inner1.index.name = None
-            for col in inner1.columns:
-                inner1[col] = inner1[col].apply(lambda x: np.nan if x == '-' else x)
-            objs[label] = inner1.T
-        basis = pd.concat(objs=objs, axis=1).astype(float)
+        """
+        sales = base.calcStatement(by=by)
+        sales.index.name = '기말'
+        key = [_ for _ in ['매출액', '순영업수익', '이자수익', '보험료수익'] if _ in sales.columns][0]
+
+        salesExp = sales[sales.index.str.endswith(')')][[key, '영업이익', '당기순이익']]
+        print(salesExp)
+        for i_e in salesExp.index:
+            print(i_e)
+            print(salesExp.loc[i_e])
+            print(all(salesExp.loc[i_e].tolist()))
+
+
+        cap = get_market_cap_by_date(
+            fromdate=(datetime.today() - timedelta(365 * 5)).strftime("%Y%m%d"),
+            todate=datetime.today().strftime("%Y%m%d"),
+            freq='y',
+            ticker=base.ticker
+        )
+        if cap.empty:
+            cap = pd.DataFrame(columns=['시가총액'])
+        cap['시가총액'] = round(cap['시가총액'] / 100000000, 1).astype(int)
+        cap.index = cap.index.strftime("%Y/%m")
+        cap['기말'] = cap.index[:-1].tolist() + [f"{cap.index[-1][:4]}/현재"]
+        cap = cap.set_index(keys='기말')
+        basis = cap.join(sales, how='left')[['시가총액', key, '영업이익', '당기순이익']]
+
+        if not salesExp.empty:
+            basis = pd.concat(objs=[basis, salesExp], axis=0)
         super().__init__(
             index=basis.index,
             columns=basis.columns,

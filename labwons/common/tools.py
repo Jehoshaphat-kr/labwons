@@ -11,11 +11,18 @@ import numpy as np
 import requests, time, os, random
 
 
-def int2won(x):
+def int2won(x) -> str:
     if np.isnan(x):
         return np.nan
     x = int(x)
-    return f'{x}억원' if x < 10000 else f'{str(x)[:-4]}조 {str(x)[-4:]}억원'
+    if x < 10000:
+        return f'{x}억'
+    else:
+        zo = str(x)[:-4]
+        ek = str(x)[-4:]
+        if ek.startswith('0'):
+            ek = ek[1:]
+        return f'{zo}조{ek}억'
 
 def xml2df(url: str) -> pd.DataFrame:
     exclude = ['row', 'P_STAT_CODE']

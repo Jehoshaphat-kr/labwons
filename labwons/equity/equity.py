@@ -19,14 +19,23 @@ from labwons.equity.fundamental import (
     expense,
     multipleband,
     benchmarkmultiple,
-    performance
+    performance,
+    statement
 )
 
 
 class Equity(_refine):
-
+    _by_ = 'annual'
     def __hasattr__(self, attr):
         return hasattr(self, attr)
+
+    @property
+    def by(self) -> str:
+        return self._by_
+
+    @by.setter
+    def by(self, by:str):
+        self._by_ = by
 
     """
     PRICE
@@ -184,6 +193,12 @@ class Equity(_refine):
 
     @property
     def performance(self) -> performance:
-        if not self.__hasattr__('__performance__'):
-            self.__setattr__('__performance__', performance(self))
-        return self.__getattribute__('__performance__')
+        if not self.__hasattr__(f'__performance_{self.by}__'):
+            self.__setattr__(f'__performance_{self.by}__', performance(self, by=self.by))
+        return self.__getattribute__(f'__performance_{self.by}__')
+
+    @property
+    def statement(self) -> statement:
+        if not self.__hasattr__(f'__statement_{self.by}__'):
+            self.__setattr__(f'__statement_{self.by}__', statement(self, by=self.by))
+        return self.__getattribute__(f'__statement_{self.by}__')

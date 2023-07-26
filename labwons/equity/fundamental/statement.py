@@ -7,32 +7,15 @@ from plotly.offline import plot
 import pandas as pd
 
 
-class performance(pd.DataFrame):
+class statement(pd.DataFrame):
     def __init__(self, base:_refine, by:str='annual'):
         """
-        Performance
+        Statement
         :return:
-
         """
-        sales = base.calcStatement(by=by)
-        sales.index.name = '기말'
-        key = [_ for _ in ['매출액', '순영업수익', '이자수익', '보험료수익'] if _ in sales.columns][0]
-        salesExp = sales[sales.index.str.endswith(')')][[key, '영업이익', '당기순이익']]
-
-        cap = get_market_cap_by_date(
-            fromdate=(datetime.today() - timedelta(365 * 5)).strftime("%Y%m%d"),
-            todate=datetime.today().strftime("%Y%m%d"),
-            freq='y',
-            ticker=base.ticker
-        )
-        if cap.empty:
-            cap = pd.DataFrame(columns=['시가총액'])
-        cap['시가총액'] = round(cap['시가총액'] / 100000000, 1).astype(int)
-        cap.index = cap.index.strftime("%Y/%m")
-        cap['기말'] = cap.index[:-1].tolist() + [f"{cap.index[-1][:4]}/현재"]
-        cap = cap.set_index(keys='기말')
-        basis = cap.join(sales, how='left')[['시가총액', key, '영업이익', '당기순이익']]
-        basis = pd.concat(objs=[basis, salesExp], axis=0).head(len(basis) + 1)
+        basis = base.calcStatement(by=by)
+        n = len(basis) - len([i for i in basis.index if i.endswith(')')])
+        basis = basis.head(n + 1)
         super().__init__(
             index=basis.index,
             columns=basis.columns,
@@ -44,13 +27,20 @@ class performance(pd.DataFrame):
     def __call__(self, col:str):
         return self.trace(col)
 
-    def trace(self, col:str) -> go.Bar:
-        return go.Bar(
+    def trace(self, col:str) -> go.Scatter:
+        idx = self.columns.tolist().index(col)
+        if idx <= 11:
+            meta = [int2won(x) for x in self[col]]
+        elif idx <= 17:
+            meta = [f'{x}%' for x in self[col]]
+
+        return go.Scatter(
             name=col,
             x=self.index,
             y=self[col],
             showlegend=True,
             visible=True,
+            mode='lines+markers',
             meta=[int2won(x) for x in self[col]],
             texttemplate='%{meta}',
             marker=dict(

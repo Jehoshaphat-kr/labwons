@@ -6,3 +6,4 @@ from labwons.equity.fundamental.expense import expense
 from labwons.equity.fundamental.multipleband import multipleband
 from labwons.equity.fundamental.benchmarkmultiple import benchmarkmultiple
 from labwons.equity.fundamental.performance import performance
+from labwons.equity.fundamental.statement import statement

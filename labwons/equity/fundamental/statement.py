@@ -16,6 +16,7 @@ class statement(pd.DataFrame):
         basis = base.calcStatement(by=by)
         n = len(basis) - len([i for i in basis.index if i.endswith(')')])
         basis = basis.head(n + 1)
+        basis.index.name = '기말'
         super().__init__(
             index=basis.index,
             columns=basis.columns,
@@ -27,21 +28,26 @@ class statement(pd.DataFrame):
     def __call__(self, col:str):
         return self.trace(col)
 
-    def trace(self, col:str) -> go.Scatter:
+    def _meta(self, col:str) -> list:
         idx = self.columns.tolist().index(col)
         if idx <= 11:
-            meta = [int2won(x) for x in self[col]]
-        elif idx <= 17:
-            meta = [f'{x}%' for x in self[col]]
+            return [int2won(x) for x in self[col]]
+        elif idx <= 17 or idx == 24:
+            return [f'{x}%' for x in self[col]]
+        elif idx <= 20:
+            return [f'{x}원' for x in self[col]]
+        else:
+            return [f'{x}' for x in self[col]]
 
+    def trace(self, col:str) -> go.Scatter:
         return go.Scatter(
             name=col,
             x=self.index,
             y=self[col],
             showlegend=True,
             visible=True,
-            mode='lines+markers',
-            meta=[int2won(x) for x in self[col]],
+            mode='lines+markers+text',
+            meta=self._meta(col),
             texttemplate='%{meta}',
             marker=dict(
                 opacity=0.8

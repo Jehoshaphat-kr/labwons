@@ -186,7 +186,7 @@ if __name__ == "__main__":
     # print(MetaData.USETF)
     # print(MetaData.KRSTOCKwMultiples)
 
-    # MetaData.API_STOCK_SYMBOL = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
-    # MetaData.API_ECOS = "CEW3KQU603E6GA8VX0O9"
-    # MetaData.save()
+    MetaData.API_STOCK_SYMBOL = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
+    MetaData.API_ECOS = "CEW3KQU603E6GA8VX0O9"
+    MetaData.save()
 

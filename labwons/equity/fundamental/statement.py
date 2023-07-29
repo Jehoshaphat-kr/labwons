@@ -44,38 +44,49 @@ class statement(pd.DataFrame):
             name=col,
             x=self.index,
             y=self[col],
-            showlegend=True,
-            visible=True,
+            showlegend=False,
+            visible=True if col == self.columns[0] else False,
             mode='lines+markers+text',
             meta=self._meta(col),
             texttemplate='%{meta}',
-            marker=dict(
-                opacity=0.8
-            ),
-            hovertemplate=col + '<br>%{meta}<extra></extra>'
+            hoverinfo='skip'
         )
 
     def figure(self) -> go.Figure:
         data = [self.trace(col) for col in self.columns]
+        buttons = list()
+        for n, tr in enumerate(data):
+            visible = [False] * len(data)
+            visible[n] = True
+            buttons.append(
+                dict(
+                    label=tr.name,
+                    method="update",
+                    args=[{"visible": visible}]
+                )
+            )
         fig = go.Figure(
             data=data,
             layout=go.Layout(
-                title=f"<b>{self._base_.name}({self._base_.ticker})</b> Performance",
+                title=f"<b>{self._base_.name}({self._base_.ticker})</b> Financial Statement",
                 plot_bgcolor='white',
-                legend=dict(
-                    orientation="h",
-                    xanchor="right",
-                    yanchor="bottom",
-                    x=1,
-                    y=1
-                ),
+                updatemenus=[
+                    dict(
+                        # type="buttons",
+                        direction="down",
+                        active=0,
+                        xanchor='left', x=0.0,
+                        yanchor='bottom', y=1.0,
+                        buttons=buttons
+                    )
+                ],
                 xaxis=dict(
                     title='기말',
                     showticklabels=True,
                     showgrid=False,
                 ),
                 yaxis=dict(
-                    title='[-, %]',
+                    title='[억원, -, %]',
                     showgrid=True,
                     gridcolor='lightgrey'
                 ),
@@ -92,7 +103,7 @@ class statement(pd.DataFrame):
         kwargs = dict(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{self._base_.path}/PERFORMANCE.html'
+            filename=f'{self._base_.path}/STATEMENT.html'
         )
         kwargs.update(setter)
         plot(**kwargs)

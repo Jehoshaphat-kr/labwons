@@ -24,7 +24,7 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # print(cliKR())
 # cliKR.show()
 
-equity = lw.Equity('058470', period=5)
+# equity = lw.Equity('058470', period=5)
 # print(equity.longName)
 # print(equity.businessSummary)
 # print(equity.ohlcv)
@@ -71,4 +71,14 @@ equity = lw.Equity('058470', period=5)
 # equity.expense.show()
 # equity.benchmarkMultiple.show()
 # equity.performance.show()
-equity.statement.show()
+# equity.statement.show()
+
+
+# corr = Correlation(
+#     d1=Equity('316140'),
+#     d2=Indicator('121Y002', '저축성수신(금융채 제외) 1)')
+# )
+수신 = lw.Indicator('121Y002', '저축성수신(금융채 제외) 1)')
+여신 = lw.Indicator('121Y006', '대출평균 1)')
+마진 = 여신 - 수신
+print(마진)

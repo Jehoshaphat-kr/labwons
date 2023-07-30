@@ -3,6 +3,7 @@ from labwons.indicator.fetch import _fetch
 from labwons.equity.technical.lines import line
 from plotly import graph_objects as go
 from plotly.offline import plot
+import pandas as pd
 
 
 class Indicator(_fetch):

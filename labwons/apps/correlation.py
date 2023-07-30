@@ -10,9 +10,10 @@ class Correlation(pd.DataFrame):
         self,
         d1:Union[Equity, Indicator],
         d2:Union[Equity, Indicator],
-        d1property:str='ohlc',
-        d2property:str=''
     ):
+        if isinstance(d1, Equity):
+            d1frame = d1.ohlcv[['open', 'high', 'low', 'close']]
+            d1series = d1.typical
 
 
         super().__init__()

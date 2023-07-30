@@ -4,7 +4,7 @@ from pandas_datareader import get_data_fred
 from datetime import datetime, timedelta
 from pytz import timezone
 import pandas as pd
-import requests
+import requests, math
 
 
 class _fetch(pd.Series):
@@ -13,33 +13,47 @@ class _fetch(pd.Series):
         self,
         ticker: str,
         *args,
+        name: str='',
         source: str='',
         country: str='',
         period: int=20,
         enddate: str='',
         dformat: str='.2f',
-        unit: str=''
+        unit: str='',
+        series: pd.Series = pd.Series(dtype=float)
     ):
-        if not ticker in MetaData.index and not source:
-            raise KeyError(f'@ticker: "{ticker}" NOT FOUND in metadata, @source must be specified')
-
-        source = source if source else MetaData.loc[ticker, 'exchange']
-        if source.lower() == 'oecd' and not country:
-            raise KeyError(f"OECD data requires @country symbol: ex) KOR, USA, G-20...")
-        if source.lower() == 'ecos' and not args:
-            raise KeyError(f"ECOS data requires specific parameters")
-
-        enddate = enddate if enddate else datetime.today().strftime("%Y%m%d")
-        startdate = (datetime.strptime(enddate, "%Y%m%d") - timedelta(20 * 365)).strftime("%Y%m%d")
-        if source.lower() == 'ecos':
-            series = self.fetchEcos(MetaData.API_ECOS, ticker, startdate, *args)
-        elif source.lower() == 'oecd':
-            series = self.fetchOecd(ticker, startdate, enddate, country)
-        elif source.lower() == 'fred':
-            series = self.fetchFred(ticker, startdate, enddate)
+        if not series.empty:
+            super().__init__(
+                index=series.index,
+                data=series.data,
+                name=name if name else series.name
+            )
+            startdate = self.index[0]
+            enddate = self.index[-1]
         else:
-            raise KeyError(f'Invalid @source: "{source}", possible source is ["fred", "ecos", "oecd"]')
-        super().__init__(index=series.index, data=series.values, name=args[-1] if source.lower() == 'ecos' else ticker)
+            if not ticker in MetaData.index and not source:
+                raise KeyError(f'@ticker: "{ticker}" NOT FOUND in metadata, @source must be specified')
+
+            source = source if source else MetaData.loc[ticker, 'exchange']
+            if source.lower() == 'oecd' and not country:
+                raise KeyError(f"OECD data requires @country symbol: ex) KOR, USA, G-20...")
+            if source.lower() == 'ecos' and not args:
+                raise KeyError(f"ECOS data requires specific parameters")
+
+            enddate = enddate if enddate else datetime.today().strftime("%Y%m%d")
+            startdate = (datetime.strptime(enddate, "%Y%m%d") - timedelta(20 * 365)).strftime("%Y%m%d")
+            if source.lower() == 'ecos':
+                series = self.fetchEcos(MetaData.API_ECOS, ticker, startdate, *args)
+            elif source.lower() == 'oecd':
+                series = self.fetchOecd(ticker, startdate, enddate, country)
+            elif source.lower() == 'fred':
+                series = self.fetchFred(ticker, startdate, enddate)
+            else:
+                raise KeyError(f'Invalid @source: "{source}", possible source is ["fred", "ecos", "oecd"]')
+            super().__init__(
+                index=series.index,
+                data=series.values,
+                name=name if name else args[-1] if source.lower() == 'ecos' else ticker)
 
         self.ticker = ticker
         self.startdate = startdate

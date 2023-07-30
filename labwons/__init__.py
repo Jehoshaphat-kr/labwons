@@ -6,9 +6,11 @@ Contact : jhlee_0319@naver.com
 License : MIT
 """
 from labwons.common.metadata.metadata import MetaData
+from labwons.common.config import PATH
 from labwons.indicator.indicator import Indicator
 from labwons.equity.equity import Equity
-from labwons.common.config import PATH
+from labwons.apps.correlation import Correlation
+
 
 """ API Settings """
 class __apikey__(object):

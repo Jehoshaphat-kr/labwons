@@ -14,10 +14,10 @@ class line(Series):
         self._attr_ = kwargs
         return
 
-    def __call__(self) -> go.Scatter:
-        return self.trace()
+    def __call__(self, **kwargs) -> go.Scatter:
+        return self.trace(**kwargs)
 
-    def trace(self) -> go.Scatter:
+    def trace(self, **kwargs) -> go.Scatter:
         _trace = go.Scatter(
             name=f'{self.name}',
             x=self.index,
@@ -31,6 +31,9 @@ class line(Series):
         for key in self._attr_:
             if key in vars(go.Scatter).keys():
                 setattr(_trace, key, self._attr_[key])
+        for key in kwargs:
+            if key in vars(go.Scatter).keys():
+                setattr(_trace, key, kwargs[key])
         return _trace
 
     def figure(self) -> go.Figure:

@@ -49,32 +49,36 @@ class Equity(_refine):
     @property
     def typical(self) -> line:
         if not self.__hasattr__('__typical__'):
-            attr = line(base=(self.ohlcv['close'] + self.ohlcv['high'] + self.ohlcv['low']) / 3, name=f"{self.name}(T)")
+            attr = line(
+                base=(self.ohlcv['close'] + self.ohlcv['high'] + self.ohlcv['low']) / 3,
+                name=f"{self.name}(T)",
+                unit=self.unit
+            )
             self.__setattr__('__typical__', attr)
         return self.__getattribute__('__typical__')
 
     @property
     def open(self) -> line:
         if not self.__hasattr__('__open__'):
-            self.__setattr__('__open__', line(base=self.ohlcv['open'], name=f"{self.name}(O)"))
+            self.__setattr__('__open__', line(base=self.ohlcv['open'], name=f"{self.name}(O)", unit=self.unit))
         return self.__getattribute__('__open__')
 
     @property
     def high(self) -> line:
         if not self.__hasattr__('__high__'):
-            self.__setattr__('__high__', line(base=self.ohlcv['high'], name=f"{self.name}(H)"))
+            self.__setattr__('__high__', line(base=self.ohlcv['high'], name=f"{self.name}(H)", unit=self.unit))
         return self.__getattribute__('__high__')
 
     @property
     def low(self) -> line:
         if not self.__hasattr__('__low__'):
-            self.__setattr__('__low__', line(base=self.ohlcv['low'], name=f"{self.name}(L)"))
+            self.__setattr__('__low__', line(base=self.ohlcv['low'], name=f"{self.name}(L)", unit=self.unit))
         return self.__getattribute__('__low__')
 
     @property
     def close(self) -> line:
         if not self.__hasattr__('__close__'):
-            self.__setattr__('__close__', line(base=self.ohlcv['close'], name=f"{self.name}(C)"))
+            self.__setattr__('__close__', line(base=self.ohlcv['close'], name=f"{self.name}(C)", unit=self.unit))
         return self.__getattribute__('__close__')
 
     @property

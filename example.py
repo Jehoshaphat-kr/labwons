@@ -78,7 +78,12 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 #     d1=Equity('316140'),
 #     d2=Indicator('121Y002', '저축성수신(금융채 제외) 1)')
 # )
-수신 = lw.Indicator('121Y002', '저축성수신(금융채 제외) 1)')
-여신 = lw.Indicator('121Y006', '대출평균 1)')
-마진 = 여신 - 수신
-print(마진)
+# equity = lw.Equity('105560')
+# rx = lw.Indicator('121Y002', '저축성수신(금융채 제외) 1)', name='수신금리', unit='%')
+# tx = lw.Indicator('121Y006', '대출평균 1)', name='여신금리', unit='%')
+# mg = lw.Indicator(series=(tx - rx), name='예대금리차', unit='%')
+# chart = lw.MultiChart(equity, rx, tx, mg)
+kbfinance = lw.Equity('105560')
+samsung = lw.Equity('005930')
+chart = lw.MultiChart(kbfinance, samsung)
+chart.show()

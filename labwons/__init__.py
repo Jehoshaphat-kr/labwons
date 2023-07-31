@@ -7,9 +7,10 @@ License : MIT
 """
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.config import PATH
-from labwons.indicator.indicator import Indicator
-from labwons.equity.equity import Equity
+from labwons.indicator import Indicator
+from labwons.equity import Equity
 from labwons.apps.correlation import Correlation
+from labwons.apps.multichart import MultiChart
 
 
 """ API Settings """

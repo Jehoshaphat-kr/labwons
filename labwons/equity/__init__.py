@@ -1,0 +1,1 @@
+from labwons.equity.equity import Equity

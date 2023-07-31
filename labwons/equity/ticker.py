@@ -13,43 +13,43 @@ class _ticker(object):
         'NYSE', 'NASDAQ', 'OTC', 'PCX', 'AMEX', 'CBOE', 'NCM', 'NMS'
         'FRED', 'ECOS', 'OECD'
     ]
-    _valid_prop = {
-        'name': None,
-        'unit': None,
-        'sector': None,
-        'market': None,
-        "businessSummary": None,
-        "previousClose": None,
-        "foreignRate": None,
-        "dividendYield": None,
-        "benchmarkTicker": None,
-        "benchmarkName": None,
-        "beta": None,
-        "trailingPE": None,
-        "trailingEps": None,
-        "forwardPE": None,
-        "forwardEps": None,
-        "volume": None,
-        "marketCap": None,
-        "fiftyTwoWeekLow": None,
-        "fiftyTwoWeekHigh": None,
-        "floatShares": None,
-        "shares": None,
-        "priceToBook": None,
-        "bookValue": None,
-        "pegRatio": None,
-        "exchange": None,
-        "quoteType": None,
-        "shortName": None,
-        "longName": None,
-        "korName": None,
-        "targetPrice": None,
-        "returnOnEquity": None,
-    }
 
     def __init__(self, ticker:str, **kwargs):
         if not ticker:
             return
+        self._valid_prop = {
+            'name': None,
+            'unit': None,
+            'sector': None,
+            'market': None,
+            "businessSummary": None,
+            "previousClose": None,
+            "foreignRate": None,
+            "dividendYield": None,
+            "benchmarkTicker": None,
+            "benchmarkName": None,
+            "beta": None,
+            "trailingPE": None,
+            "trailingEps": None,
+            "forwardPE": None,
+            "forwardEps": None,
+            "volume": None,
+            "marketCap": None,
+            "fiftyTwoWeekLow": None,
+            "fiftyTwoWeekHigh": None,
+            "floatShares": None,
+            "shares": None,
+            "priceToBook": None,
+            "bookValue": None,
+            "pegRatio": None,
+            "exchange": None,
+            "quoteType": None,
+            "shortName": None,
+            "longName": None,
+            "korName": None,
+            "targetPrice": None,
+            "returnOnEquity": None,
+        }
 
         if not ticker in MetaData.index:
             if 'exchange' not in kwargs:

@@ -11,7 +11,7 @@ class _fetch(pd.Series):
 
     def __init__(
         self,
-        ticker: str,
+        ticker: str='',
         *args,
         name: str='',
         source: str='',
@@ -25,7 +25,7 @@ class _fetch(pd.Series):
         if not series.empty:
             super().__init__(
                 index=series.index,
-                data=series.data,
+                data=series.values,
                 name=name if name else series.name
             )
             startdate = self.index[0]
@@ -62,7 +62,7 @@ class _fetch(pd.Series):
         self.source = source
         self.dformat = dformat
         self.unit = unit
-        if ticker in MetaData.index:
+        if not unit and ticker in MetaData.index:
             self.unit = MetaData.loc[ticker, 'unit']
             if pd.isna(self.unit):
                 self.unit = ''

@@ -1,5 +1,5 @@
 from labwons.common.config import PATH
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
@@ -106,7 +106,7 @@ class moneyflow(DataFrame):
     관리를 포함하여 투자 결정을 내리는 것이 중요합니다.
     """
 
-    def __init__(self, base:_refine):
+    def __init__(self, base:_calc):
         COLUMNS = dict(
             volume_obv = 'obv',
             volume_cmf = 'cmf',

@@ -1,5 +1,5 @@
 from labwons.common.config import PATH, COLORS
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from datetime import timedelta
 from plotly.offline import plot
 import plotly.graph_objects as go
@@ -13,7 +13,7 @@ def _days_far(series:pd.Series or pd.DataFrame, days:list) -> list:
 
 class drawdown(pd.DataFrame):
 
-    def __init__(self, base:_refine):
+    def __init__(self, base:_calc):
         """
         Draw down in given period (3M / 6M / 1Y / 2Y / 3Y / 5Y)
         :return:

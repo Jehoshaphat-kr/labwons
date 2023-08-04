@@ -6,24 +6,24 @@ import pandas as pd
 import numpy as np
 
 
-class _refine(_fetch):
+class _calc(_fetch):
 
     @staticmethod
-    def _deltaDate(timeseries: pd.Series or pd.DataFrame, delta: list) -> list:
-        return [(timeseries.index >= (timeseries.index[-1] - timedelta(day)), tag, day) for tag, day in delta]
+    def _deltaDate(series: pd.Series or pd.DataFrame, delta: list) -> list:
+        return [(series.index >= (series.index[-1] - timedelta(day)), tag, day) for tag, day in delta]
 
     @staticmethod
-    def _lineFit(timeseries: pd.Series, **kwargs) -> pd.Series:
-        timeseries = timeseries.copy()
-        timeseries.index.name = 'time'
-        timeseries.name = 'data'
-        timeseries = timeseries.reset_index(level=0)
+    def _lineFit(series: pd.Series, **kwargs) -> pd.Series:
+        series = series.copy()
+        series.index.name = 'time'
+        series.name = 'data'
+        series = series.reset_index(level=0)
 
-        xrange = (timeseries['time'].diff()).dt.days.fillna(1).astype(int).cumsum()
-        slope, intercept, _, __, ___ = linregress(x=xrange, y=timeseries['data'])
+        xrange = (series['time'].diff()).dt.days.fillna(1).astype(int).cumsum()
+        slope, intercept, _, __, ___ = linregress(x=xrange, y=series['data'])
         fitted = slope * xrange + intercept
         fitted.name = kwargs['name'] if 'name' in kwargs else 'fitted'
-        return pd.concat(objs=[timeseries, fitted], axis=1)[['time', fitted.name]].set_index(keys='time')
+        return pd.concat(objs=[series, fitted], axis=1)[['time', fitted.name]].set_index(keys='time')
 
     @staticmethod
     def _boundFit(ohlcv: pd.DataFrame, price:str, minInterval:int=-1, samplePoint:int=-1):
@@ -79,18 +79,18 @@ class _refine(_fetch):
             )
         return self.__getattribute__(attr)
 
-    def calcTrend(self) -> pd.DataFrame:
+    def _calcTrend(self) -> pd.DataFrame:
         attr = f'__trend_{self.enddate}_{self.period}_{self.freq}'
         if not hasattr(self, attr):
             ohlcv = self.getOhlcv().copy()
             typical = (ohlcv.close + ohlcv.high + ohlcv.low) / 3
 
-            delta = self._deltaDate(typical, [('1Y', 365), ('6M', 183), ('3M', 92)])
+            delta = self._deltaDate(typical, [('3Y', 365 * 3),('1Y', 365), ('6M', 183)])
             objs = [
-               self._lineFit(typical, name='TL(A)'),
-               self._lineFit(typical[int(typical.size / 2):], name='TL(H)'),
-               self._lineFit(typical[int(typical.size * 3 / 4):], name='TL(Q)')
-            ] + [self._lineFit(typical[c], name=f'TL({tag})') for c, tag, _ in delta]
+               self._lineFit(typical, name='A'),
+               self._lineFit(typical[int(typical.size / 2):], name='H'),
+               self._lineFit(typical[int(typical.size * 3 / 4):], name='Q')
+            ] + [self._lineFit(typical[c], name=tag) for c, tag, _ in delta]
             self.__setattr__(attr, round(pd.concat(objs=objs, axis=1), 2))
         return self.__getattribute__(attr)
 
@@ -213,6 +213,6 @@ class _refine(_fetch):
 
 
 if __name__ == "__main__":
-    myStock = _refine('005930', period=1)
+    myStock = _calc('005930', period=1)
     # print(myStock.calcBound())
     print(myStock.calcStatement())

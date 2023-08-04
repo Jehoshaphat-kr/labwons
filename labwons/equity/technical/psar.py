@@ -1,4 +1,4 @@
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
@@ -9,7 +9,7 @@ import numpy as np
 class psar(DataFrame):
     __upsides = list()
     __downsides = list()
-    def __init__(self, base:_refine):
+    def __init__(self, base:_calc):
         COLUMNS = dict(
             trend_psar_up='up',
             trend_psar_down='down',

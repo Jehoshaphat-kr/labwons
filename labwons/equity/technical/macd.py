@@ -1,5 +1,5 @@
 from typing import Union
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
@@ -19,7 +19,7 @@ warnings.filterwarnings(
 
 class macd(DataFrame):
 
-    def __init__(self, base:_refine):
+    def __init__(self, base:_calc):
         COLUMNS = dict(
             trend_macd = 'macd',
             trend_macd_signal = 'signal',

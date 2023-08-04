@@ -1,4 +1,4 @@
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from plotly import graph_objects as go
 from plotly.offline import plot
 from urllib.request import urlopen
@@ -9,7 +9,7 @@ import json
 
 
 class consensus(pd.DataFrame):
-    def __init__(self, base:_refine):
+    def __init__(self, base:_calc):
         """
         Time-Series Consensus
         :return:

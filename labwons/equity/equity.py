@@ -1,6 +1,7 @@
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from labwons.equity.technical import (
     ohlcv,
+    trend,
     line,
     lines,
     benchmark,
@@ -24,7 +25,7 @@ from labwons.equity.fundamental import (
 )
 
 
-class Equity(_refine):
+class Equity(_calc):
     _by_ = 'annual'
     def __hasattr__(self, attr):
         return hasattr(self, attr)
@@ -88,10 +89,11 @@ class Equity(_refine):
         return self.__getattribute__('__sma__')
 
     @property
-    def trend(self) -> lines:
-        if not self.__hasattr__('__trend__'):
-            self.__setattr__('__trend__', lines(self.calcTrend(), base=self, title='TREND'))
-        return self.__getattribute__('__trend__')
+    def trend(self) -> trend:
+        return trend(self)
+        # if not self.__hasattr__('__trend__'):
+        #     self.__setattr__('__trend__', lines(self.calcTrend(), base=self, title='TREND'))
+        # return self.__getattribute__('__trend__')
 
     """
     COMPARISON

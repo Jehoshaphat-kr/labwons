@@ -1,4 +1,4 @@
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
@@ -8,7 +8,7 @@ import json
 
 
 class foreigner(pd.DataFrame):
-    def __init__(self, base:_refine):
+    def __init__(self, base:_calc):
         objs = dict()
         for dt in ['3M', '1Y', '3Y']:
             url = f"http://cdn.fnguide.com/SVO2/json/chart/01_01/chart_A{base.ticker}_{dt}.json"

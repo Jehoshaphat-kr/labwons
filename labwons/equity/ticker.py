@@ -26,7 +26,7 @@ class _ticker(object):
             "previousClose": None,
             "foreignRate": None,
             "dividendYield": None,
-            "benchmarkTicker": None,
+            "benchmark_ticker": None,
             "benchmarkName": None,
             "beta": None,
             "trailingPE": None,
@@ -53,7 +53,7 @@ class _ticker(object):
 
         if not ticker in MetaData.index:
             if 'exchange' not in kwargs:
-                raise KeyError(f"Ticker Not Found Error: @exchange must be specified for ticker, {ticker}")
+                raise KeyError(f"_ticker Not Found Error: @exchange must be specified for ticker, {ticker}")
             if not kwargs['exchange'].lower() in [v.lower for v in self._valid_args]:
                 raise KeyError(f"Invalid @exchange! Valid arguments: {self._valid_args}")
             kwargs.update(dict(name=ticker))
@@ -242,8 +242,8 @@ class _ticker(object):
         return self._valid_prop['dividendYield']
 
     @property
-    def benchmarkTicker(self) -> str:
-        return self._valid_prop['benchmarkTicker']
+    def benchmark_ticker(self) -> str:
+        return self._valid_prop['benchmark_ticker']
 
     @property
     def benchmarkName(self) -> str:
@@ -363,11 +363,11 @@ class _ticker(object):
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
 
-    # tester = Ticker('LTPZ', exchange='NYSE')
-    # tester = Ticker('AAPL')
-    # tester = Ticker('000660')
-    # tester = Ticker('457690')
-    # print(tester.description())
+    # tester = _ticker('LTPZ', exchange='NYSE')
+    tester = _ticker('QQQ')
+    # tester = _ticker('000660')
+    # tester = _ticker('457690')
+    print(tester.description())
     # print(tester.name)
     # print(tester.exchange)
     # print(tester.quote)
@@ -385,9 +385,9 @@ if __name__ == "__main__":
     # print(tester.previousClose)
     # print(tester.targetPrice)
 
-    import random
-    samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)
-    for sample in samples:
-        print(f'\n{sample}', "=" * 75)
-        stock = _ticker(sample)
-        print(stock.description())
+    # import random
+    # samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)
+    # for sample in samples:
+    #     print(f'\n{sample}', "=" * 75)
+    #     stock = _ticker(sample)
+    #     print(stock.description())

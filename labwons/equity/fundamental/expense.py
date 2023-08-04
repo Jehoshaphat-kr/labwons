@@ -1,4 +1,4 @@
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from plotly import graph_objects as go
 from plotly.offline import plot
 from plotly.subplots import make_subplots
@@ -6,7 +6,7 @@ import pandas as pd
 
 
 class expense(pd.DataFrame):
-    def __init__(self, base:_refine):
+    def __init__(self, base:_calc):
         """
         Expenses
         :return:

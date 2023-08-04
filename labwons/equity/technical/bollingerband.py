@@ -1,5 +1,5 @@
 from labwons.common.config import PATH
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
@@ -8,7 +8,7 @@ import numpy as np
 
 
 class bollingerband(DataFrame):
-    def __init__(self, base:_refine):
+    def __init__(self, base:_calc):
         baseData = base.getOhlcv()
         typical = (baseData.high + baseData.low + baseData.close) / 3
         baseData['typical'] = typical

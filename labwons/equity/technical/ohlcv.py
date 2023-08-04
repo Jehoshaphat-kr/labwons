@@ -1,12 +1,11 @@
-from labwons.common.config import PATH
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
 from pandas import DataFrame
 
 class ohlcv(DataFrame):
-    def __init__(self, base:_refine):
+    def __init__(self, base:_calc):
         baseData = base.getOhlcv()
         super().__init__(
             index=baseData.index,

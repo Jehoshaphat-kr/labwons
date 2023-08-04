@@ -1,5 +1,5 @@
 from labwons.common.config import COLORS
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from typing import Union
 from plotly import graph_objects as go
 from plotly.offline import plot
@@ -10,7 +10,7 @@ import json
 
 
 class products(pd.DataFrame):
-    def __init__(self, base:_refine):
+    def __init__(self, base:_calc):
         """
         Business Model Products
         :return:

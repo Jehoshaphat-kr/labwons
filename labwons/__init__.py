@@ -16,13 +16,13 @@ from labwons.apps.multichart import MultiChart
 """ API Settings """
 class __apikey__(object):
     @property
-    def STOCK_SYMBOL(self) -> str:
+    def SSYM(self) -> str:
         if not hasattr(self, '__stock_symbol__'):
             raise KeyError('NOT FOUND: Stock Symbol API key')
         return self.__getattribute__('__stock_symbol__')
 
-    @STOCK_SYMBOL.setter
-    def STOCK_SYMBOL(self, key:str):
+    @SSYM.setter
+    def SSYM(self, key:str):
         self.__setattr__('__stock_symbol__', key)
         MetaData.API_STOCK_SYMBOL = key
         return

@@ -1,5 +1,5 @@
 from labwons.common.tools import int2won
-from labwons.equity.refine import _refine
+from labwons.equity.refine import _calc
 from datetime import datetime, timedelta
 from pykrx.stock import get_market_cap_by_date
 from plotly import graph_objects as go
@@ -8,7 +8,7 @@ import pandas as pd
 
 
 class statement(pd.DataFrame):
-    def __init__(self, base:_refine, by:str='annual'):
+    def __init__(self, base:_calc, by:str= 'annual'):
         """
         Statement
         :return:

@@ -1,4 +1,5 @@
 from labwons.equity.technical.ohlcv import ohlcv
+from labwons.equity.technical.trend import trend
 from labwons.equity.technical.lines import line, lines
 from labwons.equity.technical.benchmark import benchmark
 from labwons.equity.technical.drawdown import drawdown

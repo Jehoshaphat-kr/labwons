@@ -2,7 +2,7 @@ import labwons as lw
 import pandas as pd
 pd.set_option('display.expand_frame_repr', False)
 
-lw.API.STOCK_SYMBOL = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
+lw.API.SSYM = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
 lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # lw.PATH.BASE = r"\\kefico\keti\ENT\Softroom\Temp\J.H.Lee\labwons"
 
@@ -24,14 +24,14 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # print(cliKR())
 # cliKR.show()
 
-# equity = lw.Equity('058470', period=5)
+equity = lw.Equity('QQQ', period=14)
 # print(equity.longName)
 # print(equity.businessSummary)
 # print(equity.ohlcv)
 # print(equity.benchmark)
 # print(equity.drawDown)
 # print(equity.sma)
-# print(equity.trend)
+print(equity.trend)
 # print(equity.bollingerBand)
 # print(equity.rsi)
 # print(equity.moneyFlow)
@@ -64,6 +64,8 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # equity.expense.save()
 # equity.multipleBand.save()
 
+equity.trend.show()
+equity.trend.show('flat')
 # equity.foreigner.show()
 # equity.products.show()
 # equity.consensus.show()
@@ -83,7 +85,7 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # tx = lw.Indicator('121Y006', '대출평균 1)', name='여신금리', unit='%')
 # mg = lw.Indicator(series=(tx - rx), name='예대금리차', unit='%')
 # chart = lw.MultiChart(equity, rx, tx, mg)
-kbfinance = lw.Equity('105560')
-samsung = lw.Equity('005930')
-chart = lw.MultiChart(kbfinance, samsung)
-chart.show()
+# kbfinance = lw.Equity('105560')
+# samsung = lw.Equity('005930')
+# chart = lw.MultiChart(kbfinance, samsung)
+# chart.show()

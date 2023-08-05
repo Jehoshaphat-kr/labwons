@@ -164,7 +164,8 @@ class metadata(pd.DataFrame):
                 pd.DataFrame(data=OECD).set_index(keys='ticker')
             ],
             axis=0
-        )[self._col].drop_duplicates()
+        )[self._col]
+        df = df[~df.index.duplicated(keep='last')]
         df.to_csv(r'./metadata.csv', encoding='utf-8', index=True)
         super().__init__(data=df.values, index=df.index, columns=df.columns)
         return
@@ -190,3 +191,4 @@ if __name__ == "__main__":
     MetaData.API_ECOS = "CEW3KQU603E6GA8VX0O9"
     MetaData.save()
 
+    # print(MetaData.index.value_counts())

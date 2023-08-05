@@ -234,6 +234,11 @@ if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
 
     # print(fetchWiseIndustry('230627', 'WI100'))
-    print(fetchKrxEnglish("95012214-44b0-4664-813f-a7ef5ad3b0b4"))
+    # print(fetchKrxEnglish("95012214-44b0-4664-813f-a7ef5ad3b0b4"))
+    # df = fetchNyse("95012214-44b0-4664-813f-a7ef5ad3b0b4")
+    df = fetchNyseEtfWikipedia()
+    print(df.loc['QQQ'])
 
+    df = fetchNyseEtfNasdaq()
+    print(df.loc['QQQ'])
 

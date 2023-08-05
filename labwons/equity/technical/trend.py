@@ -40,12 +40,15 @@ class trend(pd.DataFrame):
             end = datetime.strptime(end, "%Y%m%d")
         if isinstance(start, str):
             start = datetime.strptime(start, "%Y%m%d")
-        _tf = pd.to_datetime([start, end])
-        return _tf[0], _tf[1]
+        return pd.Timestamp(start), pd.Timestamp(end)
+        # _tf = pd.to_datetime([start, end])
+        # return _tf[0], _tf[1]
 
     def _slice_by_date(self, start:Union[datetime, str], end:Union[datetime, str]=None) -> pd.Series:
         start, end = self._time_format(start, end)
-        series = self._fetch.typical[(self._fetch.typical.index >= start) & (self._fetch.typical.index <= end)]
+        series = self._fetch.typical[
+            (self._fetch.typical.index >= start.date()) & (self._fetch.typical.index <= end.date())
+        ]
         series.index.name = 'date'
         series.name = 'data'
         return series.reset_index(level=0).copy()
@@ -106,6 +109,8 @@ class trend(pd.DataFrame):
 
     def bar(self, col:str, **kwargs) -> go.Bar:
         frm = pd.concat(objs=[self._fetch.typical, self[col]], axis=1)
+        if self[col].min() <= 0:
+            frm = frm - self[col].min() + 10
         ser = 100 * (frm[frm.columns[0]] / frm[frm.columns[1]] - 1).dropna()
         ser.name = col
         bar = go.Bar(

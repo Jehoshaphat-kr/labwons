@@ -1,5 +1,5 @@
 from labwons.equity.ohlcv import _ohlcv
-from labwons.equity.technical.trend import _trend
+from labwons.equity.technical.trend import trend
 #     _trend,
 #     # line,
 #     # lines,
@@ -46,9 +46,9 @@ class Equity(_ohlcv):
     #     return self.__getattribute__('__sma__')
     #
     @property
-    def trend(self) -> _trend:
+    def trend(self) -> trend:
         if not self.__hasattr__('__trend__'):
-            self.__setattr__('__trend__', _trend(self))
+            self.__setattr__('__trend__', trend(self.typical))
         return self.__getattribute__('__trend__')
     #
     # """

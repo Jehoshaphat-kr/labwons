@@ -1,4 +1,4 @@
-from labwons.equity.ohlcv import _ohlcv
+from labwons.common.basis import baseDataFrameChart
 from datetime import datetime, timedelta
 from scipy.stats import linregress
 from typing import Union
@@ -8,23 +8,55 @@ from plotly.offline import plot
 import pandas as pd
 
 
-class _trend(pd.DataFrame):
-    def __init__(self, fetch:_ohlcv):
-        super().__init__()
-
-        self._ohlcv = fetch
-        self._typ = typ = fetch.typical.copy()
-        n, objs = len(typ), list()
-        for i, name in [(0, 'A'), (int(n / 2), 'H'), (int(3 * n / 4), 'Q')]:
-            objs.append(self.add(typ.index[i], name=name))
-        if n >= 3.5 * 262:
-            objs.append(self.add(typ.index[-1] - timedelta(3 * 365), name='3Y'))
+class trend(baseDataFrameChart):
+    def __init__(self, typical:pd.Series, **kwargs):
+        """
+        Trend line
+        :param typical : [Series]
+        :param kwargs  : [dict]
+        """
+        n = len(typical)
+        times = [
+            ('A', typical.index[0]),
+            ('H', typical.index[int(n / 2)]),
+            ('Q', typical.index[int(3 * n / 4)])
+        ]
+        if n >= 3.2 * 262:
+            times.append(('3Y', typical.index[-1] - timedelta(3 * 365)))
         if n >= 1.5 * 262:
-            objs.append(self.add(typ.index[-1] - timedelta(365), name='1Y'))
-        if n >= 262:
-            objs.append(self.add(typ.index[-1] - timedelta(183), name='6M'))
-        frm = pd.concat(objs=objs, axis=1)
-        super().__init__(data=frm.values, index=frm.index, columns=frm.columns)
+            times.append(('1Y', typical.index[-1] - timedelta(365)))
+        if n >= 0.8 * 262:
+            times.append(('6M', typical.index[-1] - timedelta(183)))
+
+        objs = list()
+        for col, startdate in times:
+            series = typical[typical.index >= startdate].copy()
+            series.name = col
+            series.index.name = 'date'
+            series = series.reset_index(level=0)
+
+            xrange = (series['date'].diff()).dt.days.fillna(1).astype(int).cumsum()
+            slope, intercept, _, _, _ = linregress(x=xrange, y=series[col])
+            fitted = slope * xrange + intercept
+            fitted.name = col
+            fitted = pd.concat(objs=[series, fitted], axis=1)[['date', fitted.name]].set_index(keys='date')
+            objs.append(fitted)
+
+        frame = pd.concat(objs=objs, axis=1)
+        super().__init__(frame=frame, **kwargs)
+        #
+        #
+        # n, objs = len(typ), list()
+        # for i, name in [(0, 'A'), (int(n / 2), 'H'), (int(3 * n / 4), 'Q')]:
+        #     objs.append(self.add(typ.index[i], name=name))
+        # if n >= 3.5 * 262:
+        #     objs.append(self.add(typ.index[-1] - timedelta(3 * 365), name='3Y'))
+        # if n >= 1.5 * 262:
+        #     objs.append(self.add(typ.index[-1] - timedelta(365), name='1Y'))
+        # if n >= 262:
+        #     objs.append(self.add(typ.index[-1] - timedelta(183), name='6M'))
+        # frm = pd.concat(objs=objs, axis=1)
+        # super().__init__(data=frm.values, index=frm.index, columns=frm.columns)
         return
 
     def __call__(self, col:str):

@@ -38,14 +38,14 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # print(cliKR())
 # cliKR.show()
 
-# equity = lw.Equity('005930', period=10)
+equity = lw.Equity('005930', period=10)
 # print(equity.longName)
 # print(equity.businessSummary)
 # print(equity.ohlcv)
 # print(equity.benchmark)
 # print(equity.drawDown)
 # print(equity.sma)
-# print(equity.trend)
+print(equity.trend)
 # from datetime import timedelta
 # equity.trend['5Y'] = equity.trend.add(equity.trend.index[-1] - timedelta(5 * 365), name='5Y')
 # print(equity.trend)

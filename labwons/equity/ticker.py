@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup as Soup
 import xml.etree.ElementTree as xml
 import yfinance as yf
 import pandas as pd
+import numpy as np
 import requests, os
 
 
@@ -18,40 +19,41 @@ class _ticker(object):
         if not ticker:
             return
         self._valid_prop = {
-            'name': None,
-            'unit': None,
-            'sector': None,
-            'market': None,
-            "businessSummary": None,
-            "previousClose": None,
-            "foreignRate": None,
-            "dividendYield": None,
-            "benchmark_ticker": None,
-            "benchmarkName": None,
-            "beta": None,
-            "trailingPE": None,
-            "trailingEps": None,
-            "forwardPE": None,
-            "forwardEps": None,
-            "volume": None,
-            "marketCap": None,
-            "fiftyTwoWeekLow": None,
-            "fiftyTwoWeekHigh": None,
-            "floatShares": None,
-            "shares": None,
-            "priceToBook": None,
-            "bookValue": None,
-            "pegRatio": None,
-            "exchange": None,
-            "quoteType": None,
-            "shortName": None,
-            "longName": None,
-            "korName": None,
-            "targetPrice": None,
-            "returnOnEquity": None,
+            'name': np.nan,
+            'unit': np.nan,
+            'sector': np.nan,
+            'market': np.nan,
+            "businessSummary": np.nan,
+            "previousClose": np.nan,
+            "foreignRate": np.nan,
+            "dividendYield": np.nan,
+            # "benchmarkTicker": np.nan,
+            # "benchmarkName": np.nan,
+            "beta": np.nan,
+            "trailingPE": np.nan,
+            "trailingEps": np.nan,
+            "forwardPE": np.nan,
+            "forwardEps": np.nan,
+            "volume": np.nan,
+            "marketCap": np.nan,
+            "fiftyTwoWeekLow": np.nan,
+            "fiftyTwoWeekHigh": np.nan,
+            "floatShares": np.nan,
+            "shares": np.nan,
+            "priceToBook": np.nan,
+            "bookValue": np.nan,
+            "pegRatio": np.nan,
+            "exchange": np.nan,
+            "quoteType": np.nan,
+            "shortName": np.nan,
+            "longName": np.nan,
+            "korName": np.nan,
+            "targetPrice": np.nan,
+            "returnOnEquity": np.nan,
         }
 
         if not ticker in MetaData.index:
+            print("@")
             if 'exchange' not in kwargs:
                 raise KeyError(f"_ticker Not Found Error: @exchange must be specified for ticker, {ticker}")
             if not kwargs['exchange'].lower() in [v.lower for v in self._valid_args]:
@@ -363,10 +365,14 @@ class _ticker(object):
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
 
+    # print(yf.Ticker('AAPL').info)
+
     # tester = _ticker('LTPZ', exchange='NYSE')
-    tester = _ticker('QQQ')
+    # tester = _ticker('QQQ')
+    tester = _ticker('AAPL')
     # tester = _ticker('000660')
     # tester = _ticker('457690')
+    # tester = _ticker('383310')
     print(tester.description())
     # print(tester.name)
     # print(tester.exchange)
@@ -387,6 +393,7 @@ if __name__ == "__main__":
 
     # import random
     # samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)
+    # samples = random.sample(MetaData.USSTOCK.index.tolist(), 10)
     # for sample in samples:
     #     print(f'\n{sample}', "=" * 75)
     #     stock = _ticker(sample)

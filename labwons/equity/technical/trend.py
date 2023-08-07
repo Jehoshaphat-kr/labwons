@@ -1,4 +1,4 @@
-from labwons.equity.refine import _calc
+from labwons.equity.ohlcv import _ohlcv
 from datetime import datetime, timedelta
 from scipy.stats import linregress
 from typing import Union
@@ -6,23 +6,25 @@ from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
 import pandas as pd
-import numpy as np
 
 
-class trend(pd.DataFrame):
-    def __init__(self, fetch:_calc):
+class _trend(pd.DataFrame):
+    def __init__(self, fetch:_ohlcv):
         super().__init__()
 
-        n = len(fetch.typical)
-        self._fetch = fetch
+        self._ohlcv = fetch
+        self._typ = typ = fetch.typical.copy()
+        n, objs = len(typ), list()
         for i, name in [(0, 'A'), (int(n / 2), 'H'), (int(3 * n / 4), 'Q')]:
-            self.add(fetch.typical.index[i], name=name)
+            objs.append(self.add(typ.index[i], name=name))
         if n >= 3.5 * 262:
-            self.add(fetch.typical.index[-1] - timedelta(3 * 365), name='3Y')
+            objs.append(self.add(typ.index[-1] - timedelta(3 * 365), name='3Y'))
         if n >= 1.5 * 262:
-            self.add(fetch.typical.index[-1] - timedelta(365), name='1Y')
+            objs.append(self.add(typ.index[-1] - timedelta(365), name='1Y'))
         if n >= 262:
-            self.add(fetch.typical.index[-1] - timedelta(183), name='6M')
+            objs.append(self.add(typ.index[-1] - timedelta(183), name='6M'))
+        frm = pd.concat(objs=objs, axis=1)
+        super().__init__(data=frm.values, index=frm.index, columns=frm.columns)
         return
 
     def __call__(self, col:str):
@@ -35,19 +37,17 @@ class trend(pd.DataFrame):
         return f"custom{str(n).zfill(2)}"
 
     def _time_format(self, start:Union[datetime, str], end:Union[datetime, str]=None) -> tuple:
-        end = end if end else self._fetch.ohlcv.index[-1]
+        end = end if end else self._ohlcv.ohlcv.index[-1]
         if isinstance(end, str):
             end = datetime.strptime(end, "%Y%m%d")
         if isinstance(start, str):
             start = datetime.strptime(start, "%Y%m%d")
         return pd.Timestamp(start), pd.Timestamp(end)
-        # _tf = pd.to_datetime([start, end])
-        # return _tf[0], _tf[1]
 
     def _slice_by_date(self, start:Union[datetime, str], end:Union[datetime, str]=None) -> pd.Series:
         start, end = self._time_format(start, end)
-        series = self._fetch.typical[
-            (self._fetch.typical.index >= start.date()) & (self._fetch.typical.index <= end.date())
+        series = self._typ[
+            (self._typ.index >= start) & (self._typ.index <= end)
         ]
         series.index.name = 'date'
         series.name = 'data'
@@ -61,25 +61,14 @@ class trend(pd.DataFrame):
             _buttons.append(dict(count=count, label=col, step="day", stepmode="backward"))
         return _buttons
 
-    def add(self, start:Union[datetime, str], end:Union[datetime, str]=None, name:str=''):
+    def add(self, start:Union[datetime, str], end:Union[datetime, str]=None, name:str='') -> pd.Series:
         series = self._slice_by_date(start, end)
         xrange = (series['date'].diff()).dt.days.fillna(1).astype(int).cumsum()
         slope, intercept, _, __, ___ = linregress(x=xrange, y=series['data'])
         fitted = slope * xrange + intercept
         fitted.name = name if name else self._naming()
         fitted = pd.concat(objs=[series, fitted], axis=1)[['date', fitted.name]].set_index(keys='date')
-        frm = pd.concat(objs=[self, fitted], axis=1)
-        super().__init__(data=frm.values, index=frm.index, columns=frm.columns)
-        return
-
-    def flatten(self) -> pd.DataFrame:
-        frm = pd.concat(objs=[self._fetch.typical, self], axis=1)
-        objs = list()
-        for col in self:
-            series = 100 * (frm[frm.columns[0]] / frm[col] - 1)
-            series.name = col
-            objs.append(series)
-        return pd.concat(objs=objs, axis=1)
+        return fitted
 
     def trace(self, col:str, basis:pd.DataFrame=pd.DataFrame(), **kwargs) -> go.Scatter:
         if basis.empty:
@@ -100,7 +89,7 @@ class trend(pd.DataFrame):
             ),
             xhoverformat="%Y/%m/%d",
             yhoverformat=".2f",
-            hovertemplate=col + "<br>%{y} " + self._fetch.unit + " @%{x}<extra></extra>"
+            hovertemplate=col + "<br>%{y} " + self._ohlcv.unit + " @%{x}<extra></extra>"
         )
         for key in kwargs:
             if key in vars(go.Scatter).keys():
@@ -108,7 +97,7 @@ class trend(pd.DataFrame):
         return trace
 
     def bar(self, col:str, **kwargs) -> go.Bar:
-        frm = pd.concat(objs=[self._fetch.typical, self[col]], axis=1)
+        frm = pd.concat(objs=[self._typ, self[col]], axis=1)
         if self[col].min() <= 0:
             frm = frm - self[col].min() + 10
         ser = 100 * (frm[frm.columns[0]] / frm[frm.columns[1]] - 1).dropna()
@@ -134,9 +123,9 @@ class trend(pd.DataFrame):
 
     def figure(self) -> go.Figure:
         return go.Figure(
-            data=[self._fetch.typical()] + [self.trace(col) for col in self],
+            data=[self._ohlcv.typical()] + [self.trace(col) for col in self],
             layout=go.Layout(
-                title=f"{self._fetch.name}({self._fetch.ticker}) Trend",
+                title=f"{self._ohlcv.name}({self._ohlcv.ticker}) Trend",
                 plot_bgcolor="white",
                 legend=dict(
                     orientation="h",
@@ -161,7 +150,7 @@ class trend(pd.DataFrame):
                     autorange=True
                 ),
                 yaxis=dict(
-                    title=f"[{self._fetch.unit}]",
+                    title=f"[{self._ohlcv.unit}]",
                     showgrid=True,
                     gridwidth=0.5,
                     gridcolor="lightgrey",
@@ -187,11 +176,11 @@ class trend(pd.DataFrame):
         )
         fig.add_traces(
             data=[self.bar(col) for col in columns],
-            rows=[1, 1, 2, 2, 3, 3],
-            cols=[1, 2, 1, 2, 1, 2]
+            rows=[1, 1, 2, 2, 3, 3][:len(columns)],
+            cols=[1, 2, 1, 2, 1, 2][:len(columns)]
         )
         fig.update_layout(
-            title=f"{self._fetch.name}({self._fetch.ticker}) %Trend Diff.",
+            title=f"{self._ohlcv.name}({self._ohlcv.ticker}) %Trend Diff.",
             plot_bgcolor="white",
         )
         fig.update_yaxes(
@@ -211,113 +200,6 @@ class trend(pd.DataFrame):
         )
         return fig
 
-    # def figure(self, columns:list=None) -> go.Figure:
-    #
-    #     fig = self._fig_() if not columns else self._fig_flat(columns)
-        # if base == 'price':
-        #     kwargs = dict(
-        #         data=[
-        #             getattr(self._fetch, "typical")(),
-        #             getattr(self._fetch, "ohlcv")("volume"),
-        #         ] + [self.trace(col) for col in self.columns],
-        #         rows=[1, 2] + [1] * len(self.columns),
-        #         cols=[1, 1] + [1] * len(self.columns)
-        #     )
-        # elif base.lower().startswith('flat'):
-        #     data = self.flatten()
-        #     kwargs = dict(
-        #         data=[
-        #             getattr(self._fetch, "ohlcv")("volume"),
-        #         ] + [
-        #             self.trace(
-        #                 data[col],
-        #                 visible=True if not n else 'legendonly',
-        #                 line=None
-        #             ) for n, col in enumerate(data)
-        #         ],
-        #         rows=[2] + [1] * len(self.columns),
-        #         cols=[1] + [1] * len(self.columns)
-        #
-        #     )
-        # else:
-        #     raise KeyError(f'Unknown data-key: {base}')
-        # fig = make_subplots(
-        #     rows=2,
-        #     cols=1,
-        #     shared_xaxes=True,
-        #     row_width=[0.15, 0.85],
-        #     vertical_spacing=0.01
-        # )
-        #
-        # fig.add_traces(**kwargs)
-        #     data=[
-        #         getattr(self._fetch, "typical")(),
-        #         getattr(self._fetch, "ohlcv")("volume"),
-        #     ] + [self.trace(col) for col in self.columns],
-        #     rows=[1, 2] + [1] * len(self.columns),
-        #     cols=[1, 1] + [1] * len(self.columns)
-        # )
-        # fig.update_layout(
-        #     title=f"{self._fetch.name}({self._fetch.ticker}) Trend",
-        #     plot_bgcolor="white",
-        #     legend=dict(
-        #         orientation="h",
-        #         xanchor="right",
-        #         yanchor="bottom",
-        #         x=0.98,
-        #         y=1.02
-        #     ),
-        #     xaxis_rangeslider=dict(visible=False),
-        #     xaxis_rangeselector=dict(
-        #         buttons = self._buttons()
-        #     ),
-        #     xaxis=dict(
-        #         title="Date",
-        #         showgrid=True,
-        #         gridwidth=0.5,
-        #         gridcolor="lightgrey",
-        #         showline=True,
-        #         linewidth=1,
-        #         linecolor="grey",
-        #         mirror=False,
-        #         autorange=True
-        #     ),
-        #     # xaxis2=dict(
-        #     #     title="DATE",
-        #     #     showgrid=True,
-        #     #     gridwidth=0.5,
-        #     #     gridcolor="lightgrey",
-        #     #     showline=True,
-        #     #     linewidth=1,
-        #     #     linecolor="grey",
-        #     #     mirror=False,
-        #     #     autorange=True
-        #     # ),
-        #     yaxis=dict(
-        #         title=f"[{self._fetch.unit}]",
-        #         showgrid=True,
-        #         gridwidth=0.5,
-        #         gridcolor="lightgrey",
-        #         showline=True,
-        #         linewidth=1,
-        #         linecolor="grey",
-        #         mirror=False,
-        #         autorange=True
-        #     ),
-        #     # yaxis2=dict(
-        #     #     title=f"",
-        #     #     showgrid=True,
-        #     #     gridwidth=0.5,
-        #     #     gridcolor="lightgrey",
-        #     #     showline=True,
-        #     #     linewidth=1,
-        #     #     linecolor="grey",
-        #     #     mirror=False,
-        #     #     autorange=True
-        #     # )
-        # )
-        # return fig
-
     def show(self, mode:str='unflat', columns:list=None):
         if mode == 'unflat':
             self.figure().show()
@@ -330,7 +212,7 @@ class trend(pd.DataFrame):
         kwargs = dict(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{self._fetch.path}/TREND.html'
+            filename=f'{self._ohlcv.path}/TREND.html'
         )
         kwargs.update(setter)
         plot(**kwargs)

@@ -1,6 +1,6 @@
 from typing import Union
 from labwons.equity.equity import Equity
-from labwons.indicator.indicator import Indicator
+from labwons.indicator import Indicator
 import pandas as pd
 
 

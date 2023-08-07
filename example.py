@@ -10,8 +10,11 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # print(DGS10)
 # print(DGS10())
 # DGS10.show()
-# DGS10.Monthly.show()
+# print(DGS10.M())
+# DGS10.M.show()
+# print(DGS10.MoM())
 # DGS10.MoM.show()
+# print(DGS10.YoY())
 # DGS10.YoY.show()
 
 # rReceipt = lw.Indicator("121Y002", "저축성수신")
@@ -19,19 +22,33 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # print(rReceipt())
 # rReceipt.save()
 
-# cliKR = lw.Indicator(ticker='LORSGPNO', country='KOR')
+"""
+1) BSCICP03: OECD Standardised BCI, Amplitude adjusted(Long term average = 100), sa
+2) CSCICP03: OECD Standardised CCI, Amplitude adjusted(Long term average = 100), sa
+3) LOLITOAA: Amplitude adjusted(CLI)
+4) LOLITONO: Normalised(CLI)
+5) LOLITOTR_STSA: Trend restored(CLI)
+6) LOLITOTR_GYSA: 12 - month rate of change of the trend restored CLI
+7) LORSGPRT: Ratio to trend(GDP)
+8) LORSGPNO: Normalised(GDP)
+9) LORSGPTD: Trend(GDP)
+"""
+# cliKR = lw.Indicator(ticker='LOLITONO', source='OECD', country='KOR', name='OECD CLI')
 # print(cliKR)
 # print(cliKR())
 # cliKR.show()
 
-equity = lw.Equity('QQQ', period=14)
+# equity = lw.Equity('005930', period=10)
 # print(equity.longName)
 # print(equity.businessSummary)
 # print(equity.ohlcv)
 # print(equity.benchmark)
 # print(equity.drawDown)
 # print(equity.sma)
-print(equity.trend)
+# print(equity.trend)
+# from datetime import timedelta
+# equity.trend['5Y'] = equity.trend.add(equity.trend.index[-1] - timedelta(5 * 365), name='5Y')
+# print(equity.trend)
 # print(equity.bollingerBand)
 # print(equity.rsi)
 # print(equity.moneyFlow)
@@ -64,8 +81,9 @@ print(equity.trend)
 # equity.expense.save()
 # equity.multipleBand.save()
 
-equity.trend.show()
-equity.trend.show('flat')
+# equity.trend.show()
+# equity.trend.show('flat')
+# equity.trend.show('flat', ['A', 'H', 'Q', '5Y', '3Y', '1Y'])
 # equity.foreigner.show()
 # equity.products.show()
 # equity.consensus.show()

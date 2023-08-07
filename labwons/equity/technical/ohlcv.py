@@ -1,30 +1,42 @@
-from labwons.equity.refine import _calc
+# from labwons.equity.refine import _calc
+from typing import Union
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
 from pandas import DataFrame
 
-class ohlcv(DataFrame):
-    def __init__(self, base:_calc):
-        baseData = base.getOhlcv()
+class _ohlcv(DataFrame):
+    _attr_ = dict()
+    def __init__(self, base:DataFrame, **kwargs):
+        # baseData = getattr(base, '_ohlcv').copy()
         super().__init__(
-            index=baseData.index,
-            columns=baseData.columns,
-            data=baseData.values
+            index=base.index,
+            columns=base.columns,
+            data=base.values
         )
-        self._base_ = base
+        self._attr_ = kwargs
+        # self._name = kwargs['name']
+        # self._ticker = kwargsticker
+        # self._dtype = dtype
+        # self._unit = unit
+        # self._path = path
         return
 
-    def __call__(self, key:str='ohlcv'):
+    def __call__(self, key:str='ohlcv', **kwargs) -> Union[go.Scatter, go.Bar]:
         if key.lower() in ['candle', 'ohlcv', 'price']:
-            return self.traceCandle()
-        if key.lower() in ['volume', 'bar']:
-            return self.traceBar()
-        raise KeyError(f"Unknown parameter: {key}")
+            trace = self.traceCandle()
+        elif key.lower() in ['volume', 'bar']:
+            trace = self.traceBar()
+        else:
+            raise KeyError(f"Unknown parameter: {key}")
+        for key in kwargs:
+            if key in vars(go.Scatter).keys():
+                setattr(trace, key, kwargs[key])
+        return trace
 
     def traceCandle(self) -> go.Candlestick:
         return go.Candlestick(
-            name=f'{self._base_.name}',
+            name=self._attr_['name'],
             x=self.index,
             open=self['open'],
             high=self['high'],
@@ -39,7 +51,7 @@ class ohlcv(DataFrame):
                 color='royalblue'
             ),
             xhoverformat='%Y/%m/%d',
-            yhoverformat=self._base_.dtype,
+            yhoverformat=self._attr_['dtype'],
         )
 
     def traceBar(self) -> go.Bar:
@@ -65,7 +77,7 @@ class ohlcv(DataFrame):
         )
         fig.add_traces(data=[self.traceCandle(), self.traceBar()], rows=[1, 2], cols=[1, 1])
         fig.update_layout(
-            title=f"{self._base_.name}({self._base_.ticker}) OHLCV",
+            title=f"{self._attr_['name']}({self._attr_['ticker']}) OHLCV",
             plot_bgcolor="white",
             # legend=dict(tracegroupgap=5),
             xaxis_rangeslider=dict(visible=False),
@@ -103,7 +115,7 @@ class ohlcv(DataFrame):
                 autorange=True
             ),
             yaxis=dict(
-                title=f"[{self._base_.unit}]",
+                title=f"[{self._attr_['unit']}]",
                 showgrid=True,
                 gridwidth=0.5,
                 gridcolor="lightgrey",
@@ -136,7 +148,7 @@ class ohlcv(DataFrame):
         kwargs = dict(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{self._base_.path}/OHLCV.html'
+            filename=f'{self._attr_["path"]}/OHLCV.html'
         )
         kwargs.update(setter)
         plot(**kwargs)

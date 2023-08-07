@@ -1,4 +1,4 @@
-from labwons.equity.fetch import _fetch
+from labwons.equity.ohlcv import _ohlcv
 from datetime import timedelta
 from scipy.stats import linregress
 from ta import add_all_ta_features
@@ -6,24 +6,24 @@ import pandas as pd
 import numpy as np
 
 
-class _calc(_fetch):
+class _calc(_ohlcv):
 
-    @staticmethod
-    def _deltaDate(series: pd.Series or pd.DataFrame, delta: list) -> list:
-        return [(series.index >= (series.index[-1] - timedelta(day)), tag, day) for tag, day in delta]
-
-    @staticmethod
-    def _lineFit(series: pd.Series, **kwargs) -> pd.Series:
-        series = series.copy()
-        series.index.name = 'time'
-        series.name = 'data'
-        series = series.reset_index(level=0)
-
-        xrange = (series['time'].diff()).dt.days.fillna(1).astype(int).cumsum()
-        slope, intercept, _, __, ___ = linregress(x=xrange, y=series['data'])
-        fitted = slope * xrange + intercept
-        fitted.name = kwargs['name'] if 'name' in kwargs else 'fitted'
-        return pd.concat(objs=[series, fitted], axis=1)[['time', fitted.name]].set_index(keys='time')
+    # @staticmethod
+    # def _deltaDate(series: pd.Series or pd.DataFrame, delta: list) -> list:
+    #     return [(series.index >= (series.index[-1] - timedelta(day)), tag, day) for tag, day in delta]
+    #
+    # @staticmethod
+    # def _lineFit(series: pd.Series, **kwargs) -> pd.Series:
+    #     series = series.copy()
+    #     series.index.name = 'time'
+    #     series.name = 'data'
+    #     series = series.reset_index(level=0)
+    #
+    #     xrange = (series['time'].diff()).dt.days.fillna(1).astype(int).cumsum()
+    #     slope, intercept, _, __, ___ = linregress(x=xrange, y=series['data'])
+    #     fitted = slope * xrange + intercept
+    #     fitted.name = kwargs['name'] if 'name' in kwargs else 'fitted'
+    #     return pd.concat(objs=[series, fitted], axis=1)[['time', fitted.name]].set_index(keys='time')
 
     @staticmethod
     def _boundFit(ohlcv: pd.DataFrame, price:str, minInterval:int=-1, samplePoint:int=-1):

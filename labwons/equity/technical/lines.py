@@ -1,9 +1,8 @@
-from labwons.common.config import PATH
 from plotly import graph_objects as go
 from plotly.offline import plot
 from pandas import Series, DataFrame
 
-class line(Series):
+class _line(Series):
     _attr_ = None
     def __init__(self, base:Series, **kwargs):
         super().__init__(

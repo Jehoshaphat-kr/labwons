@@ -132,6 +132,7 @@ class metadata(pd.DataFrame):
 
         fdef = lambda x: x['korName'] if pd.isna(x['shortName']) else x['shortName']
         data['name'] = data[['shortName', 'korName']].apply(fdef, axis=1)
+        data['market'] = 'KOR'
         data['exchange'] = ['KOSPI' if t in ks else 'KOSDAQ' if t in kq else 'Unknown' for t in data.index]
         data['unit'] = 'KRW'
 

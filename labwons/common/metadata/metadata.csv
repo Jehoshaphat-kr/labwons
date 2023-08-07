@@ -169,7 +169,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 003570,SNT DYNAMICS,EQUITY,KOR,KOSPI,KRW,SNT DYNAMICS,"SNT Dynamics Co.,Ltd.",SNT다이내믹스,경기관련소비재,WI26 자동차,091180,KRX Autos
 003580,NEXT SCIENCE,EQUITY,KOR,KOSPI,KRW,NEXT SCIENCE,"NEXT SCIENCE Co., Ltd.",HLB글로벌,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 003610,Pangrim,EQUITY,KOR,KOSPI,KRW,Pangrim,"Pangrim Co., Ltd.",방림,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-003620,KG모빌리티,,,KOSPI,KRW,,,KG모빌리티,경기관련소비재,WI26 자동차,091180,KRX Autos
+003620,KG모빌리티,,KOR,KOSPI,KRW,,,KG모빌리티,경기관련소비재,WI26 자동차,091180,KRX Autos
 003650,MichangOil,EQUITY,KOR,KOSPI,KRW,MichangOil,"Michang Oil Ind .Co.,Ltd.",미창석유,소재,WI26 화학,117460,KRX Energy & Chemicals
 003670,POSCO CHEMICAL,EQUITY,KOR,KOSPI,KRW,POSCO CHEMICAL,"Posco Chemical Co., Ltd.",포스코퓨처엠,소재,WI26 화학,117460,KRX Energy & Chemicals
 003680,HansungEnt,EQUITY,KOR,KOSPI,KRW,HansungEnt,"Hansung Enterprise Co.,Ltd",한성기업,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
@@ -360,7 +360,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 009580,Moorim P&P,EQUITY,KOR,KOSPI,KRW,Moorim P&P,"Moorim P&P Co., Ltd.",무림P&P,소재,WI26 비철금속,069500,KOSPI200
 009620,SAMBO IND,EQUITY,KOR,KOSDAQ,KRW,SAMBO IND,"Sambo Industrial Co., Ltd.",삼보산업,소재,WI26 비철금속,069500,KOSPI200
 009680,MT,EQUITY,KOR,KOSPI,KRW,MT,Motonic Corporation,모토닉,경기관련소비재,WI26 자동차,091180,KRX Autos
-009730,코센,,,KOSDAQ,KRW,,,코센,소재,WI26 비철금속,069500,KOSPI200
+009730,코센,,KOR,KOSDAQ,KRW,,,코센,소재,WI26 비철금속,069500,KOSPI200
 009770,SAMJUNGPULP,EQUITY,KOR,KOSPI,KRW,SAMJUNGPULP,"Samjung Pulp Co., Ltd.",삼정펄프,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 009780,MSC,EQUITY,KOR,KOSDAQ,KRW,MSC,"MSC Co., Ltd.",엠에스씨,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 009810,Playgram,EQUITY,KOR,KOSPI,KRW,Playgram,"Playgram Co., Ltd.",플레이그램,경기관련소비재,WI26 소매(유통),069500,KOSPI200
@@ -380,7 +380,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 010400,WOOJINI&S,EQUITY,KOR,KOSPI,KRW,WOOJINI&S,"Woojin I&S Co., Ltd.",우진아이엔에스,산업재,WI26 건설,117700,KRX Constructions
 010420,HANSOLPNS,EQUITY,KOR,KOSPI,KRW,HANSOLPNS,"Hansol PNS Co.,Ltd.",한솔PNS,소재,WI26 비철금속,069500,KOSPI200
 010470,ORICOM,EQUITY,KOR,KOSDAQ,KRW,ORICOM,Oricom Inc.,오리콤,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
-010580,에스엠벡셀,,,KOSPI,KRW,,,에스엠벡셀,경기관련소비재,WI26 자동차,091180,KRX Autos
+010580,에스엠벡셀,,KOR,KOSPI,KRW,,,에스엠벡셀,경기관련소비재,WI26 자동차,091180,KRX Autos
 010600,WELLBIOTEC,EQUITY,KOR,KOSPI,KRW,WELLBIOTEC,"Wellbiotec Co., Ltd.",웰바이오텍,산업재,WI26 운송,140710,KRX Transportation
 010620,HyundaiMipoDock,EQUITY,KOR,KOSPI,KRW,HyundaiMipoDock,"Hyundai Mipo Dockyard Co., Ltd.",현대미포조선,산업재,WI26 조선,139230,KRX Heavy Industry
 010640,ChinYangPoly,EQUITY,KOR,KOSPI,KRW,ChinYangPoly,"Chinyang Poly Urethane Co.,Ltd",진양폴리,소재,WI26 화학,117460,KRX Energy & Chemicals
@@ -402,7 +402,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 011210,HYUNDAI WIA,EQUITY,KOR,KOSPI,KRW,HYUNDAI WIA,HYUNDAI WIA Corporation,현대위아,경기관련소비재,WI26 자동차,091180,KRX Autos
 011230,SamwhaElec,EQUITY,KOR,KOSPI,KRW,SamwhaElec,"Samwha Electronics Co.,Ltd.",삼화전자,IT,WI26 IT하드웨어,266370,KRX IT HW
 011280,Tailim Pkg,EQUITY,KOR,KOSPI,KRW,Tailim Pkg,"Tailim Packaging Co., Ltd.",태림포장,소재,WI26 비철금속,069500,KOSPI200
-011300,성안,,,KOSPI,KRW,,,성안,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
+011300,성안,,KOR,KOSPI,KRW,,,성안,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 011320,UNICK,EQUITY,KOR,KOSDAQ,KRW,UNICK,Unick Corporation,유니크,경기관련소비재,WI26 자동차,091180,KRX Autos
 011330,UNI CHEM,EQUITY,KOR,KOSPI,KRW,UNI CHEM,"Uni-Chem Co., Ltd.",유니켐,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 011370,Seohan,EQUITY,KOR,KOSDAQ,KRW,Seohan,"SEOHAN Const. & Eng.co.,Ltd",서한,산업재,WI26 건설,117700,KRX Constructions
@@ -410,7 +410,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 011420,GALAXIA SM,EQUITY,KOR,KOSPI,KRW,GALAXIA SM,"Galaxia SM, Inc.",갤럭시아에스엠,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 011500,HANNONG,EQUITY,KOR,KOSPI,KRW,HANNONG,Hannong Chemicals Inc.,한농화성,소재,WI26 화학,117460,KRX Energy & Chemicals
 011560,SEBO MEC,EQUITY,KOR,KOSDAQ,KRW,SEBO MEC,"Sebo Manufacturing, Engineering & Construction Corp.",세보엠이씨,산업재,WI26 건설,117700,KRX Constructions
-011690,와이투솔루션,,,KOSPI,KRW,,,와이투솔루션,IT,WI26 디스플레이,266370,KRX IT HW
+011690,와이투솔루션,,KOR,KOSPI,KRW,,,와이투솔루션,IT,WI26 디스플레이,266370,KRX IT HW
 011700,HanshinMach,EQUITY,KOR,KOSPI,KRW,HanshinMach,"Hanshin Machinery Co., Ltd.",한신기계,산업재,WI26 기계,102960,KRX Mechanical Equipment
 011760,HYUNDAI CORP,EQUITY,KOR,KOSPI,KRW,HYUNDAI CORP,Hyundai Corporation,현대코퍼레이션,산업재,"WI26 상사,자본재",069500,KOSPI200
 011780,KumhoPetrochem,EQUITY,KOR,KOSPI,KRW,KumhoPetrochem,"Kumho Petrochemical Co., Ltd.",금호석유,소재,WI26 화학,117460,KRX Energy & Chemicals
@@ -427,7 +427,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 012340,NUINTEK,EQUITY,KOR,KOSDAQ,KRW,NUINTEK,"Nuintek Co.,Ltd.",뉴인텍,IT,WI26 IT가전,266370,KRX IT HW
 012450,HANWHA AEROSPACE CO LTD,EQUITY,KOR,KOSPI,KRW,HANWHA AEROSPACE CO LTD,"Hanwha Aerospace Co., Ltd.",한화에어로스페이스,산업재,"WI26 상사,자본재",069500,KOSPI200
 012510,DOUZONE BIZON,EQUITY,KOR,KOSPI,KRW,DOUZONE BIZON,"Douzone Bizon Co., Ltd.",더존비즈온,IT,WI26 소프트웨어,157490,FnGuide SW
-012600,청호ICT,,,KOSPI,KRW,,,청호ICT,IT,WI26 IT하드웨어,266370,KRX IT HW
+012600,청호ICT,,KOR,KOSPI,KRW,,,청호ICT,IT,WI26 IT하드웨어,266370,KRX IT HW
 012610,KyunginSynth,EQUITY,KOR,KOSPI,KRW,KyunginSynth,"Kyungin Synthetic Co., Ltd.",경인양행,소재,WI26 화학,117460,KRX Energy & Chemicals
 012620,Wonil,EQUITY,KOR,KOSDAQ,KRW,Wonil,"Wonil Special Steel Co., Ltd.",원일특강,소재,WI26 철강,117680,KRX Steels
 012630,HDC HOLDINGS,EQUITY,KOR,KOSPI,KRW,HDC HOLDINGS,"HDC HOLDINGS CO.,Ltd",HDC,산업재,WI26 건설,117700,KRX Constructions
@@ -451,7 +451,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 013870,GMB Korea,EQUITY,KOR,KOSPI,KRW,GMB Korea,GMB Korea Corp.,지엠비코리아,경기관련소비재,WI26 자동차,091180,KRX Autos
 013890,ZINUS,EQUITY,KOR,KOSPI,KRW,ZINUS,"Zinus, Inc",지누스,산업재,WI26 건설,117700,KRX Constructions
 013990,AGABANG&CO,EQUITY,KOR,KOSDAQ,KRW,AGABANG&CO,Agabang&Company,아가방컴퍼니,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-014100,메디앙스,,,KOSDAQ,KRW,,,메디앙스,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
+014100,메디앙스,,KOR,KOSDAQ,KRW,,,메디앙스,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 014130,HanExpress,EQUITY,KOR,KOSPI,KRW,HanExpress,"Hanexpress.Co., Ltd",한익스프레스,산업재,WI26 운송,140710,KRX Transportation
 014160,DaeyoungPkg,EQUITY,KOR,KOSPI,KRW,DaeyoungPkg,"DAE YOUNG Packaging.Co., Ltd.",대영포장,소재,WI26 비철금속,069500,KOSPI200
 014190,WONIK CUBE Corp.,EQUITY,KOR,KOSDAQ,KRW,WONIK CUBE Corp.,Wonik Cube Corp.,원익큐브,소재,WI26 화학,117460,KRX Energy & Chemicals
@@ -491,7 +491,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 016590,ShindaeyangPapr,EQUITY,KOR,KOSPI,KRW,ShindaeyangPapr,"Shindaeyang Paper Co., Ltd.",신대양제지,소재,WI26 비철금속,069500,KOSPI200
 016600,QCP,EQUITY,KOR,KOSDAQ,KRW,QCP,"Q Capital Partners Co., Ltd.",큐캐피탈,금융,WI26 은행,091170,KRX Bank
 016610,DBFI,EQUITY,KOR,KOSPI,KRW,DBFI,"DB Financial Investment Co., Ltd.",DB금융투자,금융,WI26 증권,157500,FnGuide Securities Company
-016670,디모아,,,KOSDAQ,KRW,,,디모아,IT,WI26 소프트웨어,157490,FnGuide SW
+016670,디모아,,KOR,KOSDAQ,KRW,,,디모아,IT,WI26 소프트웨어,157490,FnGuide SW
 016710,DAESUNG HOLDINGS,EQUITY,KOR,KOSPI,KRW,DAESUNG HOLDINGS,"Daesung Holdings Co., Ltd.",대성홀딩스,유틸리티,WI26 유틸리티,069500,KOSPI200
 016740,DUAL,EQUITY,KOR,KOSPI,KRW,DUAL,"DUAL Co., Ltd.",두올,경기관련소비재,WI26 자동차,091180,KRX Autos
 016790,HYUNDAI FEED,EQUITY,KOR,KOSDAQ,KRW,HYUNDAI FEED,HYUNDAI FEED Inc.,카나리아바이오,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
@@ -555,7 +555,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 021240,COWAY,EQUITY,KOR,KOSPI,KRW,COWAY,"COWAY Co., Ltd.",코웨이,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 021320,KCC,EQUITY,KOR,KOSDAQ,KRW,KCC,"KCC Engineering & Construction Co., Ltd.",KCC건설,산업재,WI26 건설,117700,KRX Constructions
 021650,CUBIC KOREA,EQUITY,KOR,KOSDAQ,KRW,CUBIC KOREA,Cubic Korea Inc.,한국큐빅,경기관련소비재,WI26 자동차,091180,KRX Autos
-021820,세원정공,,,KOSPI,KRW,,,세원정공,경기관련소비재,WI26 자동차,091180,KRX Autos
+021820,세원정공,,KOR,KOSPI,KRW,,,세원정공,경기관련소비재,WI26 자동차,091180,KRX Autos
 021880,MASON CAPITAL,EQUITY,KOR,KOSDAQ,KRW,MASON CAPITAL,Mason Capital Corporation,메이슨캐피탈,금융,WI26 은행,091170,KRX Bank
 022100,POSCO ICT,EQUITY,KOR,KOSDAQ,KRW,POSCO ICT,Posco ICT Company Ltd.,포스코DX,IT,WI26 소프트웨어,157490,FnGuide SW
 022220,JEONGSAN AIKANG,EQUITY,KOR,KOSDAQ,KRW,JEONGSAN AIKANG,"Jeongsan Aikang Co.,Ltd.",TKG애강,산업재,WI26 건설,117700,KRX Constructions
@@ -586,7 +586,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 024720,KOLMAR KOREA HOLDINGS,EQUITY,KOR,KOSPI,KRW,KOLMAR KOREA HOLDINGS,"Kolmar Korea Holdings Co., Ltd.",한국콜마홀딩스,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 024740,HanilForging,EQUITY,KOR,KOSDAQ,KRW,HanilForging,"Hanil Forging Industrial Co., Ltd.",한일단조,경기관련소비재,WI26 자동차,091180,KRX Autos
 024800,YOOSUNG T&S,EQUITY,KOR,KOSDAQ,KRW,YOOSUNG T&S,"Yoosung T&S Co., Ltd",유성티엔에스,산업재,WI26 운송,140710,KRX Transportation
-024830,세원물산,,,KOSDAQ,KRW,,,세원물산,경기관련소비재,WI26 자동차,091180,KRX Autos
+024830,세원물산,,KOR,KOSDAQ,KRW,,,세원물산,경기관련소비재,WI26 자동차,091180,KRX Autos
 024840,KBI METAL,EQUITY,KOR,KOSDAQ,KRW,KBI METAL,"Kbi Metal Co., Ltd.",KBI메탈,산업재,WI26 기계,102960,KRX Mechanical Equipment
 024850,PSMC,EQUITY,KOR,KOSDAQ,KRW,PSMC,"PSMC CO., Ltd",HLB이노베이션,IT,WI26 반도체,091160,KRX Semicon
 024880,KPF,EQUITY,KOR,KOSDAQ,KRW,KPF,"Korea Parts & Fasteners Co.,Ltd",케이피에프,산업재,WI26 기계,102960,KRX Mechanical Equipment
@@ -660,7 +660,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 032080,AZTECHWB,EQUITY,KOR,KOSDAQ,KRW,AZTECHWB,"AztechWB Co., Ltd.",아즈텍WB,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 032190,DAOU DATA,EQUITY,KOR,KOSDAQ,KRW,DAOU DATA,Daou Data Corp.,다우데이타,금융,WI26 증권,157500,FnGuide Securities Company
 032280,SamIl,EQUITY,KOR,KOSDAQ,KRW,SamIl,Samil Co.Ltd.,삼일,산업재,WI26 운송,140710,KRX Transportation
-032300,한국파마,,,KOSDAQ,KRW,,,한국파마,건강관리,WI26 건강관리,227540,KRX Healthcare
+032300,한국파마,,KOR,KOSDAQ,KRW,,,한국파마,건강관리,WI26 건강관리,227540,KRX Healthcare
 032350,LOTTE TOUR,EQUITY,KOR,KOSPI,KRW,LOTTE TOUR,"Lotte Tour Development Co., Ltd.",롯데관광개발,경기관련소비재,"WI26 호텔,레저",228800,WISE Travel and Leisure
 032500,KMW,EQUITY,KOR,KOSDAQ,KRW,KMW,Kmw Inc.,케이엠더블유,IT,WI26 IT하드웨어,266370,KRX IT HW
 032540,TJ MEDIA,EQUITY,KOR,KOSDAQ,KRW,TJ MEDIA,"TJ media Co., Ltd.",TJ미디어,IT,WI26 IT가전,266370,KRX IT HW
@@ -670,7 +670,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 032640,LG Uplus,EQUITY,KOR,KOSPI,KRW,LG Uplus,LG Uplus Corp.,LG유플러스,커뮤니케이션서비스,WI26 통신서비스,098560,KRX Media & Telecom
 032680,SOFTCEN,EQUITY,KOR,KOSDAQ,KRW,SOFTCEN,"Softcen Co., Ltd.",소프트센,IT,WI26 소프트웨어,157490,FnGuide SW
 032750,Samjin,EQUITY,KOR,KOSDAQ,KRW,Samjin,"SAMJIN Co., Ltd.",삼진,IT,WI26 IT가전,266370,KRX IT HW
-032790,엠젠솔루션,,,KOSDAQ,KRW,,,엠젠솔루션,IT,WI26 IT하드웨어,266370,KRX IT HW
+032790,엠젠솔루션,,KOR,KOSDAQ,KRW,,,엠젠솔루션,IT,WI26 IT하드웨어,266370,KRX IT HW
 032800,Fantagio,EQUITY,KOR,KOSDAQ,KRW,Fantagio,Fantagio Corp.,판타지오,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 032820,"WooriTG, Inc.",EQUITY,KOR,KOSDAQ,KRW,"WooriTG, Inc.","Woori Technology, Inc.",우리기술,산업재,"WI26 상사,자본재",069500,KOSPI200
 032830,SAMSUNG LIFE,EQUITY,KOR,KOSPI,KRW,SAMSUNG LIFE,"Samsung Life Insurance Co., Ltd.",삼성생명,금융,WI26 보험,140700,KRX Insurance
@@ -697,7 +697,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 033560,BLUECOM,EQUITY,KOR,KOSDAQ,KRW,BLUECOM,"Bluecom Co., Ltd.",블루콤,IT,WI26 IT하드웨어,266370,KRX IT HW
 033640,NEPES,EQUITY,KOR,KOSDAQ,KRW,NEPES,Nepes Corporation,네패스,IT,WI26 반도체,091160,KRX Semicon
 033780,KT&G,EQUITY,KOR,KOSPI,KRW,KT&G,KT&G Corporation,KT&G,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
-033790,스카이문스테크놀로지,,,KOSDAQ,KRW,,,스카이문스테크놀로지,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
+033790,스카이문스테크놀로지,,KOR,KOSDAQ,KRW,,,스카이문스테크놀로지,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
 033830,TBC,EQUITY,KOR,KOSDAQ,KRW,TBC,Taegu Broadcasting Corporation,티비씨,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 033920,Muhak,EQUITY,KOR,KOSPI,KRW,Muhak,"Muhak Co., Ltd.",무학,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 034020,DHICO,EQUITY,KOR,KOSPI,KRW,DHICO,"Doosan Heavy Industries & Construction Co., Ltd.",두산에너빌리티,산업재,WI26 기계,102960,KRX Mechanical Equipment
@@ -717,7 +717,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 035150,Baiksan,EQUITY,KOR,KOSPI,KRW,Baiksan,"BAIKSAN Co,. Ltd",백산,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 035200,PLUMB FAST,EQUITY,KOR,KOSDAQ,KRW,PLUMB FAST,"PlumbFast Co., Ltd.",프럼파스트,산업재,WI26 건설,117700,KRX Constructions
 035250,Kangwonland,EQUITY,KOR,KOSPI,KRW,Kangwonland,"Kangwon Land, Inc.",강원랜드,경기관련소비재,"WI26 호텔,레저",228800,WISE Travel and Leisure
-035290,골드앤에스,,,KOSDAQ,KRW,,,골드앤에스,경기관련소비재,"WI26 미디어,교육",266360,KRX IT SW
+035290,골드앤에스,,KOR,KOSDAQ,KRW,,,골드앤에스,경기관련소비재,"WI26 미디어,교육",266360,KRX IT SW
 035420,NAVER,EQUITY,KOR,KOSPI,KRW,NAVER,NAVER Corporation,NAVER,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
 035460,KisanTelecom,EQUITY,KOR,KOSDAQ,KRW,KisanTelecom,"Kisan Telecom Co., Ltd",기산텔레콤,IT,WI26 IT하드웨어,266370,KRX IT HW
 035510,SHINSEGAE I&C,EQUITY,KOR,KOSPI,KRW,SHINSEGAE I&C,"SHINSEGAE Information & Communication Co., LTD",신세계 I&C,IT,WI26 소프트웨어,157490,FnGuide SW
@@ -847,7 +847,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 043340,Essen Tech,EQUITY,KOR,KOSDAQ,KRW,Essen Tech,"Essen Tech Co., Ltd.",에쎈테크,산업재,WI26 기계,102960,KRX Mechanical Equipment
 043360,DGI,EQUITY,KOR,KOSDAQ,KRW,DGI,Digital Graphics Incorporation,디지아이,IT,WI26 IT하드웨어,266370,KRX IT HW
 043370,PHA,EQUITY,KOR,KOSDAQ,KRW,PHA,"PHA Co., Ltd.",피에이치에이,경기관련소비재,WI26 자동차,091180,KRX Autos
-043590,웰킵스하이텍,,,KOSDAQ,KRW,,,웰킵스하이텍,IT,WI26 IT가전,266370,KRX IT HW
+043590,웰킵스하이텍,,KOR,KOSDAQ,KRW,,,웰킵스하이텍,IT,WI26 IT가전,266370,KRX IT HW
 043610,Genie Music,EQUITY,KOR,KOSDAQ,KRW,Genie Music,Genie Music Corporation,지니뮤직,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 043650,KSDB,EQUITY,KOR,KOSDAQ,KRW,KSDB,"Kook Soon Dang.Co.,Ltd.",국순당,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 043710,SEOULEAGUER,EQUITY,KOR,KOSDAQ,KRW,SEOULEAGUER,"Seouleaguer Co., Ltd.",서울리거,건강관리,WI26 건강관리,227540,KRX Healthcare
@@ -857,7 +857,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 044380,JOOYONTECH,EQUITY,KOR,KOSPI,KRW,JOOYONTECH,"JOOYONTECH CO., Ltd",주연테크,IT,WI26 IT하드웨어,266370,KRX IT HW
 044450,KSS LINE,EQUITY,KOR,KOSPI,KRW,KSS LINE,KSS Line Ltd.,KSS해운,산업재,WI26 운송,140710,KRX Transportation
 044480,Blueberry NFT,EQUITY,KOR,KOSDAQ,KRW,Blueberry NFT,"Blueberry NFT CO.,LTD.",블레이드 Ent,건강관리,WI26 건강관리,227540,KRX Healthcare
-044490,태웅,,,KOSDAQ,KRW,,,태웅,에너지,WI26 에너지,117460,KRX Energy & Chemicals
+044490,태웅,,KOR,KOSDAQ,KRW,,,태웅,에너지,WI26 에너지,117460,KRX Energy & Chemicals
 044780,HK,EQUITY,KOR,KOSDAQ,KRW,HK,"HK Co., Ltd.",에이치케이,산업재,WI26 기계,102960,KRX Mechanical Equipment
 044820,COSMAX bti,EQUITY,KOR,KOSPI,KRW,COSMAX bti,"Cosmax BTI, Inc.",코스맥스비티아이,건강관리,WI26 건강관리,227540,KRX Healthcare
 044960,Eagle Vet. Tech,EQUITY,KOR,KOSDAQ,KRW,Eagle Vet. Tech,"Eagle Veterinary Technology Co.,Ltd",이글벳,건강관리,WI26 건강관리,227540,KRX Healthcare
@@ -878,7 +878,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 046440,KGMBLS,EQUITY,KOR,KOSDAQ,KRW,KGMBLS,"KG Mobilians Co., Ltd",KG모빌리언스,IT,WI26 소프트웨어,157490,FnGuide SW
 046890,SSC,EQUITY,KOR,KOSDAQ,KRW,SSC,"Seoul Semiconductor Co., Ltd.",서울반도체,IT,WI26 디스플레이,266370,KRX IT HW
 046940,Woowon Development,EQUITY,KOR,KOSDAQ,KRW,Woowon Development,"Woowon Development Co., Ltd.",우원개발,산업재,WI26 건설,117700,KRX Constructions
-046970,우리로,,,KOSDAQ,KRW,,,우리로,IT,WI26 IT하드웨어,266370,KRX IT HW
+046970,우리로,,KOR,KOSDAQ,KRW,,,우리로,IT,WI26 IT하드웨어,266370,KRX IT HW
 047040,DWEC,EQUITY,KOR,KOSPI,KRW,DWEC,"Daewoo Engineering & Construction Co., Ltd.",대우건설,산업재,WI26 건설,117700,KRX Constructions
 047050,POSCO INTERNATIONAL,EQUITY,KOR,KOSPI,KRW,POSCO INTERNATIONAL,Posco International Corporation,포스코인터내셔널,산업재,"WI26 상사,자본재",069500,KOSPI200
 047080,HBS,EQUITY,KOR,KOSDAQ,KRW,HBS,HANBIT SOFT Inc.,한빛소프트,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
@@ -889,7 +889,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 047810,KOREA AEROSPACE,EQUITY,KOR,KOSPI,KRW,KOREA AEROSPACE,"Korea Aerospace Industries, Ltd.",한국항공우주,산업재,"WI26 상사,자본재",069500,KOSPI200
 047820,CHOROKBAEM MEDIA,EQUITY,KOR,KOSDAQ,KRW,CHOROKBAEM MEDIA,"Chorokbaem Media Co., Ltd.",초록뱀미디어,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 047920,HLBPHARMA,EQUITY,KOR,KOSDAQ,KRW,HLBPHARMA,"HLB Pharmaceutical Co., Ltd",HLB제약,건강관리,WI26 건강관리,227540,KRX Healthcare
-048260,오스템임플란트,,,KOSDAQ,KRW,,,오스템임플란트,건강관리,WI26 건강관리,227540,KRX Healthcare
+048260,오스템임플란트,,KOR,KOSDAQ,KRW,,,오스템임플란트,건강관리,WI26 건강관리,227540,KRX Healthcare
 048410,HDBIO,EQUITY,KOR,KOSDAQ,KRW,HDBIO,"Hyundai Bioscience Co., Ltd.",현대바이오,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 048430,YURA TECH.,EQUITY,KOR,KOSDAQ,KRW,YURA TECH.,"Yura Tech. Co., Ltd.",유라테크,경기관련소비재,WI26 자동차,091180,KRX Autos
 048470,DAESCO,EQUITY,KOR,KOSDAQ,KRW,DAESCO,"Daedong Steel Co., Ltd.",대동스틸,소재,WI26 철강,117680,KRX Steels
@@ -947,7 +947,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 052670,CHEIL BIO,EQUITY,KOR,KOSDAQ,KRW,CHEIL BIO,"Cheilbio Co., Ltd.",제일바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
 052690,KEPCO E&C,EQUITY,KOR,KOSPI,KRW,KEPCO E&C,"KEPCO Engineering & Construction Company, Inc.",한전기술,유틸리티,WI26 유틸리티,069500,KOSPI200
 052710,Amotech,EQUITY,KOR,KOSDAQ,KRW,Amotech,"Amotech Co., Ltd.",아모텍,IT,WI26 IT하드웨어,266370,KRX IT HW
-052770,아이톡시,,,KOSDAQ,KRW,,,아이톡시,경기관련소비재,WI26 소매(유통),069500,KOSPI200
+052770,아이톡시,,KOR,KOSDAQ,KRW,,,아이톡시,경기관련소비재,WI26 소매(유통),069500,KOSPI200
 052790,ACTOZ SOFT,EQUITY,KOR,KOSDAQ,KRW,ACTOZ SOFT,"Actoz Soft Co.,Ltd.",액토즈소프트,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
 052860,I&C,EQUITY,KOR,KOSDAQ,KRW,I&C,"I&C Technology Co., Ltd.",아이앤씨,IT,WI26 반도체,091160,KRX Semicon
 052900,KMH HITECH,EQUITY,KOR,KOSDAQ,KRW,KMH HITECH,"KMH Hitech Co., Ltd.",KX하이텍,IT,WI26 반도체,091160,KRX Semicon
@@ -977,7 +977,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 054090,SAMJIN LND,EQUITY,KOR,KOSDAQ,KRW,SAMJIN LND,"Samjin LND Co., Ltd.",삼진엘앤디,IT,WI26 IT하드웨어,266370,KRX IT HW
 054180,MEDICOX,EQUITY,KOR,KOSDAQ,KRW,MEDICOX,"MEDICOX Co., Ltd.",메디콕스,산업재,WI26 조선,139230,KRX Heavy Industry
 054210,Elentec,EQUITY,KOR,KOSDAQ,KRW,Elentec,"Elentec Co., Ltd.",이랜텍,IT,WI26 IT하드웨어,266370,KRX IT HW
-054220,비츠로시스,,,KOSDAQ,KRW,,,비츠로시스,IT,WI26 소프트웨어,157490,FnGuide SW
+054220,비츠로시스,,KOR,KOSDAQ,KRW,,,비츠로시스,IT,WI26 소프트웨어,157490,FnGuide SW
 054300,Panstar Enterprise,EQUITY,KOR,KOSDAQ,KRW,Panstar Enterprise,"Panstar Enterprise Co.,Ltd.",팬스타엔터프라이즈,산업재,WI26 운송,140710,KRX Transportation
 054410,KPTU,EQUITY,KOR,KOSDAQ,KRW,KPTU,"Korea Plasma Technology U Co.,Ltd",케이피티유,소재,WI26 비철금속,069500,KOSPI200
 054450,Telechips,EQUITY,KOR,KOSDAQ,KRW,Telechips,Telechips Inc.,텔레칩스,IT,WI26 반도체,091160,KRX Semicon
@@ -997,7 +997,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 056190,SFA,EQUITY,KOR,KOSDAQ,KRW,SFA,SFA Engineering Corporation,에스에프에이,산업재,WI26 기계,102960,KRX Mechanical Equipment
 056360,COWEAVER,EQUITY,KOR,KOSDAQ,KRW,COWEAVER,"Comunication Weaver Co.,Ltd.",코위버,IT,WI26 IT하드웨어,266370,KRX IT HW
 056700,SHINWHA,EQUITY,KOR,KOSDAQ,KRW,SHINWHA,Shinwha Intertek Corp.,신화인터텍,IT,WI26 디스플레이,266370,KRX IT HW
-056730,CNT85,,,KOSDAQ,KRW,,,CNT85,산업재,WI26 건설,117700,KRX Constructions
+056730,CNT85,,KOR,KOSDAQ,KRW,,,CNT85,산업재,WI26 건설,117700,KRX Constructions
 057030,YBM NET,EQUITY,KOR,KOSDAQ,KRW,YBM NET,"YBM Net, Inc.",YBM넷,경기관련소비재,"WI26 미디어,교육",266360,KRX IT SW
 057050,HYUNDAIHOMESHOP,EQUITY,KOR,KOSPI,KRW,HYUNDAIHOMESHOP,Hyundai Home Shopping Network Corporation,현대홈쇼핑,경기관련소비재,WI26 소매(유통),069500,KOSPI200
 057540,Omnisystem,EQUITY,KOR,KOSDAQ,KRW,Omnisystem,"Omnisystem Co.,Ltd.",옴니시스템,IT,WI26 IT하드웨어,266370,KRX IT HW
@@ -1005,7 +1005,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 058110,MEKICS,EQUITY,KOR,KOSDAQ,KRW,MEKICS,"MEKICS CO., Ltd",멕아이씨에스,건강관리,WI26 건강관리,227540,KRX Healthcare
 058400,KNN,EQUITY,KOR,KOSDAQ,KRW,KNN,"Korea New Network Co., Ltd.",KNN,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 058430,POSCO C&C,EQUITY,KOR,KOSPI,KRW,POSCO C&C,"POSCO COATED & COLOR STEEL Co., Ltd.",포스코스틸리온,소재,WI26 비철금속,069500,KOSPI200
-058450,엔터파트너즈,,,KOSDAQ,KRW,,,엔터파트너즈,소재,WI26 비철금속,069500,KOSPI200
+058450,엔터파트너즈,,KOR,KOSDAQ,KRW,,,엔터파트너즈,소재,WI26 비철금속,069500,KOSPI200
 058470,LEENO,EQUITY,KOR,KOSDAQ,KRW,LEENO,LEENO Industrial Inc.,리노공업,IT,WI26 반도체,091160,KRX Semicon
 058610,SPG,EQUITY,KOR,KOSDAQ,KRW,SPG,"SPG Co., Ltd.",에스피지,IT,WI26 IT가전,266370,KRX IT HW
 058630,Mgame,EQUITY,KOR,KOSDAQ,KRW,Mgame,Mgame Corp.,엠게임,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
@@ -1035,7 +1035,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 060570,Dreamus,EQUITY,KOR,KOSDAQ,KRW,Dreamus,Dreamus Company,드림어스컴퍼니,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 060590,CTC BIO,EQUITY,KOR,KOSDAQ,KRW,CTC BIO,CTCBIO Inc.,씨티씨바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
 060720,KH VATEC,EQUITY,KOR,KOSDAQ,KRW,KH VATEC,"KHVATEC Co.,Ltd.",KH바텍,IT,WI26 IT하드웨어,266370,KRX IT HW
-060850,영림원소프트랩,,,KOSDAQ,KRW,,,영림원소프트랩,IT,WI26 소프트웨어,157490,FnGuide SW
+060850,영림원소프트랩,,KOR,KOSDAQ,KRW,,,영림원소프트랩,IT,WI26 소프트웨어,157490,FnGuide SW
 060900,DGP,EQUITY,KOR,KOSDAQ,KRW,DGP,Daehan Green Power Corporation,DGP,에너지,WI26 에너지,117460,KRX Energy & Chemicals
 060980,HALLA HOLDINGS,EQUITY,KOR,KOSPI,KRW,HALLA HOLDINGS,Halla Holdings Corp.,HL홀딩스,경기관련소비재,WI26 자동차,091180,KRX Autos
 061040,RFTECH,EQUITY,KOR,KOSDAQ,KRW,RFTECH,"RFTech Co., Ltd.",알에프텍,IT,WI26 IT하드웨어,266370,KRX IT HW
@@ -1053,7 +1053,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 064290,INTEKPLUS,EQUITY,KOR,KOSDAQ,KRW,INTEKPLUS,"INTEKPLUS Co., Ltd.",인텍플러스,IT,WI26 반도체,091160,KRX Semicon
 064350,HYUNDAI ROTEM,EQUITY,KOR,KOSPI,KRW,HYUNDAI ROTEM,Hyundai Rotem Company,현대로템,산업재,WI26 기계,102960,KRX Mechanical Equipment
 064480,BRIDGETEC,EQUITY,KOR,KOSDAQ,KRW,BRIDGETEC,BRIDGETEC Corp.,브리지텍,IT,WI26 소프트웨어,157490,FnGuide SW
-064520,테크엘,,,KOSDAQ,KRW,,,테크엘,IT,WI26 반도체,091160,KRX Semicon
+064520,테크엘,,KOR,KOSDAQ,KRW,,,테크엘,IT,WI26 반도체,091160,KRX Semicon
 064550,BIONEER,EQUITY,KOR,KOSDAQ,KRW,BIONEER,Bioneer Corporation,바이오니아,건강관리,WI26 건강관리,227540,KRX Healthcare
 064760,TCK,EQUITY,KOR,KOSDAQ,KRW,TCK,"Tokai Carbon Korea Co., Ltd.",티씨케이,IT,WI26 반도체,091160,KRX Semicon
 064800,Gemvaxlink,EQUITY,KOR,KOSDAQ,KRW,Gemvaxlink,"Gemvaxlink Co., Ltd.",젬백스링크,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
@@ -1066,7 +1066,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 065170,NEXT BT,EQUITY,KOR,KOSDAQ,KRW,NEXT BT,"Next Bt Co., Ltd.",비엘팜텍,건강관리,WI26 건강관리,227540,KRX Healthcare
 065350,SSDELTATECH,EQUITY,KOR,KOSDAQ,KRW,SSDELTATECH,"Shinsung Delta Tech Co.,Ltd.",신성델타테크,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 065370,WISE iTech,EQUITY,KOR,KOSDAQ,KRW,WISE iTech,"WISE iTech Co., Ltd.",위세아이텍,IT,WI26 소프트웨어,157490,FnGuide SW
-065420,에스아이리소스,,,KOSDAQ,KRW,,,에스아이리소스,에너지,WI26 에너지,117460,KRX Energy & Chemicals
+065420,에스아이리소스,,KOR,KOSDAQ,KRW,,,에스아이리소스,에너지,WI26 에너지,117460,KRX Energy & Chemicals
 065440,ELUON,EQUITY,KOR,KOSDAQ,KRW,ELUON,ELUON Corporation,이루온,IT,WI26 소프트웨어,157490,FnGuide SW
 065450,VICTEK,EQUITY,KOR,KOSDAQ,KRW,VICTEK,"Victek Co., Ltd.",빅텍,산업재,"WI26 상사,자본재",069500,KOSPI200
 065500,Orient Precision Industries,EQUITY,KOR,KOSDAQ,KRW,Orient Precision Industries,Orient Precision Industries Inc,오리엔트정공,경기관련소비재,WI26 자동차,091180,KRX Autos
@@ -1102,7 +1102,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 067280,Multicampus,EQUITY,KOR,KOSDAQ,KRW,Multicampus,Multicampus Corporation,멀티캠퍼스,경기관련소비재,"WI26 미디어,교육",266360,KRX IT SW
 067290,JW SHINYAK,EQUITY,KOR,KOSDAQ,KRW,JW SHINYAK,JW Shinyak Corporation,JW신약,건강관리,WI26 건강관리,227540,KRX Healthcare
 067310,Hana Micron,EQUITY,KOR,KOSDAQ,KRW,Hana Micron,HANA Micron Inc.,하나마이크론,IT,WI26 반도체,091160,KRX Semicon
-067370,선바이오,,,KOSDAQ,KRW,,,선바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
+067370,선바이오,,KOR,KOSDAQ,KRW,,,선바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
 067390,ASTK,EQUITY,KOR,KOSDAQ,KRW,ASTK,AeroSpace Technology of Korea Inc.,아스트,산업재,"WI26 상사,자본재",069500,KOSPI200
 067570,NVH,EQUITY,KOR,KOSDAQ,KRW,NVH,NVH Korea Inc.,엔브이에이치코리아,경기관련소비재,WI26 자동차,091180,KRX Autos
 067630,HLBLS,EQUITY,KOR,KOSDAQ,KRW,HLBLS,"HLB Life Science Co., Ltd.",HLB생명과학,건강관리,WI26 건강관리,227540,KRX Healthcare
@@ -1151,7 +1151,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 072020,CAVAC,EQUITY,KOR,KOSDAQ,KRW,CAVAC,"Choong Ang Vaccine Laboratory Co., Ltd.",중앙백신,건강관리,WI26 건강관리,227540,KRX Healthcare
 072130,UANGEL,EQUITY,KOR,KOSPI,KRW,UANGEL,UANGEL Corporation,유엔젤,IT,WI26 소프트웨어,157490,FnGuide SW
 072470,W.I.H.C,EQUITY,KOR,KOSDAQ,KRW,W.I.H.C,"Woory Industrial Holdings Co.,Ltd.",우리산업홀딩스,경기관련소비재,WI26 자동차,091180,KRX Autos
-072520,제넨바이오,,,KOSDAQ,KRW,,,제넨바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
+072520,제넨바이오,,KOR,KOSDAQ,KRW,,,제넨바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
 072710,NongshimHoldings,EQUITY,KOR,KOSPI,KRW,NongshimHoldings,"NongShim Holdings Co.,Ltd.",농심홀딩스,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 072770,Yulho,EQUITY,KOR,KOSDAQ,KRW,Yulho,"Yulho Co., Ltd.",율호,IT,WI26 소프트웨어,157490,FnGuide SW
 072870,megastudy,EQUITY,KOR,KOSDAQ,KRW,megastudy,"MegaStudy Co., Ltd.",메가스터디,경기관련소비재,"WI26 미디어,교육",266360,KRX IT SW
@@ -1231,7 +1231,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 083310,LOT Vacuum,EQUITY,KOR,KOSDAQ,KRW,LOT Vacuum,"LOT VACUUM Co., Ltd.",엘오티베큠,IT,WI26 반도체,091160,KRX Semicon
 083420,GREEN CHEMICAL,EQUITY,KOR,KOSPI,KRW,GREEN CHEMICAL,"Green Chemical Co., Ltd.",그린케미칼,소재,WI26 화학,117460,KRX Energy & Chemicals
 083450,GST,EQUITY,KOR,KOSDAQ,KRW,GST,"Global Standard Technology, Limited",GST,IT,WI26 반도체,091160,KRX Semicon
-083470,이엠앤아이,,,KOSDAQ,KRW,,,이엠앤아이,IT,WI26 IT하드웨어,266370,KRX IT HW
+083470,이엠앤아이,,KOR,KOSDAQ,KRW,,,이엠앤아이,IT,WI26 IT하드웨어,266370,KRX IT HW
 083500,FNS TECH,EQUITY,KOR,KOSDAQ,KRW,FNS TECH,"FNS TECH. Co., Ltd",에프엔에스테크,IT,WI26 디스플레이,266370,KRX IT HW
 083550,KM,EQUITY,KOR,KOSDAQ,KRW,KM,KM Corporation,케이엠,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 083640,INCON,EQUITY,KOR,KOSDAQ,KRW,INCON,"Incon Co.,Ltd.",인콘,IT,WI26 IT하드웨어,266370,KRX IT HW
@@ -1242,7 +1242,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 084110,Huons Global,EQUITY,KOR,KOSDAQ,KRW,Huons Global,"Huons Global Co., Ltd.",휴온스글로벌,건강관리,WI26 건강관리,227540,KRX Healthcare
 084180,SOOSUNG INNOVATION,EQUITY,KOR,KOSDAQ,KRW,SOOSUNG INNOVATION,"Soosung Innovation Co., Ltd.",수성샐바시온,산업재,WI26 기계,102960,KRX Mechanical Equipment
 084370,Eugenetech,EQUITY,KOR,KOSDAQ,KRW,Eugenetech,"Eugene Technology Co.,Ltd.",유진테크,IT,WI26 반도체,091160,KRX Semicon
-084440,유비온,,,KOSDAQ,KRW,,,유비온,경기관련소비재,"WI26 미디어,교육",266360,KRX IT SW
+084440,유비온,,KOR,KOSDAQ,KRW,,,유비온,경기관련소비재,"WI26 미디어,교육",266360,KRX IT SW
 084650,LabGen,EQUITY,KOR,KOSDAQ,KRW,LabGen,"LabGenomics Co., Ltd.",랩지노믹스,건강관리,WI26 건강관리,227540,KRX Healthcare
 084670,DONGYANG EXPRESS,EQUITY,KOR,KOSPI,KRW,DONGYANG EXPRESS,Dongyang Express Corp.,동양고속,산업재,WI26 운송,140710,KRX Transportation
 084680,E-WORLD,EQUITY,KOR,KOSPI,KRW,E-WORLD,"E-World Co.,Ltd.",이월드,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
@@ -1314,7 +1314,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 091590,"Nam Hwa Const Co., Ltd.",EQUITY,KOR,KOSDAQ,KRW,"Nam Hwa Const Co., Ltd.","Nam Hwa Construction Co.,Ltd",남화토건,산업재,WI26 건설,117700,KRX Constructions
 091700,PARTRON,EQUITY,KOR,KOSDAQ,KRW,PARTRON,"Partron Co., Ltd.",파트론,IT,WI26 IT하드웨어,266370,KRX IT HW
 091810,TWAYAIR,EQUITY,KOR,KOSPI,KRW,TWAYAIR,"T'Way Air Co., Ltd.",티웨이항공,산업재,WI26 운송,140710,KRX Transportation
-091970,나노캠텍,,,KOSDAQ,KRW,,,나노캠텍,소재,WI26 화학,117460,KRX Energy & Chemicals
+091970,나노캠텍,,KOR,KOSDAQ,KRW,,,나노캠텍,소재,WI26 화학,117460,KRX Energy & Chemicals
 091990,Celltrion Healthcare,EQUITY,KOR,KOSDAQ,KRW,Celltrion Healthcare,"Celltrion Healthcare Co., Ltd.",셀트리온헬스케어,건강관리,WI26 건강관리,227540,KRX Healthcare
 092040,Amicogen,EQUITY,KOR,KOSDAQ,KRW,Amicogen,"Amicogen, Inc.",아미코젠,건강관리,WI26 건강관리,227540,KRX Healthcare
 092070,DNF,EQUITY,KOR,KOSDAQ,KRW,DNF,"DNF Co.,Ltd.",디엔에프,IT,WI26 반도체,091160,KRX Semicon
@@ -1407,18 +1407,18 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 101490,S&S TECH,EQUITY,KOR,KOSDAQ,KRW,S&S TECH,S&S TECH Corporation,에스앤에스텍,IT,WI26 반도체,091160,KRX Semicon
 101530,Haitai Confectionery,EQUITY,KOR,KOSPI,KRW,Haitai Confectionery,"Haitai Confectionery&Foods Co.,ltd.",해태제과식품,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 101670,KSEC,EQUITY,KOR,KOSDAQ,KRW,KSEC,Korea SE Corp.,하이드로리튬,산업재,WI26 건설,117700,KRX Constructions
-101680,한국정밀기계,,,KOSDAQ,KRW,,,한국정밀기계,산업재,WI26 기계,102960,KRX Mechanical Equipment
+101680,한국정밀기계,,KOR,KOSDAQ,KRW,,,한국정밀기계,산업재,WI26 기계,102960,KRX Mechanical Equipment
 101730,Wemade Max,EQUITY,KOR,KOSDAQ,KRW,Wemade Max,"Wemade Max Co., Ltd.",위메이드맥스,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
 101930,Inhwa Precision,EQUITY,KOR,KOSDAQ,KRW,Inhwa Precision,"Inhwa Precision Co., Ltd",인화정공,산업재,WI26 조선,139230,KRX Heavy Industry
 102120,ABOV,EQUITY,KOR,KOSDAQ,KRW,ABOV,"ABOV Semiconductor Co., Ltd.",어보브반도체,IT,WI26 반도체,091160,KRX Semicon
 102260,DONGSUNG CHEMICAL,EQUITY,KOR,KOSPI,KRW,DONGSUNG CHEMICAL,"Dongsung Chemical Co., Ltd.",동성케미컬,소재,WI26 화학,117460,KRX Energy & Chemicals
 102280,SBW,EQUITY,KOR,KOSPI,KRW,SBW,"SBW, Inc.",쌍방울,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-102370,케이옥션,,,KOSDAQ,KRW,,,케이옥션,경기관련소비재,WI26 소매(유통),069500,KOSPI200
+102370,케이옥션,,KOR,KOSDAQ,KRW,,,케이옥션,경기관련소비재,WI26 소매(유통),069500,KOSPI200
 102460,REYON,EQUITY,KOR,KOSPI,KRW,REYON,"REYON Pharmaceutical Co., Ltd.",이연제약,건강관리,WI26 건강관리,227540,KRX Healthcare
 102710,ENF,EQUITY,KOR,KOSDAQ,KRW,ENF,"ENF Technology Co., Ltd.",이엔에프테크놀로지,IT,WI26 반도체,091160,KRX Semicon
 102940,KLS,EQUITY,KOR,KOSDAQ,KRW,KLS,Kolon Life Science Inc.,코오롱생명과학,건강관리,WI26 건강관리,227540,KRX Healthcare
 103140,POONGSAN,EQUITY,KOR,KOSPI,KRW,POONGSAN,Poongsan Corporation,풍산,소재,WI26 비철금속,069500,KOSPI200
-103230,에스앤더블류,,,KOSDAQ,KRW,,,에스앤더블류,산업재,WI26 조선,139230,KRX Heavy Industry
+103230,에스앤더블류,,KOR,KOSDAQ,KRW,,,에스앤더블류,산업재,WI26 조선,139230,KRX Heavy Industry
 103590,ILJIN ELECTRIC,EQUITY,KOR,KOSPI,KRW,ILJIN ELECTRIC,"Iljin Electric Co.,Ltd",일진전기,산업재,WI26 기계,102960,KRX Mechanical Equipment
 103840,WOOYANG,EQUITY,KOR,KOSDAQ,KRW,WOOYANG,Wooyang Co. Ltd,우양,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 104040,Daesung Fine Tec,EQUITY,KOR,KOSDAQ,KRW,Daesung Fine Tec,"Daesung Finetec Co.,Ltd.",대성파인텍,경기관련소비재,WI26 자동차,091180,KRX Autos
@@ -1435,18 +1435,18 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 105630,Hansae,EQUITY,KOR,KOSPI,KRW,Hansae,"Hansae Co., Ltd.",한세실업,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 105740,DK-Lok,EQUITY,KOR,KOSDAQ,KRW,DK-Lok,DK-Lok Corporation,디케이락,산업재,WI26 기계,102960,KRX Mechanical Equipment
 105840,WOOJIN,EQUITY,KOR,KOSPI,KRW,WOOJIN,Woojin Inc.,우진,산업재,WI26 기계,102960,KRX Mechanical Equipment
-106080,하이소닉,,,KOSDAQ,KRW,,,하이소닉,IT,WI26 IT하드웨어,266370,KRX IT HW
+106080,하이소닉,,KOR,KOSDAQ,KRW,,,하이소닉,IT,WI26 IT하드웨어,266370,KRX IT HW
 106190,HTP,EQUITY,KOR,KOSDAQ,KRW,HTP,"High Tech Pharm Co., Ltd.",하이텍팜,건강관리,WI26 건강관리,227540,KRX Healthcare
 106240,FINETECHNIX,EQUITY,KOR,KOSDAQ,KRW,FINETECHNIX,"Finetechnix. Co.,Ltd.",파인테크닉스,IT,WI26 IT하드웨어,266370,KRX IT HW
 107590,MWH,EQUITY,KOR,KOSPI,KRW,MWH,"Miwon Holdings Co., Ltd.",미원홀딩스,소재,WI26 화학,117460,KRX Energy & Chemicals
-107600,새빗켐,,,KOSDAQ,KRW,,,새빗켐,IT,WI26 IT가전,266370,KRX IT HW
+107600,새빗켐,,KOR,KOSDAQ,KRW,,,새빗켐,IT,WI26 IT가전,266370,KRX IT HW
 108230,TOPTEC,EQUITY,KOR,KOSDAQ,KRW,TOPTEC,"TOPTEC Co., Ltd",톱텍,IT,WI26 디스플레이,266370,KRX IT HW
 108320,LX Semicon,EQUITY,KOR,KOSPI,KRW,LX Semicon,"LX Semicon Co., Ltd.",LX세미콘,IT,WI26 디스플레이,266370,KRX IT HW
 108380,DAYANG,EQUITY,KOR,KOSDAQ,KRW,DAYANG,"DAEYANG ELECTRIC.Co.,Ltd.",대양전기공업,산업재,WI26 조선,139230,KRX Heavy Industry
 108490,ROBOTIS,EQUITY,KOR,KOSDAQ,KRW,ROBOTIS,"Robotis Co,.Ltd",로보티즈,산업재,WI26 기계,102960,KRX Mechanical Equipment
 108670,LX HAUSYS,EQUITY,KOR,KOSPI,KRW,LX HAUSYS,"LX Hausys, Ltd.",LX하우시스,산업재,WI26 건설,117700,KRX Constructions
 108860,SELVAS AI,EQUITY,KOR,KOSDAQ,KRW,SELVAS AI,Selvas AI Inc.,셀바스AI,건강관리,WI26 건강관리,227540,KRX Healthcare
-109070,컨버즈,,,KOSPI,KRW,,,컨버즈,IT,WI26 IT하드웨어,266370,KRX IT HW
+109070,컨버즈,,KOR,KOSPI,KRW,,,컨버즈,IT,WI26 IT하드웨어,266370,KRX IT HW
 109080,OPTICIS,EQUITY,KOR,KOSDAQ,KRW,OPTICIS,Opticis Company Limited,옵티시스,IT,WI26 IT하드웨어,266370,KRX IT HW
 109610,SY,EQUITY,KOR,KOSDAQ,KRW,SY,"Sy Co., Ltd.",에스와이,산업재,WI26 건설,117700,KRX Constructions
 109740,DSK,EQUITY,KOR,KOSDAQ,KRW,DSK,"DSK Co., Ltd.",디에스케이,IT,WI26 디스플레이,266370,KRX IT HW
@@ -1460,24 +1460,24 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 111710,Namhwa Industrial,EQUITY,KOR,KOSDAQ,KRW,Namhwa Industrial,"Namhwa Industrial Co., Ltd.",남화산업,경기관련소비재,"WI26 호텔,레저",228800,WISE Travel and Leisure
 111770,Youngone Corp,EQUITY,KOR,KOSPI,KRW,Youngone Corp,Youngone Corporation,영원무역,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 112040,Wemade,EQUITY,KOR,KOSDAQ,KRW,Wemade,"Wemade Co.,Ltd.",위메이드,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
-112290,와이씨켐,,,KOSDAQ,KRW,,,와이씨켐,IT,WI26 반도체,091160,KRX Semicon
+112290,와이씨켐,,KOR,KOSDAQ,KRW,,,와이씨켐,IT,WI26 반도체,091160,KRX Semicon
 112610,CSWIND,EQUITY,KOR,KOSPI,KRW,CSWIND,CS Wind Corporation,씨에스윈드,에너지,WI26 에너지,117460,KRX Energy & Chemicals
 113810,Dgenx,EQUITY,KOR,KOSDAQ,KRW,Dgenx,"Dgenx Co., Ltd.",디젠스,경기관련소비재,WI26 자동차,091180,KRX Autos
 114090,GKL,EQUITY,KOR,KOSPI,KRW,GKL,"Grand Korea Leisure Co., Ltd.",GKL,경기관련소비재,"WI26 호텔,레저",228800,WISE Travel and Leisure
-114190,강원에너지,,,KOSDAQ,KRW,,,강원에너지,산업재,WI26 기계,102960,KRX Mechanical Equipment
+114190,강원에너지,,KOR,KOSDAQ,KRW,,,강원에너지,산업재,WI26 기계,102960,KRX Mechanical Equipment
 114450,KPXLS,EQUITY,KOR,KOSDAQ,KRW,KPXLS,"KPX Lifescience.Co.,Ltd.",그린생명과학,건강관리,WI26 건강관리,227540,KRX Healthcare
 114630,UNO&COMPANY,EQUITY,KOR,KOSDAQ,KRW,UNO&COMPANY,"Uno&Company.,Ltd.",폴라리스우노,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 114810,IONES,EQUITY,KOR,KOSDAQ,KRW,IONES,"Iones Co., Ltd.",한솔아이원스,IT,WI26 반도체,091160,KRX Semicon
 114840,IFAMILYSC,EQUITY,KOR,KOSDAQ,KRW,IFAMILYSC,"iFamilySC Co., Ltd.",아이패밀리에스씨,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 115160,HUMAX,EQUITY,KOR,KOSDAQ,KRW,HUMAX,"Humax Co., Ltd.",휴맥스,IT,WI26 IT가전,266370,KRX IT HW
-115180,큐리언트,,,KOSDAQ,KRW,,,큐리언트,건강관리,WI26 건강관리,227540,KRX Healthcare
+115180,큐리언트,,KOR,KOSDAQ,KRW,,,큐리언트,건강관리,WI26 건강관리,227540,KRX Healthcare
 115310,INFOvine,EQUITY,KOR,KOSDAQ,KRW,INFOvine,"INFOvine co., Ltd.",인포바인,IT,WI26 소프트웨어,157490,FnGuide SW
 115390,L&L,EQUITY,KOR,KOSPI,KRW,L&L,"Lock&Lock Co., Ltd.",락앤락,소재,WI26 비철금속,069500,KOSPI200
 115440,WooriNet,EQUITY,KOR,KOSDAQ,KRW,WooriNet,"WooriNet, Inc.",우리넷,IT,WI26 IT하드웨어,266370,KRX IT HW
 115450,HLB Therapeutics,EQUITY,KOR,KOSDAQ,KRW,HLB Therapeutics,"G-treeBNT Co., Ltd.",HLB테라퓨틱스,건강관리,WI26 건강관리,227540,KRX Healthcare
 115480,CU MEDICAL,EQUITY,KOR,KOSDAQ,KRW,CU MEDICAL,"CU Medical Systems, Inc.",씨유메디칼,건강관리,WI26 건강관리,227540,KRX Healthcare
 115500,KCS,EQUITY,KOR,KOSDAQ,KRW,KCS,Korea Computer & Systems Inc.,케이씨에스,IT,WI26 소프트웨어,157490,FnGuide SW
-115530,씨엔플러스,,,KOSDAQ,KRW,,,씨엔플러스,IT,WI26 IT하드웨어,266370,KRX IT HW
+115530,씨엔플러스,,KOR,KOSDAQ,KRW,,,씨엔플러스,IT,WI26 IT하드웨어,266370,KRX IT HW
 115570,STARFLEX,EQUITY,KOR,KOSDAQ,KRW,STARFLEX,"StarFlex Co., Ltd.",스타플렉스,소재,WI26 화학,117460,KRX Energy & Chemicals
 115610,IMAGIS,EQUITY,KOR,KOSDAQ,KRW,IMAGIS,"IMAGIS Co., Ltd.",이미지스,IT,WI26 IT하드웨어,266370,KRX IT HW
 115960,YONWOO,EQUITY,KOR,KOSDAQ,KRW,YONWOO,"Yonwoo Co., Ltd",연우,소재,WI26 비철금속,069500,KOSPI200
@@ -1525,18 +1525,18 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 126600,KOPLA,EQUITY,KOR,KOSDAQ,KRW,KOPLA,"Kopla Co., Ltd.",BGF에코머티리얼즈,경기관련소비재,WI26 자동차,091180,KRX Autos
 126640,HWASHIN PRECISION,EQUITY,KOR,KOSDAQ,KRW,HWASHIN PRECISION,"Hwashin Precision Engineering Co., Ltd.",화신정공,경기관련소비재,WI26 자동차,091180,KRX Autos
 126700,HyVISION,EQUITY,KOR,KOSDAQ,KRW,HyVISION,HyVision System. Inc,하이비젼시스템,IT,WI26 IT하드웨어,266370,KRX IT HW
-126720,수산인더스트리,,,KOSPI,KRW,,,수산인더스트리,에너지,WI26 에너지,117460,KRX Energy & Chemicals
+126720,수산인더스트리,,KOR,KOSPI,KRW,,,수산인더스트리,에너지,WI26 에너지,117460,KRX Energy & Chemicals
 126880,JNK Heaters,EQUITY,KOR,KOSDAQ,KRW,JNK Heaters,"JNK Heaters Co., Ltd.",제이엔케이히터,에너지,WI26 에너지,117460,KRX Energy & Chemicals
 127120,DNALINK,EQUITY,KOR,KOSDAQ,KRW,DNALINK,"DNA Link, Inc.",디엔에이링크,건강관리,WI26 건강관리,227540,KRX Healthcare
 127710,ASIA BUSINESS DAILY,EQUITY,KOR,KOSDAQ,KRW,ASIA BUSINESS DAILY,"The Asia Business Daily Co., Ltd.",아시아경제,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
-127980,화인써키트,,,KOSDAQ,KRW,,,화인써키트,IT,WI26 IT하드웨어,266370,KRX IT HW
+127980,화인써키트,,KOR,KOSDAQ,KRW,,,화인써키트,IT,WI26 IT하드웨어,266370,KRX IT HW
 128540,ECOCAB,EQUITY,KOR,KOSDAQ,KRW,ECOCAB,"Ecocab Co., Ltd.",에코캡,경기관련소비재,WI26 자동차,091180,KRX Autos
 128660,PJ METAL,EQUITY,KOR,KOSDAQ,KRW,PJ METAL,"PJ Metal Co., Ltd.",피제이메탈,소재,WI26 비철금속,069500,KOSPI200
 128820,DAESUNGIND,EQUITY,KOR,KOSPI,KRW,DAESUNGIND,"Daesung Industrial Co., Ltd.",대성산업,에너지,WI26 에너지,117460,KRX Energy & Chemicals
 128940,HanmiPharm,EQUITY,KOR,KOSPI,KRW,HanmiPharm,"Hanmi Pharm. Co., Ltd.",한미약품,건강관리,WI26 건강관리,227540,KRX Healthcare
 129260,INTERGIS,EQUITY,KOR,KOSPI,KRW,INTERGIS,"Intergis Co., Ltd",인터지스,산업재,WI26 운송,140710,KRX Transportation
 129890,ABKO,EQUITY,KOR,KOSDAQ,KRW,ABKO,"Abko Co., Ltd.",앱코,IT,WI26 IT하드웨어,266370,KRX IT HW
-129920,대성하이텍,,,KOSDAQ,KRW,,,대성하이텍,산업재,WI26 기계,102960,KRX Mechanical Equipment
+129920,대성하이텍,,KOR,KOSDAQ,KRW,,,대성하이텍,산업재,WI26 기계,102960,KRX Mechanical Equipment
 130500,GH Advanced Materials,EQUITY,KOR,KOSDAQ,KRW,GH Advanced Materials,GH Advanced Materials Inc.,GH신소재,경기관련소비재,WI26 자동차,091180,KRX Autos
 130580,NICE D&B,EQUITY,KOR,KOSDAQ,KRW,NICE D&B,"Nice D&B Co., Ltd.",나이스디앤비,산업재,"WI26 상사,자본재",069500,KOSPI200
 130660,KEPID,EQUITY,KOR,KOSPI,KRW,KEPID,"Korea Electric Power Industrial Development Co., Ltd",한전산업,유틸리티,WI26 유틸리티,069500,KOSPI200
@@ -1557,11 +1557,11 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 134380,MCC,EQUITY,KOR,KOSPI,KRW,MCC,"Miwon Chemicals Co., Ltd.",미원화학,소재,WI26 화학,117460,KRX Energy & Chemicals
 134580,DMT,EQUITY,KOR,KOSDAQ,KRW,DMT,"Digital Multimedia Technology Co.,Ltd.",탑코미디어,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
 134790,Sidiz,EQUITY,KOR,KOSPI,KRW,Sidiz,Sidiz.Inc.,시디즈,산업재,WI26 건설,117700,KRX Constructions
-136410,아셈스,,,KOSDAQ,KRW,,,아셈스,소재,WI26 화학,117460,KRX Energy & Chemicals
+136410,아셈스,,KOR,KOSDAQ,KRW,,,아셈스,소재,WI26 화학,117460,KRX Energy & Chemicals
 136480,HARIM,EQUITY,KOR,KOSDAQ,KRW,HARIM,"HARIM Co., Ltd.",하림,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 136490,SUNJIN,EQUITY,KOR,KOSPI,KRW,SUNJIN,"Sunjin Co.,Ltd.",선진,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 136540,Wins,EQUITY,KOR,KOSDAQ,KRW,Wins,"WINS Co., Ltd",윈스,IT,WI26 소프트웨어,157490,FnGuide SW
-137080,나래나노텍,,,KOSDAQ,KRW,,,나래나노텍,IT,WI26 디스플레이,266370,KRX IT HW
+137080,나래나노텍,,KOR,KOSDAQ,KRW,,,나래나노텍,IT,WI26 디스플레이,266370,KRX IT HW
 137310,SD Biosensor,EQUITY,KOR,KOSPI,KRW,SD Biosensor,"SD BioSensor, Inc",에스디바이오센서,건강관리,WI26 건강관리,227540,KRX Healthcare
 137400,P&T,EQUITY,KOR,KOSDAQ,KRW,P&T,People & Technology Inc.,피엔티,IT,WI26 IT가전,266370,KRX IT HW
 137940,NextEye,EQUITY,KOR,KOSDAQ,KRW,NextEye,"NextEye Co., Ltd.",넥스트아이,IT,WI26 디스플레이,266370,KRX IT HW
@@ -1569,7 +1569,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 138040,Meritz Financial,EQUITY,KOR,KOSPI,KRW,Meritz Financial,Meritz Financial Group Inc.,메리츠금융지주,금융,WI26 증권,157500,FnGuide Securities Company
 138070,SINJIN SM,EQUITY,KOR,KOSDAQ,KRW,SINJIN SM,"Shinjin Sm Co.,Ltd.",신진에스엠,산업재,WI26 기계,102960,KRX Mechanical Equipment
 138080,OE Solutions,EQUITY,KOR,KOSDAQ,KRW,OE Solutions,"OE Solutions Co., Ltd.",오이솔루션,IT,WI26 IT하드웨어,266370,KRX IT HW
-138360,협진,,,KOSDAQ,KRW,,,협진,산업재,WI26 기계,102960,KRX Mechanical Equipment
+138360,협진,,KOR,KOSDAQ,KRW,,,협진,산업재,WI26 기계,102960,KRX Mechanical Equipment
 138490,KOLON PLASTICS,EQUITY,KOR,KOSPI,KRW,KOLON PLASTICS,"Kolon Plastics, Inc.",코오롱플라스틱,소재,WI26 화학,117460,KRX Energy & Chemicals
 138580,BusinessOn,EQUITY,KOR,KOSDAQ,KRW,BusinessOn,"BusinessOn Communication Co., Ltd",비즈니스온,IT,WI26 소프트웨어,157490,FnGuide SW
 138610,NIBEC,EQUITY,KOR,KOSDAQ,KRW,NIBEC,"NIBEC Co., Ltd.",나이벡,건강관리,WI26 건강관리,227540,KRX Healthcare
@@ -1599,13 +1599,13 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 145210,Dynamic Design,EQUITY,KOR,KOSPI,KRW,Dynamic Design,"Dynamic Design Co., LTD.",다이나믹디자인,경기관련소비재,WI26 자동차,091180,KRX Autos
 145720,DENTIUM,EQUITY,KOR,KOSPI,KRW,DENTIUM,"Dentium CO., LTD",덴티움,건강관리,WI26 건강관리,227540,KRX Healthcare
 145990,SYC,EQUITY,KOR,KOSPI,KRW,SYC,Samyang Corporation,삼양사,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
-146320,비씨엔씨,,,KOSDAQ,KRW,,,비씨엔씨,IT,WI26 반도체,091160,KRX Semicon
+146320,비씨엔씨,,KOR,KOSDAQ,KRW,,,비씨엔씨,IT,WI26 반도체,091160,KRX Semicon
 147760,Micro Friend,EQUITY,KOR,KOSDAQ,KRW,Micro Friend,Microfriend Inc.,피엠티,IT,WI26 반도체,091160,KRX Semicon
 147830,CheryongInd,EQUITY,KOR,KOSDAQ,KRW,CheryongInd,"Cheryong Industrial Co.,Ltd.",제룡산업,산업재,WI26 기계,102960,KRX Mechanical Equipment
 148150,Se Gyung Hi Tech,EQUITY,KOR,KOSDAQ,KRW,Se Gyung Hi Tech,"Se Gyung Hi Tech Co.,Ltd",세경하이테크,IT,WI26 IT하드웨어,266370,KRX IT HW
 148250,RN2 Technologies,EQUITY,KOR,KOSDAQ,KRW,RN2 Technologies,"RN2 Technologies Co., Ltd.",알엔투테크놀로지,IT,WI26 IT하드웨어,266370,KRX IT HW
-148780,비플라이소프트,,,KOSDAQ,KRW,,,비플라이소프트,IT,WI26 소프트웨어,157490,FnGuide SW
-148930,에이치와이티씨,,,KOSDAQ,KRW,,,에이치와이티씨,IT,WI26 IT가전,266370,KRX IT HW
+148780,비플라이소프트,,KOR,KOSDAQ,KRW,,,비플라이소프트,IT,WI26 소프트웨어,157490,FnGuide SW
+148930,에이치와이티씨,,KOR,KOSDAQ,KRW,,,에이치와이티씨,IT,WI26 IT가전,266370,KRX IT HW
 149950,AVATEC,EQUITY,KOR,KOSDAQ,KRW,AVATEC,"Avatec Co., Ltd.",아바텍,IT,WI26 디스플레이,266370,KRX IT HW
 149980,Hironic,EQUITY,KOR,KOSDAQ,KRW,Hironic,"Hironic Co., Ltd.",하이로닉,건강관리,WI26 건강관리,227540,KRX Healthcare
 150900,FASOO,EQUITY,KOR,KOSDAQ,KRW,FASOO,"FASOO Co.,Ltd.",파수,IT,WI26 소프트웨어,157490,FnGuide SW
@@ -1622,7 +1622,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 158430,ATON,EQUITY,KOR,KOSDAQ,KRW,ATON,ATON Inc.,아톤,IT,WI26 소프트웨어,157490,FnGuide SW
 159010,ASFLOW,EQUITY,KOR,KOSDAQ,KRW,ASFLOW,"ASFLOW Co., LTD.",아스플로,산업재,WI26 기계,102960,KRX Mechanical Equipment
 159580,0TO7,EQUITY,KOR,KOSDAQ,KRW,0TO7,Zero to Seven Inc.,제로투세븐,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-159910,스킨앤스킨,,,KOSDAQ,KRW,,,스킨앤스킨,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
+159910,스킨앤스킨,,KOR,KOSDAQ,KRW,,,스킨앤스킨,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 160550,NEW,EQUITY,KOR,KOSDAQ,KRW,NEW,"Next Entertainment World Co., Ltd.",NEW,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 160980,CYMECHS,EQUITY,KOR,KOSDAQ,KRW,CYMECHS,CYMECHS Inc.,싸이맥스,IT,WI26 반도체,091160,KRX Semicon
 161000,AK CHEMICAL,EQUITY,KOR,KOSPI,KRW,AK CHEMICAL,"Aekyungchemical Co., Ltd.",애경케미칼,소재,WI26 화학,117460,KRX Energy & Chemicals
@@ -1630,14 +1630,14 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 161570,THE MIDONG,EQUITY,KOR,KOSDAQ,KRW,THE MIDONG,"THE MIDONG Co,. Ltd.",THE MIDONG,경기관련소비재,WI26 자동차,091180,KRX Autos
 161580,PHILOPTICS,EQUITY,KOR,KOSDAQ,KRW,PHILOPTICS,"Philoptics Co., Ltd.",필옵틱스,IT,WI26 IT하드웨어,266370,KRX IT HW
 161890,KOLMAR KOREA,EQUITY,KOR,KOSPI,KRW,KOLMAR KOREA,"Kolmar Korea Co., Ltd.",한국콜마,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-162300,신스틸,,,KOSDAQ,KRW,,,신스틸,소재,WI26 철강,117680,KRX Steels
+162300,신스틸,,KOR,KOSDAQ,KRW,,,신스틸,소재,WI26 철강,117680,KRX Steels
 163560,DRB Industrial,EQUITY,KOR,KOSPI,KRW,DRB Industrial,"DRB Industrial Co., Ltd.",동일고무벨트,경기관련소비재,WI26 자동차,091180,KRX Autos
 163730,FINGER,EQUITY,KOR,KOSDAQ,KRW,FINGER,"Finger, Inc.",핑거,IT,WI26 소프트웨어,157490,FnGuide SW
 164060,ILOODA,EQUITY,KOR,KOSDAQ,KRW,ILOODA,"Ilooda Co., Ltd",이루다,건강관리,WI26 건강관리,227540,KRX Healthcare
 166090,Hana Materials,EQUITY,KOR,KOSDAQ,KRW,Hana Materials,Hana Materials Inc.,하나머티리얼즈,IT,WI26 반도체,091160,KRX Semicon
 166480,CORESTEM,EQUITY,KOR,KOSDAQ,KRW,CORESTEM,CORESTEM Inc.,코아스템켐온,건강관리,WI26 건강관리,227540,KRX Healthcare
 168330,NaturalendoTech,EQUITY,KOR,KOSDAQ,KRW,NaturalendoTech,"Naturalendo Tech Co., Ltd.",내츄럴엔도텍,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-168360,펨트론,,,KOSDAQ,KRW,,,펨트론,IT,WI26 IT하드웨어,266370,KRX IT HW
+168360,펨트론,,KOR,KOSDAQ,KRW,,,펨트론,IT,WI26 IT하드웨어,266370,KRX IT HW
 169330,Embrain,EQUITY,KOR,KOSDAQ,KRW,Embrain,"Macromill Embrain Co., Ltd.",엠브레인,IT,WI26 소프트웨어,157490,FnGuide SW
 170030,HDI21,EQUITY,KOR,KOSDAQ,KRW,HDI21,"Hyundai Industrial Co., Ltd.",현대공업,경기관련소비재,WI26 자동차,091180,KRX Autos
 170790,Piolink,EQUITY,KOR,KOSDAQ,KRW,Piolink,"Piolink, Inc.",파이오링크,IT,WI26 IT하드웨어,266370,KRX IT HW
@@ -1646,7 +1646,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 171010,RAM TECH,EQUITY,KOR,KOSDAQ,KRW,RAM TECH,"Ram Technology Co., Ltd",램테크놀러지,IT,WI26 반도체,091160,KRX Semicon
 171090,SUNIC SYSTEM,EQUITY,KOR,KOSDAQ,KRW,SUNIC SYSTEM,"SUNIC SYSTEM Co., Ltd.",선익시스템,IT,WI26 디스플레이,266370,KRX IT HW
 171120,LION CHEMTECH,EQUITY,KOR,KOSDAQ,KRW,LION CHEMTECH,"Lion Chemtech Co., Ltd.",라이온켐텍,산업재,WI26 건설,117700,KRX Constructions
-172670,에이엘티,,,KOSDAQ,KRW,,,에이엘티,IT,WI26 반도체,091160,KRX Semicon
+172670,에이엘티,,KOR,KOSDAQ,KRW,,,에이엘티,IT,WI26 반도체,091160,KRX Semicon
 173130,OPASNET,EQUITY,KOR,KOSDAQ,KRW,OPASNET,"OPASNET co., Ltd.",오파스넷,IT,WI26 소프트웨어,157490,FnGuide SW
 173940,FNC Ent.,EQUITY,KOR,KOSDAQ,KRW,FNC Ent.,"FNC ENTERTAINMENT Co., Ltd.",에프엔씨엔터,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 174900,AbClon,EQUITY,KOR,KOSDAQ,KRW,AbClon,AbClon Inc.,앱클론,건강관리,WI26 건강관리,227540,KRX Healthcare
@@ -1658,9 +1658,9 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 178320,SEOJIN SYSTEM,EQUITY,KOR,KOSDAQ,KRW,SEOJIN SYSTEM,"Seojin System Co.,Ltd",서진시스템,IT,WI26 IT하드웨어,266370,KRX IT HW
 178920,PIAM,EQUITY,KOR,KOSPI,KRW,PIAM,"PI Advanced Materials Co., Ltd.",PI첨단소재,소재,WI26 화학,117460,KRX Energy & Chemicals
 179290,MITECH,EQUITY,KOR,KOSDAQ,KRW,MITECH,"M.I.TECH Co.,Ltd",엠아이텍,건강관리,WI26 건강관리,227540,KRX Healthcare
-179530,애드바이오텍,,,KOSDAQ,KRW,,,애드바이오텍,건강관리,WI26 건강관리,227540,KRX Healthcare
+179530,애드바이오텍,,KOR,KOSDAQ,KRW,,,애드바이오텍,건강관리,WI26 건강관리,227540,KRX Healthcare
 179900,UTI,EQUITY,KOR,KOSDAQ,KRW,UTI,UTI Inc.,유티아이,IT,WI26 IT하드웨어,266370,KRX IT HW
-180400,DXVX,,,KOSDAQ,KRW,,,DXVX,건강관리,WI26 건강관리,227540,KRX Healthcare
+180400,DXVX,,KOR,KOSDAQ,KRW,,,DXVX,건강관리,WI26 건강관리,227540,KRX Healthcare
 180640,HANJINKAL,EQUITY,KOR,KOSPI,KRW,HANJINKAL,Hanjin Kal,한진칼,경기관련소비재,"WI26 호텔,레저",228800,WISE Travel and Leisure
 181710,NHN,EQUITY,KOR,KOSPI,KRW,NHN,NHN Corporation,NHN,IT,WI26 소프트웨어,157490,FnGuide SW
 182360,CUBEENT,EQUITY,KOR,KOSDAQ,KRW,CUBEENT,"Cube Entertainment, Inc.",큐브엔터,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
@@ -1711,10 +1711,10 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 197140,DigiCAP,EQUITY,KOR,KOSDAQ,KRW,DigiCAP,"DigiCAP Co., Ltd.",디지캡,IT,WI26 소프트웨어,157490,FnGuide SW
 198080,NPD,EQUITY,KOR,KOSDAQ,KRW,NPD,"NPD Co., Ltd",엔피디,IT,WI26 IT하드웨어,266370,KRX IT HW
 198440,KOREA CEMENT,EQUITY,KOR,KOSDAQ,KRW,KOREA CEMENT,"KOREA CEMENT co., Ltd",고려시멘트,산업재,WI26 건설,117700,KRX Constructions
-198940,한주라이트메탈,,,KOSDAQ,KRW,,,한주라이트메탈,경기관련소비재,WI26 자동차,091180,KRX Autos
-199730,바이오인프라,,,KOSDAQ,KRW,,,바이오인프라,건강관리,WI26 건강관리,227540,KRX Healthcare
+198940,한주라이트메탈,,KOR,KOSDAQ,KRW,,,한주라이트메탈,경기관련소비재,WI26 자동차,091180,KRX Autos
+199730,바이오인프라,,KOR,KOSDAQ,KRW,,,바이오인프라,건강관리,WI26 건강관리,227540,KRX Healthcare
 199800,ToolGen,EQUITY,KOR,KOSDAQ,KRW,ToolGen,ToolGen Incorporated,툴젠,건강관리,WI26 건강관리,227540,KRX Healthcare
-199820,제일전기공업,,,KOSDAQ,KRW,,,제일전기공업,산업재,WI26 기계,102960,KRX Mechanical Equipment
+199820,제일전기공업,,KOR,KOSDAQ,KRW,,,제일전기공업,산업재,WI26 기계,102960,KRX Mechanical Equipment
 200130,KBH,EQUITY,KOR,KOSDAQ,KRW,KBH,"Kolmar BNH Co., Ltd.",콜마비앤에이치,건강관리,WI26 건강관리,227540,KRX Healthcare
 200230,TELCON RF PHARM,EQUITY,KOR,KOSDAQ,KRW,TELCON RF PHARM,TELCON RF PHARMACEUTICAL. Inc.,텔콘RF제약,IT,WI26 IT하드웨어,266370,KRX IT HW
 200350,RMRI,EQUITY,KOR,KOSDAQ,KRW,RMRI,"RaemongRaein Co., Ltd.",래몽래인,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
@@ -1731,7 +1731,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 204020,GRITEE,EQUITY,KOR,KOSDAQ,KRW,GRITEE,"GRITEE, Inc.",그리티,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 204270,JNTC,EQUITY,KOR,KOSDAQ,KRW,JNTC,"JNTC Co., Ltd.",제이앤티씨,IT,WI26 IT하드웨어,266370,KRX IT HW
 204320,MANDO,EQUITY,KOR,KOSPI,KRW,MANDO,Mando Corporation,HL만도,경기관련소비재,WI26 자동차,091180,KRX Autos
-204610,티쓰리,,,KOSDAQ,KRW,,,티쓰리,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
+204610,티쓰리,,KOR,KOSDAQ,KRW,,,티쓰리,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
 204620,Global Tax Free,EQUITY,KOR,KOSDAQ,KRW,Global Tax Free,"Global Tax Free Co., Ltd.",글로벌텍스프리,금융,WI26 은행,091170,KRX Bank
 204630,STUDIO SANTA CLAUS,EQUITY,KOR,KOSDAQ,KRW,STUDIO SANTA CLAUS,"Studio Santa Claus Entertainment Co., Ltd.",스튜디오산타클로스,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 204840,GLPT,EQUITY,KOR,KOSDAQ,KRW,GLPT,GL Pharm Tech Corp.,지엘팜텍,건강관리,WI26 건강관리,227540,KRX Healthcare
@@ -1752,7 +1752,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 208710,BIOLOG DEVICE,EQUITY,KOR,KOSDAQ,KRW,BIOLOG DEVICE,"Biolog Device Co., Ltd.",바이오로그디바이스,IT,WI26 IT하드웨어,266370,KRX IT HW
 210540,DY POWER,EQUITY,KOR,KOSPI,KRW,DY POWER,DY Power Corporation,디와이파워,산업재,WI26 기계,102960,KRX Mechanical Equipment
 210980,SKD&D,EQUITY,KOR,KOSPI,KRW,SKD&D,SK D&D Co. Ltd.,SK디앤디,금융,WI26 은행,091170,KRX Bank
-211050,인카금융서비스,,,KOSDAQ,KRW,,,인카금융서비스,금융,WI26 보험,140700,KRX Insurance
+211050,인카금융서비스,,KOR,KOSDAQ,KRW,,,인카금융서비스,금융,WI26 보험,140700,KRX Insurance
 211270,APSI,EQUITY,KOR,KOSDAQ,KRW,APSI,Asia Pacific Satellite Inc.,AP위성,IT,WI26 IT하드웨어,266370,KRX IT HW
 212560,NEOOTO,EQUITY,KOR,KOSDAQ,KRW,NEOOTO,"NEOOTO Co., Ltd",네오오토,경기관련소비재,WI26 자동차,091180,KRX Autos
 213420,DUK SAN NEOLUX,EQUITY,KOR,KOSDAQ,KRW,DUK SAN NEOLUX,"DukSan Neolux Co.,Ltd",덕산네오룩스,IT,WI26 디스플레이,266370,KRX IT HW
@@ -1776,7 +1776,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 215360,W.I.C,EQUITY,KOR,KOSDAQ,KRW,W.I.C,"Woory Industrial Co., Ltd.",우리산업,경기관련소비재,WI26 자동차,091180,KRX Autos
 215380,WOOJUNG BIO,EQUITY,KOR,KOSDAQ,KRW,WOOJUNG BIO,"WOOJUNG BIO, Inc.",우정바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
 215480,TOEBOX KOREA,EQUITY,KOR,KOSDAQ,KRW,TOEBOX KOREA,TOEBOX KOREA.Ltd.,토박스코리아,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-215600,신라젠,,,KOSDAQ,KRW,,,신라젠,건강관리,WI26 건강관리,227540,KRX Healthcare
+215600,신라젠,,KOR,KOSDAQ,KRW,,,신라젠,건강관리,WI26 건강관리,227540,KRX Healthcare
 215790,INNO INSTRUMENT,EQUITY,KOR,KOSDAQ,KRW,INNO INSTRUMENT,INNO Instrument Inc.,이노인스트루먼트,IT,WI26 IT하드웨어,266370,KRX IT HW
 216050,Incross,EQUITY,KOR,KOSDAQ,KRW,Incross,"Incross Co., Ltd.",인크로스,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 216080,JETEMA,EQUITY,KOR,KOSDAQ,KRW,JETEMA,"JETEMA, Co., Ltd.",제테마,건강관리,WI26 건강관리,227540,KRX Healthcare
@@ -1805,8 +1805,8 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 222800,SIMMTECH,EQUITY,KOR,KOSDAQ,KRW,SIMMTECH,"SIMMTECH Co., Ltd.",심텍,IT,WI26 IT하드웨어,266370,KRX IT HW
 222810,Midas AI,EQUITY,KOR,KOSDAQ,KRW,Midas AI,"Midas AI Co.,Ltd.",세토피아,소재,WI26 비철금속,069500,KOSPI200
 222980,Mcnulty,EQUITY,KOR,KOSDAQ,KRW,Mcnulty,"Mcnulty Korea Co., Ltd.",한국맥널티,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
-223250,드림씨아이에스,,,KOSDAQ,KRW,,,드림씨아이에스,건강관리,WI26 건강관리,227540,KRX Healthcare
-223310,커머스마이너,,,KOSDAQ,KRW,,,커머스마이너,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
+223250,드림씨아이에스,,KOR,KOSDAQ,KRW,,,드림씨아이에스,건강관리,WI26 건강관리,227540,KRX Healthcare
+223310,커머스마이너,,KOR,KOSDAQ,KRW,,,커머스마이너,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 224060,CODI-M,EQUITY,KOR,KOSDAQ,KRW,CODI-M,"CODI-M Co., LTD.",더코디,IT,WI26 반도체,091160,KRX Semicon
 224110,ATEC T&,EQUITY,KOR,KOSDAQ,KRW,ATEC T&,"Atec T& Co., Ltd",에이텍모빌리티,IT,WI26 IT하드웨어,266370,KRX IT HW
 225190,SAMYANG OPTICS,EQUITY,KOR,KOSDAQ,KRW,SAMYANG OPTICS,"Samyang Optics Co., Ltd.",삼양옵틱스,IT,WI26 IT하드웨어,266370,KRX IT HW
@@ -1835,7 +1835,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 230980,AIIT ONE,EQUITY,KOR,KOSDAQ,KRW,AIIT ONE,"AIIT ONE Co., Ltd.",에이트원,산업재,"WI26 상사,자본재",069500,KOSPI200
 232140,YIKC,EQUITY,KOR,KOSDAQ,KRW,YIKC,YIK Corporation,와이아이케이,IT,WI26 반도체,091160,KRX Semicon
 232680,RAONTEC,EQUITY,KOR,KOSDAQ,KRW,RAONTEC,Raontec Inc.,라온테크,IT,WI26 반도체,091160,KRX Semicon
-232830,시큐센,,,KOSDAQ,KRW,,,시큐센,IT,WI26 소프트웨어,157490,FnGuide SW
+232830,시큐센,,KOR,KOSDAQ,KRW,,,시큐센,IT,WI26 소프트웨어,157490,FnGuide SW
 234080,JW LIFESCIENCE,EQUITY,KOR,KOSPI,KRW,JW LIFESCIENCE,JW Lifescience Corporation,JW생명과학,건강관리,WI26 건강관리,227540,KRX Healthcare
 234100,Sewon,EQUITY,KOR,KOSDAQ,KRW,Sewon,"Sewon Co.,Ltd.",폴라리스세원,경기관련소비재,WI26 자동차,091180,KRX Autos
 234300,STraffic,EQUITY,KOR,KOSDAQ,KRW,STraffic,"sTraffic co,.Ltd.",에스트래픽,IT,WI26 소프트웨어,157490,FnGuide SW
@@ -1884,7 +1884,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 250000,BORATR,EQUITY,KOR,KOSDAQ,KRW,BORATR,"BORATR CO., Ltd.",보라티알,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 250060,Mobiis,EQUITY,KOR,KOSDAQ,KRW,Mobiis,"Mobiis Co., Ltd.",모비스,건강관리,WI26 건강관리,227540,KRX Healthcare
 250930,YeSUN Tech,EQUITY,KOR,KOSDAQ,KRW,YeSUN Tech,"YeSUN Tech Co.,Ltd.",예선테크,IT,WI26 디스플레이,266370,KRX IT HW
-251120,바이오에프디엔씨,,,KOSDAQ,KRW,,,바이오에프디엔씨,건강관리,WI26 건강관리,227540,KRX Healthcare
+251120,바이오에프디엔씨,,KOR,KOSDAQ,KRW,,,바이오에프디엔씨,건강관리,WI26 건강관리,227540,KRX Healthcare
 251270,Netmarble,EQUITY,KOR,KOSPI,KRW,Netmarble,Netmarble Corporation,넷마블,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
 251370,YMT,EQUITY,KOR,KOSDAQ,KRW,YMT,"YMT Co., Ltd.",와이엠티,소재,WI26 화학,117460,KRX Energy & Chemicals
 251630,V-ONE TECH,EQUITY,KOR,KOSDAQ,KRW,V-ONE TECH,"V-One Tech Co., Ltd.",브이원텍,IT,WI26 IT하드웨어,266370,KRX IT HW
@@ -1895,7 +1895,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 253590,Neosem,EQUITY,KOR,KOSDAQ,KRW,Neosem,Neosem Inc.,네오셈,IT,WI26 반도체,091160,KRX Semicon
 253840,Sugentech,EQUITY,KOR,KOSDAQ,KRW,Sugentech,Sugentech Inc.,수젠텍,건강관리,WI26 건강관리,227540,KRX Healthcare
 254120,XAVIS,EQUITY,KOR,KOSDAQ,KRW,XAVIS,"Xavis Co., Ltd.",자비스,IT,WI26 IT하드웨어,266370,KRX IT HW
-254490,미래반도체,,,KOSDAQ,KRW,,,미래반도체,IT,WI26 반도체,091160,KRX Semicon
+254490,미래반도체,,KOR,KOSDAQ,KRW,,,미래반도체,IT,WI26 반도체,091160,KRX Semicon
 255220,SG,EQUITY,KOR,KOSDAQ,KRW,SG,"SG Co., Ltd.",SG,산업재,WI26 건설,117700,KRX Constructions
 255440,YAS,EQUITY,KOR,KOSDAQ,KRW,YAS,"YAS Co., Ltd.",야스,IT,WI26 디스플레이,266370,KRX IT HW
 256150,HDCTECH,EQUITY,KOR,KOSDAQ,KRW,HDCTECH,"Handok Clean Tech Co., Ltd.",한독크린텍,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
@@ -1926,7 +1926,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 263800,DATASOLUTION,EQUITY,KOR,KOSDAQ,KRW,DATASOLUTION,"Datasolution, Inc.",데이타솔루션,IT,WI26 소프트웨어,157490,FnGuide SW
 263810,Sangshin Electronics,EQUITY,KOR,KOSDAQ,KRW,Sangshin Electronics,"Sangshin Electronics Co., Ltd.",상신전자,IT,WI26 IT하드웨어,266370,KRX IT HW
 263860,GENIANS,EQUITY,KOR,KOSDAQ,KRW,GENIANS,"Genians, Inc.",지니언스,IT,WI26 소프트웨어,157490,FnGuide SW
-263920,휴엠앤씨,,,KOSDAQ,KRW,,,휴엠앤씨,소재,WI26 비철금속,069500,KOSPI200
+263920,휴엠앤씨,,KOR,KOSDAQ,KRW,,,휴엠앤씨,소재,WI26 비철금속,069500,KOSPI200
 264450,Ubiquoss,EQUITY,KOR,KOSDAQ,KRW,Ubiquoss,Ubiquoss Inc.,유비쿼스,IT,WI26 IT하드웨어,266370,KRX IT HW
 264660,C&G Hitech,EQUITY,KOR,KOSDAQ,KRW,C&G Hitech,"C&G Hi Tech Co.,Ltd",씨앤지하이테크,IT,WI26 반도체,091160,KRX Semicon
 264850,Elensys,EQUITY,KOR,KOSDAQ,KRW,Elensys,"Elensys Co.,Ltd.",이랜시스,IT,WI26 IT하드웨어,266370,KRX IT HW
@@ -1947,7 +1947,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 270660,Everybot,EQUITY,KOR,KOSDAQ,KRW,Everybot,EVERYBOT Inc.,에브리봇,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 270870,Newtree,EQUITY,KOR,KOSDAQ,KRW,Newtree,"Newtree Co.,Ltd.",뉴트리,건강관리,WI26 건강관리,227540,KRX Healthcare
 271560,ORION,EQUITY,KOR,KOSPI,KRW,ORION,ORION Corp.,오리온,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
-271830,팸텍,,,KOSDAQ,KRW,,,팸텍,IT,WI26 IT하드웨어,266370,KRX IT HW
+271830,팸텍,,KOR,KOSDAQ,KRW,,,팸텍,IT,WI26 IT하드웨어,266370,KRX IT HW
 271940,ILJIN HYSOLUS,EQUITY,KOR,KOSPI,KRW,ILJIN HYSOLUS,"ILJIN Hysolus Co., LTD",일진하이솔루스,경기관련소비재,WI26 자동차,091180,KRX Autos
 271980,JEIL PHARM,EQUITY,KOR,KOSPI,KRW,JEIL PHARM,"Jeil Pharmaceutical Co.,Ltd",제일약품,건강관리,WI26 건강관리,227540,KRX Healthcare
 272110,KnJ,EQUITY,KOR,KOSDAQ,KRW,KnJ,"KNJ Co., Ltd.",케이엔제이,IT,WI26 디스플레이,266370,KRX IT HW
@@ -1958,9 +1958,9 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 273060,Wise birds,EQUITY,KOR,KOSDAQ,KRW,Wise birds,Wise birds Inc.,와이즈버즈,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 273640,YM Tech,EQUITY,KOR,KOSDAQ,KRW,YM Tech,"Y.M.Tech Co., Ltd.",와이엠텍,IT,WI26 IT가전,266370,KRX IT HW
 274090,Kencoa Aerospace,EQUITY,KOR,KOSDAQ,KRW,Kencoa Aerospace,Kencoa Aerospace Corporation,켄코아에어로스페이스,산업재,"WI26 상사,자본재",069500,KOSPI200
-274400,이노시뮬레이션,,,KOSDAQ,KRW,,,이노시뮬레이션,IT,WI26 소프트웨어,157490,FnGuide SW
+274400,이노시뮬레이션,,KOR,KOSDAQ,KRW,,,이노시뮬레이션,IT,WI26 소프트웨어,157490,FnGuide SW
 275630,SSR,EQUITY,KOR,KOSDAQ,KRW,SSR,SSR Inc.,에스에스알,IT,WI26 소프트웨어,157490,FnGuide SW
-276040,스코넥,,,KOSDAQ,KRW,,,스코넥,IT,WI26 소프트웨어,157490,FnGuide SW
+276040,스코넥,,KOR,KOSDAQ,KRW,,,스코넥,IT,WI26 소프트웨어,157490,FnGuide SW
 276730,Jeju Beer Company,EQUITY,KOR,KOSDAQ,KRW,Jeju Beer Company,"Jeju Beer Company, Limited",제주맥주,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 277070,Lindeman Asia,EQUITY,KOR,KOSDAQ,KRW,Lindeman Asia,"Lindeman Asia Investment Co., Ltd.",린드먼아시아,금융,WI26 은행,091170,KRX Bank
 277410,INSAN,EQUITY,KOR,KOSDAQ,KRW,INSAN,INSAN Inc.,인산가,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
@@ -1974,19 +1974,19 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 281820,KCTECH,EQUITY,KOR,KOSPI,KRW,KCTECH,"KCTech Co., Ltd.",케이씨텍,IT,WI26 반도체,091160,KRX Semicon
 282330,BGF Retail,EQUITY,KOR,KOSPI,KRW,BGF Retail,"BGF retail CO., LTD.",BGF리테일,경기관련소비재,WI26 소매(유통),069500,KOSPI200
 282690,DONG AH TIRE,EQUITY,KOR,KOSPI,KRW,DONG AH TIRE,"Dong Ah Tire & Rubber Co.,Ltd",동아타이어,경기관련소비재,WI26 자동차,091180,KRX Autos
-282720,금양그린파워,,,KOSDAQ,KRW,,,금양그린파워,에너지,WI26 에너지,117460,KRX Energy & Chemicals
+282720,금양그린파워,,KOR,KOSDAQ,KRW,,,금양그린파워,에너지,WI26 에너지,117460,KRX Energy & Chemicals
 282880,COWIN,EQUITY,KOR,KOSDAQ,KRW,COWIN,COWINTECH Co. Ltd.,코윈테크,산업재,WI26 기계,102960,KRX Mechanical Equipment
 284620,KAINOSMED,EQUITY,KOR,KOSDAQ,KRW,KAINOSMED,"Kainos Medicine, Inc.",카이노스메드,건강관리,WI26 건강관리,227540,KRX Healthcare
 284740,CUCKOO HOMESYS,EQUITY,KOR,KOSPI,KRW,CUCKOO HOMESYS,"CUCKOO Homesys Co., Ltd",쿠쿠홈시스,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 285130,SKCHEM,EQUITY,KOR,KOSPI,KRW,SKCHEM,"SK Chemicals Co.,Ltd.",SK케미칼,소재,WI26 화학,117460,KRX Energy & Chemicals
 285490,NOVATECH,EQUITY,KOR,KOSDAQ,KRW,NOVATECH,"NOVATECH Co., Ltd.",노바텍,IT,WI26 IT하드웨어,266370,KRX IT HW
-285800,진영,,,KOSDAQ,KRW,,,진영,소재,WI26 화학,117460,KRX Energy & Chemicals
+285800,진영,,KOR,KOSDAQ,KRW,,,진영,소재,WI26 화학,117460,KRX Energy & Chemicals
 286750,NANOBRICK,EQUITY,KOR,KOSDAQ,KRW,NANOBRICK,"NANOBRICK Co., Ltd.",나노브릭,소재,WI26 화학,117460,KRX Energy & Chemicals
 286940,LOTTE DATA,EQUITY,KOR,KOSPI,KRW,LOTTE DATA,Lotte Data Communication Company,롯데정보통신,IT,WI26 소프트웨어,157490,FnGuide SW
 287410,Jeisys Medical,EQUITY,KOR,KOSDAQ,KRW,Jeisys Medical,Jeisys Medical Inc.,제이시스메디칼,건강관리,WI26 건강관리,227540,KRX Healthcare
 288330,BRIDGE BIOTHERAPEUTICS,EQUITY,KOR,KOSDAQ,KRW,BRIDGE BIOTHERAPEUTICS,"Bridge Biotherapeutics, Inc.",브릿지바이오테라퓨틱스,건강관리,WI26 건강관리,227540,KRX Healthcare
 288620,SFC,EQUITY,KOR,KOSDAQ,KRW,SFC,"S-Fuelcell co., Ltd.",에스퓨얼셀,IT,WI26 IT가전,266370,KRX IT HW
-288980,모아데이타,,,KOSDAQ,KRW,,,모아데이타,IT,WI26 소프트웨어,157490,FnGuide SW
+288980,모아데이타,,KOR,KOSDAQ,KRW,,,모아데이타,IT,WI26 소프트웨어,157490,FnGuide SW
 289010,i-Scream Edu,EQUITY,KOR,KOSDAQ,KRW,i-Scream Edu,"I-Scream Edu Co.,Ltd.",아이스크림에듀,경기관련소비재,"WI26 미디어,교육",266360,KRX IT SW
 289080,SV INVESTMENT,EQUITY,KOR,KOSDAQ,KRW,SV INVESTMENT,SV Investment Corporation,SV인베스트먼트,금융,WI26 은행,091170,KRX Bank
 289220,GIANTSTEP,EQUITY,KOR,KOSDAQ,KRW,GIANTSTEP,GIANTSTEP Inc.,자이언트스텝,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
@@ -2003,7 +2003,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 290740,ActRo,EQUITY,KOR,KOSDAQ,KRW,ActRo,"ActRO Co., Ltd",액트로,IT,WI26 IT하드웨어,266370,KRX IT HW
 291230,NP,EQUITY,KOR,KOSDAQ,KRW,NP,"Samsung Special Purpose Acquisition 2 Co., Ltd.",엔피,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 291650,Aptamer Sciences,EQUITY,KOR,KOSDAQ,KRW,Aptamer Sciences,Aptamer Sciences Inc.,압타머사이언스,건강관리,WI26 건강관리,227540,KRX Healthcare
-291810,핀텔,,,KOSDAQ,KRW,,,핀텔,IT,WI26 소프트웨어,157490,FnGuide SW
+291810,핀텔,,KOR,KOSDAQ,KRW,,,핀텔,IT,WI26 소프트웨어,157490,FnGuide SW
 293480,Hana Pharm,EQUITY,KOR,KOSPI,KRW,Hana Pharm,"Hana Pharm Co., Ltd.",하나제약,건강관리,WI26 건강관리,227540,KRX Healthcare
 293490,Kakao Games,EQUITY,KOR,KOSDAQ,KRW,Kakao Games,Kakao Games Corp.,카카오게임즈,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
 293580,NAU IB Capital,EQUITY,KOR,KOSDAQ,KRW,NAU IB Capital,NAU IB Capital,나우IB,금융,WI26 은행,091170,KRX Bank
@@ -2013,7 +2013,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 294570,coocon,EQUITY,KOR,KOSDAQ,KRW,coocon,COOCON Corporation,쿠콘,IT,WI26 소프트웨어,157490,FnGuide SW
 294630,SuNAM,EQUITY,KOR,KOSDAQ,KRW,SuNAM,"SuNam Co., Ltd.",서남,에너지,WI26 에너지,117460,KRX Energy & Chemicals
 294870,HDC-OP,EQUITY,KOR,KOSPI,KRW,HDC-OP,HDC Hyundai Development Company,HDC현대산업개발,산업재,WI26 건설,117700,KRX Constructions
-296640,이노룰스,,,KOSDAQ,KRW,,,이노룰스,IT,WI26 소프트웨어,157490,FnGuide SW
+296640,이노룰스,,KOR,KOSDAQ,KRW,,,이노룰스,IT,WI26 소프트웨어,157490,FnGuide SW
 297090,CS BEARING,EQUITY,KOR,KOSDAQ,KRW,CS BEARING,"CS BEARING Co.,Ltd.",씨에스베어링,산업재,WI26 기계,102960,KRX Mechanical Equipment
 297570,ALOYS,EQUITY,KOR,KOSDAQ,KRW,ALOYS,Aloys Inc.,알로이스,IT,WI26 IT가전,266370,KRX IT HW
 297890,HB SOLUTION,EQUITY,KOR,KOSDAQ,KRW,HB SOLUTION,"HB Solution Co.,Ltd.",HB솔루션,IT,WI26 디스플레이,266370,KRX IT HW
@@ -2025,7 +2025,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 298380,ABL Bio,EQUITY,KOR,KOSDAQ,KRW,ABL Bio,ABL Bio Inc.,에이비엘바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
 298540,"TNH CO., LTD",EQUITY,KOR,KOSDAQ,KRW,"TNH CO., LTD","The Nature Holdings Co., Ltd.",더네이쳐홀딩스,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 298690,AirBusan,EQUITY,KOR,KOSPI,KRW,AirBusan,"Air Busan Co., Ltd.",에어부산,산업재,WI26 운송,140710,KRX Transportation
-298830,슈어소프트테크,,,KOSDAQ,KRW,,,슈어소프트테크,IT,WI26 소프트웨어,157490,FnGuide SW
+298830,슈어소프트테크,,KOR,KOSDAQ,KRW,,,슈어소프트테크,IT,WI26 소프트웨어,157490,FnGuide SW
 298870,KTBnetwork,EQUITY,KOR,KOSDAQ,KRW,KTBnetwork,"KTB Network Co., Ltd.",우리벤처파트너스,금융,WI26 은행,091170,KRX Bank
 299030,HANA TECHNOLOGY,EQUITY,KOR,KOSDAQ,KRW,HANA TECHNOLOGY,"Hana Technology Co., Ltd.",하나기술,IT,WI26 IT하드웨어,266370,KRX IT HW
 299170,WSI,EQUITY,KOR,KOSDAQ,KRW,WSI,"WSI Co., Ltd.",더블유에스아이,건강관리,WI26 건강관리,227540,KRX Healthcare
@@ -2034,15 +2034,15 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 300080,FLITTO,EQUITY,KOR,KOSDAQ,KRW,FLITTO,FLITTO Inc.,플리토,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
 300120,LaonPeople,EQUITY,KOR,KOSDAQ,KRW,LaonPeople,LAON PEOPLE Inc,라온피플,IT,WI26 소프트웨어,157490,FnGuide SW
 300720,HANILCMT,EQUITY,KOR,KOSPI,KRW,HANILCMT,"Hanil Cement Co., Ltd.",한일시멘트,산업재,WI26 건설,117700,KRX Constructions
-301300,바이브컴퍼니,,,KOSDAQ,KRW,,,바이브컴퍼니,IT,WI26 소프트웨어,157490,FnGuide SW
+301300,바이브컴퍼니,,KOR,KOSDAQ,KRW,,,바이브컴퍼니,IT,WI26 소프트웨어,157490,FnGuide SW
 302430,INNOMETRY,EQUITY,KOR,KOSDAQ,KRW,INNOMETRY,"Innometry Co., Ltd.",이노메트리,IT,WI26 IT가전,266370,KRX IT HW
 302440,SKBS,EQUITY,KOR,KOSPI,KRW,SKBS,"SK bioscience Co.,Ltd.",SK바이오사이언스,건강관리,WI26 건강관리,227540,KRX Healthcare
 302550,REMED,EQUITY,KOR,KOSDAQ,KRW,REMED,"Remed Co.,Ltd.",리메드,건강관리,WI26 건강관리,227540,KRX Healthcare
 303030,"Zinitix Co.,Ltd.",EQUITY,KOR,KOSDAQ,KRW,"Zinitix Co.,Ltd.","Zinitix Co.,Ltd",지니틱스,IT,WI26 반도체,091160,KRX Semicon
-303360,프로테옴텍,,,KOSDAQ,KRW,,,프로테옴텍,건강관리,WI26 건강관리,227540,KRX Healthcare
+303360,프로테옴텍,,KOR,KOSDAQ,KRW,,,프로테옴텍,건강관리,WI26 건강관리,227540,KRX Healthcare
 303530,INNODEP,EQUITY,KOR,KOSDAQ,KRW,INNODEP,Innodep Inc.,이노뎁,IT,WI26 소프트웨어,157490,FnGuide SW
 304100,SALTLUX,EQUITY,KOR,KOSDAQ,KRW,SALTLUX,SALTLUX.inc,솔트룩스,IT,WI26 소프트웨어,157490,FnGuide SW
-304360,에스바이오메딕스,,,KOSDAQ,KRW,,,에스바이오메딕스,건강관리,WI26 건강관리,227540,KRX Healthcare
+304360,에스바이오메딕스,,KOR,KOSDAQ,KRW,,,에스바이오메딕스,건강관리,WI26 건강관리,227540,KRX Healthcare
 304840,PeopleBio,EQUITY,KOR,KOSDAQ,KRW,PeopleBio,"PeopleBio, Inc.",피플바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
 305090,Micro Digital,EQUITY,KOR,KOSDAQ,KRW,Micro Digital,"Micro Digital Co., Ltd.",마이크로디지탈,건강관리,WI26 건강관리,227540,KRX Healthcare
 306040,SJG,EQUITY,KOR,KOSDAQ,KRW,SJG,"SJ Group Co., Ltd.",에스제이그룹,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
@@ -2058,9 +2058,9 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 308100,Castelbajac,EQUITY,KOR,KOSDAQ,KRW,Castelbajac,"Castelbajac Co., Ltd.",까스텔바작,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 308170,CENTRAL MOTEK,EQUITY,KOR,KOSPI,KRW,CENTRAL MOTEK,CENTRAL MOTEK Co.Ltd.,씨티알모빌리티,경기관련소비재,WI26 자동차,091180,KRX Autos
 309930,OHEIM INT,EQUITY,KOR,KOSDAQ,KRW,OHEIM INT,"OHEIM INT Co.,Ltd",오하임아이엔티,산업재,WI26 건설,117700,KRX Constructions
-309960,LB인베스트먼트,,,KOSDAQ,KRW,,,LB인베스트먼트,금융,WI26 은행,091170,KRX Bank
+309960,LB인베스트먼트,,KOR,KOSDAQ,KRW,,,LB인베스트먼트,금융,WI26 은행,091170,KRX Bank
 310200,ANIPLUS,EQUITY,KOR,KOSDAQ,KRW,ANIPLUS,Aniplus Inc.,애니플러스,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
-310210,보로노이,,,KOSDAQ,KRW,,,보로노이,건강관리,WI26 건강관리,227540,KRX Healthcare
+310210,보로노이,,KOR,KOSDAQ,KRW,,,보로노이,건강관리,WI26 건강관리,227540,KRX Healthcare
 310870,DYC,EQUITY,KOR,KOSDAQ,KRW,DYC,"Korea No.8 Special Purpose Acquisition Co., Ltd.",디와이씨,경기관련소비재,WI26 자동차,091180,KRX Autos
 311320,GO Element,EQUITY,KOR,KOSDAQ,KRW,GO Element,"GO Element Co.,Ltd.",지오엘리먼트,IT,WI26 반도체,091160,KRX Semicon
 311390,Neo Cremar,EQUITY,KOR,KOSDAQ,KRW,Neo Cremar,"Neo Cremar Co., Ltd.",네오크레마,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
@@ -2068,7 +2068,7 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 312610,AFW,EQUITY,KOR,KOSDAQ,KRW,AFW,"A.F.W Co., Ltd.",에이에프더블류,IT,WI26 IT가전,266370,KRX IT HW
 313760,WILLINGS,EQUITY,KOR,KOSDAQ,KRW,WILLINGS,"Willings Co., Ltd.",윌링스,에너지,WI26 에너지,117460,KRX Energy & Chemicals
 314130,Genome&Company,EQUITY,KOR,KOSDAQ,KRW,Genome&Company,Genome & Company,지놈앤컴퍼니,건강관리,WI26 건강관리,227540,KRX Healthcare
-314140,알피바이오,,,KOSDAQ,KRW,,,알피바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
+314140,알피바이오,,KOR,KOSDAQ,KRW,,,알피바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
 314930,BIODYNE,EQUITY,KOR,KOSDAQ,KRW,BIODYNE,"BIODYNE CO.,Ltd.",바이오다인,건강관리,WI26 건강관리,227540,KRX Healthcare
 315640,DEEPNOID,EQUITY,KOR,KOSDAQ,KRW,DEEPNOID,Deep Noid Inc.,딥노이드,IT,WI26 소프트웨어,157490,FnGuide SW
 316140,WooriFinancialGroup,EQUITY,KOR,KOSPI,KRW,WooriFinancialGroup,Woori Financial Group Inc.,우리금융지주,금융,WI26 은행,091170,KRX Bank
@@ -2079,20 +2079,20 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 317530,CARRIESOFT,EQUITY,KOR,KOSDAQ,KRW,CARRIESOFT,"Carriesoft Co., Ltd.",캐리소프트,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
 317690,QuantaMatrix,EQUITY,KOR,KOSDAQ,KRW,QuantaMatrix,QuantaMatrix Inc.,퀀타매트릭스,건강관리,WI26 건강관리,227540,KRX Healthcare
 317770,Suprema ID,EQUITY,KOR,KOSDAQ,KRW,Suprema ID,Suprema ID Inc.,엑스페릭스,IT,WI26 IT하드웨어,266370,KRX IT HW
-317830,에스피시스템스,,,KOSDAQ,KRW,,,에스피시스템스,산업재,WI26 기계,102960,KRX Mechanical Equipment
+317830,에스피시스템스,,KOR,KOSDAQ,KRW,,,에스피시스템스,산업재,WI26 기계,102960,KRX Mechanical Equipment
 317850,DAEMO,EQUITY,KOR,KOSDAQ,KRW,DAEMO,"DAEMO Engineering Co., Ltd.",대모,산업재,WI26 기계,102960,KRX Mechanical Equipment
 317870,ENVIONEER,EQUITY,KOR,KOSDAQ,KRW,ENVIONEER,"ENVIONEER Co.,Ltd.",엔바이오니아,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 318000,KBIOGEN,EQUITY,KOR,KOSDAQ,KRW,KBIOGEN,"Korea Bio-Gen Co.,Ltd",KBG,소재,WI26 화학,117460,KRX Energy & Chemicals
 318010,Pharmsville,EQUITY,KOR,KOSDAQ,KRW,Pharmsville,"Pharmsville Co., Ltd.",팜스빌,건강관리,WI26 건강관리,227540,KRX Healthcare
 318020,POINT MOBILE,EQUITY,KOR,KOSDAQ,KRW,POINT MOBILE,"Point Mobile Co., Ltd.",포인트모바일,IT,WI26 IT하드웨어,266370,KRX IT HW
-318160,셀바이오휴먼텍,,,KOSDAQ,KRW,,,셀바이오휴먼텍,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
+318160,셀바이오휴먼텍,,KOR,KOSDAQ,KRW,,,셀바이오휴먼텍,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 318410,BBC,EQUITY,KOR,KOSDAQ,KRW,BBC,"BBC Co., Ltd.",비비씨,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 319400,HYUNDAI MOVEX,EQUITY,KOR,KOSDAQ,KRW,HYUNDAI MOVEX,"Hyundai Movex Co., Ltd.",현대무벡스,산업재,WI26 운송,140710,KRX Transportation
 319660,PSK,EQUITY,KOR,KOSDAQ,KRW,PSK,PSK Inc.,피에스케이,IT,WI26 반도체,091160,KRX Semicon
 320000,WINTEC,EQUITY,KOR,KOSDAQ,KRW,WINTEC,"Wintec Co., Ltd.",윈텍,IT,WI26 IT하드웨어,266370,KRX IT HW
 321260,PRO2000,EQUITY,KOR,KOSDAQ,KRW,PRO2000,"Pro-Icheon Co., Ltd",프로이천,IT,WI26 디스플레이,266370,KRX IT HW
-321370,센서뷰,,,KOSDAQ,KRW,,,센서뷰,IT,WI26 IT하드웨어,266370,KRX IT HW
-321550,티움바이오,,,KOSDAQ,KRW,,,티움바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
+321370,센서뷰,,KOR,KOSDAQ,KRW,,,센서뷰,IT,WI26 IT하드웨어,266370,KRX IT HW
+321550,티움바이오,,KOR,KOSDAQ,KRW,,,티움바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
 321820,WiderPlanet,EQUITY,KOR,KOSDAQ,KRW,WiderPlanet,WIDER PLANET Inc.,와이더플래닛,IT,WI26 소프트웨어,157490,FnGuide SW
 322000,HES,EQUITY,KOR,KOSPI,KRW,HES,"Hyundai Energy Solutions Co.,Ltd",HD현대에너지솔루션,에너지,WI26 에너지,117460,KRX Energy & Chemicals
 322180,THiRA-UTECH,EQUITY,KOR,KOSDAQ,KRW,THiRA-UTECH,"THiRA-UTECH CO., LTD.",티라유텍,IT,WI26 소프트웨어,157490,FnGuide SW
@@ -2105,18 +2105,18 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 323990,Vaxcell-Bio,EQUITY,KOR,KOSDAQ,KRW,Vaxcell-Bio,"Vaxcell-Bio Therapeutics Co., Ltd.",박셀바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
 326030,SKBP,EQUITY,KOR,KOSPI,KRW,SKBP,"SK Biopharmaceuticals Co., Ltd.",SK바이오팜,건강관리,WI26 건강관리,227540,KRX Healthcare
 327260,RF Materials,EQUITY,KOR,KOSDAQ,KRW,RF Materials,"RF Materials Co., Ltd.",RF머트리얼즈,IT,WI26 IT하드웨어,266370,KRX IT HW
-328130,루닛,,,KOSDAQ,KRW,,,루닛,건강관리,WI26 건강관리,227540,KRX Healthcare
-328380,솔트웨어,,,KOSDAQ,KRW,,,솔트웨어,IT,WI26 소프트웨어,157490,FnGuide SW
+328130,루닛,,KOR,KOSDAQ,KRW,,,루닛,건강관리,WI26 건강관리,227540,KRX Healthcare
+328380,솔트웨어,,KOR,KOSDAQ,KRW,,,솔트웨어,IT,WI26 소프트웨어,157490,FnGuide SW
 329180,HYUNDAI HEAVY INDUSTRIES,EQUITY,KOR,KOSPI,KRW,HYUNDAI HEAVY INDUSTRIES,"Hyundai Heavy Industries Co., Ltd.",HD현대중공업,산업재,WI26 조선,139230,KRX Heavy Industry
 330350,Withus Pharm,EQUITY,KOR,KOSDAQ,KRW,Withus Pharm,"Withuspharmaceutical Co.,Ltd.",위더스제약,건강관리,WI26 건강관리,227540,KRX Healthcare
-330730,스톤브릿지벤처스,,,KOSDAQ,KRW,,,스톤브릿지벤처스,금융,WI26 은행,091170,KRX Bank
-330860,네패스아크,,,KOSDAQ,KRW,,,네패스아크,IT,WI26 반도체,091160,KRX Semicon
+330730,스톤브릿지벤처스,,KOR,KOSDAQ,KRW,,,스톤브릿지벤처스,금융,WI26 은행,091170,KRX Bank
+330860,네패스아크,,KOR,KOSDAQ,KRW,,,네패스아크,IT,WI26 반도체,091160,KRX Semicon
 331380,FOCUS HNS,EQUITY,KOR,KOSDAQ,KRW,FOCUS HNS,"Focus H&S Co.,Ltd",포커스에이치엔에스,IT,WI26 IT하드웨어,266370,KRX IT HW
 331520,Kyobo 9 SPAC,EQUITY,KOR,KOSDAQ,KRW,Kyobo 9 SPAC,Kyobo 9 Special Purpose Acquisition Company,밸로프,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
 331920,Celemics,EQUITY,KOR,KOSDAQ,KRW,Celemics,"Celemics, Inc.",셀레믹스,건강관리,WI26 건강관리,227540,KRX Healthcare
 332290,DaishinBalanceNo.7 SPAC,EQUITY,KOR,KOSDAQ,KRW,DaishinBalanceNo.7 SPAC,"Daishin Balance No.7 Special Purpose Acquisition Co., Ltd.",누보,소재,WI26 화학,117460,KRX Energy & Chemicals
 332370,IDP,EQUITY,KOR,KOSDAQ,KRW,IDP,"IDP Corp.,Ltd",아이디피,IT,WI26 IT하드웨어,266370,KRX IT HW
-332570,와이팜,,,KOSDAQ,KRW,,,와이팜,IT,WI26 IT하드웨어,266370,KRX IT HW
+332570,와이팜,,KOR,KOSDAQ,KRW,,,와이팜,IT,WI26 IT하드웨어,266370,KRX IT HW
 333050,Shinhan 6th SPAC,EQUITY,KOR,KOSDAQ,KRW,Shinhan 6th SPAC,Shinhan 6th Special Purpose Acquisition Company,모코엠시스,IT,WI26 소프트웨어,157490,FnGuide SW
 333430,IL SEUNG,EQUITY,KOR,KOSDAQ,KRW,IL SEUNG,"Ilseung Co.,Ltd.",일승,산업재,WI26 조선,139230,KRX Heavy Industry
 333620,Nsys,EQUITY,KOR,KOSDAQ,KRW,Nsys,"Nsys Co., Ltd.",엔시스,IT,WI26 IT하드웨어,266370,KRX IT HW
@@ -2127,29 +2127,29 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 336060,Yuanta SPAC V,EQUITY,KOR,KOSDAQ,KRW,Yuanta SPAC V,"Yuanta 5 SPECIAL PURPOSE ACQUISITION CO., LTD.",웨이버스,IT,WI26 소프트웨어,157490,FnGuide SW
 336260,Doosanfc,EQUITY,KOR,KOSPI,KRW,Doosanfc,"Doosan Fuel Cell Co., Ltd.",두산퓨얼셀,IT,WI26 IT가전,266370,KRX IT HW
 336370,Solus Advanced Materials,EQUITY,KOR,KOSPI,KRW,Solus Advanced Materials,Solus Advanced Materials Co. Ltd.,솔루스첨단소재,IT,WI26 IT하드웨어,266370,KRX IT HW
-336570,원텍,,,KOSDAQ,KRW,,,원텍,건강관리,WI26 건강관리,227540,KRX Healthcare
-337930,브랜드엑스코퍼레이션,,,KOSDAQ,KRW,,,브랜드엑스코퍼레이션,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
+336570,원텍,,KOR,KOSDAQ,KRW,,,원텍,건강관리,WI26 건강관리,227540,KRX Healthcare
+337930,브랜드엑스코퍼레이션,,KOR,KOSDAQ,KRW,,,브랜드엑스코퍼레이션,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 338220,VUNO,EQUITY,KOR,KOSDAQ,KRW,VUNO,Vuno Inc.,뷰노,건강관리,WI26 건강관리,227540,KRX Healthcare
 339770,KYOCHON F&B,EQUITY,KOR,KOSPI,KRW,KYOCHON F&B,"Kyochon Food&Beverage Co., Ltd.",교촌에프앤비,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 339950,IBKIMYOUNG,EQUITY,KOR,KOSDAQ,KRW,IBKIMYOUNG,"Ibkimyoung Co., Ltd.",아이비김영,경기관련소비재,"WI26 미디어,교육",266360,KRX IT SW
 340360,Davolink,EQUITY,KOR,KOSDAQ,KRW,Davolink,"Yuanta 6 SPECIAL PURPOSE ACQUISITION CO., LTD.",다보링크,IT,WI26 IT하드웨어,266370,KRX IT HW
 340440,SERIM B&G,EQUITY,KOR,KOSDAQ,KRW,SERIM B&G,"Serim B&G Co., Ltd.",세림B&G,소재,WI26 비철금속,069500,KOSPI200
-340570,티앤엘,,,KOSDAQ,KRW,,,티앤엘,건강관리,WI26 건강관리,227540,KRX Healthcare
-340810,씨유박스,,,KOSDAQ,KRW,,,씨유박스,IT,WI26 소프트웨어,157490,FnGuide SW
+340570,티앤엘,,KOR,KOSDAQ,KRW,,,티앤엘,건강관리,WI26 건강관리,227540,KRX Healthcare
+340810,씨유박스,,KOR,KOSDAQ,KRW,,,씨유박스,IT,WI26 소프트웨어,157490,FnGuide SW
 340930,YET,EQUITY,KOR,KOSDAQ,KRW,YET,"Youil Energy Technology CO.,LTD",유일에너테크,IT,WI26 IT하드웨어,266370,KRX IT HW
 344820,KCC GLASS,EQUITY,KOR,KOSPI,KRW,KCC GLASS,KCC GLASS Corporation,KCC글라스,산업재,WI26 건설,117700,KRX Constructions
-344860,이노진,,,KOSDAQ,KRW,,,이노진,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-347000,센코,,,KOSDAQ,KRW,,,센코,IT,WI26 IT하드웨어,266370,KRX IT HW
+344860,이노진,,KOR,KOSDAQ,KRW,,,이노진,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
+347000,센코,,KOR,KOSDAQ,KRW,,,센코,IT,WI26 IT하드웨어,266370,KRX IT HW
 347700,LSCORP,EQUITY,KOR,KOSDAQ,KRW,LSCORP,LifeSemantics Corp.,라이프시맨틱스,건강관리,WI26 건강관리,227540,KRX Healthcare
 347740,P&K Skin Research Center,EQUITY,KOR,KOSDAQ,KRW,P&K Skin Research Center,"P&K Skin Research Center Co., Ltd.",피엔케이피부임상연구센타,건강관리,WI26 건강관리,227540,KRX Healthcare
 347770,PIMS,EQUITY,KOR,KOSDAQ,KRW,PIMS,PIMS Inc.,핌스,IT,WI26 디스플레이,266370,KRX IT HW
 347860,Alchera,EQUITY,KOR,KOSDAQ,KRW,Alchera,Alchera Inc.,알체라,IT,WI26 소프트웨어,157490,FnGuide SW
 347890,M2I,EQUITY,KOR,KOSDAQ,KRW,M2I,M2I Corporation,엠투아이,IT,WI26 IT하드웨어,266370,KRX IT HW
 348030,MOBIRIX,EQUITY,KOR,KOSDAQ,KRW,MOBIRIX,"MOBIRIX Co., Ltd",모비릭스,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
-348080,큐라티스,,,KOSDAQ,KRW,,,큐라티스,건강관리,WI26 건강관리,227540,KRX Healthcare
+348080,큐라티스,,KOR,KOSDAQ,KRW,,,큐라티스,건강관리,WI26 건강관리,227540,KRX Healthcare
 348150,KoBioLabs,EQUITY,KOR,KOSDAQ,KRW,KoBioLabs,"KoBioLabs, Inc",고바이오랩,건강관리,WI26 건강관리,227540,KRX Healthcare
 348210,NEXTIN,EQUITY,KOR,KOSDAQ,KRW,NEXTIN,"NEXTIN, Inc.",넥스틴,IT,WI26 반도체,091160,KRX Semicon
-348340,뉴로메카,,,KOSDAQ,KRW,,,뉴로메카,산업재,WI26 기계,102960,KRX Mechanical Equipment
+348340,뉴로메카,,KOR,KOSDAQ,KRW,,,뉴로메카,산업재,WI26 기계,102960,KRX Mechanical Equipment
 348350,WITHTECH,EQUITY,KOR,KOSDAQ,KRW,WITHTECH,"WITHTECH Co., LTD.",위드텍,IT,WI26 IT하드웨어,266370,KRX IT HW
 348370,Enchem,EQUITY,KOR,KOSDAQ,KRW,Enchem,"Enchem Co., Ltd.",엔켐,IT,WI26 IT가전,266370,KRX IT HW
 351320,SAT,EQUITY,KOR,KOSDAQ,KRW,SAT,IBKS No.14 Special Purpose Acquisition Company,에스에이티이엔지,IT,WI26 디스플레이,266370,KRX IT HW
@@ -2162,141 +2162,141 @@ ticker,name,quoteType,market,exchange,unit,shortName,longName,korName,sector,ind
 352940,ENBIO,EQUITY,KOR,KOSDAQ,KRW,ENBIO,"ENBIO Co., Ltd.",인바이오,소재,WI26 화학,117460,KRX Energy & Chemicals
 353190,Hurum,EQUITY,KOR,KOSDAQ,KRW,Hurum,"Hurum Co., Ltd.",휴럼,건강관리,WI26 건강관리,227540,KRX Healthcare
 353200,DaeduckElectronics,EQUITY,KOR,KOSPI,KRW,DaeduckElectronics,"DAEDUCK ELECTRONICS Co.,Ltd.",대덕전자,IT,WI26 IT하드웨어,266370,KRX IT HW
-353590,오토앤,,,KOSDAQ,KRW,,,오토앤,경기관련소비재,WI26 자동차,091180,KRX Autos
+353590,오토앤,,KOR,KOSDAQ,KRW,,,오토앤,경기관련소비재,WI26 자동차,091180,KRX Autos
 353810,EASYBIO,EQUITY,KOR,KOSDAQ,KRW,EASYBIO,"EASY BIO,Inc.",이지바이오,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 354200,NGeneBio,EQUITY,KOR,KOSDAQ,KRW,NGeneBio,"NGeneBio Co., Ltd.",엔젠바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
-354320,알멕,,,KOSDAQ,KRW,,,알멕,경기관련소비재,WI26 자동차,091180,KRX Autos
+354320,알멕,,KOR,KOSDAQ,KRW,,,알멕,경기관련소비재,WI26 자동차,091180,KRX Autos
 355150,Kyobo 10 SPAC,EQUITY,KOR,KOSDAQ,KRW,Kyobo 10 SPAC,Kyobo 10 Special Purpose Acquisition Company,코스텍시스,IT,WI26 반도체,091160,KRX Semicon
-356680,엑스게이트,,,KOSDAQ,KRW,,,엑스게이트,IT,WI26 소프트웨어,157490,FnGuide SW
+356680,엑스게이트,,KOR,KOSDAQ,KRW,,,엑스게이트,IT,WI26 소프트웨어,157490,FnGuide SW
 356860,TLB,EQUITY,KOR,KOSDAQ,KRW,TLB,"TLB Co., Ltd",티엘비,IT,WI26 반도체,091160,KRX Semicon
 356890,CyberOne,EQUITY,KOR,KOSDAQ,KRW,CyberOne,"CyberOne Co., Ltd",싸이버원,IT,WI26 소프트웨어,157490,FnGuide SW
 357230,H.PIO,EQUITY,KOR,KOSDAQ,KRW,H.PIO,"H.PIO Co., Ltd.",에이치피오,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 357550,Sukgyung,EQUITY,KOR,KOSDAQ,KRW,Sukgyung,"Sukgyung AT Co., Ltd.",석경에이티,소재,WI26 화학,117460,KRX Energy & Chemicals
-357580,아모센스,,,KOSDAQ,KRW,,,아모센스,IT,WI26 IT하드웨어,266370,KRX IT HW
+357580,아모센스,,KOR,KOSDAQ,KRW,,,아모센스,IT,WI26 IT하드웨어,266370,KRX IT HW
 357780,Soulbrain,EQUITY,KOR,KOSDAQ,KRW,Soulbrain,"Soulbrain Co., Ltd.",솔브레인,IT,WI26 반도체,091160,KRX Semicon
 357880,Bitnine,EQUITY,KOR,KOSDAQ,KRW,Bitnine,"Bitnine Co, Ltd.",비트나인,IT,WI26 소프트웨어,157490,FnGuide SW
-358570,지아이이노베이션,,,KOSDAQ,KRW,,,지아이이노베이션,건강관리,WI26 건강관리,227540,KRX Healthcare
+358570,지아이이노베이션,,KOR,KOSDAQ,KRW,,,지아이이노베이션,건강관리,WI26 건강관리,227540,KRX Healthcare
 359090,C&R Research,EQUITY,KOR,KOSDAQ,KRW,C&R Research,NH Special Purpose Acquisition 17 Company,씨엔알리서치,건강관리,WI26 건강관리,227540,KRX Healthcare
-360070,탑머티리얼,,,KOSDAQ,KRW,,,탑머티리얼,IT,WI26 IT하드웨어,266370,KRX IT HW
+360070,탑머티리얼,,KOR,KOSDAQ,KRW,,,탑머티리얼,IT,WI26 IT하드웨어,266370,KRX IT HW
 361390,Genohco,EQUITY,KOR,KOSDAQ,KRW,Genohco,"Genohco., Inc.",제노코,산업재,"WI26 상사,자본재",069500,KOSPI200
 361570,RBW,EQUITY,KOR,KOSDAQ,KRW,RBW,"RBW, Inc.",알비더블유,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 361610,SK ie technology,EQUITY,KOR,KOSPI,KRW,SK ie technology,"SK IE Technology Co., Ltd.",SK아이이테크놀로지,IT,WI26 IT가전,266370,KRX IT HW
 361670,SAMYOUNG S&C,EQUITY,KOR,KOSDAQ,KRW,SAMYOUNG S&C,"SAMYOUNG S&C Co., Ltd.",삼영에스앤씨,IT,WI26 IT하드웨어,266370,KRX IT HW
-362320,청담글로벌,,,KOSDAQ,KRW,,,청담글로벌,경기관련소비재,WI26 소매(유통),069500,KOSPI200
+362320,청담글로벌,,KOR,KOSDAQ,KRW,,,청담글로벌,경기관련소비재,WI26 소매(유통),069500,KOSPI200
 363250,Genesystem,EQUITY,KOR,KOSDAQ,KRW,Genesystem,"Genesystem Co., Ltd.",진시스템,건강관리,WI26 건강관리,227540,KRX Healthcare
-363260,모비데이즈,,,KOSDAQ,KRW,,,모비데이즈,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
+363260,모비데이즈,,KOR,KOSDAQ,KRW,,,모비데이즈,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 363280,TYHLD,EQUITY,KOR,KOSPI,KRW,TYHLD,"TY Holdings Co., Ltd",티와이홀딩스,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
 365270,the curacle,EQUITY,KOR,KOSDAQ,KRW,the curacle,"Curacle Co., Ltd.",큐라클,건강관리,WI26 건강관리,227540,KRX Healthcare
-365340,성일하이텍,,,KOSDAQ,KRW,,,성일하이텍,IT,WI26 IT가전,266370,KRX IT HW
-365590,하이딥,,,KOSDAQ,KRW,,,하이딥,IT,WI26 반도체,091160,KRX Semicon
-365900,브이씨,,,KOSDAQ,KRW,,,브이씨,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-366030,공구우먼,,,KOSDAQ,KRW,,,공구우먼,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
+365340,성일하이텍,,KOR,KOSDAQ,KRW,,,성일하이텍,IT,WI26 IT가전,266370,KRX IT HW
+365590,하이딥,,KOR,KOSDAQ,KRW,,,하이딥,IT,WI26 반도체,091160,KRX Semicon
+365900,브이씨,,KOR,KOSDAQ,KRW,,,브이씨,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
+366030,공구우먼,,KOR,KOSDAQ,KRW,,,공구우먼,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
 367000,Plateer,EQUITY,KOR,KOSDAQ,KRW,Plateer,"Plateer Co., Ltd.",플래티어,IT,WI26 소프트웨어,157490,FnGuide SW
-368600,아이씨에이치,,,KOSDAQ,KRW,,,아이씨에이치,IT,WI26 IT하드웨어,266370,KRX IT HW
+368600,아이씨에이치,,KOR,KOSDAQ,KRW,,,아이씨에이치,IT,WI26 IT하드웨어,266370,KRX IT HW
 368770,Korea No.9 SPAC,EQUITY,KOR,KOSDAQ,KRW,Korea No.9 SPAC,"Korea No.9 Special Purpose Acquisition Co., Ltd.",파이버프로,IT,WI26 IT하드웨어,266370,KRX IT HW
-368970,오에스피,,,KOSDAQ,KRW,,,오에스피,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
+368970,오에스피,,KOR,KOSDAQ,KRW,,,오에스피,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
 369370,Blitzway,EQUITY,KOR,KOSDAQ,KRW,Blitzway,"Daishin Balance No.9 Special Purpose Acquisition Co., Ltd.",블리츠웨이,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-370090,퓨런티어,,,KOSDAQ,KRW,,,퓨런티어,IT,WI26 IT하드웨어,266370,KRX IT HW
-371950,풍원정밀,,,KOSDAQ,KRW,,,풍원정밀,IT,WI26 디스플레이,266370,KRX IT HW
-372170,윤성에프앤씨,,,KOSDAQ,KRW,,,윤성에프앤씨,IT,WI26 IT하드웨어,266370,KRX IT HW
+370090,퓨런티어,,KOR,KOSDAQ,KRW,,,퓨런티어,IT,WI26 IT하드웨어,266370,KRX IT HW
+371950,풍원정밀,,KOR,KOSDAQ,KRW,,,풍원정밀,IT,WI26 디스플레이,266370,KRX IT HW
+372170,윤성에프앤씨,,KOR,KOSDAQ,KRW,,,윤성에프앤씨,IT,WI26 IT하드웨어,266370,KRX IT HW
 372800,ITEYES,EQUITY,KOR,KOSDAQ,KRW,ITEYES,ITEYES Inc.,아이티아이즈,IT,WI26 소프트웨어,157490,FnGuide SW
 372910,Hancom Lifecare,EQUITY,KOR,KOSPI,KRW,Hancom Lifecare,Hancom Lifecare Inc.,한컴라이프케어,건강관리,WI26 건강관리,227540,KRX Healthcare
 373200,IBKS No.15 SPAC,EQUITY,KOR,KOSDAQ,KRW,IBKS No.15 SPAC,IBKS No.15 Special Purpose Acquisition Company,하인크코리아,IT,WI26 IT하드웨어,266370,KRX IT HW
-373220,LG에너지솔루션,,,KOSPI,KRW,,,LG에너지솔루션,IT,WI26 IT가전,266370,KRX IT HW
+373220,LG에너지솔루션,,KOR,KOSPI,KRW,,,LG에너지솔루션,IT,WI26 IT가전,266370,KRX IT HW
 375500,DL E&C,EQUITY,KOR,KOSPI,KRW,DL E&C,"DL E&C Co.,Ltd.",DL이앤씨,산업재,WI26 건설,117700,KRX Constructions
 376180,Picogram,EQUITY,KOR,KOSDAQ,KRW,Picogram,"Picogram Co.,Ltd.",피코그램,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-376190,LB루셈,,,KOSDAQ,KRW,,,LB루셈,IT,WI26 반도체,091160,KRX Semicon
+376190,LB루셈,,KOR,KOSDAQ,KRW,,,LB루셈,IT,WI26 반도체,091160,KRX Semicon
 376290,CU TECH,EQUITY,KOR,KOSDAQ,KRW,CU TECH,CU-Tech Corporation,씨유테크,IT,WI26 IT하드웨어,266370,KRX IT HW
 376300,DEARU,EQUITY,KOR,KOSDAQ,KRW,DEARU,"Dear U Co., Ltd.",디어유,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
-376930,노을,,,KOSDAQ,KRW,,,노을,건강관리,WI26 건강관리,227540,KRX Healthcare
+376930,노을,,KOR,KOSDAQ,KRW,,,노을,건강관리,WI26 건강관리,227540,KRX Healthcare
 376980,Wanted Lab,EQUITY,KOR,KOSDAQ,KRW,Wanted Lab,"Wantedlab, Inc.",원티드랩,IT,WI26 소프트웨어,157490,FnGuide SW
 377030,MAXST,EQUITY,KOR,KOSDAQ,KRW,MAXST,"MAXST Co., Ltd.",맥스트,IT,WI26 소프트웨어,157490,FnGuide SW
 377220,From Bio,EQUITY,KOR,KOSDAQ,KRW,From Bio,"From Bio Co.,Ltd",프롬바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
 377300,kakaopay,EQUITY,KOR,KOSPI,KRW,kakaopay,Kakao Pay Corp.,카카오페이,IT,WI26 소프트웨어,157490,FnGuide SW
-377330,이지트로닉스,,,KOSDAQ,KRW,,,이지트로닉스,IT,WI26 IT가전,266370,KRX IT HW
+377330,이지트로닉스,,KOR,KOSDAQ,KRW,,,이지트로닉스,IT,WI26 IT가전,266370,KRX IT HW
 377450,REFINE,EQUITY,KOR,KOSDAQ,KRW,REFINE,"REFINE Co., Ltd.",리파인,산업재,"WI26 상사,자본재",069500,KOSPI200
-377460,위니아에이드,,,KOSDAQ,KRW,,,위니아에이드,경기관련소비재,WI26 소매(유통),069500,KOSPI200
+377460,위니아에이드,,KOR,KOSDAQ,KRW,,,위니아에이드,경기관련소비재,WI26 소매(유통),069500,KOSPI200
 377480,MINDS LAB,EQUITY,KOR,KOSDAQ,KRW,MINDS LAB,"Minds Lab,Inc.",마음AI,IT,WI26 소프트웨어,157490,FnGuide SW
-377740,바이오노트,,,KOSPI,KRW,,,바이오노트,건강관리,WI26 건강관리,227540,KRX Healthcare
-378340,필에너지,,,KOSDAQ,KRW,,,필에너지,IT,WI26 IT가전,266370,KRX IT HW
-378800,샤페론,,,KOSDAQ,KRW,,,샤페론,건강관리,WI26 건강관리,227540,KRX Healthcare
+377740,바이오노트,,KOR,KOSPI,KRW,,,바이오노트,건강관리,WI26 건강관리,227540,KRX Healthcare
+378340,필에너지,,KOR,KOSDAQ,KRW,,,필에너지,IT,WI26 IT가전,266370,KRX IT HW
+378800,샤페론,,KOR,KOSDAQ,KRW,,,샤페론,건강관리,WI26 건강관리,227540,KRX Healthcare
 378850,HS R&A,EQUITY,KOR,KOSPI,KRW,HS R&A,"Hwaseung R&A Co., Ltd.",화승알앤에이,경기관련소비재,WI26 자동차,091180,KRX Autos
-380540,옵티코어,,,KOSDAQ,KRW,,,옵티코어,IT,WI26 IT하드웨어,266370,KRX IT HW
+380540,옵티코어,,KOR,KOSDAQ,KRW,,,옵티코어,IT,WI26 IT하드웨어,266370,KRX IT HW
 381970,K Car,EQUITY,KOR,KOSPI,KRW,K Car,"K Car Co., Ltd.",케이카,경기관련소비재,WI26 소매(유통),069500,KOSPI200
 382480,G.I.Tech,EQUITY,KOR,KOSDAQ,KRW,G.I.Tech,G.I.Tech Co. Ltd.,지아이텍,IT,WI26 IT가전,266370,KRX IT HW
 382800,GnBS ENG,EQUITY,KOR,KOSDAQ,KRW,GnBS ENG,GnBS Engineering Co.LTD.,지앤비에스 에코,IT,WI26 반도체,091160,KRX Semicon
 382840,Onejoon,EQUITY,KOR,KOSDAQ,KRW,Onejoon,"ONEJOON Co., Ltd.",원준,IT,WI26 IT가전,266370,KRX IT HW
-382900,범한퓨얼셀,,,KOSDAQ,KRW,,,범한퓨얼셀,산업재,WI26 기계,102960,KRX Mechanical Equipment
+382900,범한퓨얼셀,,KOR,KOSDAQ,KRW,,,범한퓨얼셀,산업재,WI26 기계,102960,KRX Mechanical Equipment
 383220,F&F,EQUITY,KOR,KOSPI,KRW,F&F,"F&F Co., Ltd",F&F,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-383310,에코프로에이치엔,,,KOSDAQ,KRW,,,에코프로에이치엔,산업재,"WI26 상사,자본재",069500,KOSPI200
+383310,에코프로에이치엔,,KOR,KOSDAQ,KRW,,,에코프로에이치엔,산업재,"WI26 상사,자본재",069500,KOSPI200
 383800,LX HOLDINGS,EQUITY,KOR,KOSPI,KRW,LX HOLDINGS,LX Holdings Corp.,LX홀딩스,산업재,"WI26 상사,자본재",069500,KOSPI200
-383930,디티앤씨알오,,,KOSDAQ,KRW,,,디티앤씨알오,건강관리,WI26 건강관리,227540,KRX Healthcare
-388050,지투파워,,,KOSDAQ,KRW,,,지투파워,산업재,WI26 기계,102960,KRX Mechanical Equipment
-388720,유일로보틱스,,,KOSDAQ,KRW,,,유일로보틱스,산업재,WI26 기계,102960,KRX Mechanical Equipment
+383930,디티앤씨알오,,KOR,KOSDAQ,KRW,,,디티앤씨알오,건강관리,WI26 건강관리,227540,KRX Healthcare
+388050,지투파워,,KOR,KOSDAQ,KRW,,,지투파워,산업재,WI26 기계,102960,KRX Mechanical Equipment
+388720,유일로보틱스,,KOR,KOSDAQ,KRW,,,유일로보틱스,산업재,WI26 기계,102960,KRX Mechanical Equipment
 388790,IBKS No.16 SPAC,EQUITY,KOR,KOSDAQ,KRW,IBKS No.16 SPAC,IBKS No.16 Special Purpose Acquisition Company,라이콤,IT,WI26 IT하드웨어,266370,KRX IT HW
-388870,파로스아이바이오,,,KOSDAQ,KRW,,,파로스아이바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
-389020,자람테크놀로지,,,KOSDAQ,KRW,,,자람테크놀로지,IT,WI26 반도체,091160,KRX Semicon
+388870,파로스아이바이오,,KOR,KOSDAQ,KRW,,,파로스아이바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
+389020,자람테크놀로지,,KOR,KOSDAQ,KRW,,,자람테크놀로지,IT,WI26 반도체,091160,KRX Semicon
 389030,GENINUS,EQUITY,KOR,KOSDAQ,KRW,GENINUS,GENINUS Inc.,지니너스,건강관리,WI26 건강관리,227540,KRX Healthcare
-389140,포바이포,,,KOSDAQ,KRW,,,포바이포,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
-389260,대명에너지,,,KOSDAQ,KRW,,,대명에너지,에너지,WI26 에너지,117460,KRX Energy & Chemicals
-389470,인벤티지랩,,,KOSDAQ,KRW,,,인벤티지랩,건강관리,WI26 건강관리,227540,KRX Healthcare
-389500,에스비비테크,,,KOSDAQ,KRW,,,에스비비테크,산업재,WI26 기계,102960,KRX Mechanical Equipment
-391710,코닉오토메이션,,,KOSDAQ,KRW,,,코닉오토메이션,IT,WI26 소프트웨어,157490,FnGuide SW
-393210,토마토시스템,,,KOSDAQ,KRW,,,토마토시스템,IT,WI26 소프트웨어,157490,FnGuide SW
-393890,더블유씨피,,,KOSDAQ,KRW,,,더블유씨피,IT,WI26 IT가전,266370,KRX IT HW
-394280,오픈엣지테크놀로지,,,KOSDAQ,KRW,,,오픈엣지테크놀로지,IT,WI26 반도체,091160,KRX Semicon
-396270,넥스트칩,,,KOSDAQ,KRW,,,넥스트칩,IT,WI26 반도체,091160,KRX Semicon
-396300,세아메카닉스,,,KOSDAQ,KRW,,,세아메카닉스,소재,WI26 비철금속,069500,KOSPI200
-397030,에이프릴바이오,,,KOSDAQ,KRW,,,에이프릴바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
-399720,가온칩스,,,KOSDAQ,KRW,,,가온칩스,IT,WI26 반도체,091160,KRX Semicon
-402030,코난테크놀로지,,,KOSDAQ,KRW,,,코난테크놀로지,IT,WI26 소프트웨어,157490,FnGuide SW
+389140,포바이포,,KOR,KOSDAQ,KRW,,,포바이포,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
+389260,대명에너지,,KOR,KOSDAQ,KRW,,,대명에너지,에너지,WI26 에너지,117460,KRX Energy & Chemicals
+389470,인벤티지랩,,KOR,KOSDAQ,KRW,,,인벤티지랩,건강관리,WI26 건강관리,227540,KRX Healthcare
+389500,에스비비테크,,KOR,KOSDAQ,KRW,,,에스비비테크,산업재,WI26 기계,102960,KRX Mechanical Equipment
+391710,코닉오토메이션,,KOR,KOSDAQ,KRW,,,코닉오토메이션,IT,WI26 소프트웨어,157490,FnGuide SW
+393210,토마토시스템,,KOR,KOSDAQ,KRW,,,토마토시스템,IT,WI26 소프트웨어,157490,FnGuide SW
+393890,더블유씨피,,KOR,KOSDAQ,KRW,,,더블유씨피,IT,WI26 IT가전,266370,KRX IT HW
+394280,오픈엣지테크놀로지,,KOR,KOSDAQ,KRW,,,오픈엣지테크놀로지,IT,WI26 반도체,091160,KRX Semicon
+396270,넥스트칩,,KOR,KOSDAQ,KRW,,,넥스트칩,IT,WI26 반도체,091160,KRX Semicon
+396300,세아메카닉스,,KOR,KOSDAQ,KRW,,,세아메카닉스,소재,WI26 비철금속,069500,KOSPI200
+397030,에이프릴바이오,,KOR,KOSDAQ,KRW,,,에이프릴바이오,건강관리,WI26 건강관리,227540,KRX Healthcare
+399720,가온칩스,,KOR,KOSDAQ,KRW,,,가온칩스,IT,WI26 반도체,091160,KRX Semicon
+402030,코난테크놀로지,,KOR,KOSDAQ,KRW,,,코난테크놀로지,IT,WI26 소프트웨어,157490,FnGuide SW
 402340,SKSQUARE,EQUITY,KOR,KOSPI,KRW,SKSQUARE,"SK Square Co., Ltd.",SK스퀘어,IT,WI26 반도체,091160,KRX Semicon
-403550,쏘카,,,KOSPI,KRW,,,쏘카,산업재,WI26 운송,140710,KRX Transportation
-403870,HPSP,,,KOSDAQ,KRW,,,HPSP,IT,WI26 반도체,091160,KRX Semicon
-405000,플라즈맵,,,KOSDAQ,KRW,,,플라즈맵,건강관리,WI26 건강관리,227540,KRX Healthcare
-405100,큐알티,,,KOSDAQ,KRW,,,큐알티,IT,WI26 반도체,091160,KRX Semicon
-405920,나라셀라,,,KOSDAQ,KRW,,,나라셀라,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
-406820,뷰티스킨,,,KOSDAQ,KRW,,,뷰티스킨,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-407400,꿈비,,,KOSDAQ,KRW,,,꿈비,산업재,WI26 건설,117700,KRX Constructions
-408900,스튜디오미르,,,KOSDAQ,KRW,,,스튜디오미르,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
-408920,메쎄이상,,,KOSDAQ,KRW,,,메쎄이상,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
-411080,샌즈랩,,,KOSDAQ,KRW,,,샌즈랩,IT,WI26 소프트웨어,157490,FnGuide SW
-412350,레이저쎌,,,KOSDAQ,KRW,,,레이저쎌,IT,WI26 반도체,091160,KRX Semicon
-417010,나노팀,,,KOSDAQ,KRW,,,나노팀,IT,WI26 IT하드웨어,266370,KRX IT HW
-417180,핑거스토리,,,KOSDAQ,KRW,,,핑거스토리,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
-417500,제이아이테크,,,KOSDAQ,KRW,,,제이아이테크,IT,WI26 반도체,091160,KRX Semicon
-417790,트루엔,,,KOSDAQ,KRW,,,트루엔,IT,WI26 IT하드웨어,266370,KRX IT HW
-417840,저스템,,,KOSDAQ,KRW,,,저스템,IT,WI26 반도체,091160,KRX Semicon
-417860,오브젠,,,KOSDAQ,KRW,,,오브젠,IT,WI26 소프트웨어,157490,FnGuide SW
-417970,모델솔루션,,,KOSDAQ,KRW,,,모델솔루션,산업재,WI26 기계,102960,KRX Mechanical Equipment
-418420,라온텍,,,KOSDAQ,KRW,,,라온텍,IT,WI26 반도체,091160,KRX Semicon
-418550,제이오,,,KOSDAQ,KRW,,,제이오,산업재,WI26 건설,117700,KRX Constructions
-419050,삼기이브이,,,KOSDAQ,KRW,,,삼기이브이,경기관련소비재,WI26 자동차,091180,KRX Autos
-419080,엔젯,,,KOSDAQ,KRW,,,엔젯,IT,WI26 디스플레이,266370,KRX IT HW
-419120,산돌,,,KOSDAQ,KRW,,,산돌,IT,WI26 소프트웨어,157490,FnGuide SW
-419530,SAMG엔터,,,KOSDAQ,KRW,,,SAMG엔터,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
-419540,비스토스,,,KOSDAQ,KRW,,,비스토스,건강관리,WI26 건강관리,227540,KRX Healthcare
-420770,기가비스,,,KOSDAQ,KRW,,,기가비스,IT,WI26 반도체,091160,KRX Semicon
-424760,벨로크,,,KOSDAQ,KRW,,,벨로크,IT,WI26 소프트웨어,157490,FnGuide SW
-424980,마이크로투나노,,,KOSDAQ,KRW,,,마이크로투나노,IT,WI26 반도체,091160,KRX Semicon
-425040,티이엠씨,,,KOSDAQ,KRW,,,티이엠씨,IT,WI26 반도체,091160,KRX Semicon
-425420,티에프이,,,KOSDAQ,KRW,,,티에프이,IT,WI26 반도체,091160,KRX Semicon
-429270,시지트로닉스,,,KOSDAQ,KRW,,,시지트로닉스,IT,WI26 반도체,091160,KRX Semicon
-432430,와이랩,,,KOSDAQ,KRW,,,와이랩,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
-434480,모니터랩,,,KOSDAQ,KRW,,,모니터랩,IT,WI26 소프트웨어,157490,FnGuide SW
-438700,버넥트,,,KOSDAQ,KRW,,,버넥트,IT,WI26 소프트웨어,157490,FnGuide SW
-439090,마녀공장,,,KOSDAQ,KRW,,,마녀공장,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-440320,오픈놀,,,KOSDAQ,KRW,,,오픈놀,산업재,"WI26 상사,자본재",069500,KOSPI200
-441270,파인엠텍,,,KOSDAQ,KRW,,,파인엠텍,IT,WI26 IT하드웨어,266370,KRX IT HW
-446070,유니드비티플러스,,,KOSPI,KRW,,,유니드비티플러스,산업재,WI26 건설,117700,KRX Constructions
-450140,코오롱모빌리티그룹,,,KOSPI,KRW,,,코오롱모빌리티그룹,산업재,WI26 건설,117700,KRX Constructions
-452260,한화갤러리아,,,KOSPI,KRW,,,한화갤러리아,경기관련소비재,WI26 소매(유통),069500,KOSPI200
-453340,현대그린푸드,,,KOSPI,KRW,,,현대그린푸드,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
-456040,OCI,,,KOSPI,KRW,,,OCI,소재,WI26 화학,117460,KRX Energy & Chemicals
-457190,이수스페셜티케미컬,,,KOSPI,KRW,,,이수스페셜티케미컬,소재,WI26 화학,117460,KRX Energy & Chemicals
-460850,동국씨엠,,,KOSPI,KRW,,,동국씨엠,소재,WI26 철강,117680,KRX Steels
-460860,동국제강,,,KOSPI,KRW,,,동국제강,소재,WI26 철강,117680,KRX Steels
-462520,조선내화,,,KOSPI,KRW,,,조선내화,소재,WI26 비철금속,069500,KOSPI200
+403550,쏘카,,KOR,KOSPI,KRW,,,쏘카,산업재,WI26 운송,140710,KRX Transportation
+403870,HPSP,,KOR,KOSDAQ,KRW,,,HPSP,IT,WI26 반도체,091160,KRX Semicon
+405000,플라즈맵,,KOR,KOSDAQ,KRW,,,플라즈맵,건강관리,WI26 건강관리,227540,KRX Healthcare
+405100,큐알티,,KOR,KOSDAQ,KRW,,,큐알티,IT,WI26 반도체,091160,KRX Semicon
+405920,나라셀라,,KOR,KOSDAQ,KRW,,,나라셀라,필수소비재,WI26 필수소비재,266410,KRX Consumer Staples
+406820,뷰티스킨,,KOR,KOSDAQ,KRW,,,뷰티스킨,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
+407400,꿈비,,KOR,KOSDAQ,KRW,,,꿈비,산업재,WI26 건설,117700,KRX Constructions
+408900,스튜디오미르,,KOR,KOSDAQ,KRW,,,스튜디오미르,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
+408920,메쎄이상,,KOR,KOSDAQ,KRW,,,메쎄이상,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
+411080,샌즈랩,,KOR,KOSDAQ,KRW,,,샌즈랩,IT,WI26 소프트웨어,157490,FnGuide SW
+412350,레이저쎌,,KOR,KOSDAQ,KRW,,,레이저쎌,IT,WI26 반도체,091160,KRX Semicon
+417010,나노팀,,KOR,KOSDAQ,KRW,,,나노팀,IT,WI26 IT하드웨어,266370,KRX IT HW
+417180,핑거스토리,,KOR,KOSDAQ,KRW,,,핑거스토리,커뮤니케이션서비스,WI26 소프트웨어,157490,FnGuide SW
+417500,제이아이테크,,KOR,KOSDAQ,KRW,,,제이아이테크,IT,WI26 반도체,091160,KRX Semicon
+417790,트루엔,,KOR,KOSDAQ,KRW,,,트루엔,IT,WI26 IT하드웨어,266370,KRX IT HW
+417840,저스템,,KOR,KOSDAQ,KRW,,,저스템,IT,WI26 반도체,091160,KRX Semicon
+417860,오브젠,,KOR,KOSDAQ,KRW,,,오브젠,IT,WI26 소프트웨어,157490,FnGuide SW
+417970,모델솔루션,,KOR,KOSDAQ,KRW,,,모델솔루션,산업재,WI26 기계,102960,KRX Mechanical Equipment
+418420,라온텍,,KOR,KOSDAQ,KRW,,,라온텍,IT,WI26 반도체,091160,KRX Semicon
+418550,제이오,,KOR,KOSDAQ,KRW,,,제이오,산업재,WI26 건설,117700,KRX Constructions
+419050,삼기이브이,,KOR,KOSDAQ,KRW,,,삼기이브이,경기관련소비재,WI26 자동차,091180,KRX Autos
+419080,엔젯,,KOR,KOSDAQ,KRW,,,엔젯,IT,WI26 디스플레이,266370,KRX IT HW
+419120,산돌,,KOR,KOSDAQ,KRW,,,산돌,IT,WI26 소프트웨어,157490,FnGuide SW
+419530,SAMG엔터,,KOR,KOSDAQ,KRW,,,SAMG엔터,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
+419540,비스토스,,KOR,KOSDAQ,KRW,,,비스토스,건강관리,WI26 건강관리,227540,KRX Healthcare
+420770,기가비스,,KOR,KOSDAQ,KRW,,,기가비스,IT,WI26 반도체,091160,KRX Semicon
+424760,벨로크,,KOR,KOSDAQ,KRW,,,벨로크,IT,WI26 소프트웨어,157490,FnGuide SW
+424980,마이크로투나노,,KOR,KOSDAQ,KRW,,,마이크로투나노,IT,WI26 반도체,091160,KRX Semicon
+425040,티이엠씨,,KOR,KOSDAQ,KRW,,,티이엠씨,IT,WI26 반도체,091160,KRX Semicon
+425420,티에프이,,KOR,KOSDAQ,KRW,,,티에프이,IT,WI26 반도체,091160,KRX Semicon
+429270,시지트로닉스,,KOR,KOSDAQ,KRW,,,시지트로닉스,IT,WI26 반도체,091160,KRX Semicon
+432430,와이랩,,KOR,KOSDAQ,KRW,,,와이랩,커뮤니케이션서비스,"WI26 미디어,교육",266360,KRX IT SW
+434480,모니터랩,,KOR,KOSDAQ,KRW,,,모니터랩,IT,WI26 소프트웨어,157490,FnGuide SW
+438700,버넥트,,KOR,KOSDAQ,KRW,,,버넥트,IT,WI26 소프트웨어,157490,FnGuide SW
+439090,마녀공장,,KOR,KOSDAQ,KRW,,,마녀공장,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
+440320,오픈놀,,KOR,KOSDAQ,KRW,,,오픈놀,산업재,"WI26 상사,자본재",069500,KOSPI200
+441270,파인엠텍,,KOR,KOSDAQ,KRW,,,파인엠텍,IT,WI26 IT하드웨어,266370,KRX IT HW
+446070,유니드비티플러스,,KOR,KOSPI,KRW,,,유니드비티플러스,산업재,WI26 건설,117700,KRX Constructions
+450140,코오롱모빌리티그룹,,KOR,KOSPI,KRW,,,코오롱모빌리티그룹,산업재,WI26 건설,117700,KRX Constructions
+452260,한화갤러리아,,KOR,KOSPI,KRW,,,한화갤러리아,경기관련소비재,WI26 소매(유통),069500,KOSPI200
+453340,현대그린푸드,,KOR,KOSPI,KRW,,,현대그린푸드,경기관련소비재,"WI26 화장품,의류",228790,WISE Cosmetics
+456040,OCI,,KOR,KOSPI,KRW,,,OCI,소재,WI26 화학,117460,KRX Energy & Chemicals
+457190,이수스페셜티케미컬,,KOR,KOSPI,KRW,,,이수스페셜티케미컬,소재,WI26 화학,117460,KRX Energy & Chemicals
+460850,동국씨엠,,KOR,KOSPI,KRW,,,동국씨엠,소재,WI26 철강,117680,KRX Steels
+460860,동국제강,,KOR,KOSPI,KRW,,,동국제강,소재,WI26 철강,117680,KRX Steels
+462520,조선내화,,KOR,KOSPI,KRW,,,조선내화,소재,WI26 비철금속,069500,KOSPI200
 AAPL,Apple Inc.,EQUITY,USA,NASDAQ,USD,apple,Apple Inc.,,,,QQQ,Nasdaq
 MSFT,Microsoft Corporation,EQUITY,USA,NASDAQ,USD,microsoft,Microsoft Corporation,,,,QQQ,Nasdaq
 GOOG,Alphabet Inc.,EQUITY,USA,NASDAQ,USD,alphabet,Alphabet Inc.,,,,QQQ,Nasdaq
@@ -10491,20 +10491,20 @@ RRIF,Rainforest Resources Inc.,EQUITY,USA,OTC,USD,,Rainforest Resources Inc.,,,,
 423160,KODEX KOFR금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 273130,KODEX 종합채권(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 371460,TIGER 차이나전기차SOLACTIVE,ETF,KOR,KOSPI,KRW,,,,,,,
-133690,TIGER 미국나스닥100,ETF,KOR,KOSPI,KRW,,,,,,,
 102110,TIGER 200,ETF,KOR,KOSPI,KRW,,,,,,,
+133690,TIGER 미국나스닥100,ETF,KOR,KOSPI,KRW,,,,,,,
 278530,KODEX 200TR,ETF,KOR,KOSPI,KRW,,,,,,,
 360750,TIGER 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
 448320,KODEX 23-12 은행채(AA+이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-252670,KODEX 200선물인버스2X,ETF,KOR,KOSPI,KRW,,,,,,,
 122630,KODEX 레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+252670,KODEX 200선물인버스2X,ETF,KOR,KOSPI,KRW,,,,,,,
 381170,TIGER 미국테크TOP10 INDXX,ETF,KOR,KOSPI,KRW,,,,,,,
 381180,TIGER 미국필라델피아반도체나스닥,ETF,KOR,KOSPI,KRW,,,,,,,
 214980,KODEX 단기채권PLUS,ETF,KOR,KOSPI,KRW,,,,,,,
 310970,TIGER MSCI Korea TR,ETF,KOR,KOSPI,KRW,,,,,,,
-305540,TIGER 2차전지테마,ETF,KOR,KOSPI,KRW,,,,,,,
 148020,KBSTAR 200,ETF,KOR,KOSPI,KRW,,,,,,,
 251340,KODEX 코스닥150선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
+305540,TIGER 2차전지테마,ETF,KOR,KOSPI,KRW,,,,,,,
 449170,TIGER KOFR금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 102780,KODEX 삼성그룹,ETF,KOR,KOSPI,KRW,,,,,,,
 305720,KODEX 2차전지산업,ETF,KOR,KOSPI,KRW,,,,,,,
@@ -10513,8 +10513,9 @@ RRIF,Rainforest Resources Inc.,EQUITY,USA,OTC,USD,,Rainforest Resources Inc.,,,,
 157450,TIGER 단기통안채,ETF,KOR,KOSPI,KRW,,,,,,,
 139260,TIGER 200 IT,ETF,KOR,KOSPI,KRW,,,,,,,
 153130,KODEX 단기채권,ETF,KOR,KOSPI,KRW,,,,,,,
-114800,KODEX 인버스,ETF,KOR,KOSPI,KRW,,,,,,,
+459580,KODEX CD금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 233740,KODEX 코스닥150레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+114800,KODEX 인버스,ETF,KOR,KOSPI,KRW,,,,,,,
 455890,KBSTAR 머니마켓액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 091180,KODEX 자동차,ETF,KOR,KOSPI,KRW,,,,,,,
 148070,KOSEF 국고채10년,ETF,KOR,KOSPI,KRW,,,,,,,
@@ -10522,24 +10523,23 @@ RRIF,Rainforest Resources Inc.,EQUITY,USA,OTC,USD,,Rainforest Resources Inc.,,,,
 371160,TIGER 차이나항셍테크,ETF,KOR,KOSPI,KRW,,,,,,,
 315930,KODEX Top5PlusTR,ETF,KOR,KOSPI,KRW,,,,,,,
 278540,KODEX MSCI Korea TR,ETF,KOR,KOSPI,KRW,,,,,,,
-272580,TIGER 단기채권액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 462010,TIGER 2차전지소재Fn,ETF,KOR,KOSPI,KRW,,,,,,,
+272580,TIGER 단기채권액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 448590,KBSTAR 23-11 회사채(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 447820,TIGER 24-10 회사채(A+이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-459580,KODEX CD금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 294400,KOSEF 200TR,ETF,KOR,KOSPI,KRW,,,,,,,
 379800,KODEX 미국S&P500TR,ETF,KOR,KOSPI,KRW,,,,,,,
 360200,ACE 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
-395170,KODEX Fn Top10동일가중,ETF,KOR,KOSPI,KRW,,,,,,,
 293180,HANARO 200,ETF,KOR,KOSPI,KRW,,,,,,,
-229200,KODEX 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
+395170,KODEX Fn Top10동일가중,ETF,KOR,KOSPI,KRW,,,,,,,
 356540,ACE 종합채권(AA-이상)KIS액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 196230,KBSTAR 단기통안채,ETF,KOR,KOSPI,KRW,,,,,,,
 251350,KODEX 선진국MSCI World,ETF,KOR,KOSPI,KRW,,,,,,,
-069660,KOSEF 200,ETF,KOR,KOSPI,KRW,,,,,,,
 091160,KODEX 반도체,ETF,KOR,KOSPI,KRW,,,,,,,
-379810,KODEX 미국나스닥100TR,ETF,KOR,KOSPI,KRW,,,,,,,
+229200,KODEX 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
 396500,TIGER Fn반도체TOP10,ETF,KOR,KOSPI,KRW,,,,,,,
+069660,KOSEF 200,ETF,KOR,KOSPI,KRW,,,,,,,
+379810,KODEX 미국나스닥100TR,ETF,KOR,KOSPI,KRW,,,,,,,
 367380,ACE 미국나스닥100,ETF,KOR,KOSPI,KRW,,,,,,,
 394670,TIGER 글로벌리튬&2차전지SOLACTIVE(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 314250,KODEX 미국FANG플러스(H),ETF,KOR,KOSPI,KRW,,,,,,,
@@ -10556,274 +10556,273 @@ RRIF,Rainforest Resources Inc.,EQUITY,USA,OTC,USD,,Rainforest Resources Inc.,,,,
 091170,KODEX 은행,ETF,KOR,KOSPI,KRW,,,,,,,
 439860,KODEX ESG종합채권(A-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 114260,KODEX 국고채3년,ETF,KOR,KOSPI,KRW,,,,,,,
-143850,TIGER 미국S&P500선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
-226490,KODEX 코스피,ETF,KOR,KOSPI,KRW,,,,,,,
 365780,ACE 국고채10년,ETF,KOR,KOSPI,KRW,,,,,,,
+226490,KODEX 코스피,ETF,KOR,KOSPI,KRW,,,,,,,
+143850,TIGER 미국S&P500선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
 302190,TIGER 중장기국채,ETF,KOR,KOSPI,KRW,,,,,,,
-458730,TIGER 미국배당다우존스,ETF,KOR,KOSPI,KRW,,,,,,,
 245710,ACE 베트남VN30(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+458730,TIGER 미국배당다우존스,ETF,KOR,KOSPI,KRW,,,,,,,
 329200,TIGER 리츠부동산인프라,ETF,KOR,KOSPI,KRW,,,,,,,
+304660,KODEX 미국채울트라30년선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
 455030,KODEX 미국달러SOFR금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 368590,KBSTAR 미국나스닥100,ETF,KOR,KOSPI,KRW,,,,,,,
-304660,KODEX 미국채울트라30년선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
 446720,SOL 미국배당다우존스,ETF,KOR,KOSPI,KRW,,,,,,,
 367770,KBSTAR Fn수소경제테마,ETF,KOR,KOSPI,KRW,,,,,,,
 448310,KODEX 23-12 국고채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-455860,SOL 2차전지소부장Fn,ETF,KOR,KOSPI,KRW,,,,,,,
-213610,KODEX 삼성그룹밸류,ETF,KOR,KOSPI,KRW,,,,,,,
 451000,ARIRANG 종합채권(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-192090,TIGER 차이나CSI300,ETF,KOR,KOSPI,KRW,,,,,,,
-241180,TIGER 일본니케이225,ETF,KOR,KOSPI,KRW,,,,,,,
-379780,KBSTAR 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
-453850,ACE 미국30년국채액티브(H),ETF,KOR,KOSPI,KRW,,,,,,,
+213610,KODEX 삼성그룹밸류,ETF,KOR,KOSPI,KRW,,,,,,,
 455850,SOL 반도체소부장Fn,ETF,KOR,KOSPI,KRW,,,,,,,
+241180,TIGER 일본니케이225,ETF,KOR,KOSPI,KRW,,,,,,,
+453850,ACE 미국30년국채액티브(H),ETF,KOR,KOSPI,KRW,,,,,,,
+455860,SOL 2차전지소부장Fn,ETF,KOR,KOSPI,KRW,,,,,,,
+192090,TIGER 차이나CSI300,ETF,KOR,KOSPI,KRW,,,,,,,
+091230,TIGER 반도체,ETF,KOR,KOSPI,KRW,,,,,,,
+379780,KBSTAR 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
 290130,KBSTAR ESG사회책임투자,ETF,KOR,KOSPI,KRW,,,,,,,
 190620,ACE 단기통안채,ETF,KOR,KOSPI,KRW,,,,,,,
-091230,TIGER 반도체,ETF,KOR,KOSPI,KRW,,,,,,,
 447780,TIGER 23-12 국공채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 461460,ARIRANG 국고채10년액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 361580,KBSTAR 200TR,ETF,KOR,KOSPI,KRW,,,,,,,
 143860,TIGER 헬스케어,ETF,KOR,KOSPI,KRW,,,,,,,
+388420,KBSTAR 비메모리반도체액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 328370,ARIRANG 코스피TR,ETF,KOR,KOSPI,KRW,,,,,,,
 364960,TIGER KRX BBIG K-뉴딜,ETF,KOR,KOSPI,KRW,,,,,,,
 401470,KODEX K-메타버스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-409820,KODEX 미국나스닥100레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+295040,SOL 200TR,ETF,KOR,KOSPI,KRW,,,,,,,
 326240,KBSTAR IT플러스,ETF,KOR,KOSPI,KRW,,,,,,,
 200250,KOSEF 인도Nifty50(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-388420,KBSTAR 비메모리반도체액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-295040,SOL 200TR,ETF,KOR,KOSPI,KRW,,,,,,,
 385550,KBSTAR 단기종합채권(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 332940,HANARO MSCI Korea TR,ETF,KOR,KOSPI,KRW,,,,,,,
 448870,ACE 23-12 회사채(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 130730,KOSEF 단기자금,ETF,KOR,KOSPI,KRW,,,,,,,
 132030,KODEX 골드선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
-138540,TIGER 현대차그룹+펀더멘털,ETF,KOR,KOSPI,KRW,,,,,,,
 363570,KODEX 장기종합채권(AA-이상)액티브KAP,ETF,KOR,KOSPI,KRW,,,,,,,
+138540,TIGER 현대차그룹+펀더멘털,ETF,KOR,KOSPI,KRW,,,,,,,
 161510,ARIRANG 고배당주,ETF,KOR,KOSPI,KRW,,,,,,,
-461950,KODEX 2차전지핵심소재10 Fn,ETF,KOR,KOSPI,KRW,,,,,,,
+409820,KODEX 미국나스닥100레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 275980,TIGER 글로벌4차산업혁신기술(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 457480,ACE 테슬라밸류체인액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 400970,TIGER Fn메타버스,ETF,KOR,KOSPI,KRW,,,,,,,
-412770,TIGER 글로벌메타버스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 228800,TIGER 여행레저,ETF,KOR,KOSPI,KRW,,,,,,,
-372330,KODEX 차이나항셍테크,ETF,KOR,KOSPI,KRW,,,,,,,
+461950,KODEX 2차전지핵심소재10 Fn,ETF,KOR,KOSPI,KRW,,,,,,,
+412770,TIGER 글로벌메타버스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 414780,TIGER 차이나과창판STAR50(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-168580,ACE 중국본토CSI300,ETF,KOR,KOSPI,KRW,,,,,,,
 401170,KBSTAR iSelect메타버스,ETF,KOR,KOSPI,KRW,,,,,,,
-329650,KODEX TRF3070,ETF,KOR,KOSPI,KRW,,,,,,,
+372330,KODEX 차이나항셍테크,ETF,KOR,KOSPI,KRW,,,,,,,
 451530,TIGER 국고채30년스트립액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+329650,KODEX TRF3070,ETF,KOR,KOSPI,KRW,,,,,,,
 439870,KODEX 국고채30년액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 219480,KODEX 미국S&P500선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
-458210,히어로즈 CD금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-182480,TIGER 미국MSCI리츠(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+168580,ACE 중국본토CSI300,ETF,KOR,KOSPI,KRW,,,,,,,
 438330,TIGER 투자등급회사채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 448880,ACE 24-12 회사채(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 244580,KODEX 바이오,ETF,KOR,KOSPI,KRW,,,,,,,
+182480,TIGER 미국MSCI리츠(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 448290,TIGER 미국S&P500TR(H),ETF,KOR,KOSPI,KRW,,,,,,,
 304940,KODEX 미국나스닥100선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
 451060,KTOP K200액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 302450,KBSTAR 코스피,ETF,KOR,KOSPI,KRW,,,,,,,
-278240,KBSTAR 코스닥150선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 402970,ACE 미국배당다우존스,ETF,KOR,KOSPI,KRW,,,,,,,
 332930,HANARO 200TR,ETF,KOR,KOSPI,KRW,,,,,,,
 152380,KODEX 국채선물10년,ETF,KOR,KOSPI,KRW,,,,,,,
 305080,TIGER 미국채10년선물,ETF,KOR,KOSPI,KRW,,,,,,,
 325020,KODEX 배당가치,ETF,KOR,KOSPI,KRW,,,,,,,
 453010,ARIRANG KOFR금리,ETF,KOR,KOSPI,KRW,,,,,,,
-266420,KODEX 헬스케어,ETF,KOR,KOSPI,KRW,,,,,,,
-204480,TIGER 차이나CSI300레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+278240,KBSTAR 코스닥150선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 451540,TIGER 종합채권(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-422420,KBSTAR 2차전지액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+266420,KODEX 헬스케어,ETF,KOR,KOSPI,KRW,,,,,,,
 277630,TIGER 코스피,ETF,KOR,KOSPI,KRW,,,,,,,
-270810,KBSTAR 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
+204480,TIGER 차이나CSI300레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 292560,TIGER 일본엔선물,ETF,KOR,KOSPI,KRW,,,,,,,
+422420,KBSTAR 2차전지액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+270810,KBSTAR 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
 441680,TIGER 미국나스닥100커버드콜(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 261240,KODEX 미국달러선물,ETF,KOR,KOSPI,KRW,,,,,,,
-453810,KODEX 인도Nifty50,ETF,KOR,KOSPI,KRW,,,,,,,
 395290,HANARO Fn K-POP&미디어,ETF,KOR,KOSPI,KRW,,,,,,,
+453810,KODEX 인도Nifty50,ETF,KOR,KOSPI,KRW,,,,,,,
 228810,TIGER 미디어컨텐츠,ETF,KOR,KOSPI,KRW,,,,,,,
+448600,KBSTAR 25-11 회사채(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 252710,TIGER 200선물인버스2X,ETF,KOR,KOSPI,KRW,,,,,,,
 419890,히어로즈 단기채권ESG액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-448600,KBSTAR 25-11 회사채(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+458210,히어로즈 CD금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 453870,TIGER 인도니프티50,ETF,KOR,KOSPI,KRW,,,,,,,
 367760,KBSTAR Fn5G테크,ETF,KOR,KOSPI,KRW,,,,,,,
 438570,SOL 국고채10년,ETF,KOR,KOSPI,KRW,,,,,,,
+150460,TIGER 중국소비테마,ETF,KOR,KOSPI,KRW,,,,,,,
+364970,TIGER KRX바이오K-뉴딜,ETF,KOR,KOSPI,KRW,,,,,,,
 283580,KODEX 차이나CSI300,ETF,KOR,KOSPI,KRW,,,,,,,
 446770,ACE 글로벌반도체TOP4 Plus SOLACTIVE,ETF,KOR,KOSPI,KRW,,,,,,,
-364970,TIGER KRX바이오K-뉴딜,ETF,KOR,KOSPI,KRW,,,,,,,
-150460,TIGER 중국소비테마,ETF,KOR,KOSPI,KRW,,,,,,,
-232080,TIGER 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
 407310,HANARO 200 TOP10,ETF,KOR,KOSPI,KRW,,,,,,,
 139230,TIGER 200 중공업,ETF,KOR,KOSPI,KRW,,,,,,,
+232080,TIGER 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
 390390,KODEX 미국반도체MV,ETF,KOR,KOSPI,KRW,,,,,,,
 445290,KODEX K-로봇액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-423920,TIGER 미국필라델피아반도체레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-414270,ACE G2전기차&자율주행액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-245340,TIGER 미국다우존스30,ETF,KOR,KOSPI,KRW,,,,,,,
-461270,ACE 26-06 회사채(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-411420,KODEX 미국메타버스나스닥액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 157490,TIGER 소프트웨어,ETF,KOR,KOSPI,KRW,,,,,,,
+423920,TIGER 미국필라델피아반도체레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+461270,ACE 26-06 회사채(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+245340,TIGER 미국다우존스30,ETF,KOR,KOSPI,KRW,,,,,,,
+414270,ACE G2전기차&자율주행액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+411420,KODEX 미국메타버스나스닥액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 315960,KBSTAR 대형고배당10TR,ETF,KOR,KOSPI,KRW,,,,,,,
 411060,ACE KRX금현물,ETF,KOR,KOSPI,KRW,,,,,,,
+267770,TIGER 200선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+298770,KODEX 한국대만IT프리미어,ETF,KOR,KOSPI,KRW,,,,,,,
 195980,ARIRANG 신흥국MSCI(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 448300,TIGER 미국나스닥100TR(H),ETF,KOR,KOSPI,KRW,,,,,,,
-298770,KODEX 한국대만IT프리미어,ETF,KOR,KOSPI,KRW,,,,,,,
-267770,TIGER 200선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 437080,KODEX 미국종합채권SRI액티브(H),ETF,KOR,KOSPI,KRW,,,,,,,
 144600,KODEX 은선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
 363580,KODEX 200IT TR,ETF,KOR,KOSPI,KRW,,,,,,,
+454780,히어로즈 종합채권(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+195920,TIGER 일본TOPIX(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+261220,KODEX WTI원유선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
 447770,TIGER 테슬라채권혼합Fn,ETF,KOR,KOSPI,KRW,,,,,,,
 309230,ACE 미국WideMoat가치주,ETF,KOR,KOSPI,KRW,,,,,,,
-195920,TIGER 일본TOPIX(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-454780,히어로즈 종합채권(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-225040,TIGER 미국S&P500레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-261220,KODEX WTI원유선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
-395270,HANARO Fn K-반도체,ETF,KOR,KOSPI,KRW,,,,,,,
 461260,ACE 25-06 회사채(AA-이상)액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-174360,KBSTAR 중국본토대형주CSI100,ETF,KOR,KOSPI,KRW,,,,,,,
+225040,TIGER 미국S&P500레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+395270,HANARO Fn K-반도체,ETF,KOR,KOSPI,KRW,,,,,,,
 441540,HANARO Fn조선해운,ETF,KOR,KOSPI,KRW,,,,,,,
 114820,TIGER 국채3년,ETF,KOR,KOSPI,KRW,,,,,,,
 385720,TIMEFOLIO Kstock액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+174360,KBSTAR 중국본토대형주CSI100,ETF,KOR,KOSPI,KRW,,,,,,,
 458260,TIGER 미국투자등급회사채액티브(H),ETF,KOR,KOSPI,KRW,,,,,,,
 245360,TIGER 차이나HSCEI,ETF,KOR,KOSPI,KRW,,,,,,,
 228790,TIGER 화장품,ETF,KOR,KOSPI,KRW,,,,,,,
-269540,ARIRANG 미국S&P500(H),ETF,KOR,KOSPI,KRW,,,,,,,
 437350,KBSTAR 미국단기투자등급회사채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 139280,TIGER 경기방어,ETF,KOR,KOSPI,KRW,,,,,,,
 266160,KBSTAR 고배당,ETF,KOR,KOSPI,KRW,,,,,,,
 204450,KODEX 차이나H레버리지(H),ETF,KOR,KOSPI,KRW,,,,,,,
 419430,KODEX 차이나2차전지MSCI(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+269540,ARIRANG 미국S&P500(H),ETF,KOR,KOSPI,KRW,,,,,,,
 136340,KBSTAR 중기우량회사채,ETF,KOR,KOSPI,KRW,,,,,,,
 272560,KBSTAR 단기국공채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 452360,SOL 미국배당다우존스(H),ETF,KOR,KOSPI,KRW,,,,,,,
-462330,KODEX 2차전지산업레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
-325010,KODEX Fn성장,ETF,KOR,KOSPI,KRW,,,,,,,
 322400,HANARO e커머스,ETF,KOR,KOSPI,KRW,,,,,,,
-456680,TIGER 차이나전기차레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+325010,KODEX Fn성장,ETF,KOR,KOSPI,KRW,,,,,,,
 284430,KODEX 200미국채혼합,ETF,KOR,KOSPI,KRW,,,,,,,
 437070,KODEX 아시아달러채권SRI플러스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-233160,TIGER 코스닥150 레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
-461450,KODEX 코스닥글로벌,ETF,KOR,KOSPI,KRW,,,,,,,
+456680,TIGER 차이나전기차레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+462330,KODEX 2차전지산업레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 354350,HANARO 글로벌럭셔리S&P(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-390950,HANARO 단기채권액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-458760,TIGER 미국배당+7%프리미엄다우존스,ETF,KOR,KOSPI,KRW,,,,,,,
-139250,TIGER 200 에너지화학,ETF,KOR,KOSPI,KRW,,,,,,,
 261260,KODEX 미국달러선물인버스2X,ETF,KOR,KOSPI,KRW,,,,,,,
+390950,HANARO 단기채권액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 449450,ARIRANG K방산Fn,ETF,KOR,KOSPI,KRW,,,,,,,
+461450,KODEX 코스닥글로벌,ETF,KOR,KOSPI,KRW,,,,,,,
+233160,TIGER 코스닥150 레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+458760,TIGER 미국배당+7%프리미엄다우존스,ETF,KOR,KOSPI,KRW,,,,,,,
 448490,HANARO 32-10 국고채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+139250,TIGER 200 에너지화학,ETF,KOR,KOSPI,KRW,,,,,,,
 388280,KBSTAR Fn컨택트대표,ETF,KOR,KOSPI,KRW,,,,,,,
 371450,TIGER 글로벌클라우드컴퓨팅INDXX,ETF,KOR,KOSPI,KRW,,,,,,,
-407830,에셋플러스 글로벌플랫폼액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+271050,KODEX WTI원유선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
+463290,KTOP 단기금융채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 456610,TIGER 미국달러SOFR금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+407830,에셋플러스 글로벌플랫폼액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+108450,ACE 삼성그룹섹터가중,ETF,KOR,KOSPI,KRW,,,,,,,
 456600,TIMEFOLIO 글로벌AI인공지능액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 433330,SOL 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
 117680,KODEX 철강,ETF,KOR,KOSPI,KRW,,,,,,,
-271050,KODEX WTI원유선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
-385510,KODEX K-신재생에너지액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 195930,TIGER 유로스탁스50(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 336160,KBSTAR 금융채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-368190,HANARO Fn K-뉴딜디지털플러스,ETF,KOR,KOSPI,KRW,,,,,,,
-440640,ACE 단기채권알파액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-108450,ACE 삼성그룹섹터가중,ETF,KOR,KOSPI,KRW,,,,,,,
-101280,KODEX 일본TOPIX100,ETF,KOR,KOSPI,KRW,,,,,,,
 360140,KODEX 200롱코스닥150숏선물,ETF,KOR,KOSPI,KRW,,,,,,,
+385510,KODEX K-신재생에너지액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+440640,ACE 단기채권알파액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+458250,TIGER 미국채30년스트립액티브(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+368190,HANARO Fn K-뉴딜디지털플러스,ETF,KOR,KOSPI,KRW,,,,,,,
+101280,KODEX 일본TOPIX100,ETF,KOR,KOSPI,KRW,,,,,,,
 387270,TIGER 글로벌BBIG액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-417630,TIGER KEDI혁신기업ESG30,ETF,KOR,KOSPI,KRW,,,,,,,
 276970,KODEX 미국S&P500배당귀족커버드콜(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 256440,ACE 인도네시아MSCI(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-371470,TIGER 차이나바이오테크SOLACTIVE,ETF,KOR,KOSPI,KRW,,,,,,,
 122260,KOSEF 통안채1년,ETF,KOR,KOSPI,KRW,,,,,,,
+365000,TIGER KRX인터넷K-뉴딜,ETF,KOR,KOSPI,KRW,,,,,,,
 152870,파워 200,ETF,KOR,KOSPI,KRW,,,,,,,
+371470,TIGER 차이나바이오테크SOLACTIVE,ETF,KOR,KOSPI,KRW,,,,,,,
 266370,KODEX IT,ETF,KOR,KOSPI,KRW,,,,,,,
-458250,TIGER 미국채30년스트립액티브(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 441640,KODEX 미국배당프리미엄액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 123310,TIGER 인버스,ETF,KOR,KOSPI,KRW,,,,,,,
-365000,TIGER KRX인터넷K-뉴딜,ETF,KOR,KOSPI,KRW,,,,,,,
+102970,KODEX 증권,ETF,KOR,KOSPI,KRW,,,,,,,
 099140,KODEX 차이나H,ETF,KOR,KOSPI,KRW,,,,,,,
 238720,ACE 일본Nikkei225(H),ETF,KOR,KOSPI,KRW,,,,,,,
-123320,TIGER 레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
-102970,KODEX 증권,ETF,KOR,KOSPI,KRW,,,,,,,
+417630,TIGER KEDI혁신기업ESG30,ETF,KOR,KOSPI,KRW,,,,,,,
 456880,ACE 미국달러SOFR금리(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 445150,KODEX K-친환경선박액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-463290,KTOP 단기금융채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 411540,SOL 200 Top10,ETF,KOR,KOSPI,KRW,,,,,,,
-227540,TIGER 200 헬스케어,ETF,KOR,KOSPI,KRW,,,,,,,
 359210,KODEX 코스피TR,ETF,KOR,KOSPI,KRW,,,,,,,
+227540,TIGER 200 헬스케어,ETF,KOR,KOSPI,KRW,,,,,,,
+123320,TIGER 레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 458030,WOORI 단기국공채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-404260,KODEX KRX기후변화솔루션,ETF,KOR,KOSPI,KRW,,,,,,,
 395750,ARIRANG ESG가치주액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-415340,KODEX 차이나과창판STAR50(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+404260,KODEX KRX기후변화솔루션,ETF,KOR,KOSPI,KRW,,,,,,,
 203780,TIGER 미국나스닥바이오,ETF,KOR,KOSPI,KRW,,,,,,,
+415340,KODEX 차이나과창판STAR50(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 387280,TIGER 퓨처모빌리티액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-418660,TIGER 미국나스닥100레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-449190,KODEX 미국나스닥100(H),ETF,KOR,KOSPI,KRW,,,,,,,
 304780,HANARO 200선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+449190,KODEX 미국나스닥100(H),ETF,KOR,KOSPI,KRW,,,,,,,
+418660,TIGER 미국나스닥100레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 394350,KOSEF 릭소글로벌퓨처모빌리티MSCI,ETF,KOR,KOSPI,KRW,,,,,,,
 138230,KOSEF 미국달러선물,ETF,KOR,KOSPI,KRW,,,,,,,
 200030,KODEX 미국S&P500산업재(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-453820,KODEX 인도Nifty50레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-272910,ACE 중장기국공채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 261270,KODEX 미국달러선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
+272910,ACE 중장기국공채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+453820,KODEX 인도Nifty50레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 256750,KODEX 차이나심천ChiNext(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-308620,KODEX 미국채10년선물,ETF,KOR,KOSPI,KRW,,,,,,,
 332500,ACE 200TR,ETF,KOR,KOSPI,KRW,,,,,,,
+308620,KODEX 미국채10년선물,ETF,KOR,KOSPI,KRW,,,,,,,
 400570,KODEX 유럽탄소배출권선물ICE(H),ETF,KOR,KOSPI,KRW,,,,,,,
 434960,대신343 K200,ETF,KOR,KOSPI,KRW,,,,,,,
+452250,ACE 미국30년국채선물레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 261250,KODEX 미국달러선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 319640,TIGER 골드선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
 300640,KBSTAR 게임테마,ETF,KOR,KOSPI,KRW,,,,,,,
-117700,KODEX 건설,ETF,KOR,KOSPI,KRW,,,,,,,
-248270,TIGER S&P글로벌헬스케어(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+250780,TIGER 코스닥150선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
 337160,KODEX 200ESG,ETF,KOR,KOSPI,KRW,,,,,,,
 292190,KODEX KRX300,ETF,KOR,KOSPI,KRW,,,,,,,
-250780,TIGER 코스닥150선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
+248270,TIGER S&P글로벌헬스케어(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+243880,TIGER 200IT레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+117700,KODEX 건설,ETF,KOR,KOSPI,KRW,,,,,,,
 332620,ARIRANG 미국장기우량회사채,ETF,KOR,KOSPI,KRW,,,,,,,
 453660,KODEX 미국S&P500경기소비재,ETF,KOR,KOSPI,KRW,,,,,,,
-243880,TIGER 200IT레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
-429000,TIGER 미국S&P500배당귀족,ETF,KOR,KOSPI,KRW,,,,,,,
-452250,ACE 미국30년국채선물레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-391600,ACE 미국친환경그린테마INDXX,ETF,KOR,KOSPI,KRW,,,,,,,
 266360,KODEX 미디어&엔터테인먼트,ETF,KOR,KOSPI,KRW,,,,,,,
-341850,TIGER 리츠부동산인프라채권TR KIS,ETF,KOR,KOSPI,KRW,,,,,,,
+429000,TIGER 미국S&P500배당귀족,ETF,KOR,KOSPI,KRW,,,,,,,
 236350,TIGER 인도니프티50레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-169950,KODEX 차이나A50,ETF,KOR,KOSPI,KRW,,,,,,,
-450910,SOL 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
-446700,KBSTAR 배터리 리사이클링iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
 310960,TIGER 200TR,ETF,KOR,KOSPI,KRW,,,,,,,
+341850,TIGER 리츠부동산인프라채권TR KIS,ETF,KOR,KOSPI,KRW,,,,,,,
+391600,ACE 미국친환경그린테마INDXX,ETF,KOR,KOSPI,KRW,,,,,,,
+169950,KODEX 차이나A50,ETF,KOR,KOSPI,KRW,,,,,,,
+130680,TIGER 원유선물Enhanced(H),ETF,KOR,KOSPI,KRW,,,,,,,
 396510,TIGER 차이나클린에너지SOLACTIVE,ETF,KOR,KOSPI,KRW,,,,,,,
+450910,SOL 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
 375770,KODEX 탄소효율그린뉴딜,ETF,KOR,KOSPI,KRW,,,,,,,
+426150,WOORI 대한민국국고채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 456250,KODEX 유럽명품TOP10 STOXX,ETF,KOR,KOSPI,KRW,,,,,,,
 218420,KODEX 미국S&P500에너지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-426150,WOORI 대한민국국고채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-385600,ACE 2차전지&친환경차액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-130680,TIGER 원유선물Enhanced(H),ETF,KOR,KOSPI,KRW,,,,,,,
+446700,KBSTAR 배터리 리사이클링iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
+326230,KBSTAR 내수주플러스,ETF,KOR,KOSPI,KRW,,,,,,,
 276990,KODEX 글로벌로봇(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 287180,ARIRANG 미국나스닥테크,ETF,KOR,KOSPI,KRW,,,,,,,
-326230,KBSTAR 내수주플러스,ETF,KOR,KOSPI,KRW,,,,,,,
-332610,ARIRANG 미국단기우량회사채,ETF,KOR,KOSPI,KRW,,,,,,,
 279530,KODEX 고배당,ETF,KOR,KOSPI,KRW,,,,,,,
-404540,TIGER KRX기후변화솔루션,ETF,KOR,KOSPI,KRW,,,,,,,
-376410,TIGER 탄소효율그린뉴딜,ETF,KOR,KOSPI,KRW,,,,,,,
-400590,SOL 글로벌탄소배출권선물IHS(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+332610,ARIRANG 미국단기우량회사채,ETF,KOR,KOSPI,KRW,,,,,,,
+385600,ACE 2차전지&친환경차액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 114470,KOSEF 국고채3년,ETF,KOR,KOSPI,KRW,,,,,,,
-385520,KODEX K-미래차액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+376410,TIGER 탄소효율그린뉴딜,ETF,KOR,KOSPI,KRW,,,,,,,
 440340,TIGER 글로벌멀티에셋TIF액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+400590,SOL 글로벌탄소배출권선물IHS(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+385520,KODEX K-미래차액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 276650,KBSTAR 글로벌4차산업IT(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 385590,ACE ESG액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-138520,TIGER 삼성그룹펀더멘털,ETF,KOR,KOSPI,KRW,,,,,,,
+404540,TIGER KRX기후변화솔루션,ETF,KOR,KOSPI,KRW,,,,,,,
 252420,KBSTAR 200선물인버스2X,ETF,KOR,KOSPI,KRW,,,,,,,
 269420,KODEX S&P글로벌인프라(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-395160,KODEX Fn시스템반도체,ETF,KOR,KOSPI,KRW,,,,,,,
 363510,SOL KIS단기통안채,ETF,KOR,KOSPI,KRW,,,,,,,
+395160,KODEX Fn시스템반도체,ETF,KOR,KOSPI,KRW,,,,,,,
 438320,TIGER 차이나항셍테크레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-399110,SOL 미국S&P500ESG,ETF,KOR,KOSPI,KRW,,,,,,,
-435420,TIGER 미국나스닥100TR채권혼합Fn,ETF,KOR,KOSPI,KRW,,,,,,,
 114460,ACE 국고채3년,ETF,KOR,KOSPI,KRW,,,,,,,
+435420,TIGER 미국나스닥100TR채권혼합Fn,ETF,KOR,KOSPI,KRW,,,,,,,
 448540,ACE 엔비디아채권혼합블룸버그,ETF,KOR,KOSPI,KRW,,,,,,,
-412570,TIGER KRX2차전지K-뉴딜레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
-354500,ACE 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
+399110,SOL 미국S&P500ESG,ETF,KOR,KOSPI,KRW,,,,,,,
+138520,TIGER 삼성그룹펀더멘털,ETF,KOR,KOSPI,KRW,,,,,,,
 449180,KODEX 미국S&P500(H),ETF,KOR,KOSPI,KRW,,,,,,,
 114100,KBSTAR 국고채3년,ETF,KOR,KOSPI,KRW,,,,,,,
+354500,ACE 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
 377990,TIGER Fn신재생에너지,ETF,KOR,KOSPI,KRW,,,,,,,
 160580,TIGER 구리실물,ETF,KOR,KOSPI,KRW,,,,,,,
 448330,KODEX 삼성전자채권혼합Wise,ETF,KOR,KOSPI,KRW,,,,,,,
@@ -10832,125 +10831,125 @@ RRIF,Rainforest Resources Inc.,EQUITY,USA,OTC,USD,,Rainforest Resources Inc.,,,,
 280930,KODEX 미국러셀2000(H),ETF,KOR,KOSPI,KRW,,,,,,,
 329670,KODEX TRF7030,ETF,KOR,KOSPI,KRW,,,,,,,
 381560,HANARO Fn전기&수소차,ETF,KOR,KOSPI,KRW,,,,,,,
-139220,TIGER 200 건설,ETF,KOR,KOSPI,KRW,,,,,,,
 237370,KODEX 배당성장채권혼합,ETF,KOR,KOSPI,KRW,,,,,,,
 337140,KODEX 코스피대형주,ETF,KOR,KOSPI,KRW,,,,,,,
+219390,KBSTAR 미국S&P원유생산기업(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+412570,TIGER KRX2차전지K-뉴딜레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+139220,TIGER 200 건설,ETF,KOR,KOSPI,KRW,,,,,,,
 261070,TIGER 코스닥150바이오테크,ETF,KOR,KOSPI,KRW,,,,,,,
 397410,KBSTAR 국채선물5년추종인버스,ETF,KOR,KOSPI,KRW,,,,,,,
-304770,HANARO 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
-219390,KBSTAR 미국S&P원유생산기업(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+409810,KODEX 미국나스닥100선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
 282000,KBSTAR 국고채3년선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
-448570,FOCUS AI코리아액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-252400,KBSTAR 200선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 261120,TIGER 미국달러선물인버스2X,ETF,KOR,KOSPI,KRW,,,,,,,
+252400,KBSTAR 200선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+448570,FOCUS AI코리아액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+304770,HANARO 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
 447620,SOL 미국TOP5채권혼합40 Solactive,ETF,KOR,KOSPI,KRW,,,,,,,
 445910,TIGER MKF배당귀족,ETF,KOR,KOSPI,KRW,,,,,,,
-409810,KODEX 미국나스닥100선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
 300950,KODEX 게임산업,ETF,KOR,KOSPI,KRW,,,,,,,
 434060,KODEX TDF2050액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 277540,ACE 아시아TOP50S&P,ETF,KOR,KOSPI,KRW,,,,,,,
-250730,KBSTAR 차이나HSCEI(H),ETF,KOR,KOSPI,KRW,,,,,,,
 446690,KODEX 아시아반도체공급망exChina액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 210780,TIGER 코스피고배당,ETF,KOR,KOSPI,KRW,,,,,,,
 237350,KODEX 코스피100,ETF,KOR,KOSPI,KRW,,,,,,,
+364990,TIGER KRX게임K-뉴딜,ETF,KOR,KOSPI,KRW,,,,,,,
+250730,KBSTAR 차이나HSCEI(H),ETF,KOR,KOSPI,KRW,,,,,,,
 396520,TIGER 차이나반도체FACTSET,ETF,KOR,KOSPI,KRW,,,,,,,
 453330,KBSTAR 미국S&P500(H),ETF,KOR,KOSPI,KRW,,,,,,,
-364990,TIGER KRX게임K-뉴딜,ETF,KOR,KOSPI,KRW,,,,,,,
 137610,TIGER 농산물선물Enhanced(H),ETF,KOR,KOSPI,KRW,,,,,,,
 217770,TIGER 원유선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
+407820,에셋플러스 코리아플랫폼액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 438560,SOL 국고채3년,ETF,KOR,KOSPI,KRW,,,,,,,
 265690,ACE 러시아MSCI(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-407820,에셋플러스 코리아플랫폼액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 122090,ARIRANG 코스피50,ETF,KOR,KOSPI,KRW,,,,,,,
 442260,마이티 다이나믹퀀트액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 211900,KODEX 배당성장,ETF,KOR,KOSPI,KRW,,,,,,,
 292730,FOCUS KRX300,ETF,KOR,KOSPI,KRW,,,,,,,
 252410,KBSTAR 200선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
+316670,KOSEF 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
 411720,KBSTAR 글로벌메타버스Moorgate,ETF,KOR,KOSPI,KRW,,,,,,,
 289260,TIGER MSCI KOREA ESG리더스,ETF,KOR,KOSPI,KRW,,,,,,,
 462900,KoAct 바이오헬스케어액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-102960,KODEX 기계장비,ETF,KOR,KOSPI,KRW,,,,,,,
 352560,KODEX 다우존스미국리츠(H),ETF,KOR,KOSPI,KRW,,,,,,,
-316670,KOSEF 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
+102960,KODEX 기계장비,ETF,KOR,KOSPI,KRW,,,,,,,
 105780,KBSTAR 5대그룹주,ETF,KOR,KOSPI,KRW,,,,,,,
 271060,KODEX 3대농산물선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
 385710,TIMEFOLIO 이노베이션액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-139240,TIGER 200 철강소재,ETF,KOR,KOSPI,KRW,,,,,,,
 448630,KBSTAR 삼성그룹Top3채권혼합블룸버그,ETF,KOR,KOSPI,KRW,,,,,,,
+139240,TIGER 200 철강소재,ETF,KOR,KOSPI,KRW,,,,,,,
 337150,KODEX 200exTOP,ETF,KOR,KOSPI,KRW,,,,,,,
 289480,TIGER 200커버드콜ATM,ETF,KOR,KOSPI,KRW,,,,,,,
 182490,TIGER 단기선진하이일드(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 140710,KODEX 운송,ETF,KOR,KOSPI,KRW,,,,,,,
 196030,ACE 일본TOPIX레버리지(H),ETF,KOR,KOSPI,KRW,,,,,,,
 365040,TIGER AI코리아그로스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-285690,FOCUS ESG리더스,ETF,KOR,KOSPI,KRW,,,,,,,
-140700,KODEX 보험,ETF,KOR,KOSPI,KRW,,,,,,,
 211560,TIGER 배당성장,ETF,KOR,KOSPI,KRW,,,,,,,
-183700,KBSTAR 채권혼합,ETF,KOR,KOSPI,KRW,,,,,,,
+285690,FOCUS ESG리더스,ETF,KOR,KOSPI,KRW,,,,,,,
 167860,KOSEF 국고채10년레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+183700,KBSTAR 채권혼합,ETF,KOR,KOSPI,KRW,,,,,,,
 104530,KOSEF 고배당,ETF,KOR,KOSPI,KRW,,,,,,,
 241390,KBSTAR V&S셀렉트밸류채권혼합,ETF,KOR,KOSPI,KRW,,,,,,,
 306950,KODEX KRX300레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
-117460,KODEX 에너지화학,ETF,KOR,KOSPI,KRW,,,,,,,
+217780,TIGER 차이나CSI300인버스(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+276000,TIGER 글로벌자원생산기업(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 411050,ACE 글로벌메타버스테크액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 181480,ACE 미국다우존스리츠(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-276000,TIGER 글로벌자원생산기업(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-225800,KOSEF 미국달러선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
-453950,TIGER TSMC밸류체인FACTSET,ETF,KOR,KOSPI,KRW,,,,,,,
-217780,TIGER 차이나CSI300인버스(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-195970,ARIRANG 선진국MSCI(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+140700,KODEX 보험,ETF,KOR,KOSPI,KRW,,,,,,,
+117460,KODEX 에너지화학,ETF,KOR,KOSPI,KRW,,,,,,,
 463250,TIGER 스페이스테크iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
-239660,ARIRANG 우량회사채50 1년,ETF,KOR,KOSPI,KRW,,,,,,,
+453950,TIGER TSMC밸류체인FACTSET,ETF,KOR,KOSPI,KRW,,,,,,,
 395280,HANARO Fn K-게임,ETF,KOR,KOSPI,KRW,,,,,,,
+195970,ARIRANG 선진국MSCI(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+225800,KOSEF 미국달러선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+239660,ARIRANG 우량회사채50 1년,ETF,KOR,KOSPI,KRW,,,,,,,
 300610,TIGER K게임,ETF,KOR,KOSPI,KRW,,,,,,,
+423170,SOL 한국형글로벌반도체액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 253290,KBSTAR 헬스케어채권혼합,ETF,KOR,KOSPI,KRW,,,,,,,
 245350,TIGER 유로스탁스배당30,ETF,KOR,KOSPI,KRW,,,,,,,
 445690,BNK 주주가치액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-449770,KOSEF 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
-453080,KOSEF 미국나스닥100(H),ETF,KOR,KOSPI,KRW,,,,,,,
-213630,ARIRANG 미국다우존스고배당주(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 291130,ACE 멕시코MSCI(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+213630,ARIRANG 미국다우존스고배당주(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+453080,KOSEF 미국나스닥100(H),ETF,KOR,KOSPI,KRW,,,,,,,
 441800,TIMEFOLIO Korea플러스배당액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-401590,HANARO 글로벌탄소배출권선물ICE(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+449770,KOSEF 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
 421320,ARIRANG 우주항공&UAM iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
-423170,SOL 한국형글로벌반도체액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 223190,KODEX 200가치저변동,ETF,KOR,KOSPI,KRW,,,,,,,
-419420,KODEX 미국클린에너지나스닥,ETF,KOR,KOSPI,KRW,,,,,,,
+401590,HANARO 글로벌탄소배출권선물ICE(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 138530,TIGER LG그룹+펀더멘털,ETF,KOR,KOSPI,KRW,,,,,,,
-289040,KODEX MSCI KOREA ESG유니버설,ETF,KOR,KOSPI,KRW,,,,,,,
-310080,KBSTAR 중국MSCI China(H),ETF,KOR,KOSPI,KRW,,,,,,,
-429760,ARIRANG 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
 422260,VITA MZ소비액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+310080,KBSTAR 중국MSCI China(H),ETF,KOR,KOSPI,KRW,,,,,,,
+289040,KODEX MSCI KOREA ESG유니버설,ETF,KOR,KOSPI,KRW,,,,,,,
+419420,KODEX 미국클린에너지나스닥,ETF,KOR,KOSPI,KRW,,,,,,,
 453060,HANARO KOFR금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-390400,KODEX 미국스마트모빌리티S&P,ETF,KOR,KOSPI,KRW,,,,,,,
+429760,ARIRANG 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
 447660,ARIRANG Apple채권혼합Fn,ETF,KOR,KOSPI,KRW,,,,,,,
 458750,TIGER 미국배당+3%프리미엄다우존스,ETF,KOR,KOSPI,KRW,,,,,,,
-435040,ACE 글로벌브랜드TOP10블룸버그,ETF,KOR,KOSPI,KRW,,,,,,,
-368680,KODEX Fn K-뉴딜디지털플러스,ETF,KOR,KOSPI,KRW,,,,,,,
 251600,ARIRANG 고배당주채권혼합,ETF,KOR,KOSPI,KRW,,,,,,,
-441330,KOSEF 차이나A50커넥트MSCI,ETF,KOR,KOSPI,KRW,,,,,,,
-185680,KODEX 미국S&P바이오(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+368680,KODEX Fn K-뉴딜디지털플러스,ETF,KOR,KOSPI,KRW,,,,,,,
 266410,KODEX 필수소비재,ETF,KOR,KOSPI,KRW,,,,,,,
+185680,KODEX 미국S&P바이오(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+435040,ACE 글로벌브랜드TOP10블룸버그,ETF,KOR,KOSPI,KRW,,,,,,,
+390400,KODEX 미국스마트모빌리티S&P,ETF,KOR,KOSPI,KRW,,,,,,,
 225030,TIGER 미국S&P500선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
 140950,파워 코스피100,ETF,KOR,KOSPI,KRW,,,,,,,
-459560,KODEX 테슬라밸류체인FactSet,ETF,KOR,KOSPI,KRW,,,,,,,
 292160,TIGER KRX300,ETF,KOR,KOSPI,KRW,,,,,,,
+441330,KOSEF 차이나A50커넥트MSCI,ETF,KOR,KOSPI,KRW,,,,,,,
+459560,KODEX 테슬라밸류체인FactSet,ETF,KOR,KOSPI,KRW,,,,,,,
 453630,KODEX 미국S&P500필수소비재,ETF,KOR,KOSPI,KRW,,,,,,,
-453650,KODEX 미국S&P500금융,ETF,KOR,KOSPI,KRW,,,,,,,
 442090,에셋플러스 코리아대장장이액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 433220,에셋플러스 글로벌대장장이액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-461580,TIGER 코스닥글로벌,ETF,KOR,KOSPI,KRW,,,,,,,
-138910,KODEX 구리선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
+453650,KODEX 미국S&P500금융,ETF,KOR,KOSPI,KRW,,,,,,,
 399580,KBSTAR 글로벌클린에너지S&P,ETF,KOR,KOSPI,KRW,,,,,,,
 229720,KODEX KTOP30,ETF,KOR,KOSPI,KRW,,,,,,,
-292050,KBSTAR KRX300,ETF,KOR,KOSPI,KRW,,,,,,,
-168300,KTOP 코스피50,ETF,KOR,KOSPI,KRW,,,,,,,
+138910,KODEX 구리선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
 230480,KOSEF 미국달러선물인버스2X,ETF,KOR,KOSPI,KRW,,,,,,,
 280320,ACE 미국IT인터넷S&P(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-449680,TIGER 한중전기차(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-373790,KOSEF 미국방어배당성장나스닥,ETF,KOR,KOSPI,KRW,,,,,,,
-453640,KODEX 미국S&P500헬스케어,ETF,KOR,KOSPI,KRW,,,,,,,
+168300,KTOP 코스피50,ETF,KOR,KOSPI,KRW,,,,,,,
+292050,KBSTAR KRX300,ETF,KOR,KOSPI,KRW,,,,,,,
+461580,TIGER 코스닥글로벌,ETF,KOR,KOSPI,KRW,,,,,,,
 430500,KOSEF 물가채KIS,ETF,KOR,KOSPI,KRW,,,,,,,
+449680,TIGER 한중전기차(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+453640,KODEX 미국S&P500헬스케어,ETF,KOR,KOSPI,KRW,,,,,,,
 252000,TIGER 200동일가중,ETF,KOR,KOSPI,KRW,,,,,,,
 448100,WOORI 200,ETF,KOR,KOSPI,KRW,,,,,,,
 375760,HANARO 탄소효율그린뉴딜,ETF,KOR,KOSPI,KRW,,,,,,,
@@ -10958,276 +10957,277 @@ RRIF,Rainforest Resources Inc.,EQUITY,USA,OTC,USD,,Rainforest Resources Inc.,,,,
 104520,KOSEF 블루칩,ETF,KOR,KOSPI,KRW,,,,,,,
 354240,KBSTAR 미국고정배당우선증권ICE TR,ETF,KOR,KOSPI,KRW,,,,,,,
 403790,마이다스 KoreaStock액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-455960,KBSTAR 미국달러SOFR금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-395760,ARIRANG ESG성장주액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-440650,ACE 미국달러단기채권액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-463690,KODEX 미국S&P500통신서비스,ETF,KOR,KOSPI,KRW,,,,,,,
-091220,TIGER 은행,ETF,KOR,KOSPI,KRW,,,,,,,
-463680,KODEX 미국S&P500테크놀로지,ETF,KOR,KOSPI,KRW,,,,,,,
-156080,KODEX MSCI Korea,ETF,KOR,KOSPI,KRW,,,,,,,
 451670,KBSTAR 국채30년레버리지KAP(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-449690,TIGER 한중반도체(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-463640,KODEX 미국S&P500유틸리티,ETF,KOR,KOSPI,KRW,,,,,,,
-426030,TIMEFOLIO 미국나스닥100액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-292500,SOL KRX300,ETF,KOR,KOSPI,KRW,,,,,,,
+091220,TIGER 은행,ETF,KOR,KOSPI,KRW,,,,,,,
+395760,ARIRANG ESG성장주액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+455960,KBSTAR 미국달러SOFR금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+156080,KODEX MSCI Korea,ETF,KOR,KOSPI,KRW,,,,,,,
+463690,KODEX 미국S&P500통신서비스,ETF,KOR,KOSPI,KRW,,,,,,,
 457690,KODEX 33-06 국고채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+292500,SOL KRX300,ETF,KOR,KOSPI,KRW,,,,,,,
+449690,TIGER 한중반도체(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 139270,TIGER 200 금융,ETF,KOR,KOSPI,KRW,,,,,,,
-226980,KODEX 200 중소형,ETF,KOR,KOSPI,KRW,,,,,,,
-292750,ARIRANG KRX300,ETF,KOR,KOSPI,KRW,,,,,,,
 457700,KODEX 53-09 국고채액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-433970,KODEX TDF2030액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-100910,KOSEF KRX100,ETF,KOR,KOSPI,KRW,,,,,,,
-418670,TIGER 글로벌사이버보안INDXX,ETF,KOR,KOSPI,KRW,,,,,,,
 225130,ACE 골드선물 레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-449580,KBSTAR 미국빅데이터Top3채권혼합iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
+100910,KOSEF KRX100,ETF,KOR,KOSPI,KRW,,,,,,,
+433970,KODEX TDF2030액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+292750,ARIRANG KRX300,ETF,KOR,KOSPI,KRW,,,,,,,
+426030,TIMEFOLIO 미국나스닥100액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+226980,KODEX 200 중소형,ETF,KOR,KOSPI,KRW,,,,,,,
+463680,KODEX 미국S&P500테크놀로지,ETF,KOR,KOSPI,KRW,,,,,,,
 152500,ACE 레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+463640,KODEX 미국S&P500유틸리티,ETF,KOR,KOSPI,KRW,,,,,,,
+449580,KBSTAR 미국빅데이터Top3채권혼합iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
+418670,TIGER 글로벌사이버보안INDXX,ETF,KOR,KOSPI,KRW,,,,,,,
 395150,KODEX Fn웹툰&드라마,ETF,KOR,KOSPI,KRW,,,,,,,
 253150,ARIRANG 200선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
-225050,TIGER 유로스탁스레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 253160,ARIRANG 200선물인버스2X,ETF,KOR,KOSPI,KRW,,,,,,,
-449780,KOSEF 미국S&P500(H),ETF,KOR,KOSPI,KRW,,,,,,,
-429010,TIGER 미국나스닥넥스트100,ETF,KOR,KOSPI,KRW,,,,,,,
 139660,KOSEF 미국달러선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
-417450,KBSTAR 글로벌수소경제Indxx,ETF,KOR,KOSPI,KRW,,,,,,,
+225050,TIGER 유로스탁스레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+449780,KOSEF 미국S&P500(H),ETF,KOR,KOSPI,KRW,,,,,,,
 402520,FOCUS 혁신기업액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+429010,TIGER 미국나스닥넥스트100,ETF,KOR,KOSPI,KRW,,,,,,,
+417450,KBSTAR 글로벌수소경제Indxx,ETF,KOR,KOSPI,KRW,,,,,,,
 145850,TREX 펀더멘탈 200,ETF,KOR,KOSPI,KRW,,,,,,,
 400580,SOL 유럽탄소배출권선물S&P(H),ETF,KOR,KOSPI,KRW,,,,,,,
-426020,TIMEFOLIO 미국S&P500액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 227570,TIGER 우량가치,ETF,KOR,KOSPI,KRW,,,,,,,
+440650,ACE 미국달러단기채권액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+426020,TIMEFOLIO 미국S&P500액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 244620,KODEX 모멘텀Plus,ETF,KOR,KOSPI,KRW,,,,,,,
-360150,KODEX 코스닥150롱코스피200숏선물,ETF,KOR,KOSPI,KRW,,,,,,,
-428560,KODEX 미국ETF산업Top10 Indxx,ETF,KOR,KOSPI,KRW,,,,,,,
 455660,ACE 미국하이일드액티브(H),ETF,KOR,KOSPI,KRW,,,,,,,
+428560,KODEX 미국ETF산업Top10 Indxx,ETF,KOR,KOSPI,KRW,,,,,,,
 424460,HANARO 글로벌워터MSCI(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-108590,TREX 200,ETF,KOR,KOSPI,KRW,,,,,,,
-429980,SOL 한국형글로벌전기차&2차전지액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-438740,마이다스 KoreaStock중소형액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-316300,ACE 싱가포르리츠,ETF,KOR,KOSPI,KRW,,,,,,,
-433500,ACE 원자력테마딥서치,ETF,KOR,KOSPI,KRW,,,,,,,
 459370,SOL 유럽탄소배출권선물인버스ICE(H),ETF,KOR,KOSPI,KRW,,,,,,,
+108590,TREX 200,ETF,KOR,KOSPI,KRW,,,,,,,
+438740,마이다스 KoreaStock중소형액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+360150,KODEX 코스닥150롱코스피200숏선물,ETF,KOR,KOSPI,KRW,,,,,,,
+433500,ACE 원자력테마딥서치,ETF,KOR,KOSPI,KRW,,,,,,,
+131890,ACE 삼성그룹동일가중,ETF,KOR,KOSPI,KRW,,,,,,,
 307010,KBSTAR KRX300레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 452440,VITA 밸류알파액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-131890,ACE 삼성그룹동일가중,ETF,KOR,KOSPI,KRW,,,,,,,
-270800,KBSTAR KQ고배당,ETF,KOR,KOSPI,KRW,,,,,,,
-438100,ACE 미국나스닥100채권혼합액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+316300,ACE 싱가포르리츠,ETF,KOR,KOSPI,KRW,,,,,,,
+429980,SOL 한국형글로벌전기차&2차전지액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+371130,ACE 베트남VN30선물블룸버그레버리지(H),ETF,KOR,KOSPI,KRW,,,,,,,
+267490,KBSTAR 미국장기국채선물레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 253230,KOSEF 200선물인버스2X,ETF,KOR,KOSPI,KRW,,,,,,,
+438100,ACE 미국나스닥100채권혼합액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+289670,ARIRANG 국채선물10년,ETF,KOR,KOSPI,KRW,,,,,,,
 460270,히어로즈 미국달러SOFR금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+270800,KBSTAR KQ고배당,ETF,KOR,KOSPI,KRW,,,,,,,
 460660,KBSTAR 미국S&P배당킹,ETF,KOR,KOSPI,KRW,,,,,,,
+153270,KOSEF 코스피100,ETF,KOR,KOSPI,KRW,,,,,,,
 444200,SOL KEDI메가테크액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 435550,히어로즈 TDF2050액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-153270,KOSEF 코스피100,ETF,KOR,KOSPI,KRW,,,,,,,
-289670,ARIRANG 국채선물10년,ETF,KOR,KOSPI,KRW,,,,,,,
 225060,TIGER 이머징마켓MSCI레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-267490,KBSTAR 미국장기국채선물레버리지(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-371130,ACE 베트남VN30선물블룸버그레버리지(H),ETF,KOR,KOSPI,KRW,,,,,,,
 438080,ACE 미국S&P500채권혼합액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-404650,SOL KRX기후변화솔루션,ETF,KOR,KOSPI,KRW,,,,,,,
 346000,HANARO KAP초장기국고채,ETF,KOR,KOSPI,KRW,,,,,,,
-450180,KODEX 한중전기차(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 460960,ACE 글로벌인컴TOP10 SOLACTIVE,ETF,KOR,KOSPI,KRW,,,,,,,
-403990,KBSTAR KRX기후변화솔루션,ETF,KOR,KOSPI,KRW,,,,,,,
 143460,ACE 밸류대형,ETF,KOR,KOSPI,KRW,,,,,,,
+404650,SOL KRX기후변화솔루션,ETF,KOR,KOSPI,KRW,,,,,,,
 305050,ACE 코스피,ETF,KOR,KOSPI,KRW,,,,,,,
-462340,에셋플러스 글로벌다이나믹시니어액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-331910,KOSEF Fn중소형,ETF,KOR,KOSPI,KRW,,,,,,,
-461910,ARIRANG 미국테크10레버리지iSelect(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 253250,KOSEF 200선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
-451150,에셋플러스 글로벌영에이지액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 460280,KOSEF Fn유전자혁신기술,ETF,KOR,KOSPI,KRW,,,,,,,
-137930,마이다스 200커버드콜5%OTM,ETF,KOR,KOSPI,KRW,,,,,,,
+331910,KOSEF Fn중소형,ETF,KOR,KOSPI,KRW,,,,,,,
+450180,KODEX 한중전기차(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 267440,KBSTAR 미국장기국채선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
-457990,ARIRANG 태양광&ESS Fn,ETF,KOR,KOSPI,KRW,,,,,,,
-432840,HANARO 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
-228820,TIGER KTOP30,ETF,KOR,KOSPI,KRW,,,,,,,
-415760,SOL 차이나육성산업액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-183710,KBSTAR 주식혼합,ETF,KOR,KOSPI,KRW,,,,,,,
-290080,KBSTAR 200고배당커버드콜ATM,ETF,KOR,KOSPI,KRW,,,,,,,
-272230,ACE 스마트밸류,ETF,KOR,KOSPI,KRW,,,,,,,
+137930,마이다스 200커버드콜5%OTM,ETF,KOR,KOSPI,KRW,,,,,,,
+462340,에셋플러스 글로벌다이나믹시니어액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+403990,KBSTAR KRX기후변화솔루션,ETF,KOR,KOSPI,KRW,,,,,,,
+451150,에셋플러스 글로벌영에이지액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+373790,KOSEF 미국방어배당성장나스닥,ETF,KOR,KOSPI,KRW,,,,,,,
 461600,SOL 미국30년국채액티브(H),ETF,KOR,KOSPI,KRW,,,,,,,
-404120,TIMEFOLIO 탄소중립액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-413220,SOL 차이나태양광CSI(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-459790,히어로즈 미국성장기업30액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-435540,히어로즈 TDF2040액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-269370,TIGER S&P글로벌인프라(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-457930,BNK 미래전략기술액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+228820,TIGER KTOP30,ETF,KOR,KOSPI,KRW,,,,,,,
+290080,KBSTAR 200고배당커버드콜ATM,ETF,KOR,KOSPI,KRW,,,,,,,
+432840,HANARO 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
+415760,SOL 차이나육성산업액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+457990,ARIRANG 태양광&ESS Fn,ETF,KOR,KOSPI,KRW,,,,,,,
 456100,HANARO 유로존국채25년플러스(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-304670,KODEX 미국채울트라30년선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
-275280,KODEX MSCI모멘텀,ETF,KOR,KOSPI,KRW,,,,,,,
+183710,KBSTAR 주식혼합,ETF,KOR,KOSPI,KRW,,,,,,,
 434730,HANARO 원자력iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
+272230,ACE 스마트밸류,ETF,KOR,KOSPI,KRW,,,,,,,
+435540,히어로즈 TDF2040액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+457930,BNK 미래전략기술액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+459790,히어로즈 미국성장기업30액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 322120,ACE 스마트퀄리티,ETF,KOR,KOSPI,KRW,,,,,,,
 139320,TIGER 금은선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
+461910,ARIRANG 미국테크10레버리지iSelect(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+269370,TIGER S&P글로벌인프라(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+404120,TIMEFOLIO 탄소중립액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+304670,KODEX 미국채울트라30년선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
 461900,ARIRANG 미국테크10iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
-261110,TIGER 미국달러선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
+413220,SOL 차이나태양광CSI(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 337120,KODEX Fn멀티팩터,ETF,KOR,KOSPI,KRW,,,,,,,
-291630,KOSEF 코스닥150선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
-138920,KODEX 콩선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
+275280,KODEX MSCI모멘텀,ETF,KOR,KOSPI,KRW,,,,,,,
+261110,TIGER 미국달러선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 435530,히어로즈 TDF2030액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 432600,KBSTAR 국채선물3년,ETF,KOR,KOSPI,KRW,,,,,,,
-404470,HANARO KRX기후변화솔루션,ETF,KOR,KOSPI,KRW,,,,,,,
 364690,KODEX 혁신기술테마액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-289250,TIGER MSCI KOREA ESG유니버설,ETF,KOR,KOSPI,KRW,,,,,,,
-456200,ARIRANG 미국달러SOFR금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-464060,HANARO 글로벌반도체TOP10 SOLACTIVE,ETF,KOR,KOSPI,KRW,,,,,,,
-459750,KBSTAR 글로벌주식분산액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-322130,ACE 스마트로우볼,ETF,KOR,KOSPI,KRW,,,,,,,
-352540,KODEX TSE일본리츠(H),ETF,KOR,KOSPI,KRW,,,,,,,
 402460,HANARO Fn K-메타버스MZ,ETF,KOR,KOSPI,KRW,,,,,,,
-277650,TIGER 코스피중형주,ETF,KOR,KOSPI,KRW,,,,,,,
+352540,KODEX TSE일본리츠(H),ETF,KOR,KOSPI,KRW,,,,,,,
+456200,ARIRANG 미국달러SOFR금리액티브(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+289250,TIGER MSCI KOREA ESG유니버설,ETF,KOR,KOSPI,KRW,,,,,,,
+138920,KODEX 콩선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
+159800,마이티 코스피100,ETF,KOR,KOSPI,KRW,,,,,,,
+464060,HANARO 글로벌반도체TOP10 SOLACTIVE,ETF,KOR,KOSPI,KRW,,,,,,,
+322130,ACE 스마트로우볼,ETF,KOR,KOSPI,KRW,,,,,,,
 454320,HANARO CAPEX설비투자iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
+459750,KBSTAR 글로벌주식분산액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+277650,TIGER 코스피중형주,ETF,KOR,KOSPI,KRW,,,,,,,
+291630,KOSEF 코스닥150선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 272220,ACE 스마트모멘텀,ETF,KOR,KOSPI,KRW,,,,,,,
+379790,KBSTAR 유로스탁스50(H),ETF,KOR,KOSPI,KRW,,,,,,,
 450190,KODEX 한중반도체(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-219900,ACE 중국본토CSI300레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+237440,TIGER 경기방어채권혼합,ETF,KOR,KOSPI,KRW,,,,,,,
 234310,KBSTAR V&S셀렉트밸류,ETF,KOR,KOSPI,KRW,,,,,,,
 333950,ARIRANG KS로우사이즈가중TR,ETF,KOR,KOSPI,KRW,,,,,,,
-237440,TIGER 경기방어채권혼합,ETF,KOR,KOSPI,KRW,,,,,,,
 371150,KBSTAR 차이나항셍테크,ETF,KOR,KOSPI,KRW,,,,,,,
-379790,KBSTAR 유로스탁스50(H),ETF,KOR,KOSPI,KRW,,,,,,,
 307510,TIGER 의료기기,ETF,KOR,KOSPI,KRW,,,,,,,
 437370,KBSTAR 글로벌농업경제MV,ETF,KOR,KOSPI,KRW,,,,,,,
+219900,ACE 중국본토CSI300레버리지(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 454180,KOSEF 차이나내수소비TOP CSI,ETF,KOR,KOSPI,KRW,,,,,,,
-269530,ARIRANG S&P글로벌인프라,ETF,KOR,KOSPI,KRW,,,,,,,
-411860,KOSEF 독일DAX,ETF,KOR,KOSPI,KRW,,,,,,,
 433250,UNICORN R&D 액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 227830,ARIRANG 코스피,ETF,KOR,KOSPI,KRW,,,,,,,
-176950,KODEX 국채선물10년인버스,ETF,KOR,KOSPI,KRW,,,,,,,
-438900,HANARO Fn K-푸드,ETF,KOR,KOSPI,KRW,,,,,,,
-445930,KOSEF 차이나A50커넥트레버리지MSCI(합성H),ETF,KOR,KOSPI,KRW,,,,,,,
+411860,KOSEF 독일DAX,ETF,KOR,KOSPI,KRW,,,,,,,
+269530,ARIRANG S&P글로벌인프라,ETF,KOR,KOSPI,KRW,,,,,,,
 410870,TIMEFOLIO K컬처액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-322150,ACE 스마트하이베타,ETF,KOR,KOSPI,KRW,,,,,,,
-450120,KOSEF SK그룹대표주,ETF,KOR,KOSPI,KRW,,,,,,,
+438900,HANARO Fn K-푸드,ETF,KOR,KOSPI,KRW,,,,,,,
+176950,KODEX 국채선물10년인버스,ETF,KOR,KOSPI,KRW,,,,,,,
+404470,HANARO KRX기후변화솔루션,ETF,KOR,KOSPI,KRW,,,,,,,
 192720,파워 고배당저변동성,ETF,KOR,KOSPI,KRW,,,,,,,
-275290,KODEX MSCI밸류,ETF,KOR,KOSPI,KRW,,,,,,,
+445930,KOSEF 차이나A50커넥트레버리지MSCI(합성H),ETF,KOR,KOSPI,KRW,,,,,,,
+450120,KOSEF SK그룹대표주,ETF,KOR,KOSPI,KRW,,,,,,,
+322150,ACE 스마트하이베타,ETF,KOR,KOSPI,KRW,,,,,,,
 292770,KODEX 국채선물3년인버스,ETF,KOR,KOSPI,KRW,,,,,,,
-333960,ARIRANG KS모멘텀가중TR,ETF,KOR,KOSPI,KRW,,,,,,,
-189400,ARIRANG 글로벌MSCI(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-117690,TIGER 차이나항셍25,ETF,KOR,KOSPI,KRW,,,,,,,
-367740,HANARO Fn5G산업,ETF,KOR,KOSPI,KRW,,,,,,,
+275290,KODEX MSCI밸류,ETF,KOR,KOSPI,KRW,,,,,,,
 304760,HANARO KRX300,ETF,KOR,KOSPI,KRW,,,,,,,
+367740,HANARO Fn5G산업,ETF,KOR,KOSPI,KRW,,,,,,,
+189400,ARIRANG 글로벌MSCI(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+333960,ARIRANG KS모멘텀가중TR,ETF,KOR,KOSPI,KRW,,,,,,,
+117690,TIGER 차이나항셍25,ETF,KOR,KOSPI,KRW,,,,,,,
 253280,KBSTAR 헬스케어,ETF,KOR,KOSPI,KRW,,,,,,,
 416090,ACE 중국과창판STAR50,ETF,KOR,KOSPI,KRW,,,,,,,
-159800,마이티 코스피100,ETF,KOR,KOSPI,KRW,,,,,,,
 279540,KODEX 최소변동성,ETF,KOR,KOSPI,KRW,,,,,,,
-445950,KOSEF 차이나A50커넥트인버스MSCI(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-166400,TIGER 200커버드콜5%OTM,ETF,KOR,KOSPI,KRW,,,,,,,
 413930,WOORI AI ESG액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-461340,HANARO 글로벌생성형AI액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+166400,TIGER 200커버드콜5%OTM,ETF,KOR,KOSPI,KRW,,,,,,,
 380340,ACE Fn5G플러스,ETF,KOR,KOSPI,KRW,,,,,,,
-461490,KBSTAR 글로벌자산배분액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+445950,KOSEF 차이나A50커넥트인버스MSCI(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 373490,KODEX K-이노베이션액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+461490,KBSTAR 글로벌자산배분액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+266390,KODEX 경기소비재,ETF,KOR,KOSPI,KRW,,,,,,,
+461340,HANARO 글로벌생성형AI액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+322410,HANARO 고배당,ETF,KOR,KOSPI,KRW,,,,,,,
+226380,ACE Fn성장소비주도주,ETF,KOR,KOSPI,KRW,,,,,,,
+314700,HANARO 농업융복합산업,ETF,KOR,KOSPI,KRW,,,,,,,
 448510,HANARO 글로벌신재생에너지MSCI(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 140570,KBSTAR 수출주,ETF,KOR,KOSPI,KRW,,,,,,,
-314700,HANARO 농업융복합산업,ETF,KOR,KOSPI,KRW,,,,,,,
-322410,HANARO 고배당,ETF,KOR,KOSPI,KRW,,,,,,,
-266390,KODEX 경기소비재,ETF,KOR,KOSPI,KRW,,,,,,,
-226380,ACE Fn성장소비주도주,ETF,KOR,KOSPI,KRW,,,,,,,
 251590,ARIRANG 고배당저변동50,ETF,KOR,KOSPI,KRW,,,,,,,
 147970,TIGER 모멘텀,ETF,KOR,KOSPI,KRW,,,,,,,
-227550,TIGER 200 산업재,ETF,KOR,KOSPI,KRW,,,,,,,
 333970,ARIRANG KS밸류가중TR,ETF,KOR,KOSPI,KRW,,,,,,,
-419650,ARIRANG 글로벌수소&차세대연료전지MV,ETF,KOR,KOSPI,KRW,,,,,,,
-437550,히어로즈 글로벌리츠이지스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 373530,ARIRANG 신흥국MSCI인버스(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
-429990,SOL 한국형글로벌플랫폼&메타버스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+437550,히어로즈 글로벌리츠이지스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 436180,ARIRANG K-유니콘투자기업액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 277640,TIGER 코스피대형주,ETF,KOR,KOSPI,KRW,,,,,,,
-105010,TIGER 라틴35,ETF,KOR,KOSPI,KRW,,,,,,,
+429990,SOL 한국형글로벌플랫폼&메타버스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+419650,ARIRANG 글로벌수소&차세대연료전지MV,ETF,KOR,KOSPI,KRW,,,,,,,
 391670,HK 베스트일레븐액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+227550,TIGER 200 산업재,ETF,KOR,KOSPI,KRW,,,,,,,
+105010,TIGER 라틴35,ETF,KOR,KOSPI,KRW,,,,,,,
 281990,KBSTAR 중소형고배당,ETF,KOR,KOSPI,KRW,,,,,,,
 447430,ACE 주주환원가치주액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 244670,KODEX 밸류Plus,ETF,KOR,KOSPI,KRW,,,,,,,
-381570,HANARO Fn친환경에너지,ETF,KOR,KOSPI,KRW,,,,,,,
 278620,ARIRANG 단기채권액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-256450,ARIRANG 심천차이넥스트(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 299070,ACE 국채선물10년인버스,ETF,KOR,KOSPI,KRW,,,,,,,
 319870,KBSTAR KRX300미국달러선물혼합,ETF,KOR,KOSPI,KRW,,,,,,,
+256450,ARIRANG 심천차이넥스트(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 205720,ACE 일본TOPIX인버스(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
+381570,HANARO Fn친환경에너지,ETF,KOR,KOSPI,KRW,,,,,,,
+407160,MASTER 테크미디어텔레콤액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 433980,KODEX TDF2040액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 419170,HANARO 미국메타버스iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
-407160,MASTER 테크미디어텔레콤액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 444490,WOORI 미국S&P500,ETF,KOR,KOSPI,KRW,,,,,,,
-261140,TIGER 우선주,ETF,KOR,KOSPI,KRW,,,,,,,
 333940,ARIRANG KS로우볼가중TR,ETF,KOR,KOSPI,KRW,,,,,,,
-442570,KBSTAR TDF2050액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+334690,KBSTAR 팔라듐선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
 285000,KBSTAR 200IT,ETF,KOR,KOSPI,KRW,,,,,,,
-299080,ACE 국채선물3년인버스,ETF,KOR,KOSPI,KRW,,,,,,,
+261140,TIGER 우선주,ETF,KOR,KOSPI,KRW,,,,,,,
 440910,WOORI 미국S&P우주항공&디펜스,ETF,KOR,KOSPI,KRW,,,,,,,
-285010,KBSTAR 200중공업,ETF,KOR,KOSPI,KRW,,,,,,,
-442560,KBSTAR TDF2040액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-139290,TIGER 200 경기소비재,ETF,KOR,KOSPI,KRW,,,,,,,
-261920,ACE 필리핀MSCI(합성),ETF,KOR,KOSPI,KRW,,,,,,,
-238670,ARIRANG 스마트베타Quality채권혼합,ETF,KOR,KOSPI,KRW,,,,,,,
-174350,TIGER 로우볼,ETF,KOR,KOSPI,KRW,,,,,,,
 315270,TIGER 200커뮤니케이션서비스,ETF,KOR,KOSPI,KRW,,,,,,,
+299080,ACE 국채선물3년인버스,ETF,KOR,KOSPI,KRW,,,,,,,
+285010,KBSTAR 200중공업,ETF,KOR,KOSPI,KRW,,,,,,,
+442570,KBSTAR TDF2050액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+442560,KBSTAR TDF2040액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+174350,TIGER 로우볼,ETF,KOR,KOSPI,KRW,,,,,,,
+238670,ARIRANG 스마트베타Quality채권혼합,ETF,KOR,KOSPI,KRW,,,,,,,
+261920,ACE 필리핀MSCI(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+139290,TIGER 200 경기소비재,ETF,KOR,KOSPI,KRW,,,,,,,
 442550,KBSTAR TDF2030액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 252650,KODEX 200동일가중,ETF,KOR,KOSPI,KRW,,,,,,,
-140580,KBSTAR 우량업종,ETF,KOR,KOSPI,KRW,,,,,,,
-284990,KBSTAR 200에너지화학,ETF,KOR,KOSPI,KRW,,,,,,,
-394340,KOSEF 릭소글로벌디지털경제MSCI,ETF,KOR,KOSPI,KRW,,,,,,,
 157500,TIGER 증권,ETF,KOR,KOSPI,KRW,,,,,,,
-334690,KBSTAR 팔라듐선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
-371870,ACE 차이나항셍테크,ETF,KOR,KOSPI,KRW,,,,,,,
-375270,KBSTAR 글로벌데이터센터리츠나스닥(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+140580,KBSTAR 우량업종,ETF,KOR,KOSPI,KRW,,,,,,,
+394340,KOSEF 릭소글로벌디지털경제MSCI,ETF,KOR,KOSPI,KRW,,,,,,,
+284990,KBSTAR 200에너지화학,ETF,KOR,KOSPI,KRW,,,,,,,
 215620,HK S&P코리아로우볼,ETF,KOR,KOSPI,KRW,,,,,,,
+371870,ACE 차이나항셍테크,ETF,KOR,KOSPI,KRW,,,,,,,
 432850,HANARO 글로벌백신치료제MSCI,ETF,KOR,KOSPI,KRW,,,,,,,
+375270,KBSTAR 글로벌데이터센터리츠나스닥(합성),ETF,KOR,KOSPI,KRW,,,,,,,
 428510,KODEX 차이나메타버스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-333980,ARIRANG KS퀄리티가중TR,ETF,KOR,KOSPI,KRW,,,,,,,
 275300,KODEX MSCI퀄리티,ETF,KOR,KOSPI,KRW,,,,,,,
-368200,KBSTAR Fn K-뉴딜디지털플러스,ETF,KOR,KOSPI,KRW,,,,,,,
+333980,ARIRANG KS퀄리티가중TR,ETF,KOR,KOSPI,KRW,,,,,,,
 298340,ARIRANG 국채선물3년,ETF,KOR,KOSPI,KRW,,,,,,,
-295820,ARIRANG 200동일가중,ETF,KOR,KOSPI,KRW,,,,,,,
+368200,KBSTAR Fn K-뉴딜디지털플러스,ETF,KOR,KOSPI,KRW,,,,,,,
 291890,KODEX MSCI EM선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
-285020,KBSTAR 200철강소재,ETF,KOR,KOSPI,KRW,,,,,,,
+295820,ARIRANG 200동일가중,ETF,KOR,KOSPI,KRW,,,,,,,
 442580,ARIRANG 글로벌D램반도체iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
+275750,KBSTAR 코스닥150선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
 306520,HANARO 200선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
+285020,KBSTAR 200철강소재,ETF,KOR,KOSPI,KRW,,,,,,,
 321410,KODEX 멀티에셋하이인컴(H),ETF,KOR,KOSPI,KRW,,,,,,,
-243890,TIGER 200에너지화학레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
-429870,히어로즈 리츠이지스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 280920,ARIRANG 주도업종,ETF,KOR,KOSPI,KRW,,,,,,,
+429870,히어로즈 리츠이지스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 391680,HK 하이볼액티브,ETF,KOR,KOSPI,KRW,,,,,,,
 292340,마이티 200커버드콜ATM레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 307520,TIGER 지주회사,ETF,KOR,KOSPI,KRW,,,,,,,
-275750,KBSTAR 코스닥150선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
+243890,TIGER 200에너지화학레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 220130,SOL 차이나강소기업CSI500(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 407300,HANARO Fn골프테마,ETF,KOR,KOSPI,KRW,,,,,,,
 291620,KOSEF 코스닥150선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
 244660,KODEX 퀄리티Plus,ETF,KOR,KOSPI,KRW,,,,,,,
-306530,HANARO 코스닥150선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 407170,MASTER 스마트커머스액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+301410,ARIRANG 코스닥150선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
 427110,KBSTAR Fn창업투자회사,ETF,KOR,KOSPI,KRW,,,,,,,
 429740,ARIRANG K리츠Fn,ETF,KOR,KOSPI,KRW,,,,,,,
-301410,ARIRANG 코스닥150선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
 098560,TIGER 방송통신,ETF,KOR,KOSPI,KRW,,,,,,,
+306530,HANARO 코스닥150선물레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 301400,ARIRANG 코스닥150,ETF,KOR,KOSPI,KRW,,,,,,,
 253240,KOSEF 200선물인버스,ETF,KOR,KOSPI,KRW,,,,,,,
-427120,KBSTAR Fn플랫폼테마,ETF,KOR,KOSPI,KRW,,,,,,,
 415920,ARIRANG 글로벌희토류전략자원기업MV,ETF,KOR,KOSPI,KRW,,,,,,,
 227560,TIGER 200 생활소비재,ETF,KOR,KOSPI,KRW,,,,,,,
-139310,TIGER 금속선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
+427120,KBSTAR Fn플랫폼테마,ETF,KOR,KOSPI,KRW,,,,,,,
 295000,KBSTAR 국채선물10년,ETF,KOR,KOSPI,KRW,,,,,,,
-261060,TIGER 코스닥150IT,ETF,KOR,KOSPI,KRW,,,,,,,
+139310,TIGER 금속선물(H),ETF,KOR,KOSPI,KRW,,,,,,,
 284980,KBSTAR 200금융,ETF,KOR,KOSPI,KRW,,,,,,,
+261060,TIGER 코스닥150IT,ETF,KOR,KOSPI,KRW,,,,,,,
 145670,ACE 인버스,ETF,KOR,KOSPI,KRW,,,,,,,
+442320,KBSTAR 글로벌원자력iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
 426330,KOSEF 미국ETF산업STOXX,ETF,KOR,KOSPI,KRW,,,,,,,
 438210,ARIRANG 글로벌인공지능산업MV,ETF,KOR,KOSPI,KRW,,,,,,,
-442320,KBSTAR 글로벌원자력iSelect,ETF,KOR,KOSPI,KRW,,,,,,,
 397420,KBSTAR 국채선물5년추종,ETF,KOR,KOSPI,KRW,,,,,,,
 295020,KBSTAR 국채선물10년인버스,ETF,KOR,KOSPI,KRW,,,,,,,
 291680,KBSTAR 차이나H선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
-267500,KBSTAR 미국장기국채선물인버스2X(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 287310,KBSTAR 200경기소비재,ETF,KOR,KOSPI,KRW,,,,,,,
 391590,ACE 미국스팩&IPO INDXX,ETF,KOR,KOSPI,KRW,,,,,,,
+267500,KBSTAR 미국장기국채선물인버스2X(합성 H),ETF,KOR,KOSPI,KRW,,,,,,,
 280940,KODEX 골드선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
 334700,KBSTAR 팔라듐선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
 266550,ARIRANG 중형주저변동50,ETF,KOR,KOSPI,KRW,,,,,,,
 309210,ARIRANG KRX300헬스케어,ETF,KOR,KOSPI,KRW,,,,,,,
-412560,TIGER KRX BBIG K-뉴딜레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 251890,ACE 코스닥(합성),ETF,KOR,KOSPI,KRW,,,,,,,
+412560,TIGER KRX BBIG K-뉴딜레버리지,ETF,KOR,KOSPI,KRW,,,,,,,
 426410,ARIRANG 미국대체투자Top10MV,ETF,KOR,KOSPI,KRW,,,,,,,
 433880,ARIRANG TDF2060액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-287300,KBSTAR 200건설,ETF,KOR,KOSPI,KRW,,,,,,,
 433860,ARIRANG TDF2040액티브,ETF,KOR,KOSPI,KRW,,,,,,,
-252730,KBSTAR 모멘텀로우볼,ETF,KOR,KOSPI,KRW,,,,,,,
+287300,KBSTAR 200건설,ETF,KOR,KOSPI,KRW,,,,,,,
 433850,ARIRANG TDF2030액티브,ETF,KOR,KOSPI,KRW,,,,,,,
+252730,KBSTAR 모멘텀로우볼,ETF,KOR,KOSPI,KRW,,,,,,,
 252720,KBSTAR 모멘텀밸류,ETF,KOR,KOSPI,KRW,,,,,,,
 267450,KBSTAR 미국장기국채선물인버스(H),ETF,KOR,KOSPI,KRW,,,,,,,
 278420,ARIRANG ESG우수기업,ETF,KOR,KOSPI,KRW,,,,,,,

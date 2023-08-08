@@ -15,7 +15,7 @@ class baseDataFrameChart(DataFrame):
                         - @name, @unit, @path, @dtype
         """
         super().__init__(index=frame.index, columns=frame.columns, data=frame.values)
-        self._attr_ = dict(name='', unit='', path='', dtype='.2f')
+        self._attr_ = dict(name='', ticker='', unit='', path='', dtype='.2f')
         for k, v in kwargs.items():
             if k in self._attr_:
                 self._attr_[k] = v
@@ -68,8 +68,8 @@ class baseDataFrameChart(DataFrame):
         )
         return self._overwrite(go.Candlestick, trace, **kwargs)
 
-    def bar(self, data:DataFrame=DataFrame(), **kwargs) -> go.Bar:
-        data = self if data.empty else data
+    def bar(self, col:str, data:DataFrame=DataFrame(), **kwargs) -> go.Bar:
+        data = (self if data.empty else data)[col].dropna()
         trace = go.Bar(
             name=col,
             x=data.index,

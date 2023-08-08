@@ -82,7 +82,7 @@ print(equity.trend)
 # equity.multipleBand.save()
 
 # equity.trend.show()
-# equity.trend.show('flat')
+equity.trend.show('flat')
 # equity.trend.show('flat', ['A', 'H', 'Q', '5Y', '3Y', '1Y'])
 # equity.foreigner.show()
 # equity.products.show()

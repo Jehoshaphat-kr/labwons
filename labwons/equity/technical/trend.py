@@ -1,4 +1,4 @@
-from labwons.common.basis import baseDataFrameChart
+from labwons.common.basis import baseDataFrameChart, baseSeriesChart
 from datetime import datetime, timedelta
 from scipy.stats import linregress
 from typing import Union
@@ -9,81 +9,69 @@ import pandas as pd
 
 
 class trend(baseDataFrameChart):
-    def __init__(self, typical:pd.Series, **kwargs):
+
+    def __init__(self, typical:baseSeriesChart, **kwargs):
         """
         Trend line
         :param typical : [Series]
         :param kwargs  : [dict]
         """
-        n = len(typical)
-        times = [
-            ('A', typical.index[0]),
-            ('H', typical.index[int(n / 2)]),
-            ('Q', typical.index[int(3 * n / 4)])
-        ]
-        if n >= 3.2 * 262:
-            times.append(('3Y', typical.index[-1] - timedelta(3 * 365)))
-        if n >= 1.5 * 262:
-            times.append(('1Y', typical.index[-1] - timedelta(365)))
-        if n >= 0.8 * 262:
-            times.append(('6M', typical.index[-1] - timedelta(183)))
+        objs = [self._regress(self._timeSlice(typical, start), col) for col, start in self._timeSpan(typical)]
+        super().__init__(pd.concat(objs=objs, axis=1), **kwargs)
 
-        objs = list()
-        for col, startdate in times:
-            series = typical[typical.index >= startdate].copy()
-            series.name = col
-            series.index.name = 'date'
-            series = series.reset_index(level=0)
-
-            xrange = (series['date'].diff()).dt.days.fillna(1).astype(int).cumsum()
-            slope, intercept, _, _, _ = linregress(x=xrange, y=series[col])
-            fitted = slope * xrange + intercept
-            fitted.name = col
-            fitted = pd.concat(objs=[series, fitted], axis=1)[['date', fitted.name]].set_index(keys='date')
-            objs.append(fitted)
-
-        frame = pd.concat(objs=objs, axis=1)
-        super().__init__(frame=frame, **kwargs)
-        #
-        #
-        # n, objs = len(typ), list()
-        # for i, name in [(0, 'A'), (int(n / 2), 'H'), (int(3 * n / 4), 'Q')]:
-        #     objs.append(self.add(typ.index[i], name=name))
-        # if n >= 3.5 * 262:
-        #     objs.append(self.add(typ.index[-1] - timedelta(3 * 365), name='3Y'))
-        # if n >= 1.5 * 262:
-        #     objs.append(self.add(typ.index[-1] - timedelta(365), name='1Y'))
-        # if n >= 262:
-        #     objs.append(self.add(typ.index[-1] - timedelta(183), name='6M'))
-        # frm = pd.concat(objs=objs, axis=1)
-        # super().__init__(data=frm.values, index=frm.index, columns=frm.columns)
+        self._typ = typical
+        for k in kwargs:
+            if k in self._attr_:
+                self._attr_[k] = kwargs[k]
         return
 
     def __call__(self, col:str):
-        return self.trace(col)
+        return self.line(col)
 
-    def _naming(self) -> str:
-        n = 1
-        while f"custom{str(n).zfill(2)}" in self.columns:
-            n += 1
-        return f"custom{str(n).zfill(2)}"
+    @staticmethod
+    def _timeSpan(series:pd.Series) -> list:
+        sizeof, times = len(series), series.index
+        span = [('A', times[0]), ('H', times[int(sizeof / 2)]), ('Q', times[3 * int(sizeof / 4)])]
+        if sizeof >= 3.2 * 262:
+            span.append(('3Y', times[-1] - timedelta(3 * 365)))
+        if sizeof >= 1.5 * 262:
+            span.append(('1Y', times[-1] - timedelta(365)))
+        if sizeof >= 0.8 * 262:
+            span.append(('6M', times[-1] - timedelta(183)))
+        return span
 
-    def _time_format(self, start:Union[datetime, str], end:Union[datetime, str]=None) -> tuple:
-        end = end if end else self._ohlcv.ohlcv.index[-1]
-        if isinstance(end, str):
-            end = datetime.strptime(end, "%Y%m%d")
+    @staticmethod
+    def _timeSlice(series:pd.Series, start:Union[str, int], end:Union[str, int]='') -> pd.Series:
         if isinstance(start, str):
-            start = datetime.strptime(start, "%Y%m%d")
-        return pd.Timestamp(start), pd.Timestamp(end)
+            start = pd.Timestamp(datetime.strptime(start, "%Y%m%d"))
+        elif isinstance(start, int):
+            start = series.index[start]
+        elif isinstance(start, datetime) or isinstance(start, pd.Timestamp):
+            pass
+        else:
+            raise KeyError
 
-    def _slice_by_date(self, start:Union[datetime, str], end:Union[datetime, str]=None) -> pd.Series:
-        start, end = self._time_format(start, end)
-        series = self._typ[
-            (self._typ.index >= start) & (self._typ.index <= end)
-        ]
-        series.index.name = 'date'
-        series.name = 'data'
-        return series.reset_index(level=0).copy()
+        end = end if end else series.index[-1]
+        if isinstance(end, str):
+            end = pd.Timestamp(datetime.strptime(end, "%Y%m%d"))
+        elif isinstance(end, int):
+            end = series.index[end]
+        elif isinstance(end, datetime) or isinstance(end, pd.Timestamp):
+            pass
+        else:
+            raise KeyError
+        return series[(series.index >= start) & (series.index <= end)].copy()
+
+    @staticmethod
+    def _regress(series:pd.Series, col:str='') -> pd.Series:
+        col = col if col else series.name
+        series = series.reset_index(level=0)
+        xrange = (series['date'].diff()).dt.days.fillna(1).astype(int).cumsum()
+
+        slope, intercept, _, _, _ = linregress(x=xrange, y=series[series.columns[-1]])
+        fitted = slope * xrange + intercept
+        fitted.name = col
+        return pd.concat(objs=[series, fitted], axis=1)[['date', col]].set_index(keys='date')
 
     def _buttons(self) -> list:
         _buttons = list()
@@ -93,71 +81,35 @@ class trend(baseDataFrameChart):
             _buttons.append(dict(count=count, label=col, step="day", stepmode="backward"))
         return _buttons
 
-    def add(self, start:Union[datetime, str], end:Union[datetime, str]=None, name:str='') -> pd.Series:
-        series = self._slice_by_date(start, end)
-        xrange = (series['date'].diff()).dt.days.fillna(1).astype(int).cumsum()
-        slope, intercept, _, __, ___ = linregress(x=xrange, y=series['data'])
-        fitted = slope * xrange + intercept
-        fitted.name = name if name else self._naming()
-        fitted = pd.concat(objs=[series, fitted], axis=1)[['date', fitted.name]].set_index(keys='date')
-        return fitted
+    def _flatten(self) -> pd.DataFrame:
+        objs = dict()
+        for col in self:
+            frm = pd.concat([self._typ, self[col]], axis=1)
+            if self[col].min() <= 0:
+                frm = frm - self[col].min() + 2
+            objs[col] = 100 * (frm[frm.columns[0]] / frm[frm.columns[1]] - 1)
+        return pd.concat(objs=objs, axis=1)
 
-    def trace(self, col:str, basis:pd.DataFrame=pd.DataFrame(), **kwargs) -> go.Scatter:
-        if basis.empty:
-            basis = self.copy()
-        basis = basis[col].dropna()
+    def append(self, start:Union[str, int], end:Union[str, int]=''):
+        pass
 
-        trace = go.Scatter(
-            name=col,
-            x=basis.index,
-            y=basis,
-            visible='legendonly',
-            showlegend=True,
-            mode='lines',
-            line=dict(
-                color='black',
-                dash='dash',
-                width=0.8
-            ),
-            xhoverformat="%Y/%m/%d",
-            yhoverformat=".2f",
-            hovertemplate=col + "<br>%{y} " + self._ohlcv.unit + " @%{x}<extra></extra>"
-        )
-        for key in kwargs:
-            if key in vars(go.Scatter).keys():
-                setattr(trace, key, kwargs[key])
-        return trace
-
-    def bar(self, col:str, **kwargs) -> go.Bar:
-        frm = pd.concat(objs=[self._typ, self[col]], axis=1)
-        if self[col].min() <= 0:
-            frm = frm - self[col].min() + 10
-        ser = 100 * (frm[frm.columns[0]] / frm[frm.columns[1]] - 1).dropna()
-        ser.name = col
-        bar = go.Bar(
-            name=col,
-            x=ser.index,
-            y=ser,
-            visible=True,
-            showlegend=False,
-            marker=dict(
-                color=['royalblue' if d <= 0 else 'red' for d in ser],
-                opacity=1.0
-            ),
-            xhoverformat='%Y/%m/%d',
-            yhoverformat='.2f',
-            hovertemplate='%{x}<br>%{y}%<extra></extra>'
-        )
-        for key in kwargs:
-            if key in vars(go.Bar):
-                setattr(bar, key, kwargs[key])
-        return bar
+    def _naming(self) -> str:
+        n = 1
+        while f"custom{str(n).zfill(2)}" in self.columns:
+            n += 1
+        return f"custom{str(n).zfill(2)}"
 
     def figure(self) -> go.Figure:
+        data = [self._typ()]
+        for col in self:
+            trace = self.line(col)
+            trace.visible = 'legendonly'
+            trace.line = dict(color='black', dash='dash', width=0.8)
+            data.append(trace)
         return go.Figure(
-            data=[self._ohlcv.typical()] + [self.trace(col) for col in self],
+            data=data,
             layout=go.Layout(
-                title=f"{self._ohlcv.name}({self._ohlcv.ticker}) Trend",
+                title=f"{self._attr_['name']}({self._attr_['ticker']}) Trend",
                 plot_bgcolor="white",
                 legend=dict(
                     orientation="h",
@@ -167,9 +119,7 @@ class trend(baseDataFrameChart):
                     y=1.02
                 ),
                 xaxis_rangeslider=dict(visible=False),
-                xaxis_rangeselector=dict(
-                    buttons=self._buttons()
-                ),
+                xaxis_rangeselector=dict(buttons=self._buttons()),
                 xaxis=dict(
                     title="Date",
                     showgrid=True,
@@ -182,7 +132,7 @@ class trend(baseDataFrameChart):
                     autorange=True
                 ),
                 yaxis=dict(
-                    title=f"[{self._ohlcv.unit}]",
+                    title=f"[{self._attr_['unit']}]",
                     showgrid=True,
                     gridwidth=0.5,
                     gridcolor="lightgrey",
@@ -196,9 +146,19 @@ class trend(baseDataFrameChart):
         )
 
     def figure_flat(self, columns:list=None) -> go.Figure:
-        columns = columns if columns else self.columns[:6]
+        frm = self._flatten().copy()
+        columns = columns if columns else frm.columns[:6]
         if len(columns) > 6:
             raise KeyError(f"The number of columns must be 6")
+
+        data = list()
+        for col in columns:
+            bar = self.bar(col, frm)
+            bar.marker = dict(
+                color=['royalblue' if v <= 0 else 'red' for v in frm[col].dropna()],
+                opacity=0.9
+            )
+            data.append(bar)
 
         fig = make_subplots(
             rows=3, cols=2,
@@ -207,12 +167,12 @@ class trend(baseDataFrameChart):
             subplot_titles=columns
         )
         fig.add_traces(
-            data=[self.bar(col) for col in columns],
+            data=data,
             rows=[1, 1, 2, 2, 3, 3][:len(columns)],
             cols=[1, 2, 1, 2, 1, 2][:len(columns)]
         )
         fig.update_layout(
-            title=f"{self._ohlcv.name}({self._ohlcv.ticker}) %Trend Diff.",
+            title=f"{self._attr_['name']}({self._attr_['ticker']}) %Trend Diff.",
             plot_bgcolor="white",
         )
         fig.update_yaxes(
@@ -239,14 +199,15 @@ class trend(baseDataFrameChart):
             self.figure_flat(columns).show()
         return
 
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
+    def save(self, mode:str='unflat', columns:list=None):
+        if mode == 'unflat':
+            fig = self.figure()
+        else:
+            fig = self.figure_flat(columns)
+        plot(
+            figure_or_data=fig,
             auto_open=False,
-            filename=f'{self._ohlcv.path}/TREND.html'
+            filename=f'{self._attr_["path"]}/TREND.html'
         )
-        kwargs.update(setter)
-        plot(**kwargs)
         return
 

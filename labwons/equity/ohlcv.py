@@ -89,36 +89,40 @@ class _ohlcv(_ticker):
             else:
                 raise AttributeError(f"Unknown Market: {self.market}({self.exchange}) is an invalid attribute.")
             ohlcv.index = pd.to_datetime(ohlcv.index)
-            self.__setattr__(attr, baseDataFrameChart(ohlcv, **self._attr))
+            self.__setattr__(attr, baseDataFrameChart(ohlcv, **vars(self)))
         return self.__getattribute__(attr)
 
     @property
     def typical(self) -> baseSeriesChart:
-        self._attr['name'] = f'{self.name}(T)'
-        self._attr['dtype'] = '.2f'
-        obj = baseSeriesChart((self.ohlcv['high'] + self.ohlcv['low'] + self.ohlcv['close']) / 3, **self._attr)
-        self._attr['dtype'] = self.dtype
+        _attr = self._valid_prop.copy()
+        _attr['name'] = f'{self.name}(T)'
+        _attr['dtype'] = '.2f'
+        obj = baseSeriesChart((self.ohlcv['high'] + self.ohlcv['low'] + self.ohlcv['close']) / 3, **_attr)
         return obj
 
     @property
     def open(self) -> baseSeriesChart:
-        self._attr['name'] = f'{self.name}(O)'
-        return baseSeriesChart(self.ohlcv['open'], **self._attr)
+        _attr = self._valid_prop.copy()
+        _attr['name'] = f'{self.name}(O)'
+        return baseSeriesChart(self.ohlcv['open'], **_attr)
 
     @property
     def high(self) -> baseSeriesChart:
-        self._attr['name'] = f'{self.name}(H)'
-        return baseSeriesChart(self.ohlcv['high'], **self._attr)
+        _attr = self._valid_prop.copy()
+        _attr['name'] = f'{self.name}(H)'
+        return baseSeriesChart(self.ohlcv['high'], **_attr)
 
     @property
     def low(self) -> baseSeriesChart:
-        self._attr['name'] = f'{self.name}(L)'
-        return baseSeriesChart(self.ohlcv['low'], **self._attr)
+        _attr = self._valid_prop.copy()
+        _attr['name'] = f'{self.name}(L)'
+        return baseSeriesChart(self.ohlcv['low'], **_attr)
 
     @property
     def close(self) -> baseSeriesChart:
-        self._attr['name'] = f'{self.name}(C)'
-        return baseSeriesChart(self.ohlcv['close'], **self._attr)
+        _attr = self._valid_prop.copy()
+        _attr['name'] = f'{self.name}(C)'
+        return baseSeriesChart(self.ohlcv['close'], **_attr)
 
     @property
     def ta(self) -> baseDataFrameChart:
@@ -167,7 +171,7 @@ class _ohlcv(_ticker):
                 attr,
                 baseDataFrameChart(
                     add_all_ta_features(self.ohlcv.copy(), 'open', 'high', 'low', 'close', 'volume'),
-                    path=self.path
+                    **self._valid_prop
                 )
             )
         return self.__getattribute__(attr)
@@ -193,8 +197,6 @@ if __name__ == "__main__":
     # test.typical.show()
     # print(test.close)
     # test.close.show()
-    print(test.ta)
-
-
+    # print(test.ta)
 
 

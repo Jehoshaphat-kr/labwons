@@ -20,6 +20,7 @@ class _ticker(object):
             return
         self._valid_prop = {
             'name': np.nan,
+            'ticker': ticker,
             'unit': np.nan,
             'sector': np.nan,
             'market': np.nan,
@@ -53,7 +54,6 @@ class _ticker(object):
         }
 
         if not ticker in MetaData.index:
-            print("@")
             if 'exchange' not in kwargs:
                 raise KeyError(f"_ticker Not Found Error: @exchange must be specified for ticker, {ticker}")
             if not kwargs['exchange'].lower() in [v.lower for v in self._valid_args]:
@@ -65,10 +65,10 @@ class _ticker(object):
 
         if self.exchange in ['FRED', 'OECD', 'ECOS']:
             return
-
+        # ticker, name, quoteType, market, exchange, unit, shortName, longName, korName, sector, industry, benchmarkTicker, benchmarkName
         self.ticker = ticker
+        self.dtype = self._valid_prop['dtype'] = ',d' if self.market == 'KOR' else '.2f'
         self._is_etf = self.quoteType == 'ETF'
-        self._dtype = ',d' if self.market == 'KOR' else '.2f'
         if self.market == 'KOR':
             self.__kr__()
         elif self.market == 'USA':
@@ -202,14 +202,6 @@ class _ticker(object):
     @unit.setter
     def unit(self, unit:str):
         self._valid_prop['unit'] = unit
-
-    @property
-    def dtype(self) -> str:
-        return self._dtype
-
-    @dtype.setter
-    def dtype(self, dtype:str):
-        self._dtype = dtype
 
     @property
     def sector(self) -> str:
@@ -373,7 +365,7 @@ if __name__ == "__main__":
     # tester = _ticker('000660')
     # tester = _ticker('457690')
     # tester = _ticker('383310')
-    print(tester.description())
+    # print(tester.description())
     # print(tester.name)
     # print(tester.exchange)
     # print(tester.quote)

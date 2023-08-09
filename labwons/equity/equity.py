@@ -47,9 +47,10 @@ class Equity(_ohlcv):
     #
     @property
     def trend(self) -> trend:
-        if not self.__hasattr__('__trend__'):
-            self.__setattr__('__trend__', trend(self.typical, **self._valid_prop))
-        return self.__getattribute__('__trend__')
+        attr = f'_trend_{self.enddate}_{self.period}_{self.freq}'
+        if not self.__hasattr__(attr):
+            self.__setattr__(attr, trend(self.typical, **self._valid_prop))
+        return self.__getattribute__(attr)
     #
     # """
     # COMPARISON

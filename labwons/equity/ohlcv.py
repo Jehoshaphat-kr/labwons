@@ -15,7 +15,7 @@ class _ohlcv(_ticker):
     def __init__(self, ticker:str, **kwargs):
         super().__init__(ticker=ticker, **kwargs)
 
-        self._period = kwargs['period'] if 'period' in kwargs else 20
+        self._period = kwargs['period'] if 'period' in kwargs else 10
         self._today = datetime.now(timezone('Asia/Seoul')).strftime("%Y%m%d")
         self._ddate = self._today
         if 'enddate' in kwargs:
@@ -59,7 +59,10 @@ class _ohlcv(_ticker):
 
     @enddate.setter
     def enddate(self, enddate:str or datetime):
-        self._ddate = datetime.strptime(enddate, "%Y%m%d") if isinstance(enddate, str) else enddate
+        if not enddate:
+            self._ddate = datetime.strptime(self._today, "%Y%m%d")
+        else:
+            self._ddate = datetime.strptime(enddate, "%Y%m%d") if isinstance(enddate, str) else enddate
 
     @property
     def startdate(self) -> str:

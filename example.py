@@ -38,27 +38,31 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # print(cliKR())
 # cliKR.show()
 
+# import random
 # for ticker in ['SPY', 'QQQ', 'AAPL', 'AMZN', 'KO', 'NVDA', 'TSLA', 'MSFT', 'WMT', 'GOOG']:
-#     print(ticker)
-#     equity = lw.Equity(ticker, period=12, enddate='20230105')
-#     equity.trend.save(filename='TREND230105')
-#     equity.trend.save('flat', filename='TREND_F230105')
-    # equity.trend.save()
-    # equity.trend.save('flat')
+#     date = f"{random.randint(2018, 2022)}{str(random.randint(1, 12)).zfill(2)}10"
+#     print(ticker, date)
+#     equity = lw.Equity(ticker, period=30)
+#     equity.enddate = date
+#     equity.trend.save(filename=f'TREND{date}')
+#     equity.trend.save('flat', filename=f'TREND_F{date}')
+#
+#     equity.enddate = ''
+#     equity.trend.save()
 
-equity = lw.Equity('005930', period=12)
-
+# equity = lw.Equity('WMT', period=12)
 # equity = lw.Equity('005930', period=10)
 # equity = lw.Equity('005930', period=10)
-# equity = lw.Equity('005930', period=10)
+equity = lw.Equity('000660', period=10)
 # print(equity.longName)
 # print(equity.businessSummary)
 # print(equity.ohlcv)
 # print(equity.benchmark)
 # print(equity.drawDown)
 # print(equity.sma)
-print(equity.trend)
-print(equity.trend.flatten())
+# print(equity.trend)
+# print(equity.trend.flatten())
+print(equity.trend.strength())
 # from datetime import timedelta
 # equity.trend['5Y'] = equity.trend.add(equity.trend.index[-1] - timedelta(5 * 365), name='5Y')
 # print(equity.trend)
@@ -96,7 +100,7 @@ print(equity.trend.flatten())
 # equity.multipleBand.save()
 
 # equity.trend.show()
-equity.trend.show('flat')
+# equity.trend.show('flat')
 # equity.trend.show('flat', ['A', 'H', 'Q', '5Y', '3Y', '1Y'])
 # equity.foreigner.show()
 # equity.products.show()

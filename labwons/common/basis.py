@@ -40,7 +40,7 @@ class baseDataFrameChart(DataFrame):
             connectgaps=True,
             xhoverformat='%Y/%m/%d',
             yhoverformat=self._attr_['dtype'],
-            hovertemplate=self._attr_['name'] + '<br>%{y}' + self._attr_['unit'] + '@%{x}<extra></extra>'
+            hovertemplate=col + '<br>%{y}' + self._attr_['unit'] + '@%{x}<extra></extra>'
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 

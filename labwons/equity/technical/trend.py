@@ -33,12 +33,12 @@ class trend(baseDataFrameChart):
     def _timeSpan(series:pd.Series) -> list:
         sizeof, times = len(series), series.index
         span = [('ALL', times[0])]
-        if sizeof >= 10 * 262 * 1.03:
-            span.append(('10Y', times[-1] - timedelta(10 * 365)))
         if sizeof >= 5 * 262 * 1.03:
             span.append(('5Y', times[-1] - timedelta(5 * 365)))
         if sizeof >= 3 * 262 * 1.03:
             span.append(('3Y', times[-1] - timedelta(3 * 365)))
+        if sizeof >= 2 * 262 * 1.03:
+            span.append(('2Y', times[-1] - timedelta(2 * 365)))
         if sizeof >= 1 * 262 * 1.03:
             span.append(('1Y', times[-1] - timedelta(365)))
         if sizeof >= 0.5 * 262 * 1.03:
@@ -90,14 +90,20 @@ class trend(baseDataFrameChart):
         objs = dict()
         for col in self:
             frm = pd.concat([self._typ, self[col]], axis=1).dropna()
-            residual = abs(frm[self._typ.name] - frm[col]).sum() / len(frm)
-            objs[col] = 100 * abs(frm[self._typ.name] - frm[col]) / residual
-            print(col, residual)
-            # objs[col] = frm.apply(lambda r: np.nan if r[col] <= 0 else 100 * (r[self._typ.name]/r[col] - 1), axis=1)
+            frm['sign'] = frm.apply(lambda row: -1 if row[self._typ.name] <= row[col] else 1, axis=1)
+            residual = abs(frm[self._typ.name] - frm[col]).sum() / len(frm) # 평균 괴리 값
+            objs[col] = 100 * frm['sign'] * abs(frm[self._typ.name] - frm[col]) / residual
         return pd.concat(objs=objs, axis=1)
 
-    def append(self, start:Union[str, int], end:Union[str, int]=''):
-        pass
+    def strength(self) -> pd.DataFrame:
+        objs = dict()
+        for col in self:
+            series = self[col].dropna().values
+            objs[col] = 100 * (series[-1] / series[0] - 1)
+        return pd.DataFrame(data=objs, index=[self._attr_['name']])
+
+    # def append(self, start:Union[str, int], end:Union[str, int]=''):
+    #     pass
 
     def _naming(self) -> str:
         n = 1
@@ -128,6 +134,7 @@ class trend(baseDataFrameChart):
                 xaxis_rangeselector=dict(buttons=self._buttons()),
                 xaxis=dict(
                     title="Date",
+                    tickformat='%Y/%m/%d',
                     showgrid=True,
                     gridwidth=0.5,
                     gridcolor="lightgrey",
@@ -180,6 +187,11 @@ class trend(baseDataFrameChart):
         fig.update_layout(
             title=f"{self._attr_['name']}({self._attr_['ticker']}) %Trend Diff.",
             plot_bgcolor="white",
+        )
+        fig.update_xaxes(
+            dict(
+                tickformat='%Y/%m/%d',
+            )
         )
         fig.update_yaxes(
             dict(

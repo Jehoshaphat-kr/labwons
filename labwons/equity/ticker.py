@@ -22,6 +22,7 @@ class _ticker(object):
             'name': np.nan,
             'ticker': ticker,
             'unit': np.nan,
+            'path': '',
             'sector': np.nan,
             'market': np.nan,
             "businessSummary": np.nan,
@@ -76,7 +77,7 @@ class _ticker(object):
         else:
             pass
 
-        self.path = os.path.join(PATH.BASE, f"{self.ticker}_{self.name}")
+        self.path = self._valid_prop['path'] = os.path.join(PATH.BASE, f"{self.ticker}_{self.name}")
         os.makedirs(self.path, exist_ok=True)
         return
 

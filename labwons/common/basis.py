@@ -111,6 +111,7 @@ class baseSeriesChart(Series):
         for k, v in kwargs.items():
             if k in self._attr_:
                 self._attr_[k] = v
+        self.name = self._attr_['name']
         return
 
     def __call__(self, mode:str='line', **kwargs):

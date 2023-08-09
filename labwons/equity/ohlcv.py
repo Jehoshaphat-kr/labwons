@@ -16,7 +16,12 @@ class _ohlcv(_ticker):
         super().__init__(ticker=ticker, **kwargs)
 
         self._period = kwargs['period'] if 'period' in kwargs else 20
-        self._ddate = kwargs['enddate'] if 'enddate' in kwargs else datetime.now(timezone('Asia/Seoul')).date()
+        self._today = datetime.now(timezone('Asia/Seoul')).strftime("%Y%m%d")
+        self._ddate = self._today
+        if 'enddate' in kwargs:
+            self._ddate = kwargs['enddate']
+        if isinstance(self._ddate, str):
+            self._ddate = datetime.strptime(self._ddate, "%Y%m%d")
         self._freq = kwargs['freq'] if 'freq' in kwargs else 'd' if self.market == 'KOR' else '1d'
         self._attr = dict(name=self.name, dtype=self.dtype, unit=self.unit, path=self.path)
         return
@@ -44,6 +49,7 @@ class _ohlcv(_ticker):
         ohlcv = ohlcv.rename(columns=dict(zip(columns, [n.lower() for n in columns])))
         ohlcv['date'] = pd.to_datetime(ohlcv.index)
         ohlcv['date'] = ohlcv['date'].dt.tz_convert('Asia/Seoul')
+        # ohlcv['date'] = ohlcv['date'].tz_localize(timezone('Asia/Seoul'))
         ohlcv.index = ohlcv['date'].dt.date
         return ohlcv.drop(columns=['date'])
 
@@ -83,13 +89,14 @@ class _ohlcv(_ticker):
         attr = f'_ohlcv_{self.enddate}_{self.period}_{self.freq}'
         if not hasattr(self, attr):
             if self.market == 'KOR':
-                ohlcv = self.fetchKrse(self.ticker, self.startdate, self.enddate, self.freq)
+                fetch = self.fetchKrse(self.ticker, self.startdate, self._today, self.freq)
             elif self.market == 'USA':
-                ohlcv = self.fetchNyse(self.ticker, self.period, self.freq)
+                fetch = self.fetchNyse(self.ticker, self.period, self.freq)
             else:
                 raise AttributeError(f"Unknown Market: {self.market}({self.exchange}) is an invalid attribute.")
-            ohlcv.index = pd.to_datetime(ohlcv.index)
-            self.__setattr__(attr, baseDataFrameChart(ohlcv, **vars(self)))
+            fetch.index = pd.to_datetime(fetch.index)
+            fetch = fetch[fetch.index <= self._ddate]
+            self.__setattr__(attr, baseDataFrameChart(fetch, **self._valid_prop))
         return self.__getattribute__(attr)
 
     @property
@@ -182,7 +189,8 @@ if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
     API_ECOS = "CEW3KQU603E6GA8VX0O9"
 
-    test = _ohlcv(ticker='383310')
+    # test = _ohlcv(ticker='383310')
+    test = _ohlcv(ticker='AAPL', period=12, enddate='20230105')
     # test = _fetch(ticker='TSLA')
     # test = _fetch(ticker='KRE')
     # test = _fetch(ticker='DGS10')
@@ -191,7 +199,8 @@ if __name__ == "__main__":
     # test = _fetch(ticker='LORSGPRT', market='KOR')
     # print(test.ticker)
     # print(test.exchange)
-    # print(test.ohlcv)
+    print(test.ohlcv)
+    print(len(test.ohlcv))
     # test.ohlcv.show()
     # print(test.typical)
     # test.typical.show()

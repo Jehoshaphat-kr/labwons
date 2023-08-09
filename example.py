@@ -38,7 +38,19 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # print(cliKR())
 # cliKR.show()
 
-equity = lw.Equity('005930', period=10)
+# for ticker in ['SPY', 'QQQ', 'AAPL', 'AMZN', 'KO', 'NVDA', 'TSLA', 'MSFT', 'WMT', 'GOOG']:
+#     print(ticker)
+#     equity = lw.Equity(ticker, period=12, enddate='20230105')
+#     equity.trend.save(filename='TREND230105')
+#     equity.trend.save('flat', filename='TREND_F230105')
+    # equity.trend.save()
+    # equity.trend.save('flat')
+
+equity = lw.Equity('005930', period=12)
+
+# equity = lw.Equity('005930', period=10)
+# equity = lw.Equity('005930', period=10)
+# equity = lw.Equity('005930', period=10)
 # print(equity.longName)
 # print(equity.businessSummary)
 # print(equity.ohlcv)
@@ -46,9 +58,11 @@ equity = lw.Equity('005930', period=10)
 # print(equity.drawDown)
 # print(equity.sma)
 print(equity.trend)
+print(equity.trend.flatten())
 # from datetime import timedelta
 # equity.trend['5Y'] = equity.trend.add(equity.trend.index[-1] - timedelta(5 * 365), name='5Y')
 # print(equity.trend)
+# print(equity.trend.flatten())
 # print(equity.bollingerBand)
 # print(equity.rsi)
 # print(equity.moneyFlow)

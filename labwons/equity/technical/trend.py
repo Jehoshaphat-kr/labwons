@@ -6,6 +6,7 @@ from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
 import pandas as pd
+import numpy as np
 
 
 class trend(baseDataFrameChart):
@@ -31,12 +32,16 @@ class trend(baseDataFrameChart):
     @staticmethod
     def _timeSpan(series:pd.Series) -> list:
         sizeof, times = len(series), series.index
-        span = [('A', times[0]), ('H', times[int(sizeof / 2)]), ('Q', times[3 * int(sizeof / 4)])]
-        if sizeof >= 3.2 * 262:
+        span = [('ALL', times[0])]
+        if sizeof >= 10 * 262 * 1.03:
+            span.append(('10Y', times[-1] - timedelta(10 * 365)))
+        if sizeof >= 5 * 262 * 1.03:
+            span.append(('5Y', times[-1] - timedelta(5 * 365)))
+        if sizeof >= 3 * 262 * 1.03:
             span.append(('3Y', times[-1] - timedelta(3 * 365)))
-        if sizeof >= 1.5 * 262:
+        if sizeof >= 1 * 262 * 1.03:
             span.append(('1Y', times[-1] - timedelta(365)))
-        if sizeof >= 0.8 * 262:
+        if sizeof >= 0.5 * 262 * 1.03:
             span.append(('6M', times[-1] - timedelta(183)))
         return span
 
@@ -81,13 +86,14 @@ class trend(baseDataFrameChart):
             _buttons.append(dict(count=count, label=col, step="day", stepmode="backward"))
         return _buttons
 
-    def _flatten(self) -> pd.DataFrame:
+    def flatten(self) -> pd.DataFrame:
         objs = dict()
         for col in self:
-            frm = pd.concat([self._typ, self[col]], axis=1)
-            if self[col].min() <= 0:
-                frm = frm - self[col].min() + 2
-            objs[col] = 100 * (frm[frm.columns[0]] / frm[frm.columns[1]] - 1)
+            frm = pd.concat([self._typ, self[col]], axis=1).dropna()
+            residual = abs(frm[self._typ.name] - frm[col]).sum() / len(frm)
+            objs[col] = 100 * abs(frm[self._typ.name] - frm[col]) / residual
+            print(col, residual)
+            # objs[col] = frm.apply(lambda r: np.nan if r[col] <= 0 else 100 * (r[self._typ.name]/r[col] - 1), axis=1)
         return pd.concat(objs=objs, axis=1)
 
     def append(self, start:Union[str, int], end:Union[str, int]=''):
@@ -146,7 +152,7 @@ class trend(baseDataFrameChart):
         )
 
     def figure_flat(self, columns:list=None) -> go.Figure:
-        frm = self._flatten().copy()
+        frm = self.flatten().copy()
         columns = columns if columns else frm.columns[:6]
         if len(columns) > 6:
             raise KeyError(f"The number of columns must be 6")
@@ -199,15 +205,13 @@ class trend(baseDataFrameChart):
             self.figure_flat(columns).show()
         return
 
-    def save(self, mode:str='unflat', columns:list=None):
-        if mode == 'unflat':
-            fig = self.figure()
-        else:
-            fig = self.figure_flat(columns)
+    def save(self, mode:str='unflat', columns:list=None, filename:str=''):
+        fig = self.figure() if mode == 'unflat' else self.figure_flat(columns)
+        filename = filename if filename else f'TREND{"" if mode == "unflat" else "_F"}'
         plot(
             figure_or_data=fig,
             auto_open=False,
-            filename=f'{self._attr_["path"]}/TREND.html'
+            filename=f'{self._attr_["path"]}/{filename}.html'
         )
         return
 

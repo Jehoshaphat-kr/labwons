@@ -1,5 +1,5 @@
 from labwons.common.config import COLORS
-from labwons.equity.refine import _calc
+from labwons.equity._deprecated import _calc
 from typing import Union
 from plotly import graph_objects as go
 from plotly.offline import plot

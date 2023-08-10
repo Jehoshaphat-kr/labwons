@@ -1,8 +1,8 @@
 from labwons.equity.ohlcv import _ohlcv
+from labwons.equity.technical.backtest import backtest
 from labwons.equity.technical.trend import trend
-#     _trend,
-#     # line,
-#     # lines,
+from labwons.equity.technical.sma import sma
+
 #     # benchmark,
 #     # drawdown,
 #     # bollingerband,
@@ -37,20 +37,20 @@ class Equity(_ohlcv):
     def by(self, by:str):
         self._by_ = by
 
+    def backtest(self) -> backtest:
+        return backtest(self.ohlcv)
 
-    #
-    # @property
-    # def sma(self) -> lines:
-    #     if not self.__hasattr__('__sma__'):
-    #         self.__setattr__('__sma__', lines(self.calcMA(), base=self, title='SMA'))
-    #     return self.__getattribute__('__sma__')
-    #
+    @property
+    def sma(self) -> sma:
+        if not self.__hasattr__(self._attr('sma')):
+            self.__setattr__(self._attr('sma'), sma(self.ohlcv, **self._valid_prop))
+        return self.__getattribute__(self._attr('sma'))
+
     @property
     def trend(self) -> trend:
-        attr = f'_trend_{self.enddate}_{self.period}_{self.freq}'
-        if not self.__hasattr__(attr):
-            self.__setattr__(attr, trend(self.typical, **self._valid_prop))
-        return self.__getattribute__(attr)
+        if not self.__hasattr__(self._attr('trend')):
+            self.__setattr__(self._attr('trend'), trend(self.ohlcv, **self._valid_prop))
+        return self.__getattribute__(self._attr('trend'))
     #
     # """
     # COMPARISON

@@ -1,5 +1,5 @@
 from labwons.common.config import PATH, COLORS
-from labwons.equity.refine import _calc
+from labwons.equity._deprecated import _calc
 from datetime import timedelta
 from plotly.offline import plot
 import plotly.graph_objects as go

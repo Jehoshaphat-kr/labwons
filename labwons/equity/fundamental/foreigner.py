@@ -1,4 +1,4 @@
-from labwons.equity.refine import _calc
+from labwons.equity._deprecated import _calc
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot

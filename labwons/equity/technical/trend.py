@@ -1,4 +1,5 @@
-from labwons.common.basis import baseDataFrameChart, baseSeriesChart
+from labwons.common.basis import baseDataFrameChart
+from labwons.equity.technical.ohlcv import ohlcv
 from datetime import datetime, timedelta
 from scipy.stats import linregress
 from typing import Union
@@ -11,19 +12,16 @@ import numpy as np
 
 class trend(baseDataFrameChart):
 
-    def __init__(self, typical:baseSeriesChart, **kwargs):
+    def __init__(self, ohlcvt:ohlcv, **kwargs):
         """
         Trend line
-        :param typical : [Series]
+        :param ohlcvt : [Series]
         :param kwargs  : [dict]
         """
-        objs = [self._regress(self._timeSlice(typical, start), col) for col, start in self._timeSpan(typical)]
+        objs = [self._regress(self._timeSlice(ohlcvt.t, start), col) for col, start in self._timeSpan(ohlcvt.t)]
         super().__init__(pd.concat(objs=objs, axis=1), **kwargs)
-
-        self._typ = typical
-        for k in kwargs:
-            if k in self._attr_:
-                self._attr_[k] = kwargs[k]
+        self._filename_ = lambda x: f'TREND{"" if x == "unflat" else "_F"}'
+        self._typ = ohlcvt.t
         return
 
     def __call__(self, col:str):
@@ -33,15 +31,15 @@ class trend(baseDataFrameChart):
     def _timeSpan(series:pd.Series) -> list:
         sizeof, times = len(series), series.index
         span = [('ALL', times[0])]
-        if sizeof >= 5 * 262 * 1.03:
+        if sizeof >= 5 * 252 * 1.03:
             span.append(('5Y', times[-1] - timedelta(5 * 365)))
-        if sizeof >= 3 * 262 * 1.03:
+        if sizeof >= 3 * 252 * 1.03:
             span.append(('3Y', times[-1] - timedelta(3 * 365)))
-        if sizeof >= 2 * 262 * 1.03:
+        if sizeof >= 2 * 252 * 1.03:
             span.append(('2Y', times[-1] - timedelta(2 * 365)))
-        if sizeof >= 1 * 262 * 1.03:
+        if sizeof >= 1 * 252 * 1.03:
             span.append(('1Y', times[-1] - timedelta(365)))
-        if sizeof >= 0.5 * 262 * 1.03:
+        if sizeof >= 0.5 * 252 * 1.03:
             span.append(('6M', times[-1] - timedelta(183)))
         return span
 
@@ -92,15 +90,16 @@ class trend(baseDataFrameChart):
             frm = pd.concat([self._typ, self[col]], axis=1).dropna()
             frm['sign'] = frm.apply(lambda row: -1 if row[self._typ.name] <= row[col] else 1, axis=1)
             residual = abs(frm[self._typ.name] - frm[col]).sum() / len(frm) # 평균 괴리 값
-            objs[col] = 100 * frm['sign'] * abs(frm[self._typ.name] - frm[col]) / residual
+            objs[col] = frm['sign'] * abs(frm[self._typ.name] - frm[col]) / residual
         return pd.concat(objs=objs, axis=1)
 
     def strength(self) -> pd.DataFrame:
         objs = dict()
         for col in self:
-            series = self[col].dropna().values
-            objs[col] = 100 * (series[-1] / series[0] - 1)
-        return pd.DataFrame(data=objs, index=[self._attr_['name']])
+            frm = pd.concat([self._typ, self[col]], axis=1).dropna()
+            base = frm[self._typ.name][0]
+            objs[col] = (base + (frm[col][-1] - frm[col][0])) / base - 1
+        return pd.DataFrame(data=objs, index=[self._name_])
 
     # def append(self, start:Union[str, int], end:Union[str, int]=''):
     #     pass
@@ -121,7 +120,7 @@ class trend(baseDataFrameChart):
         return go.Figure(
             data=data,
             layout=go.Layout(
-                title=f"{self._attr_['name']}({self._attr_['ticker']}) Trend",
+                title=f"{self._name_}({self._ticker_}) Trend",
                 plot_bgcolor="white",
                 legend=dict(
                     orientation="h",
@@ -145,7 +144,7 @@ class trend(baseDataFrameChart):
                     autorange=True
                 ),
                 yaxis=dict(
-                    title=f"[{self._attr_['unit']}]",
+                    title=f"[{self._unit_}]",
                     showgrid=True,
                     gridwidth=0.5,
                     gridcolor="lightgrey",
@@ -176,7 +175,7 @@ class trend(baseDataFrameChart):
         fig = make_subplots(
             rows=3, cols=2,
             vertical_spacing=0.08, horizontal_spacing=0.04,
-            y_title='[%]', x_title='Date',
+            y_title='[x1 Average]', x_title='Date',
             subplot_titles=columns
         )
         fig.add_traces(
@@ -185,7 +184,7 @@ class trend(baseDataFrameChart):
             cols=[1, 2, 1, 2, 1, 2][:len(columns)]
         )
         fig.update_layout(
-            title=f"{self._attr_['name']}({self._attr_['ticker']}) %Trend Diff.",
+            title=f"{self._name_}({self._ticker_}) %Trend Diff.",
             plot_bgcolor="white",
         )
         fig.update_xaxes(
@@ -219,11 +218,11 @@ class trend(baseDataFrameChart):
 
     def save(self, mode:str='unflat', columns:list=None, filename:str=''):
         fig = self.figure() if mode == 'unflat' else self.figure_flat(columns)
-        filename = filename if filename else f'TREND{"" if mode == "unflat" else "_F"}'
+        filename = filename if filename else self._filename_(mode)
         plot(
             figure_or_data=fig,
             auto_open=False,
-            filename=f'{self._attr_["path"]}/{filename}.html'
+            filename=f'{self._path_}/{filename}.html'
         )
         return
 

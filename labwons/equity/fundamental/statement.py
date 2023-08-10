@@ -1,5 +1,5 @@
 from labwons.common.tools import int2won
-from labwons.equity.refine import _calc
+from labwons.equity._deprecated import _calc
 from datetime import datetime, timedelta
 from pykrx.stock import get_market_cap_by_date
 from plotly import graph_objects as go

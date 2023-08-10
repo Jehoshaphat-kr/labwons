@@ -1,5 +1,6 @@
 from labwons.common.basis import baseDataFrameChart, baseSeriesChart
 from labwons.equity.ticker import _ticker
+from labwons.equity.technical.ohlcv import ohlcv
 from pykrx.stock import get_market_ohlcv_by_date
 from datetime import datetime, timedelta
 from pytz import timezone
@@ -17,13 +18,13 @@ class _ohlcv(_ticker):
 
         self._period = kwargs['period'] if 'period' in kwargs else 10
         self._today = datetime.now(timezone('Asia/Seoul')).strftime("%Y%m%d")
+        self._freq = kwargs['freq'] if 'freq' in kwargs else 'd' if self.market == 'KOR' else '1d'
         self._ddate = self._today
         if 'enddate' in kwargs:
             self._ddate = kwargs['enddate']
         if isinstance(self._ddate, str):
             self._ddate = datetime.strptime(self._ddate, "%Y%m%d")
-        self._freq = kwargs['freq'] if 'freq' in kwargs else 'd' if self.market == 'KOR' else '1d'
-        self._attr = dict(name=self.name, dtype=self.dtype, unit=self.unit, path=self.path)
+        self._attr = lambda x: f"_{x}_{self._period}_{self._ddate}_{self._freq}_"
         return
 
     @staticmethod
@@ -88,9 +89,8 @@ class _ohlcv(_ticker):
         self._freq = freq
 
     @property
-    def ohlcv(self) -> baseDataFrameChart:
-        attr = f'_ohlcv_{self.enddate}_{self.period}_{self.freq}'
-        if not hasattr(self, attr):
+    def ohlcv(self) -> ohlcv:
+        if not hasattr(self, self._attr('ohlcv')):
             if self.market == 'KOR':
                 fetch = self.fetchKrse(self.ticker, self.startdate, self._today, self.freq)
             elif self.market == 'USA':
@@ -99,40 +99,8 @@ class _ohlcv(_ticker):
                 raise AttributeError(f"Unknown Market: {self.market}({self.exchange}) is an invalid attribute.")
             fetch.index = pd.to_datetime(fetch.index)
             fetch = fetch[fetch.index <= self._ddate]
-            self.__setattr__(attr, baseDataFrameChart(fetch, **self._valid_prop))
-        return self.__getattribute__(attr)
-
-    @property
-    def typical(self) -> baseSeriesChart:
-        _attr = self._valid_prop.copy()
-        _attr['name'] = f'{self.name}(T)'
-        _attr['dtype'] = '.2f'
-        obj = baseSeriesChart((self.ohlcv['high'] + self.ohlcv['low'] + self.ohlcv['close']) / 3, **_attr)
-        return obj
-
-    @property
-    def open(self) -> baseSeriesChart:
-        _attr = self._valid_prop.copy()
-        _attr['name'] = f'{self.name}(O)'
-        return baseSeriesChart(self.ohlcv['open'], **_attr)
-
-    @property
-    def high(self) -> baseSeriesChart:
-        _attr = self._valid_prop.copy()
-        _attr['name'] = f'{self.name}(H)'
-        return baseSeriesChart(self.ohlcv['high'], **_attr)
-
-    @property
-    def low(self) -> baseSeriesChart:
-        _attr = self._valid_prop.copy()
-        _attr['name'] = f'{self.name}(L)'
-        return baseSeriesChart(self.ohlcv['low'], **_attr)
-
-    @property
-    def close(self) -> baseSeriesChart:
-        _attr = self._valid_prop.copy()
-        _attr['name'] = f'{self.name}(C)'
-        return baseSeriesChart(self.ohlcv['close'], **_attr)
+            self.__setattr__(self._attr('ohlcv'), ohlcv(fetch, **self._valid_prop))
+        return self.__getattribute__(self._attr('ohlcv'))
 
     @property
     def ta(self) -> baseDataFrameChart:
@@ -175,16 +143,15 @@ class _ohlcv(_ticker):
                                           trend_psar_up_indicator
                                           trend_psar_down_indicator
         """
-        attr = f"_ta_{self.enddate}_{self.period}_{self.freq}"
-        if not hasattr(self, attr):
+        if not hasattr(self, self._attr('ta')):
             self.__setattr__(
-                attr,
+                self._attr('ta'),
                 baseDataFrameChart(
                     add_all_ta_features(self.ohlcv.copy(), 'open', 'high', 'low', 'close', 'volume'),
                     **self._valid_prop
                 )
             )
-        return self.__getattribute__(attr)
+        return self.__getattribute__(self._attr('ta'))
 
 
 

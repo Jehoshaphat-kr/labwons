@@ -1,71 +1,66 @@
-# from labwons.equity.refine import _calc
+from labwons.common.basis import baseDataFrameChart, baseSeriesChart
 from typing import Union
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
-from plotly.offline import plot
 from pandas import DataFrame
 
-class _ohlcv(DataFrame):
-    _attr_ = dict()
+class ohlcv(baseDataFrameChart):
+
     def __init__(self, base:DataFrame, **kwargs):
-        # baseData = getattr(base, '_ohlcv').copy()
-        super().__init__(
-            index=base.index,
-            columns=base.columns,
-            data=base.values
-        )
-        self._attr_ = kwargs
-        # self._name = kwargs['name']
-        # self._ticker = kwargsticker
-        # self._dtype = dtype
-        # self._unit = unit
-        # self._path = path
+        super().__init__(frame=base, **kwargs)
+        self._filename_ = 'OHLCV'
         return
 
-    def __call__(self, key:str='ohlcv', **kwargs) -> Union[go.Scatter, go.Bar]:
-        if key.lower() in ['candle', 'ohlcv', 'price']:
-            trace = self.traceCandle()
+    def __call__(self, key:str='candle', **kwargs) -> Union[go.Scatter, go.Bar]:
+        if key.lower() in ['candle', 'ohlc', 'price']:
+            trace = self.candle()
         elif key.lower() in ['volume', 'bar']:
-            trace = self.traceBar()
+            trace = self.bar('volume')
+            trace.showlegend = False
+            trace.marker = dict(
+                color = self['volume'].pct_change().apply(lambda x: 'royalblue' if x <= 0 else 'red')
+            )
         else:
             raise KeyError(f"Unknown parameter: {key}")
-        for key in kwargs:
-            if key in vars(go.Scatter).keys():
-                setattr(trace, key, kwargs[key])
         return trace
 
-    def traceCandle(self) -> go.Candlestick:
-        return go.Candlestick(
-            name=self._attr_['name'],
-            x=self.index,
-            open=self['open'],
-            high=self['high'],
-            low=self['low'],
-            close=self['close'],
-            visible=True,
-            showlegend=False,
-            increasing_line=dict(
-                color='red'
-            ),
-            decreasing_line=dict(
-                color='royalblue'
-            ),
-            xhoverformat='%Y/%m/%d',
-            yhoverformat=self._attr_['dtype'],
-        )
+    @property
+    def o(self) -> baseSeriesChart:
+        attrib = self._attr_.copy()
+        attrib['name'] = f"{self._name_}(O)"
+        return baseSeriesChart(self['open'], **attrib)
 
-    def traceBar(self) -> go.Bar:
-        series = self['volume']
-        return go.Bar(
-            name=series.name,
-            x=series.index,
-            y=series,
-            visible=True,
-            showlegend=False,
-            xhoverformat='%Y/%m/%d',
-            marker=dict(color=series.pct_change().apply(lambda x: 'royalblue' if x < 0 else 'red')),
-            hovertemplate='%{y} @%{x}<extra></extra>'
-        )
+    @property
+    def h(self) -> baseSeriesChart:
+        attrib = self._attr_.copy()
+        attrib['name'] = f"{self._name_}(H)"
+        return baseSeriesChart(self['high'], **attrib)
+
+    @property
+    def l(self) -> baseSeriesChart:
+        attrib = self._attr_.copy()
+        attrib['name'] = f"{self._name_}(L)"
+        return baseSeriesChart(self['low'], **attrib)
+
+    @property
+    def c(self) -> baseSeriesChart:
+        attrib = self._attr_.copy()
+        attrib['name'] = f"{self._name_}(C)"
+        return baseSeriesChart(self['close'], **attrib)
+
+    @property
+    def v(self) -> baseSeriesChart:
+        attrib = self._attr_.copy()
+        attrib['name'] = f"{self._name_} Vol"
+        attrib['dtype'] = ',d'
+        return baseSeriesChart(self['volume'].astype(int), **attrib)
+
+    @property
+    def t(self) -> baseSeriesChart:
+        attrib = self._attr_.copy()
+        attrib['name'] = f"{self._name_}(T)"
+        attrib['dtype'] = ".2f"
+        return baseSeriesChart((self['low'] + self['high'] + self['close']) / 3, **attrib)
 
     def figure(self) -> go.Figure:
         fig = make_subplots(
@@ -75,10 +70,17 @@ class _ohlcv(DataFrame):
             row_width=[0.15, 0.85],
             vertical_spacing=0.01
         )
-        fig.add_traces(data=[self.traceCandle(), self.traceBar()], rows=[1, 2], cols=[1, 1])
+        fig.add_traces(data=[self('candle'), self('bar')], rows=[1, 2], cols=[1, 1])
         fig.update_layout(
-            title=f"{self._attr_['name']}({self._attr_['ticker']}) OHLCV",
+            title=f"{self._name_}({self._ticker_}) {self._filename_}",
             plot_bgcolor="white",
+            legend=dict(
+                orientation="h",
+                xanchor="right",
+                yanchor="bottom",
+                x=0.98,
+                y=1.02
+            ),
             # legend=dict(tracegroupgap=5),
             xaxis_rangeslider=dict(visible=False),
             xaxis_rangeselector=dict(
@@ -115,7 +117,7 @@ class _ohlcv(DataFrame):
                 autorange=True
             ),
             yaxis=dict(
-                title=f"[{self._attr_['unit']}]",
+                title=f"[{self._unit_}]",
                 showgrid=True,
                 gridwidth=0.5,
                 gridcolor="lightgrey",
@@ -138,19 +140,3 @@ class _ohlcv(DataFrame):
             )
         )
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
-
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
-            auto_open=False,
-            filename=f'{self._attr_["path"]}/OHLCV.html'
-        )
-        kwargs.update(setter)
-        plot(**kwargs)
-        return
-

@@ -30,7 +30,8 @@ class trend(baseDataFrameChart):
     @staticmethod
     def _timeSpan(series:pd.Series) -> list:
         sizeof, times = len(series), series.index
-        span = [('ALL', times[0])]
+        # span = [('ALL', times[0])]
+        span = []
         if sizeof >= 5 * 252 * 1.03:
             span.append(('5Y', times[-1] - timedelta(5 * 365)))
         if sizeof >= 3 * 252 * 1.03:
@@ -41,6 +42,8 @@ class trend(baseDataFrameChart):
             span.append(('1Y', times[-1] - timedelta(365)))
         if sizeof >= 0.5 * 252 * 1.03:
             span.append(('6M', times[-1] - timedelta(183)))
+        if sizeof >= 0.25 * 252 * 1.03:
+            span.append(('3M', times[-1] - timedelta(91)))
         return span
 
     @staticmethod

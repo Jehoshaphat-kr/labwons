@@ -37,8 +37,11 @@ class Equity(_ohlcv):
     def by(self, by:str):
         self._by_ = by
 
+    @property
     def backtest(self) -> backtest:
-        return backtest(self.ohlcv)
+        if not self.__hasattr__(self._attr('backt')):
+            self.__setattr__(self._attr('backt'), backtest(self.ohlcv, **self._valid_prop))
+        return self.__getattribute__(self._attr('backt'))
 
     @property
     def sma(self) -> sma:

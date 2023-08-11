@@ -51,12 +51,12 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 #     equity.trend.save()
 
 # equity = lw.Equity('AMZN', period=12)
-equity = lw.Equity('005930', period=10)
+equity = lw.Equity('005930', period=20)
 # equity = lw.Equity('005930', period=10)
 # equity = lw.Equity('000660', period=10)
 # print(equity.longName)
 # print(equity.businessSummary)
-print(equity.backtest().head(40))
+# print(equity.backtest)
 # print(equity.ohlcv)
 # print(equity.ohlcv.o)
 # print(equity.ohlcv.h)
@@ -72,9 +72,6 @@ print(equity.backtest().head(40))
 # print(equity.benchmark)
 # print(equity.drawDown)
 
-
-# from datetime import timedelta
-# equity.trend['5Y'] = equity.trend.add(equity.trend.index[-1] - timedelta(5 * 365), name='5Y')
 # print(equity.trend)
 # print(equity.trend.flatten())
 # print(equity.bollingerBand)
@@ -126,6 +123,12 @@ print(equity.backtest().head(40))
 # equity.benchmarkMultiple.show()
 # equity.performance.show()
 # equity.statement.show()
+
+signaled = equity.backtest.addSignal(
+    equity.sma.goldenCross['midTerm']
+)
+fig = equity.backtest.figure('line')
+fig.show()
 
 
 # corr = Correlation(

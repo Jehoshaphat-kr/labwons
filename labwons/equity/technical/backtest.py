@@ -28,11 +28,31 @@ class backtest(baseDataFrameChart):
 
     def addSignal(self, signal:pd.Series) -> pd.DataFrame:
         answer = self.copy()
-        self._signaled = answer.loc[signal.dropna().index]
+        # self._signaled = answer.loc[signal.dropna().index]
+        self._signaled = answer[answer.index.isin(signal.dropna().index)]
         return self._signaled
 
-    def performance(self, col:str, dataframe:pd.DataFrame=pd.DataFrame()):
-        frame = (dataframe if not dataframe.empty else self._signaled.copy())[col]
+    def evaluate(self):
+        objs = list()
+        N = len(self._signaled)
+        for col in self.DURATIONS:
+            target = dict(zip(self.DURATIONS, [4.0, 6.0, 10.0, 16.0]))[col]
+            frm = self._signaled[col]
+            objs.append(
+                pd.DataFrame(
+                    data={
+                        'Achieve': round(100 * len(frm[frm['Return'] >= target]) / N, 2),
+                        'Mild Achieve': round(100 * len(frm[frm['Return'] > 0]) / N, 2),
+                        'Avg.Return': frm['Return'].mean(),
+                        'Avg.DrawDown': frm['Min'].mean(),
+                        'Avg.Volatility': (frm['Max'] - frm['Min']).mean(),
+                    }, index=[col]
+                )
+            )
+        return pd.concat(objs, axis=0)
+
+    def line(self, col:str, data:pd.DataFrame=pd.DataFrame(), **kwargs):
+        frame = (data if not data.empty else self._signaled.copy())[col]
         trace = go.Scatter(
             name=col,
             x=frame.index,
@@ -78,7 +98,7 @@ class backtest(baseDataFrameChart):
             rows = [1 if col[0] in ['1M', '3M'] else 2 for col in self._signaled]
             cols = [1 if col[0] in ['1M', '6M'] else 2 for col in self._signaled]
         elif mode == 'line':
-            data = [self.performance(col) for col in self.DURATIONS]
+            data = [self.line(col) for col in self.DURATIONS]
             rows = [1, 1, 2, 2]
             cols = [1, 2, 1, 2]
         else:

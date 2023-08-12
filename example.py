@@ -125,10 +125,12 @@ equity = lw.Equity('005930', period=20)
 # equity.statement.show()
 
 signaled = equity.backtest.addSignal(
-    equity.sma.goldenCross['midTerm']
+    equity.sma.goldenCross['shortTerm']
 )
-fig = equity.backtest.figure('line')
-fig.show()
+# equity.backtest.figure('line').show()
+# equity.backtest.figure('box').show()
+df = equity.backtest.evaluate()
+print(df)
 
 
 # corr = Correlation(

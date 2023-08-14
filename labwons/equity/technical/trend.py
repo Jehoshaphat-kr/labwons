@@ -70,6 +70,8 @@ class trend(baseDataFrameChart):
 
     @staticmethod
     def _regress(series:pd.Series, col:str='') -> pd.Series:
+        if not series.index.name == 'date':
+            raise IndexError
         col = col if col else series.name
         series = series.reset_index(level=0)
         xrange = (series['date'].diff()).dt.days.fillna(1).astype(int).cumsum()
@@ -77,7 +79,13 @@ class trend(baseDataFrameChart):
         slope, intercept, _, _, _ = linregress(x=xrange, y=series[series.columns[-1]])
         fitted = slope * xrange + intercept
         fitted.name = col
-        return pd.concat(objs=[series, fitted], axis=1)[['date', col]].set_index(keys='date')
+        return pd.concat(objs=[series, fitted], axis=1).set_index(keys='date')[col]
+
+    def _naming(self) -> str:
+        n = 1
+        while f"custom{str(n).zfill(2)}" in self.columns:
+            n += 1
+        return f"custom{str(n).zfill(2)}"
 
     def _buttons(self) -> list:
         _buttons = list()
@@ -104,14 +112,31 @@ class trend(baseDataFrameChart):
             objs[col] = (base + (frm[col][-1] - frm[col][0])) / base - 1
         return pd.DataFrame(data=objs, index=[self._name_])
 
+    def backTest(self, window:int=252) -> pd.Series:
+        date, data = [], []
+        for n in range(0, len(self._typ) - window, 5):
+            ser = self._typ[n : n + window]
+            reg = self._regress(ser, col=str(n))
+            fit = pd.concat([ser, reg], axis=1)
+            if fit.empty:
+                continue
+
+            pr, td = fit[fit.columns[0]], fit[fit.columns[1]]
+            basis = (pr - td) / (abs(pr - td).sum() / len(fit))
+            factor = (basis[-3] / basis[-1]) * (pr[-2] / pr[-4])
+
+            date.append(ser.index[-1])
+            data.append(factor * basis[-1])
+            # data['Residue'].append(res)
+            # data['isUnderValued'].append(isUnderValued)
+            # data['isDeValued'].append(isDeValued)
+            # data['isRising'].append(isRising)
+            # data['Signal'].append(pr[-1] * isUnderValued * isDeValued * isRising)
+        return pd.Series(index=date, data=data, name='Score')
+
+
     # def append(self, start:Union[str, int], end:Union[str, int]=''):
     #     pass
-
-    def _naming(self) -> str:
-        n = 1
-        while f"custom{str(n).zfill(2)}" in self.columns:
-            n += 1
-        return f"custom{str(n).zfill(2)}"
 
     def figure(self) -> go.Figure:
         data = [self._typ()]

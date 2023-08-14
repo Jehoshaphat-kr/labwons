@@ -9,6 +9,7 @@ import pandas as pd
 class backtest(baseDataFrameChart):
     DURATIONS = ['1M', '3M', '6M', '1Y']
     _signaled = pd.DataFrame()
+    _ohlcvt = None
     def __init__(self, ohlcvt:ohlcv, **kwargs):
         base = ohlcvt[['close', 'low', 'high']].copy()
         objs = {}
@@ -24,6 +25,7 @@ class backtest(baseDataFrameChart):
             objs[label] = pd.DataFrame(data).set_index(keys='date')
         super().__init__(pd.concat(objs=objs, axis=1), **kwargs)
         self._signaled = pd.DataFrame()
+        self._ohlcvt = ohlcvt
         return
 
     def addSignal(self, signal:pd.Series) -> pd.DataFrame:
@@ -37,12 +39,16 @@ class backtest(baseDataFrameChart):
         N = len(self._signaled)
         for col in self.DURATIONS:
             target = dict(zip(self.DURATIONS, [4.0, 6.0, 10.0, 16.0]))[col]
-            frm = self._signaled[col]
+            frm = self._signaled[col].dropna()
             objs.append(
                 pd.DataFrame(
                     data={
-                        'Achieve': round(100 * len(frm[frm['Return'] >= target]) / N, 2),
-                        'Mild Achieve': round(100 * len(frm[frm['Return'] > 0]) / N, 2),
+                        'All Points': len(self),
+                        'Occurrence': N,
+                        'Achieve': len(frm[frm['Return'] >= target]),
+                        '%Achieve': round(100 * len(frm[frm['Return'] >= target]) / N, 2),
+                        'Mild Achieve': len(frm[frm['Return'] > 0]),
+                        '%Mild Achieve': round(100 * len(frm[frm['Return'] > 0]) / N, 2),
                         'Avg.Return': frm['Return'].mean(),
                         'Avg.DrawDown': frm['Min'].mean(),
                         'Avg.Volatility': (frm['Max'] - frm['Min']).mean(),
@@ -87,7 +93,8 @@ class backtest(baseDataFrameChart):
                     'Return': 'green',
                     'Avg.Return': 'royalblue',
                     'Max': 'indianred',
-                    'Min': 'cyan'}[col[1]]
+                    'Min': 'cyan'
+                }[col[1]]
             )
         )
         return trace
@@ -101,6 +108,14 @@ class backtest(baseDataFrameChart):
             data = [self.line(col) for col in self.DURATIONS]
             rows = [1, 1, 2, 2]
             cols = [1, 2, 1, 2]
+        elif mode.startswith('sig'):
+            scatter = self._ohlcvt.t.scatter(
+                self._ohlcvt.t[self._ohlcvt.t.index.isin(self._signaled.index)]
+            )
+            scatter.marker = dict(symbol='triangle-up', color='green', size=10)
+            fig = self._ohlcvt.t.figure()
+            fig.add_trace(scatter)
+            return fig
         else:
             raise KeyError
         fig = make_subplots(

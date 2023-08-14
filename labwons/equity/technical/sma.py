@@ -33,9 +33,9 @@ class sma(baseDataFrameChart):
         if self._goldenCross_.empty:
             df = pd.concat(
                 objs={
-                    's': self['MA5D'] - self['MA20D'],
-                    'm': self['MA20D'] - self['MA60D'],
-                    'l': self['MA60D'] - self['MA120D']
+                    's': self['MA20D'] - self['MA60D'],
+                    'm': self['MA60D'] - self['MA120D'],
+                    'l': self['MA60D'] - self['MA200D'],
                 }, axis=1
             )
 
@@ -64,13 +64,14 @@ class sma(baseDataFrameChart):
 
     def figure(self, goldenCross:bool=True) -> go.Figure:
         fig = self._ohlcvt_.figure()
+        fig.add_trace(self._ohlcvt_.t(), row=1, col=1)
         fig.add_traces(
             data=[self(col) for col in self],
             rows=[1] * len(self.columns),
             cols=[1] * len(self.columns)
         )
         if goldenCross:
-            data = self.goldenCross().copy()
+            data = self.goldenCross.copy()
             fig.add_traces(
                 data=[self.scatter(col, data, marker=dict(symbol='triangle-up')) for col in data],
                 rows=[1] * len(data.columns),

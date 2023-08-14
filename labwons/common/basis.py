@@ -181,6 +181,21 @@ class baseSeriesChart(Series):
         )
         return self._overwrite(go.Bar, trace, **kwargs)
 
+    def scatter(self, data:Series=Series(dtype=float), **kwargs) -> go.Scatter:
+        data = (self if data.empty else data).dropna()
+        trace = go.Scatter(
+            name=self._name_,
+            x=data.index,
+            y=data,
+            mode='markers',
+            visible='legendonly',
+            showlegend=True,
+            xhoverformat='%Y/%m/%d',
+            yhoverformat=self._dtype_,
+            hovertemplate='%{y} @%{x}<extra></extra>'
+        )
+        return self._overwrite(go.Scatter, trace, **kwargs)
+
     def figure(self, mode:str='line') -> go.Figure:
         layout = go.Layout(
             title=self._name_,

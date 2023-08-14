@@ -50,8 +50,8 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 #     equity.enddate = ''
 #     equity.trend.save()
 
-# equity = lw.Equity('AMZN', period=12)
-equity = lw.Equity('005930', period=20)
+equity = lw.Equity('QQQ', period=30)
+# equity = lw.Equity('005930', period=20)
 # equity = lw.Equity('005930', period=10)
 # equity = lw.Equity('000660', period=10)
 # print(equity.longName)
@@ -69,6 +69,12 @@ equity = lw.Equity('005930', period=20)
 # print(equity.trend)
 # print(equity.trend.flatten())
 # print(equity.trend.strength())
+# print(equity.trend.backTestSignal())
+equity.enddate = '20080130'
+equity.trend.show()
+equity.trend.show('flat')
+
+
 # print(equity.benchmark)
 # print(equity.drawDown)
 
@@ -124,13 +130,33 @@ equity = lw.Equity('005930', period=20)
 # equity.performance.show()
 # equity.statement.show()
 
-signaled = equity.backtest.addSignal(
-    equity.sma.goldenCross['shortTerm']
-)
+# signaled = equity.backtest.addSignal(
+    # equity.sma.goldenCross['longTerm']
+    # equity.trend.backTestSignal()
+# )
 # equity.backtest.figure('line').show()
 # equity.backtest.figure('box').show()
-df = equity.backtest.evaluate()
-print(df)
+# equity.backtest.figure('sig').show()
+# df = equity.backtest.evaluate()
+# print(df)
+
+# equity.trend.show()
+# import plotly.graph_objects as go
+#
+# backtest = pd.concat([equity.backtest['1Y'], equity.trend.backTest()], axis=1)
+# print(backtest)
+# print(backtest.sort_values(by='Score').dropna().head(10))
+# fig = go.Figure()
+# fig.add_trace(
+#     go.Scatter(
+#         x=backtest['Score'],
+#         y=backtest['Avg.Return'],
+#         mode='markers',
+#         meta=backtest.index,
+#         hovertemplate='%{meta:%Y/%m/%d}<br>%{y:.2f}%<extra></extra>'
+#     )
+# )
+# fig.show()
 
 
 # corr = Correlation(

@@ -1,4 +1,4 @@
-from labwons.equity.ohlcv import _ohlcv
+from labwons.equity.fetch import fetch
 from datetime import timedelta
 from scipy.stats import linregress
 from ta import add_all_ta_features
@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 
 
-class _calc(_ohlcv):
+class _calc(fetch):
 
     @staticmethod
     def _boundFit(ohlcv: pd.DataFrame, price:str, minInterval:int=-1, samplePoint:int=-1):

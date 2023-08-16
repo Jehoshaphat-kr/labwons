@@ -1,5 +1,5 @@
 from labwons.common.basis import baseDataFrameChart
-from labwons.equity.ohlcv import _ohlcv
+from labwons.equity.fetch import fetch
 from datetime import timedelta
 import plotly.graph_objects as go
 import pandas as pd
@@ -7,18 +7,11 @@ import pandas as pd
 
 class benchmark(baseDataFrameChart):
     _base_ = None
-    def __init__(self, base: _ohlcv):
-        if base.market == 'KOR' and base.benchmarkTicker:
-            df = base.fetchKrse(base.benchmarkTicker, base.startdate, base.enddate, base.freq)
-        elif base.market == 'USA' and base.benchmarkTicker:
-            df = base.fetchNyse(base.benchmarkTicker, base.period, base.freq)
-        else:
-            df = pd.DataFrame(columns=['open', 'close', 'high', 'low', 'volume'])
-
+    def __init__(self, base: fetch):
         objs = dict()
         for col in base.ohlcv:
             objs[(col, base.name)] = base.ohlcv[col]
-            objs[(col, base.benchmarkName)] = df[col]
+            objs[(col, base.benchmarkName)] = base.benchmark[col]
         frame = pd.concat(objs=objs, axis=1)
 
         days = self._days_far(frame, [('3M', 92), ('6M', 183), ('1Y', 365), ('3Y', 1095), ('5Y', 1825)])
@@ -26,6 +19,8 @@ class benchmark(baseDataFrameChart):
         super().__init__(100 * pd.concat(objs=objs, axis=1), **getattr(base, '_valid_prop'))
 
         self._base_ = base
+        self._form_ = '.2f'
+        self._unit_ = '%'
         self._filename_ = 'Benchmark Relative Returns'
         return
 
@@ -39,10 +34,9 @@ class benchmark(baseDataFrameChart):
         for n, col in enumerate(self):
             if n % 2:
                 continue
-            label = col[0].replace('M', '개월').replace('Y', '년')
             step = dict(
                 method='update',
-                label=label,
+                label=col[0],
                 args=[
                     dict(visible=[True if (i == n) or (i == n+1) else False for i in range(len(self.columns))]),
                     # dict(title=f"{self._base_.name}({self._base_.ticker}) Relative Returns: {label}")

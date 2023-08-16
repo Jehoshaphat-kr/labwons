@@ -65,6 +65,7 @@ equity = lw.Equity('005930', period=20)
 # print(equity.ohlcv._form_)
 # print(equity.ohlcv._path_)
 # print(equity.ohlcv._filename_)
+# equity.ohlcv.show()
 
 """ ========== < SMA > ========== """
 # print(equity.sma)
@@ -88,25 +89,32 @@ equity = lw.Equity('005930', period=20)
 # print(equity.trend.strength())
 
 """ ========== < BENCHMARK > ========== """
-# print(equity.benchmark)
-# print(equity.benchmark._dataName_)
-# print(equity.benchmark._ticker_)
-# print(equity.benchmark._unit_)
-# print(equity.benchmark._form_)
-# print(equity.benchmark._path_)
-# print(equity.benchmark._filename_)
-# equity.benchmark.save()
+# print(equity.benchmarkReturn)
+# print(equity.benchmarkReturn._dataName_)
+# print(equity.benchmarkReturn._ticker_)
+# print(equity.benchmarkReturn._unit_)
+# print(equity.benchmarkReturn._form_)
+# print(equity.benchmarkReturn._path_)
+# print(equity.benchmarkReturn._filename_)
+# equity.benchmarkReturn.save()
 
 """ ========== < BOLLINGER > ========== """
-print(equity.bollingerBand)
+# print(equity.bollingerBand)
 # print(equity.bollingerBand._dataName_)
 # print(equity.bollingerBand._ticker_)
 # print(equity.bollingerBand._unit_)
 # print(equity.bollingerBand._form_)
 # print(equity.bollingerBand._path_)
+# equity.bollingerBand.show()
 
-
-
+""" ========== < DRAWDOWN > ========== """
+# print(equity.drawDown)
+# print(equity.drawDown._dataName_)
+# print(equity.drawDown._ticker_)
+# print(equity.drawDown._unit_)
+# print(equity.drawDown._form_)
+# print(equity.drawDown._path_)
+# equity.drawDown.show()
 
 
 # print(equity.backtest)

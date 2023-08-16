@@ -21,11 +21,14 @@ class baseDataFrameChart(DataFrame):
         :param kwargs : [dict] 속성 값 (아래는 필수 속성 키)
                         - @name, @unit, @path, @dtype
         """
-        super(baseDataFrameChart, self).__init__(
-            index=frame.index,
-            columns=frame.columns,
-            data=frame.values
-        )
+        self._prop_ = {
+            'dataName': '',
+            'ticker': '',
+            'unit': '',
+            'path': '',
+            'form': '.2f',
+            'filename': '',
+        }
         labels = {
             'dataName': 'name',
             'ticker': 'ticker',
@@ -34,6 +37,12 @@ class baseDataFrameChart(DataFrame):
             'form': 'dtype',
             'filename': 'filename'
         }
+
+        super(baseDataFrameChart, self).__init__(
+            index=frame.index,
+            columns=frame.columns,
+            data=frame.values
+        )
         for k in self._prop_:
             if labels[k] in kwargs:
                 self._prop_[k] = kwargs[labels[k]]
@@ -100,6 +109,7 @@ class baseDataFrameChart(DataFrame):
     def line(self, col:Union[str, tuple], data:DataFrame=DataFrame(), **kwargs) -> go.Scatter:
         data = (self if data.empty else data)[col].dropna()
         name = col if isinstance(col, str) else col[1]
+        unit = kwargs['unit'] if 'unit' in kwargs else self._unit_
         trace = go.Scatter(
             name=name,
             x=data.index,
@@ -110,7 +120,7 @@ class baseDataFrameChart(DataFrame):
             connectgaps=True,
             xhoverformat='%Y/%m/%d',
             yhoverformat=self._form_,
-            hovertemplate=name + '<br>%{y}' + self._unit_ + '@%{x}<extra></extra>'
+            hovertemplate=name + '<br>%{y}' + _unit_ + '@%{x}<extra></extra>'
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 

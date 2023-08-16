@@ -1,5 +1,5 @@
 from labwons.common.basis import baseDataFrameChart
-from labwons.equity.ohlcv import _ohlcv
+from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 import pandas as pd
@@ -7,7 +7,7 @@ import numpy as np
 
 
 class bollingerband(baseDataFrameChart):
-    def __init__(self, base:_ohlcv):
+    def __init__(self, base:fetch):
         frm = pd.DataFrame()
         frm['typical'] = base.ohlcv.t.copy()
         frm['middle'] = base.ohlcv.t.rolling(window=20).mean()
@@ -29,51 +29,51 @@ class bollingerband(baseDataFrameChart):
     def __call__(self, col:str):
         return self.trace(col)
 
-    def trace(self, col:str) -> go.Scatter:
-        basis = self[col].dropna()
-        unit = '%' if col == 'width' else '' if col == 'pctb' else self._base_.unit
-        trace = go.Scatter(
-            name=col,
-            x=basis.index,
-            y=basis,
-            visible=True,
-            showlegend=True,
-            mode='lines',
-            xhoverformat='%Y/%m/%d',
-            yhoverformat='.2f',
-            hovertemplate=col + "<br>%{y}" + unit + " @%{x}<extra></extra>"
-        )
-        if col.endswith('band'):
-            trace.name = 'x2 Band'
-            trace.line = dict(dash='dash', color='magenta')
-            trace.showlegend = True if col.startswith('upper') else False
-            trace.legendgroup = '_band'
-        if col.endswith('trend'):
-            trace.name = 'x1 Trend'
-            trace.line = dict(dash='dot', color='maroon')
-            trace.showlegend = True if col.startswith('upper') else False
-            trace.legendgroup = f'_trend'
-        return trace
-
     def figure(self) -> go.Figure:
         fig = make_subplots(
             rows=4,
             cols=1,
             shared_xaxes=True,
-            row_width=[0.2, 0.2, 0.1, 0.5],
+            row_width=[0.12, 0.12, 0.1, 0.66],
             vertical_spacing=0.01
         )
         fig.add_traces(
             data=[
                 self._base_.ohlcv('candle'),
                 self._base_.ohlcv('volume'),
-                self.trace('middle'),
-                self.trace('upperband'),
-                self.trace('uppertrend'),
-                self.trace('lowertrend'),
-                self.trace('lowerband'),
-                self.trace('width'),
-                self.trace('pctb')
+                self.line('middle'),
+                self.line(
+                    'upperband',
+                    name='x2 Band',
+                    line=dict(dash='dash', color='maroon'),
+                    legendgroup='_band'
+                ),
+                self.line(
+                    'uppertrend',
+                    name='x1 Band',
+                    line=dict(dash='dot', color='lightgreen'),
+                    legendgroup='_trend'
+                ),
+                self.line(
+                    'lowertrend',
+                    showlegend=False,
+                    line=dict(dash='dot', color='lightgreen'),
+                    legendgroup='_trend'
+                ),
+                self.line(
+                    'lowerband',
+                    showlegend=False,
+                    line=dict(dash='dash', color='maroon'),
+                    legendgroup='_band'
+                ),
+                self.line(
+                    'width',
+                    hovertemplate="Width<br>%{y}% @%{x}<extra></extra>"
+                ),
+                self.line(
+                    'pctb',
+                    hovertemplate="%B<br>%{y} @%{x}<extra></extra>"
+                )
             ],
             rows=[1, 2, 1, 1, 1, 1, 1, 3, 4],
             cols=[1, 1, 1, 1, 1, 1, 1, 1, 1]

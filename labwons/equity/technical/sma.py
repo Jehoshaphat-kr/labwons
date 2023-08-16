@@ -1,5 +1,5 @@
 from labwons.common.basis import baseDataFrameChart
-from labwons.equity.ohlcv import _ohlcv
+from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 import pandas as pd
 
@@ -7,7 +7,7 @@ class sma(baseDataFrameChart):
 
     _base_ = None
     _goldenCross_ = None
-    def __init__(self, base:_ohlcv):
+    def __init__(self, base:fetch):
         DEFAULT_WINDOWS = [5, 10, 20, 60, 120, 200]
         DEFAULT_FRAME = pd.concat(objs={f'MA{w}D': self.add(base.ohlcv.t, w) for w in DEFAULT_WINDOWS}, axis=1)
 

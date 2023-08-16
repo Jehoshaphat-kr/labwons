@@ -11,7 +11,7 @@ import warnings
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
-class _ohlcv(_ticker):
+class fetch(_ticker):
 
     def __init__(self, ticker:str, **kwargs):
         super().__init__(ticker=ticker, **kwargs)
@@ -153,6 +153,22 @@ class _ohlcv(_ticker):
             )
         return self.__getattribute__(self._attr('ta'))
 
+    @property
+    def benchmark(self) -> pd.DataFrame:
+        if not hasattr(self, self._attr('benchmark')):
+            if self.market == 'KOR' and self.benchmarkTicker:
+                df = self.fetchKrse(self.benchmarkTicker, self.startdate, self.enddate, self.freq)
+            elif self.market == 'USA' and self.benchmarkTicker:
+                df = self.fetchNyse(self.benchmarkTicker, self.period, self.freq)
+            elif self.market == 'KOR':
+                df = self.fetchKrse('069500', self.startdate, self.enddate, self.freq)
+            elif self.market == 'USA':
+                df = self.fetchNyse('SPY', self.period, self.freq)
+            else:
+                raise KeyError('Unidentify market attribute')
+            self.__setattr__(self._attr('benchmark'), df)
+        return self.__getattribute__(self._attr('benchmark'))
+
 
 
 if __name__ == "__main__":
@@ -160,7 +176,7 @@ if __name__ == "__main__":
     API_ECOS = "CEW3KQU603E6GA8VX0O9"
 
     # test = _ohlcv(ticker='383310')
-    test = _ohlcv(ticker='AAPL', period=12, enddate='20230105')
+    test = fetch(ticker='AAPL', period=12, enddate='20230105')
     # test = _fetch(ticker='TSLA')
     # test = _fetch(ticker='KRE')
     # test = _fetch(ticker='DGS10')
@@ -169,13 +185,13 @@ if __name__ == "__main__":
     # test = _fetch(ticker='LORSGPRT', market='KOR')
     # print(test.ticker)
     # print(test.exchange)
-    print(test.ohlcv)
-    print(len(test.ohlcv))
+    # print(test.ohlcv)
     # test.ohlcv.show()
     # print(test.typical)
     # test.typical.show()
     # print(test.close)
     # test.close.show()
     # print(test.ta)
+    print(test.benchmark)
 
 

@@ -1,5 +1,5 @@
 from labwons.common.basis import baseDataFrameChart
-from labwons.equity.ohlcv import _ohlcv
+from labwons.equity.fetch import fetch
 from datetime import datetime, timedelta
 from scipy.stats import linregress
 from typing import Union
@@ -12,7 +12,7 @@ import pandas as pd
 class trend(baseDataFrameChart):
 
     _base_ = None
-    def __init__(self, base:_ohlcv):
+    def __init__(self, base:fetch):
         """
         Trend line
         :param base : [_ohlcv] parent class "<class; ohlcv>"

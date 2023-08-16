@@ -1,13 +1,10 @@
-from labwons.equity.ohlcv import _ohlcv
+from labwons.equity.fetch import fetch
 from labwons.equity.technical.trend import trend
 from labwons.equity.technical.sma import sma
 from labwons.equity.technical.benchmark import benchmark
-from labwons.equity.technical.backtest import backtest
+from labwons.equity.technical.drawdown import drawdown
 from labwons.equity.technical.bollingerband import bollingerband
-
-#     # benchmark,
-#     # drawdown,
-#     # bollingerband,
+from labwons.equity.technical.backtest import backtest
 #     # rsi,
 #     # moneyflow,
 #     # psar,
@@ -26,7 +23,7 @@ from labwons.equity.fundamental import (
 )
 
 
-class Equity(_ohlcv):
+class Equity(fetch):
     _by_ = 'annual'
     def __hasattr__(self, attr):
         return hasattr(self, attr)
@@ -61,17 +58,17 @@ class Equity(_ohlcv):
     COMPARISON
     """
     @property
-    def benchmark(self) -> benchmark:
-        if not self.__hasattr__(self._attr('benchmark')):
-            self.__setattr__(self._attr('benchmark'), benchmark(self))
-        return self.__getattribute__(self._attr('benchmark'))
+    def benchmarkReturn(self) -> benchmark:
+        if not self.__hasattr__(self._attr('benchmarkReturn')):
+            self.__setattr__(self._attr('benchmarkReturn'), benchmark(self))
+        return self.__getattribute__(self._attr('benchmarkReturn'))
 
-    # @property
-    # def drawDown(self) -> drawdown:
-    #     if not self.__hasattr__('__drawdown__'):
-    #         self.__setattr__('__drawdown__', drawdown(self))
-    #     return self.__getattribute__('__drawdown__')
-    #
+    @property
+    def drawDown(self) -> drawdown:
+        if not self.__hasattr__(self._attr('drawdown')):
+            self.__setattr__(self._attr('drawdown'), drawdown(self))
+        return self.__getattribute__(self._attr('drawdown'))
+
     """
     VOLATILITY
     """
@@ -80,15 +77,15 @@ class Equity(_ohlcv):
         if not self.__hasattr__(self._attr('bollinger')):
             self.__setattr__(self._attr('bollinger'), bollingerband(self))
         return self.__getattribute__(self._attr('bollinger'))
-    #
-    # """
-    # MOMENTUM
-    # """
-    # @property
-    # def rsi(self) -> rsi:
-    #     if not self.__hasattr__('__rsi__'):
-    #         self.__setattr__('__rsi__', rsi(self))
-    #     return self.__getattribute__('__rsi__')
+
+    """
+    MOMENTUM
+    """
+    @property
+    def rsi(self) -> rsi:
+        if not self.__hasattr__('__rsi__'):
+            self.__setattr__('__rsi__', rsi(self))
+        return self.__getattribute__('__rsi__')
     #
     # """
     # VOLUME

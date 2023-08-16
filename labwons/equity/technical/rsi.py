@@ -1,12 +1,8 @@
-from labwons.common.config import PATH
-from labwons.equity._deprecated import _calc
+from labwons.common.basis import baseDataFrameChart
+from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
-from plotly.offline import plot
-from pandas import DataFrame
-import numpy as np
 import warnings
-
 warnings.filterwarnings(
     "ignore",
     message="invalid value encountered in scalar divide"
@@ -17,7 +13,7 @@ warnings.filterwarnings(
 )
 
 
-class rsi(DataFrame):
+class rsi(baseDataFrameChart):
     """
     1) Stochastic Oscillator
     Stochastic Oscillator는 주식 시장에서 많이 사용되는 기술적 분석 도구 중 하나로,
@@ -80,7 +76,7 @@ class rsi(DataFrame):
     활용하는 것이 좋습니다.
     """
 
-    def __init__(self, base:_calc):
+    def __init__(self, base:fetch):
         COLUMNS = dict(
             momentum_rsi = 'rsi',
             momentum_stoch = 'stoch-osc',
@@ -89,32 +85,31 @@ class rsi(DataFrame):
             momentum_stoch_rsi_k = 'stoch-rsi-k',
             momentum_stoch_rsi_d = 'stoch-rsi-d'
         )
-        baseData = base.calcTA()[COLUMNS.keys()].rename(columns=COLUMNS)
-        super().__init__(
-            index=baseData.index,
-            columns=baseData.columns,
-            data=baseData.values
-        )
+
+        super().__init__(frame=base.ta[COLUMNS.keys()].rename(columns=COLUMNS), **getattr(base, '_valid_prop'))
         self._base_ = base
+        self._unit_ = ''
+        self._form_ = '.2f'
+        self._filename_ = 'RSI Family'
         return
 
     def __call__(self, col:str) -> go.Scatter:
         return self.trace(col)
 
-    def trace(self, col:str) -> go.Scatter:
-        basis = self[col].dropna()
-        unit = '%' if col == 'rsi' else ''
-        return go.Scatter(
-            name=col.upper(),
-            x=basis.index,
-            y=basis,
-            visible=True,
-            showlegend=True,
-            mode='lines',
-            xhoverformat="%Y/%m/%d",
-            yhoverformat=".2f",
-            hovertemplate=col + "<br>%{y} " + unit + " @%{x}<extra></extra>"
-        )
+    # def trace(self, col:str) -> go.Scatter:
+    #     basis = self[col].dropna()
+    #     unit = '%' if col == 'rsi' else ''
+    #     return go.Scatter(
+    #         name=col.upper(),
+    #         x=basis.index,
+    #         y=basis,
+    #         visible=True,
+    #         showlegend=True,
+    #         mode='lines',
+    #         xhoverformat="%Y/%m/%d",
+    #         yhoverformat=".2f",
+    #         hovertemplate=col + "<br>%{y} " + unit + " @%{x}<extra></extra>"
+    #     )
 
     def figure(self) -> go.Figure:
         fig = make_subplots(

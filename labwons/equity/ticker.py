@@ -29,8 +29,8 @@ class _ticker(object):
             "previousClose": np.nan,
             "foreignRate": np.nan,
             "dividendYield": np.nan,
-            # "benchmarkTicker": np.nan,
-            # "benchmarkName": np.nan,
+            "benchmarkTicker": np.nan,
+            "benchmarkName": np.nan,
             "beta": np.nan,
             "trailingPE": np.nan,
             "trailingEps": np.nan,
@@ -78,7 +78,6 @@ class _ticker(object):
             pass
 
         self.path = self._valid_prop['path'] = os.path.join(PATH.BASE, f"{self.ticker}_{self.name}")
-        os.makedirs(self.path, exist_ok=True)
         return
 
     @staticmethod
@@ -237,8 +236,8 @@ class _ticker(object):
         return self._valid_prop['dividendYield']
 
     @property
-    def benchmark_ticker(self) -> str:
-        return self._valid_prop['benchmark_ticker']
+    def benchmarkTicker(self) -> str:
+        return self._valid_prop['benchmarkTicker']
 
     @property
     def benchmarkName(self) -> str:

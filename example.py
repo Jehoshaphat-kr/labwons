@@ -6,6 +6,10 @@ lw.API.SSYM = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
 lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # lw.PATH.BASE = r"\\kefico\keti\ENT\Softroom\Temp\J.H.Lee\labwons"
 
+
+"""
+TEST :: INDICATORS
+"""
 # DGS10 = lw.Indicator('DGS10')
 # print(DGS10)
 # print(DGS10())
@@ -38,25 +42,16 @@ lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
 # print(cliKR())
 # cliKR.show()
 
-# import random
-# for ticker in ['SPY', 'QQQ', 'AAPL', 'AMZN', 'KO', 'NVDA', 'TSLA', 'MSFT', 'WMT', 'GOOG']:
-#     date = f"{random.randint(2018, 2022)}{str(random.randint(1, 12)).zfill(2)}10"
-#     print(ticker, date)
-#     equity = lw.Equity(ticker, period=30)
-#     equity.enddate = date
-#     equity.trend.save(filename=f'TREND{date}')
-#     equity.trend.save('flat', filename=f'TREND_F{date}')
-#
-#     equity.enddate = ''
-#     equity.trend.save()
 
-equity = lw.Equity('QQQ', period=30)
-# equity = lw.Equity('005930', period=20)
+"""
+TEST :: EQUITIES
+"""
+# equity = lw.Equity('QQQ', period=30)
+equity = lw.Equity('005930', period=20)
 # equity = lw.Equity('005930', period=10)
 # equity = lw.Equity('000660', period=10)
-# print(equity.longName)
-# print(equity.businessSummary)
-# print(equity.backtest)
+
+""" ========== < OHLCV > ========== """
 # print(equity.ohlcv)
 # print(equity.ohlcv.o)
 # print(equity.ohlcv.h)
@@ -64,18 +59,64 @@ equity = lw.Equity('QQQ', period=30)
 # print(equity.ohlcv.c)
 # print(equity.ohlcv.v)
 # print(equity.ohlcv.t)
+# print(equity.ohlcv._dataName_)
+# print(equity.ohlcv._ticker_)
+# print(equity.ohlcv._unit_)
+# print(equity.ohlcv._form_)
+# print(equity.ohlcv._path_)
+# print(equity.ohlcv._filename_)
+
+""" ========== < SMA > ========== """
 # print(equity.sma)
-# print(equity.sma.goldenCross())
+# print(equity.sma._dataName_)
+# print(equity.sma._ticker_)
+# print(equity.sma._unit_)
+# print(equity.sma._form_)
+# print(equity.sma._path_)
+# print(equity.sma._filename_)
+# print(equity.sma.goldenCross)
+
+""" ========== < TREND > ========== """
 # print(equity.trend)
+# print(equity.trend._dataName_)
+# print(equity.trend._ticker_)
+# print(equity.trend._unit_)
+# print(equity.trend._form_)
+# print(equity.trend._path_)
+# print(equity.trend._filename_)
 # print(equity.trend.flatten())
 # print(equity.trend.strength())
-# print(equity.trend.backTestSignal())
-equity.enddate = '20080130'
-equity.trend.show()
-equity.trend.show('flat')
 
-
+""" ========== < BENCHMARK > ========== """
 # print(equity.benchmark)
+# print(equity.benchmark._dataName_)
+# print(equity.benchmark._ticker_)
+# print(equity.benchmark._unit_)
+# print(equity.benchmark._form_)
+# print(equity.benchmark._path_)
+# print(equity.benchmark._filename_)
+# equity.benchmark.save()
+
+""" ========== < BOLLINGER > ========== """
+print(equity.bollingerBand)
+# print(equity.bollingerBand._dataName_)
+# print(equity.bollingerBand._ticker_)
+# print(equity.bollingerBand._unit_)
+# print(equity.bollingerBand._form_)
+# print(equity.bollingerBand._path_)
+
+
+
+
+
+# print(equity.backtest)
+# print(equity.trend.backTestSignal())
+# equity.enddate = '20080130'
+# equity.trend.show()
+# equity.trend.show('flat')
+
+
+
 # print(equity.drawDown)
 
 # print(equity.trend)

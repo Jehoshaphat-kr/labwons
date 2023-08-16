@@ -1,19 +1,20 @@
 from labwons.common.basis import baseDataFrameChart
-from labwons.equity.technical.ohlcv import ohlcv
+from labwons.equity.ohlcv import _ohlcv
 from plotly import graph_objects as go
 import pandas as pd
 
 class sma(baseDataFrameChart):
 
-    _ohlcvt_ = None
+    _base_ = None
     _goldenCross_ = None
-    def __init__(self, ohlcvt:ohlcv, **kwargs):
+    def __init__(self, base:_ohlcv):
         DEFAULT_WINDOWS = [5, 10, 20, 60, 120, 200]
-        DEFAULT_FRAME = pd.concat(objs={f'MA{w}D': self.add(ohlcvt.t, w) for w in DEFAULT_WINDOWS}, axis=1)
+        DEFAULT_FRAME = pd.concat(objs={f'MA{w}D': self.add(base.ohlcv.t, w) for w in DEFAULT_WINDOWS}, axis=1)
 
-        super().__init__(frame=DEFAULT_FRAME, **kwargs)
+        super().__init__(frame=DEFAULT_FRAME, **getattr(base, '_valid_prop'))
         self._filename_ = 'SMA'
-        self._ohlcvt_ = ohlcvt
+        self._form_ = '.2f'
+        self._base_ = base
         self._goldenCross_ = pd.DataFrame()
         return
 
@@ -53,18 +54,18 @@ class sma(baseDataFrameChart):
                     long.append(date)
                 prev = [s, m, l]
 
-            objs = {self._ohlcvt_.t.name: self._ohlcvt_.t.copy()}
+            objs = {self._base_.ohlcv.t.name: self._base_.ohlcv.t.copy()}
             for dates, label in ((short, 'short'), (mid, 'mid'), (long, 'long')):
                 objs[f'{label}Term'] = pd.Series(index=dates, data=[1] * len(dates))
             gc = pd.concat(objs=objs, axis=1)
             for label in gc.columns[1:]:
                 gc[label] = gc[gc.columns[0]] * gc[label]
-            self._goldenCross_ = gc.drop(columns=[self._ohlcvt_.t.name])
+            self._goldenCross_ = gc.drop(columns=[self._base_.ohlcv.t.name])
         return self._goldenCross_
 
     def figure(self, goldenCross:bool=True) -> go.Figure:
-        fig = self._ohlcvt_.figure()
-        fig.add_trace(self._ohlcvt_.t(), row=1, col=1)
+        fig = self._base_.ohlcv.figure()
+        fig.add_trace(self._base_.ohlcv.t(), row=1, col=1)
         fig.add_traces(
             data=[self(col) for col in self],
             rows=[1] * len(self.columns),

@@ -8,7 +8,7 @@ class ohlcv(baseDataFrameChart):
 
     def __init__(self, base:DataFrame, **kwargs):
         super().__init__(frame=base, **kwargs)
-        self._filename_ = 'OHLCV'
+        self._prop_['filename'] = 'OHLCV'
         return
 
     def __call__(self, key:str='candle', **kwargs) -> Union[go.Scatter, go.Bar]:
@@ -26,40 +26,40 @@ class ohlcv(baseDataFrameChart):
 
     @property
     def o(self) -> baseSeriesChart:
-        attrib = self._attr_.copy()
-        attrib['name'] = f"{self._name_}(O)"
+        attrib = self._prop_.copy()
+        attrib['name'] = f"{self._dataName_}(O)"
         return baseSeriesChart(self['open'], **attrib)
 
     @property
     def h(self) -> baseSeriesChart:
-        attrib = self._attr_.copy()
-        attrib['name'] = f"{self._name_}(H)"
+        attrib = self._prop_.copy()
+        attrib['name'] = f"{self._dataName_}(H)"
         return baseSeriesChart(self['high'], **attrib)
 
     @property
     def l(self) -> baseSeriesChart:
-        attrib = self._attr_.copy()
-        attrib['name'] = f"{self._name_}(L)"
+        attrib = self._prop_.copy()
+        attrib['name'] = f"{self._dataName_}(L)"
         return baseSeriesChart(self['low'], **attrib)
 
     @property
     def c(self) -> baseSeriesChart:
-        attrib = self._attr_.copy()
-        attrib['name'] = f"{self._name_}(C)"
+        attrib = self._prop_.copy()
+        attrib['name'] = f"{self._dataName_}(C)"
         return baseSeriesChart(self['close'], **attrib)
 
     @property
     def v(self) -> baseSeriesChart:
-        attrib = self._attr_.copy()
-        attrib['name'] = f"{self._name_} Vol"
-        attrib['dtype'] = ',d'
+        attrib = self._prop_.copy()
+        attrib['name'] = f"{self._dataName_} Vol"
+        attrib['form'] = ',d'
         return baseSeriesChart(self['volume'].astype(int), **attrib)
 
     @property
     def t(self) -> baseSeriesChart:
-        attrib = self._attr_.copy()
-        attrib['name'] = f"{self._name_}(T)"
-        attrib['dtype'] = ".2f"
+        attrib = self._prop_.copy()
+        attrib['name'] = f"{self._dataName_}(T)"
+        attrib['form'] = ".2f"
         return baseSeriesChart((self['low'] + self['high'] + self['close']) / 3, **attrib)
 
     def figure(self) -> go.Figure:
@@ -72,7 +72,7 @@ class ohlcv(baseDataFrameChart):
         )
         fig.add_traces(data=[self('candle'), self('bar')], rows=[1, 2], cols=[1, 1])
         fig.update_layout(
-            title=f"{self._name_}({self._ticker_}) {self._filename_}",
+            title=f"{self._dataName_}({self._ticker_}) {self._filename_}",
             plot_bgcolor="white",
             legend=dict(
                 orientation="h",

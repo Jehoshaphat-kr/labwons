@@ -1,13 +1,19 @@
 from typing import Any, Union
-
-import pandas as pd
 from pandas import DataFrame, Series
 from plotly import graph_objects as go
 from plotly.offline import plot
+import os
 
 
 class baseDataFrameChart(DataFrame):
-    _attr_ = None
+    _prop_ = {
+        'dataName': '',
+        'ticker': '',
+        'unit': '',
+        'path': '',
+        'form': '.2f',
+        'filename': '',
+    }
     def __init__(self, frame:DataFrame, **kwargs):
         """
         Plotly 속성을 포함한 DataFrame
@@ -16,15 +22,23 @@ class baseDataFrameChart(DataFrame):
                         - @name, @unit, @path, @dtype
         """
         super(baseDataFrameChart, self).__init__(
-            index=frame.index, columns=frame.columns, data=frame.values
+            index=frame.index,
+            columns=frame.columns,
+            data=frame.values
         )
-        self._name_ = kwargs['name'] if 'name' in kwargs else ''
-        self._ticker_ = kwargs['ticker'] if 'ticker' in kwargs else ''
-        self._unit_ = kwargs['unit'] if 'unit' in kwargs else ''
-        self._path_ = kwargs['path'] if 'path' in kwargs else r'./'
-        self._dtype_ = kwargs['dtype'] if 'dtype' in kwargs else '.2f'
-        self._filename_ = f"{self._name_}"
-        self._attr_ = {col: kwargs[col] for col in kwargs}
+        labels = {
+            'dataName': 'name',
+            'ticker': 'ticker',
+            'unit': 'unit',
+            'path': 'path',
+            'form': 'dtype',
+            'filename': 'filename'
+        }
+        for k in self._prop_:
+            if labels[k] in kwargs:
+                self._prop_[k] = kwargs[labels[k]]
+
+        self._prop_['filename'] = self._prop_['dataName']
         return
 
     @staticmethod
@@ -34,10 +48,60 @@ class baseDataFrameChart(DataFrame):
                 setattr(inst, k, kwargs[k])
         return inst
 
-    def line(self, col:str, data:DataFrame=DataFrame(), **kwargs) -> go.Scatter:
-        data = (self if data.empty else data)[col]
+    @property
+    def _dataName_(self) -> str:
+        return self._prop_['dataName']
+
+    @_dataName_.setter
+    def _dataName_(self, dataName:str):
+        self._prop_['dataName'] = dataName
+
+    @property
+    def _ticker_(self) -> str:
+        return self._prop_['ticker']
+
+    @_ticker_.setter
+    def _ticker_(self, ticker:str):
+        self._prop_['ticker'] = ticker
+
+    @property
+    def _unit_(self) -> str:
+        return self._prop_['unit']
+
+    @_unit_.setter
+    def _unit_(self, unit:str):
+        self._prop_['unit'] = unit
+
+    @property
+    def _path_(self) -> str:
+        return self._prop_['path']
+
+    @_path_.setter
+    def _path_(self, path:str):
+        self._prop_['path'] = path
+
+    @property
+    def _form_(self) -> str:
+        return self._prop_['form']
+
+    @_form_.setter
+    def _form_(self, form:str):
+        self._prop_['form'] = form
+
+
+    @property
+    def _filename_(self) -> str:
+        return self._prop_['filename']
+
+    @_filename_.setter
+    def _filename_(self, filename:str):
+        self._prop_['filename'] = filename
+
+    def line(self, col:Union[str, tuple], data:DataFrame=DataFrame(), **kwargs) -> go.Scatter:
+        data = (self if data.empty else data)[col].dropna()
+        name = col if isinstance(col, str) else col[1]
         trace = go.Scatter(
-            name=col,
+            name=name,
             x=data.index,
             y=data,
             mode='lines',
@@ -45,8 +109,8 @@ class baseDataFrameChart(DataFrame):
             showlegend=True,
             connectgaps=True,
             xhoverformat='%Y/%m/%d',
-            yhoverformat=self._dtype_,
-            hovertemplate=col + '<br>%{y}' + self._unit_ + '@%{x}<extra></extra>'
+            yhoverformat=self._form_,
+            hovertemplate=name + '<br>%{y}' + self._unit_ + '@%{x}<extra></extra>'
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 
@@ -55,7 +119,7 @@ class baseDataFrameChart(DataFrame):
         if not all([c in data for c in ['open', 'high', 'low', 'close']]):
             raise ValueError(f"Candlestick requires 'open', 'high', 'low', 'close' column data")
         trace = go.Candlestick(
-            name=self._name_,
+            name=self._dataName_,
             x=self.index,
             open=self['open'],
             high=self['high'],
@@ -70,7 +134,7 @@ class baseDataFrameChart(DataFrame):
                 color='royalblue'
             ),
             xhoverformat='%Y/%m/%d',
-            yhoverformat=self._dtype_,
+            yhoverformat=self._form_,
         )
         return self._overwrite(go.Candlestick, trace, **kwargs)
 
@@ -110,6 +174,7 @@ class baseDataFrameChart(DataFrame):
         return
 
     def save(self, filename:str=''):
+        os.makedirs(self._path_, exist_ok=True)
         filename = filename if filename else self._filename_
         plot(
             figure_or_data=self.figure(),
@@ -133,7 +198,7 @@ class baseSeriesChart(Series):
         self._ticker_ = kwargs['ticker'] if 'ticker' in kwargs else ''
         self._unit_ = kwargs['unit'] if 'unit' in kwargs else ''
         self._path_ = kwargs['path'] if 'path' in kwargs else r'./'
-        self._dtype_ = kwargs['dtype'] if 'dtype' in kwargs else '.2f'
+        self._form_ = kwargs['form'] if 'form' in kwargs else '.2f'
         self._filename_ = f"{self._name_}"
         return
 
@@ -163,7 +228,7 @@ class baseSeriesChart(Series):
             showlegend=True,
             connectgaps=True,
             xhoverformat='%Y/%m/%d',
-            yhoverformat=self._dtype_,
+            yhoverformat=self._form_,
             hovertemplate=self._name_ + '<br>%{y}' + self._unit_ + '@%{x}<extra></extra>'
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
@@ -191,7 +256,7 @@ class baseSeriesChart(Series):
             visible='legendonly',
             showlegend=True,
             xhoverformat='%Y/%m/%d',
-            yhoverformat=self._dtype_,
+            yhoverformat=self._form_,
             hovertemplate='%{y} @%{x}<extra></extra>'
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
@@ -237,6 +302,7 @@ class baseSeriesChart(Series):
         return
 
     def save(self, filename:str='', mode:str='line'):
+        os.makedirs(self._path_, exist_ok=True)
         filename = filename if filename else self._filename_
         plot(
             figure_or_data=self.figure(mode),
@@ -244,8 +310,3 @@ class baseSeriesChart(Series):
             filename=f'{self._path_}/{filename}.html'
         )
         return
-
-if __name__ == "__main__":
-    pvar = vars(pd.DataFrame)
-    for k, v in pvar.items():
-        print(k, v)

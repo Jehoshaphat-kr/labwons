@@ -1,7 +1,9 @@
 from labwons.equity.ohlcv import _ohlcv
-from labwons.equity.technical.backtest import backtest
 from labwons.equity.technical.trend import trend
 from labwons.equity.technical.sma import sma
+from labwons.equity.technical.benchmark import benchmark
+from labwons.equity.technical.backtest import backtest
+from labwons.equity.technical.bollingerband import bollingerband
 
 #     # benchmark,
 #     # drawdown,
@@ -46,38 +48,38 @@ class Equity(_ohlcv):
     @property
     def sma(self) -> sma:
         if not self.__hasattr__(self._attr('sma')):
-            self.__setattr__(self._attr('sma'), sma(self.ohlcv, **self._valid_prop))
+            self.__setattr__(self._attr('sma'), sma(self))
         return self.__getattribute__(self._attr('sma'))
 
     @property
     def trend(self) -> trend:
         if not self.__hasattr__(self._attr('trend')):
-            self.__setattr__(self._attr('trend'), trend(self.ohlcv, **self._valid_prop))
+            self.__setattr__(self._attr('trend'), trend(self))
         return self.__getattribute__(self._attr('trend'))
-    #
-    # """
-    # COMPARISON
-    # """
-    # @property
-    # def benchmark(self) -> benchmark:
-    #     if not self.__hasattr__('__benchmark__'):
-    #         self.__setattr__('__benchmark__', benchmark(self))
-    #     return self.__getattribute__('__benchmark__')
-    #
+
+    """
+    COMPARISON
+    """
+    @property
+    def benchmark(self) -> benchmark:
+        if not self.__hasattr__(self._attr('benchmark')):
+            self.__setattr__(self._attr('benchmark'), benchmark(self))
+        return self.__getattribute__(self._attr('benchmark'))
+
     # @property
     # def drawDown(self) -> drawdown:
     #     if not self.__hasattr__('__drawdown__'):
     #         self.__setattr__('__drawdown__', drawdown(self))
     #     return self.__getattribute__('__drawdown__')
     #
-    # """
-    # VOLATILITY
-    # """
-    # @property
-    # def bollingerBand(self) -> bollingerband:
-    #     if not self.__hasattr__('__bollingerband__'):
-    #         self.__setattr__('__bollingerband__', bollingerband(self))
-    #     return self.__getattribute__('__bollingerband__')
+    """
+    VOLATILITY
+    """
+    @property
+    def bollingerBand(self) -> bollingerband:
+        if not self.__hasattr__(self._attr('bollinger')):
+            self.__setattr__(self._attr('bollinger'), bollingerband(self))
+        return self.__getattribute__(self._attr('bollinger'))
     #
     # """
     # MOMENTUM

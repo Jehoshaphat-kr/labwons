@@ -1,33 +1,29 @@
-from labwons.common.config import PATH
-from labwons.equity._deprecated import _calc
+from labwons.common.basis import baseDataFrameChart
+from labwons.equity.ohlcv import _ohlcv
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
-from plotly.offline import plot
-from pandas import DataFrame
+import pandas as pd
 import numpy as np
 
 
-class bollingerband(DataFrame):
-    def __init__(self, base:_calc):
-        baseData = base.getOhlcv()
-        typical = (baseData.high + baseData.low + baseData.close) / 3
-        baseData['typical'] = typical
-        baseData['middle'] = typical.rolling(window=20).mean()
-        baseData['stdev'] = typical.rolling(window=20).std()
-        baseData['upperband'] = baseData.middle + 2 * baseData.stdev
-        baseData['uppertrend'] = baseData.middle + baseData.stdev
-        baseData['lowertrend'] = baseData.middle - baseData.stdev
-        baseData['lowerband'] = baseData.middle - 2 * baseData.stdev
-        baseData['width'] = 100 * (4 * baseData.stdev) / baseData.middle
-        baseData['pctb'] = (
-                (baseData.typical - baseData.lowerband) / (baseData.upperband - baseData.lowerband)
-        ).where(baseData.upperband != baseData.lowerband, np.nan)
-        super().__init__(
-            index=baseData.index,
-            columns=baseData.columns,
-            data=baseData.values
-        )
+class bollingerband(baseDataFrameChart):
+    def __init__(self, base:_ohlcv):
+        frm = pd.DataFrame()
+        frm['typical'] = base.ohlcv.t.copy()
+        frm['middle'] = base.ohlcv.t.rolling(window=20).mean()
+        frm['stdev'] = base.ohlcv.t.rolling(window=20).std()
+        frm['upperband'] = frm.middle + 2 * frm.stdev
+        frm['lowerband'] = frm.middle - 2 * frm.stdev
+        frm['uppertrend'] = frm.middle + frm.stdev
+        frm['lowertrend'] = frm.middle - frm.stdev
+        frm['width'] = 100 * (4 * frm.stdev) / frm.middle
+        frm['pctb'] = (
+                (frm.typical - frm.lowerband) / (frm.upperband - frm.lowerband)
+        ).where(frm.upperband != frm.lowerband, np.nan)
+
+        super(bollingerband, self).__init__(frame=frm, **getattr(base, '_valid_prop'))
         self._base_ = base
+        self._form_ = '.2f'
         return
 
     def __call__(self, col:str):
@@ -188,18 +184,3 @@ class bollingerband(DataFrame):
             ),
         )
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
-
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
-            auto_open=False,
-            filename=f'{self._base_.path}/B-BAND.html'
-        )
-        kwargs.update(setter)
-        plot(**kwargs)
-        return

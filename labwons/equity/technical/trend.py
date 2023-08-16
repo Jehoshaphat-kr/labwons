@@ -1,5 +1,5 @@
 from labwons.common.basis import baseDataFrameChart
-from labwons.equity.technical.ohlcv import ohlcv
+from labwons.equity.ohlcv import _ohlcv
 from datetime import datetime, timedelta
 from scipy.stats import linregress
 from typing import Union
@@ -7,21 +7,21 @@ from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
 import pandas as pd
-import numpy as np
 
 
 class trend(baseDataFrameChart):
 
-    def __init__(self, ohlcvt:ohlcv, **kwargs):
+    _base_ = None
+    def __init__(self, base:_ohlcv):
         """
         Trend line
-        :param ohlcvt : [Series]
-        :param kwargs  : [dict]
+        :param base : [_ohlcv] parent class "<class; ohlcv>"
         """
-        objs = [self._regress(self._timeSlice(ohlcvt.t, start), col) for col, start in self._timeSpan(ohlcvt.t)]
-        super().__init__(pd.concat(objs=objs, axis=1), **kwargs)
+        objs = [self._regress(self._timeSlice(base.ohlcv.t, start), col) for col, start in self._timeSpan(base.ohlcv.t)]
+        super().__init__(pd.concat(objs=objs, axis=1), **getattr(base, '_valid_prop'))
         self._filename_ = lambda x: f'TREND{"" if x == "unflat" else "_F"}'
-        self._typ = ohlcvt.t
+        self._form_ = '.2f'
+        self._base_ = base
         return
 
     def __call__(self, col:str):
@@ -98,24 +98,24 @@ class trend(baseDataFrameChart):
     def flatten(self) -> pd.DataFrame:
         objs = dict()
         for col in self:
-            frm = pd.concat([self._typ, self[col]], axis=1).dropna()
-            frm['sign'] = frm.apply(lambda row: -1 if row[self._typ.name] <= row[col] else 1, axis=1)
-            residual = abs(frm[self._typ.name] - frm[col]).sum() / len(frm) # 평균 괴리 값
-            objs[col] = frm['sign'] * abs(frm[self._typ.name] - frm[col]) / residual
+            frm = pd.concat([self._base_.ohlcv.t, self[col]], axis=1).dropna()
+            frm['sign'] = frm.apply(lambda row: -1 if row[self._base_.ohlcv.t.name] <= row[col] else 1, axis=1)
+            residual = abs(frm[self._base_.ohlcv.t.name] - frm[col]).sum() / len(frm) # 평균 괴리 값
+            objs[col] = frm['sign'] * abs(frm[self._base_.ohlcv.t.name] - frm[col]) / residual
         return pd.concat(objs=objs, axis=1)
 
     def strength(self) -> pd.DataFrame:
         objs = dict()
         for col in self:
-            frm = pd.concat([self._typ, self[col]], axis=1).dropna()
-            base = frm[self._typ.name][0]
-            objs[col] = (base + (frm[col][-1] - frm[col][0])) / base - 1
-        return pd.DataFrame(data=objs, index=[self._name_])
+            frm = pd.concat([self._base_.ohlcv.t, self[col]], axis=1).dropna()
+            base = frm[self._base_.ohlcv.t.name][0]
+            objs[col] = (base + (frm[col][-1] - frm[col][0])) / base
+        return pd.DataFrame(data=objs, index=[self._dataName_])
 
     def backTest(self, window:int=252) -> pd.Series:
         date, data = [], []
-        for n in range(0, len(self._typ) - window, 5):
-            ser = self._typ[n : n + window]
+        for n in range(0, len(self._base_.ohlcv.t) - window, 5):
+            ser = self._base_.ohlcv.t[n : n + window]
             reg = self._regress(ser, col=str(n))
             fit = pd.concat([ser, reg], axis=1)
             if fit.empty:
@@ -134,12 +134,8 @@ class trend(baseDataFrameChart):
             # data['Signal'].append(pr[-1] * isUnderValued * isDeValued * isRising)
         return pd.Series(index=date, data=data, name='Score')
 
-
-    # def append(self, start:Union[str, int], end:Union[str, int]=''):
-    #     pass
-
     def figure(self) -> go.Figure:
-        data = [self._typ()]
+        data = [self._base_.ohlcv.t()]
         for col in self:
             trace = self.line(col)
             trace.visible = 'legendonly'

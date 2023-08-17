@@ -106,14 +106,14 @@ class Equity(fetch):
             self.__setattr__(self._attr('macd'), macd(self))
         return self.__getattribute__(self._attr('macd'))
 
-    # """
-    # FUNDAMENTAL
-    # """
-    # @property
-    # def foreigner(self) -> foreigner:
-    #     if not self.__hasattr__('__foreigner__'):
-    #         self.__setattr__('__foreigner__', foreigner(self))
-    #     return self.__getattribute__('__foreigner__')
+    """
+    SUPPLY
+    """
+    @property
+    def foreignRate(self) -> foreigner:
+        if not self.__hasattr__(self._attr('foreignrate')):
+            self.__setattr__(self._attr('foreignrate'), foreigner(self))
+        return self.__getattribute__(self._attr('foreignrate'))
     #
     # @property
     # def products(self) -> foreigner:

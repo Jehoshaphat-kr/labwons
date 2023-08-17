@@ -94,22 +94,7 @@ class rsi(baseDataFrameChart):
         return
 
     def __call__(self, col:str) -> go.Scatter:
-        return self.trace(col)
-
-    # def trace(self, col:str) -> go.Scatter:
-    #     basis = self[col].dropna()
-    #     unit = '%' if col == 'rsi' else ''
-    #     return go.Scatter(
-    #         name=col.upper(),
-    #         x=basis.index,
-    #         y=basis,
-    #         visible=True,
-    #         showlegend=True,
-    #         mode='lines',
-    #         xhoverformat="%Y/%m/%d",
-    #         yhoverformat=".2f",
-    #         hovertemplate=col + "<br>%{y} " + unit + " @%{x}<extra></extra>"
-    #     )
+        return self.line(col)
 
     def figure(self) -> go.Figure:
         fig = make_subplots(

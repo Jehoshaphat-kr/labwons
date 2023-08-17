@@ -146,6 +146,15 @@ equity = lw.Equity('005930', period=20)
 # equity.macd.show()
 # equity.macd.save()
 
+""" ========== < Foreign Rate > ========== """
+print(equity.foreignRate)
+# print(equity.foreignRate._dataName_)
+# print(equity.foreignRate._ticker_)
+# print(equity.foreignRate._unit_)
+# print(equity.foreignRate._form_)
+# print(equity.foreignRate._path_)
+equity.foreignRate.show()
+# equity.macd.save()
 
 # print(equity.backtest)
 # print(equity.trend.backTestSignal())

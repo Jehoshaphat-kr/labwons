@@ -54,36 +54,3 @@ class _calc(fetch):
                 objs[(f'({tag})', 'Support')] = self._boundFit(ohlcv[c], 'low', minInterval, samplePoint)
             self.__setattr__(attr, pd.concat(objs=objs, axis=1))
         return self.__getattribute__(attr)
-
-
-    def calcStatement(self, by:str='annual') -> pd.DataFrame:
-        if not self.market == 'KOR':
-            return pd.DataFrame()
-        if not hasattr(self, f'__state_{by}__'):
-            url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?" \
-                  f"pGB=1&gicode=A{self.ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=Y&stkGb=701"
-            html = pd.read_html(url, header=0)
-            if by == 'annual':
-                s = html[14] if html[11].iloc[0].isnull().sum() > html[14].iloc[0].isnull().sum() else html[11]
-            elif by == 'quarter':
-                s = html[15] if html[11].iloc[0].isnull().sum() > html[14].iloc[0].isnull().sum() else html[12]
-            else:
-                raise KeyError
-
-            cols = s.columns.tolist()
-            s.set_index(keys=[cols[0]], inplace=True)
-            s.index.name = None
-            if isinstance(s.columns[0], tuple):
-                s.columns = s.columns.droplevel()
-            else:
-                s.columns = s.iloc[0]
-                s.drop(index=s.index[0], inplace=True)
-            self.__setattr__(f'__state_{by}__', s.T.astype(float))
-        return self.__getattribute__(f'__state_{by}__')
-
-
-
-if __name__ == "__main__":
-    myStock = _calc('005930', period=1)
-    # print(myStock.calcBound())
-    print(myStock.calcStatement())

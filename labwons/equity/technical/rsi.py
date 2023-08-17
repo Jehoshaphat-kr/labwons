@@ -123,12 +123,12 @@ class rsi(baseDataFrameChart):
             data=[
                 self._base_.ohlcv('candle'),
                 self._base_.ohlcv('volume'),
-                self.trace('rsi'),
-                self.trace('stoch-osc'),
-                self.trace('stoch-osc-sig'),
-                self.trace('stoch-rsi'),
-                self.trace('stoch-rsi-k'),
-                self.trace('stoch-rsi-d'),
+                self.line('rsi', unit='%'),
+                self.line('stoch-osc'),
+                self.line('stoch-osc-sig'),
+                self.line('stoch-rsi'),
+                self.line('stoch-rsi-k'),
+                self.line('stoch-rsi-d'),
             ],
             rows=[1, 2, 3, 4, 4, 5, 5, 5],
             cols=[1, 1, 1, 1, 1, 1, 1, 1]
@@ -269,21 +269,6 @@ class rsi(baseDataFrameChart):
             ),
         )
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
-
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
-            auto_open=False,
-            filename=f'{self._base_.path}/RSI.html'
-        )
-        kwargs.update(setter)
-        plot(**kwargs)
-        return
 
 
 

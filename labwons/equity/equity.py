@@ -4,8 +4,11 @@ from labwons.equity.technical.sma import sma
 from labwons.equity.technical.benchmark import benchmark
 from labwons.equity.technical.drawdown import drawdown
 from labwons.equity.technical.bollingerband import bollingerband
+from labwons.equity.technical.rsi import rsi
+from labwons.equity.technical.moneyflow import moneyflow
+from labwons.equity.technical.psar import psar
+from labwons.equity.technical.macd import macd
 from labwons.equity.technical.backtest import backtest
-#     # rsi,
 #     # moneyflow,
 #     # psar,
 #     # macd
@@ -24,17 +27,9 @@ from labwons.equity.fundamental import (
 
 
 class Equity(fetch):
-    _by_ = 'annual'
+
     def __hasattr__(self, attr):
         return hasattr(self, attr)
-
-    @property
-    def by(self) -> str:
-        return self._by_
-
-    @by.setter
-    def by(self, by:str):
-        self._by_ = by
 
     @property
     def backtest(self) -> backtest:
@@ -83,34 +78,34 @@ class Equity(fetch):
     """
     @property
     def rsi(self) -> rsi:
-        if not self.__hasattr__('__rsi__'):
-            self.__setattr__('__rsi__', rsi(self))
-        return self.__getattribute__('__rsi__')
-    #
-    # """
-    # VOLUME
-    # """
-    # @property
-    # def moneyFlow(self) -> moneyflow:
-    #     if not self.__hasattr__('__moneyflow__'):
-    #         self.__setattr__('__moneyflow__', moneyflow(self))
-    #     return self.__getattribute__('__moneyflow__')
-    #
-    # """
-    # TREND
-    # """
-    # @property
-    # def psar(self) -> psar:
-    #     if not self.__hasattr__('__psar__'):
-    #         self.__setattr__('__psar__', psar(self))
-    #     return self.__getattribute__('__psar__')
-    #
-    # @property
-    # def macd(self) -> macd:
-    #     if not self.__hasattr__('__macd__'):
-    #         self.__setattr__('__macd__', macd(self))
-    #     return self.__getattribute__('__macd__')
-    #
+        if not self.__hasattr__(self._attr('rsi')):
+            self.__setattr__(self._attr('rsi'), rsi(self))
+        return self.__getattribute__(self._attr('rsi'))
+
+    """
+    VOLUME
+    """
+    @property
+    def moneyFlow(self) -> moneyflow:
+        if not self.__hasattr__(self._attr('moneyflow')):
+            self.__setattr__(self._attr('moneyflow'), moneyflow(self))
+        return self.__getattribute__(self._attr('moneyflow'))
+
+    """
+    TREND
+    """
+    @property
+    def psar(self) -> psar:
+        if not self.__hasattr__(self._attr('psar')):
+            self.__setattr__(self._attr('psar'), psar(self))
+        return self.__getattribute__(self._attr('psar'))
+
+    @property
+    def macd(self) -> macd:
+        if not self.__hasattr__(self._attr('macd')):
+            self.__setattr__(self._attr('macd'), macd(self))
+        return self.__getattribute__(self._attr('macd'))
+
     # """
     # FUNDAMENTAL
     # """

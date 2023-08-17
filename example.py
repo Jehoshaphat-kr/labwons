@@ -98,6 +98,15 @@ equity = lw.Equity('005930', period=20)
 # print(equity.benchmarkReturn._filename_)
 # equity.benchmarkReturn.save()
 
+""" ========== < DRAWDOWN > ========== """
+# print(equity.drawDown)
+# print(equity.drawDown._dataName_)
+# print(equity.drawDown._ticker_)
+# print(equity.drawDown._unit_)
+# print(equity.drawDown._form_)
+# print(equity.drawDown._path_)
+# equity.drawDown.show()
+
 """ ========== < BOLLINGER > ========== """
 # print(equity.bollingerBand)
 # print(equity.bollingerBand._dataName_)
@@ -107,14 +116,35 @@ equity = lw.Equity('005930', period=20)
 # print(equity.bollingerBand._path_)
 # equity.bollingerBand.show()
 
-""" ========== < DRAWDOWN > ========== """
-# print(equity.drawDown)
-# print(equity.drawDown._dataName_)
-# print(equity.drawDown._ticker_)
-# print(equity.drawDown._unit_)
-# print(equity.drawDown._form_)
-# print(equity.drawDown._path_)
-# equity.drawDown.show()
+""" ========== < RSI > ========== """
+# print(equity.rsi)
+# print(equity.rsi._dataName_)
+# print(equity.rsi._ticker_)
+# print(equity.rsi._unit_)
+# print(equity.rsi._form_)
+# print(equity.rsi._path_)
+# equity.rsi.show()
+# equity.rsi.save()
+
+""" ========== < PSAR > ========== """
+# print(equity.psar)
+# print(equity.psar._dataName_)
+# print(equity.psar._ticker_)
+# print(equity.psar._unit_)
+# print(equity.psar._form_)
+# print(equity.psar._path_)
+# equity.psar.show()
+# equity.psar.save()
+
+""" ========== < MACD > ========== """
+# print(equity.macd)
+# print(equity.macd._dataName_)
+# print(equity.macd._ticker_)
+# print(equity.macd._unit_)
+# print(equity.macd._form_)
+# print(equity.macd._path_)
+# equity.macd.show()
+# equity.macd.save()
 
 
 # print(equity.backtest)

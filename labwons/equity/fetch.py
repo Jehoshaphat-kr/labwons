@@ -25,6 +25,7 @@ class fetch(_ticker):
         if isinstance(self._ddate, str):
             self._ddate = datetime.strptime(self._ddate, "%Y%m%d")
         self._attr = lambda x: f"_{x}_{self._period}_{self._ddate}_{self._freq}_"
+        self.statementBy = 'annual'
         return
 
     @staticmethod
@@ -168,6 +169,33 @@ class fetch(_ticker):
                 raise KeyError('Unidentify market attribute')
             self.__setattr__(self._attr('benchmark'), df)
         return self.__getattribute__(self._attr('benchmark'))
+
+    @property
+    def statement(self) -> pd.DataFrame:
+        if not self.market == 'KOR':
+            return pd.DataFrame()
+
+        if not hasattr(self, f'__state_{self.statementBy}__'):
+            url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?" \
+                  f"pGB=1&gicode=A{self.ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=Y&stkGb=701"
+            html = pd.read_html(url, header=0)
+            if self.statementBy == 'annual':
+                s = html[14] if html[11].iloc[0].isnull().sum() > html[14].iloc[0].isnull().sum() else html[11]
+            elif self.statementBy == 'quarter':
+                s = html[15] if html[11].iloc[0].isnull().sum() > html[14].iloc[0].isnull().sum() else html[12]
+            else:
+                raise KeyError(f'Statement can only be fetched either by "annual" or "quarter": {self.statementBy}')
+
+            cols = s.columns.tolist()
+            s.set_index(keys=[cols[0]], inplace=True)
+            s.index.name = None
+            if isinstance(s.columns[0], tuple):
+                s.columns = s.columns.droplevel()
+            else:
+                s.columns = s.iloc[0]
+                s.drop(index=s.index[0], inplace=True)
+            self.__setattr__(f'__state_{self.statementBy}__', s.T.astype(float))
+        return self.__getattribute__(f'__state_{self.statementBy}__')
 
 
 

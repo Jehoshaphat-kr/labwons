@@ -1,34 +1,30 @@
-from labwons.equity._deprecated import _calc
+from labwons.common.basis import baseDataFrameChart
+from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
-from plotly.offline import plot
-from pandas import DataFrame
+
 import numpy as np
 
 
-class psar(DataFrame):
+class psar(baseDataFrameChart):
     __upsides = list()
     __downsides = list()
-    def __init__(self, base:_calc):
+    def __init__(self, base:fetch):
         COLUMNS = dict(
             trend_psar_up='up',
             trend_psar_down='down',
             trend_psar_up_indicator='*up',
             trend_psar_down_indicator='*down'
         )
-        baseData = base.calcTA()[COLUMNS.keys()].rename(columns=COLUMNS)
-        super().__init__(
-            index=baseData.index,
-            columns=baseData.columns,
-            data=baseData.values
-        )
+        super().__init__(frame=base.ta[COLUMNS.keys()].rename(columns=COLUMNS), **getattr(base, '_valid_prop'))
+
         self['*up'] = (self['*up'] * self['up']).replace(0.0, np.nan)
         self['*down'] = (self['*down'] * self['down']).replace(0.0, np.nan)
         self._base_ = base
+        self._unit_ = 'KRW'
+        self._form_ = '.2f'
+        self._filename_ = 'PSAR'
         return
-
-    def __call__(self, col:str):
-        return self.trace(col)
 
     @property
     def upsides(self) -> list:
@@ -50,36 +46,24 @@ class psar(DataFrame):
             ]
         return self.__downsides
 
-    # psar = test.ohlcv.join(test.psar, how='left')
-    # psar.index.name = 'date'
-    # psar.reset_index(inplace=True)
-    # mask_up = psar.Down.isna()
-    # mask_dn = psar.Up.isna()
-    #
-    # filt_dn = psar[mask_dn]
-    # groups_dn = filt_dn.groupby((mask_dn != mask_dn.shift()).cumsum())
-    # for n, (g, v) in enumerate(groups_dn):
-    # if n == len(groups_dn) - 1:
-    #         last = v.copy()
-
-    def trace(self, col:str) -> go.Scatter:
-        basis = self[col].dropna()
-        return go.Scatter(
-            name=col.upper(),
-            x=basis.index,
-            y=basis,
-            visible=True,
-            showlegend=True,
-            mode='markers',
-            marker=dict(
-                symbol="205" if col == '*up' else "206" if col == '*down' else "101",
-                color='red' if col == '*up' else 'blue' if col == '*down' else 'green',
-                size=10 if col.startswith('*') else 8
-            ),
-            xhoverformat="%Y/%m/%d",
-            yhoverformat=".2f",
-            hovertemplate=col + "<br>%{y} " + self._base_.unit + " @%{x}<extra></extra>"
-        )
+    # def trace(self, col:str) -> go.Scatter:
+    #     basis = self[col].dropna()
+    #     return go.Scatter(
+    #         name=col.upper(),
+    #         x=basis.index,
+    #         y=basis,
+    #         visible=True,
+    #         showlegend=True,
+    #         mode='markers',
+    #         marker=dict(
+    #             symbol="205" if col == '*up' else "206" if col == '*down' else "101",
+    #             color='red' if col == '*up' else 'blue' if col == '*down' else 'green',
+    #             size=10 if col.startswith('*') else 8
+    #         ),
+    #         xhoverformat="%Y/%m/%d",
+    #         yhoverformat=".2f",
+    #         hovertemplate=col + "<br>%{y} " + self._base_.unit + " @%{x}<extra></extra>"
+    #     )
 
     def figure(self) -> go.Figure:
         fig = make_subplots(
@@ -93,10 +77,10 @@ class psar(DataFrame):
             data=[
                 self._base_.ohlcv('candle'),
                 self._base_.ohlcv('volume'),
-                self.trace('up'),
-                self.trace('down'),
-                self.trace('*up'),
-                self.trace('*down'),
+                self.scatter('up', marker=dict(symbol="circle-open", color="green", size=6)),
+                self.scatter('down', marker=dict(symbol="circle-open", color="green", size=6)),
+                self.scatter('*up', marker=dict(symbol="triangle-up", color="red", size=8)),
+                self.scatter('*down', marker=dict(symbol="triangle-down", color="blue", size=8)),
             ],
             rows=[1, 2, 1, 1, 1, 1],
             cols=[1, 1, 1, 1, 1, 1]
@@ -163,19 +147,4 @@ class psar(DataFrame):
             )
         )
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
-
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
-            auto_open=False,
-            filename=f'{self._base_.path}/PSAR.html'
-        )
-        kwargs.update(setter)
-        plot(**kwargs)
-        return
 

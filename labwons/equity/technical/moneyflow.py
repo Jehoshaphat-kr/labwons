@@ -1,11 +1,9 @@
-from labwons.common.config import PATH
-from labwons.equity._deprecated import _calc
+from labwons.common.basis import baseDataFrameChart
+from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
-from plotly.offline import plot
-from pandas import DataFrame
-import warnings
 
+import warnings
 warnings.filterwarnings(
     "ignore",
     message="invalid value encountered in scalar divide"
@@ -16,7 +14,7 @@ warnings.filterwarnings(
 )
 
 
-class moneyflow(DataFrame):
+class moneyflow(baseDataFrameChart):
     """
     1) MFI: Money Flow Index
     MFI를 활용한 전략은 과매수와 과매도 신호를 기반으로 주식의 상승과 하락을 예측하거나
@@ -106,38 +104,21 @@ class moneyflow(DataFrame):
     관리를 포함하여 투자 결정을 내리는 것이 중요합니다.
     """
 
-    def __init__(self, base:_calc):
+    def __init__(self, base:fetch):
         COLUMNS = dict(
             volume_obv = 'obv',
             volume_cmf = 'cmf',
             volume_mfi = 'mfi',
         )
-        baseData = base.calcTA()[COLUMNS.keys()].rename(columns=COLUMNS)
-        super().__init__(
-            index=baseData.index,
-            columns=baseData.columns,
-            data=baseData.values
-        )
+        super().__init__(frame=base.ta[COLUMNS.keys()].rename(columns=COLUMNS), **getattr(base, '_valid_prop'))
         self._base_ = base
+        self._unit_ = ''
+        self._form_ = '.2f'
+        self._filename_ = 'MoneyFlow'
         return
 
     def __call__(self, col:str) -> go.Scatter:
         return self.trace(col)
-
-    def trace(self, col:str) -> go.Scatter:
-        basis = self[col].dropna()
-        unit = '%' if col == 'mfi' else ''
-        return go.Scatter(
-            name=col.upper(),
-            x=basis.index,
-            y=basis,
-            visible=True,
-            showlegend=True,
-            mode='lines',
-            xhoverformat="%Y/%m/%d",
-            yhoverformat=".2f",
-            hovertemplate=col + "<br>%{y} " + unit + " @%{x}<extra></extra>"
-        )
 
     def figure(self) -> go.Figure:
         fig = make_subplots(
@@ -151,9 +132,9 @@ class moneyflow(DataFrame):
             data=[
                 self._base_.ohlcv('candle'),
                 self._base_.ohlcv('volume'),
-                self.trace('mfi'),
-                self.trace('cmf'),
-                self.trace('obv'),
+                self.line('mfi', unit='%'),
+                self.line('cmf'),
+                self.line('obv'),
             ],
             rows=[1, 2, 3, 4, 5],
             cols=[1, 1, 1, 1, 1]
@@ -292,21 +273,3 @@ class moneyflow(DataFrame):
             ),
         )
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
-
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
-            auto_open=False,
-            filename=f'{self._base_.path}/MONEYFLOW.html'
-        )
-        kwargs.update(setter)
-        plot(**kwargs)
-        return
-
-
-

@@ -1,12 +1,9 @@
 from typing import Union
-from labwons.equity._deprecated import _calc
+from labwons.common.basis import baseDataFrameChart
+from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
-from plotly.offline import plot
-from pandas import DataFrame
-import numpy as np
 import warnings
-
 warnings.filterwarnings(
     "ignore",
     message="invalid value encountered in scalar divide"
@@ -17,56 +14,54 @@ warnings.filterwarnings(
 )
 
 
-class macd(DataFrame):
+class macd(baseDataFrameChart):
 
-    def __init__(self, base:_calc):
+    def __init__(self, base:fetch):
         COLUMNS = dict(
             trend_macd = 'macd',
             trend_macd_signal = 'signal',
             trend_macd_diff = 'diff',
         )
-        baseData = base.calcTA()[COLUMNS.keys()].rename(columns=COLUMNS)
-        super().__init__(
-            index=baseData.index,
-            columns=baseData.columns,
-            data=baseData.values
-        )
+        super().__init__(frame=base.ta[COLUMNS.keys()].rename(columns=COLUMNS), **getattr(base, '_valid_prop'))
         self._base_ = base
+        self._unit_ = ''
+        self._form_ = '.2f'
+        self._filename_ = 'MACD'
         return
 
     def __call__(self, col:str) -> go.Scatter:
-        return self.trace(col)
+        return self.bar(col) if col == 'diff' else self.line(col)
 
-    def trace(self, col:str) -> Union[go.Scatter, go.Bar]:
-        basis = self[col].dropna()
-        if col in ['macd', 'signal']:
-            return go.Scatter(
-                name=col.upper(),
-                x=basis.index,
-                y=basis,
-                visible=True,
-                showlegend=True,
-                mode='lines',
-                line=dict(
-                    color='royalblue' if col == 'macd' else 'red',
-                    dash='solid' if col == 'macd' else 'dash'
-                ),
-                xhoverformat="%Y/%m/%d",
-                yhoverformat=".2f",
-                hovertemplate=col.capitalize() + "<br>%{y} @%{x}<extra></extra>"
-            )
-        else:
-            return go.Bar(
-                name='DIFF',
-                x=basis.index,
-                y=basis,
-                marker=dict(
-                    color='lightgrey',
-                ),
-                xhoverformat='%Y/%m/%d',
-                yhoverformat='.2f',
-                hovertemplate='Diff<br>%{y} @%{x}<extra></extra>'
-            )
+    # def trace(self, col:str) -> Union[go.Scatter, go.Bar]:
+    #     basis = self[col].dropna()
+    #     if col in ['macd', 'signal']:
+    #         return go.Scatter(
+    #             name=col.upper(),
+    #             x=basis.index,
+    #             y=basis,
+    #             visible=True,
+    #             showlegend=True,
+    #             mode='lines',
+    #             line=dict(
+    #                 color='royalblue' if col == 'macd' else 'red',
+    #                 dash='solid' if col == 'macd' else 'dash'
+    #             ),
+    #             xhoverformat="%Y/%m/%d",
+    #             yhoverformat=".2f",
+    #             hovertemplate=col.capitalize() + "<br>%{y} @%{x}<extra></extra>"
+    #         )
+    #     else:
+    #         return go.Bar(
+    #             name='DIFF',
+    #             x=basis.index,
+    #             y=basis,
+    #             marker=dict(
+    #                 color='lightgrey',
+    #             ),
+    #             xhoverformat='%Y/%m/%d',
+    #             yhoverformat='.2f',
+    #             hovertemplate='Diff<br>%{y} @%{x}<extra></extra>'
+    #         )
 
     def figure(self) -> go.Figure:
         fig = make_subplots(
@@ -80,9 +75,9 @@ class macd(DataFrame):
             data=[
                 self._base_.ohlcv('candle'),
                 self._base_.ohlcv('volume'),
-                self.trace('macd'),
-                self.trace('signal'),
-                self.trace('diff'),
+                self.line('macd', line=dict(color='royalblue')),
+                self.line('signal', line=dict(color='red', dash='dash')),
+                self.bar('diff', marker=dict(color='grey', opacity=0.8)),
             ],
             rows=[1, 2, 3, 3, 3],
             cols=[1, 1, 1, 1, 1]
@@ -169,21 +164,4 @@ class macd(DataFrame):
             ),
         )
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
-
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
-            auto_open=False,
-            filename=f'{self._base_.path}/MACD.html'
-        )
-        kwargs.update(setter)
-        plot(**kwargs)
-        return
-
-
 

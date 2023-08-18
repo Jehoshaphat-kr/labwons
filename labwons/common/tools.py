@@ -1,18 +1,12 @@
 from typing import Union
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
 from xml.etree.ElementTree import ElementTree, fromstring
-from plotly.subplots import make_subplots
-from stocksymbol import StockSymbol
-from bs4 import BeautifulSoup
-import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
-import requests, time, os, random
+import requests
 
 
 def int2won(x) -> str:
-    if np.isnan(x):
+    if np.isnan(x) or (not x):
         return np.nan
     x = int(x)
     if x < 10000:
@@ -22,7 +16,7 @@ def int2won(x) -> str:
         ek = str(x)[-4:]
         if ek.startswith('0'):
             ek = ek[1:]
-        return f'{zo}조{ek}억'
+        return f'{zo}조 {ek}억'
 
 def xml2df(url: str) -> pd.DataFrame:
     exclude = ['row', 'P_STAT_CODE']

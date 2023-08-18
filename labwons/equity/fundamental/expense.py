@@ -1,12 +1,13 @@
-from labwons.equity._deprecated import _calc
+from labwons.common.basis import baseDataFrameChart
+from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 from plotly.offline import plot
 from plotly.subplots import make_subplots
 import pandas as pd
 
 
-class expense(pd.DataFrame):
-    def __init__(self, base:_calc):
+class expense(baseDataFrameChart):
+    def __init__(self, base:fetch):
         """
         Expenses
         :return:
@@ -26,7 +27,7 @@ class expense(pd.DataFrame):
             rnd.drop(index=['관련 데이터가 없습니다.'], inplace=True)
         basis = pd.concat(
             objs=[
-                base.calcStatement()['영업이익률'],
+                base.statement['영업이익률'],
                 html[4].set_index(keys=['항목']).T, # 매출원가율
                 html[5].set_index(keys=['항목']).T, # 판관비
                 rnd
@@ -36,43 +37,26 @@ class expense(pd.DataFrame):
         basis.index.name = '기말'
         if len(basis.iloc[0].dropna()) <= 1:
             basis = basis.drop(index=basis.index[0]).drop(index=[i for i in basis.index if '(' in i][1:])
-        super().__init__(
-            index=basis.index,
-            columns=basis.columns,
-            data=basis.values
-        )
+        super().__init__(basis, **getattr(base, '_valid_prop'))
         self._base_ = base
+        self._filename_ = 'Expenses'
         return
-
-    def __call__(self, col:str):
-        return self.trace(col)
-
-    def trace(self, col:str) -> go.Scatter:
-        return go.Scatter(
-            name=col,
-            x=self.index,
-            y=self[col].astype(float),
-            showlegend=True,
-            visible=True,
-            mode='lines+markers+text',
-            textposition="bottom center",
-            texttemplate="%{y:.2f}%",
-            hovertemplate='%{x}: %{y:.2f}%<extra></extra>'
-        )
 
     def figure(self) -> go.Figure:
         fig = make_subplots(
             rows=2, cols=2,
             subplot_titles=["Profit Rate", "Sales Cost Rate", "Sales and Management Cost Rate", "R&D Investment Rate"],
+            vertical_spacing=0.1,
+            horizontal_spacing=0.05,
             x_title="기말",
             y_title="[%]",
         )
         fig.add_traces(
             data=[
-                self.trace(col="영업이익률"),
-                self.trace(col="매출원가율"),
-                self.trace(col="판관비율"),
-                self.trace(col="R&D투자비중")
+                self.linemarker("영업이익률", showlegend=False),
+                self.linemarker("매출원가율", showlegend=False),
+                self.linemarker("판관비율", showlegend=False),
+                self.linemarker("R&D투자비중", showlegend=False)
             ],
             rows=[1, 1, 2, 2],
             cols=[1, 2, 1, 2]
@@ -98,18 +82,3 @@ class expense(pd.DataFrame):
             )
         )
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
-
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
-            auto_open=False,
-            filename=f'{self._base_.path}/EXPENSES.html'
-        )
-        kwargs.update(setter)
-        plot(**kwargs)
-        return

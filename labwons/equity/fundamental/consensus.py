@@ -1,6 +1,7 @@
-from labwons.equity._deprecated import _calc
+from labwons.common.basis import baseDataFrameChart
+from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
-from plotly.offline import plot
+from plotly.subplots import make_subplots
 from urllib.request import urlopen
 import pandas as pd
 import numpy as np
@@ -8,8 +9,8 @@ import json
 
 
 
-class consensus(pd.DataFrame):
-    def __init__(self, base:_calc):
+class consensus(baseDataFrameChart):
+    def __init__(self, base:fetch):
         """
         Time-Series Consensus
         :return:
@@ -32,80 +33,100 @@ class consensus(pd.DataFrame):
         basis['consensus'] = basis['consensus'].apply(lambda x: int(x) if x else np.nan)
         basis['close'] = basis['close'].astype(int)
         basis['gap'] = round(100 * (basis['close'] / basis['consensus'] - 1), 2)
-        super().__init__(
-            index=basis.index,
-            columns=basis.columns,
-            data=basis.values
-        )
+        super().__init__(frame=basis, **getattr(base, '_valid_prop'))
         self._base_ = base
+        self._filename_ = 'Consensus'
         return
 
-    def __call__(self, mode:str='bar'):
-        return self.trace(mode)
-
-    def trace(self, col:str) -> go.Scatter:
-        name = 'CLOSE' if col == 'close' else 'CONSEN'
-        color = 'royalblue' if col == 'close' else 'black'
-        dash = 'solid' if col == 'close' else 'dot'
-        meta = self['gap'] if col == 'consensus' else None
-        template = name + ': %{y}KRW'
-        return go.Scatter(
-            name=name,
-            x=self.index,
-            y=self[col],
-            visible=True,
-            showlegend=True,
-            mode='lines',
-            line=dict(
-                color=color,
-                dash=dash,
-            ),
-            meta=meta,
-            xhoverformat='%Y/%m/%d',
-            yhoverformat='.2f' if col == 'consensus' else ',d',
-            hovertemplate=template + ('(%{meta}%)' if col == 'consensus' else '') + '<extra></extra>'
-        )
+    def __call__(self, col:str, **kwargs):
+        return self.line(col, **kwargs)
 
     def figure(self) -> go.Figure:
-        fig = go.Figure(
-            data=[self.trace('close'), self.trace('consensus')],
-            layout=go.Layout(
-                title=f"<b>{self._base_.name}({self._base_.ticker})</b> CONSENSUS",
-                plot_bgcolor='white',
-                legend=dict(
-                    orientation="h",
-                    xanchor="right",
-                    yanchor="bottom",
-                    x=1,
-                    y=1.04
+        fig = make_subplots(
+            rows=2,
+            cols=1,
+            shared_xaxes=True,
+            row_width=[0.2, 0.8],
+            vertical_spacing=0.01
+        )
+        fig.add_traces(
+            data=[
+                self(
+                    'close',
+                    name='Close',
+                    hovertemplate='Close: %{y:,d}KRW<extra></extra>'
                 ),
-                hovermode="x unified",
-                xaxis=dict(
-                    title='날짜',
-                    showticklabels=True,
-                    showgrid=True,
-                    gridcolor='lightgrey',
+                self(
+                    'consensus',
+                    name='Consen',
+                    line=dict(dash='dot', color='black'),
+                    hovertemplate='Consen: %{y:,d}KRW<extra></extra>'
                 ),
-                yaxis=dict(
-                    title='[KRW]',
-                    showgrid=True,
-                    gridcolor='lightgrey',
+                self(
+                    'gap',
+                    name='%Gap',
+                    hovertemplate='Gap: %{y:.2f}%<extra></extra>'
                 )
+            ],
+            rows=[1, 1, 2],
+            cols=[1, 1, 1]
+        )
+        fig.update_layout(
+            title=f"<b>{self._base_.name}({self._base_.ticker})</b> CONSENSUS",
+            plot_bgcolor='white',
+            legend=dict(
+                orientation="h",
+                xanchor="right",
+                yanchor="bottom",
+                x=1,
+                y=1.04
+            ),
+            hovermode="x unified",
+            xaxis=dict(
+                title="",
+                showgrid=True,
+                gridwidth=0.5,
+                gridcolor="lightgrey",
+                showline=True,
+                linewidth=1,
+                linecolor="grey",
+                mirror=False,
+                autorange=True
+            ),
+            xaxis2=dict(
+                title="DATE",
+                tickformat='%Y/%m/%d',
+                showgrid=True,
+                gridwidth=0.5,
+                gridcolor="lightgrey",
+                showline=True,
+                linewidth=1,
+                linecolor="grey",
+                mirror=False,
+                autorange=True
+            ),
+            yaxis=dict(
+                title='[KRW]',
+                showgrid=True,
+                gridwidth=0.5,
+                gridcolor="lightgrey",
+                showline=True,
+                linewidth=1,
+                linecolor="grey",
+                mirror=False,
+                autorange=True
+            ),
+            yaxis2 = dict(
+                title='[%]',
+                showgrid=True,
+                gridwidth=0.5,
+                gridcolor="lightgrey",
+                showline=True,
+                linewidth=1,
+                linecolor="grey",
+                mirror=False,
+                autorange=True
             )
+
         )
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
-
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
-            auto_open=False,
-            filename=f'{self._base_.path}/CONSENSUS.html'
-        )
-        kwargs.update(setter)
-        plot(**kwargs)
-        return

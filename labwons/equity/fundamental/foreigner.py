@@ -27,25 +27,8 @@ class foreigner(baseDataFrameChart):
         self._filename_ = 'ForeignRate'
         return
 
-    def __call__(self, col:str or tuple):
-        return
-
-    # def trace(self, c1:str, c2:str) -> go.Scatter:
-    #     return go.Scatter(
-    #         name=c2.upper(),
-    #         x=self[c1][c2].dropna().index,
-    #         y=self[c1][c2].dropna(),
-    #         showlegend=True,
-    #         visible=True if c1 == '3M' else False,
-    #         mode='lines',
-    #         line=dict(
-    #             color='royalblue' if 'close' in c2 else 'black',
-    #             dash='solid' if 'close' in c2 else 'dot'
-    #         ),
-    #         xhoverformat="%Y/%m/%d",
-    #         yhoverformat=',d' if 'close' in c2 else '.2f',
-    #         hovertemplate='%{y}' + ('KRW' if 'close' == c2 else '%') + '<extra></extra>'
-    #     )
+    def __call__(self, col:str or tuple, **kwargs):
+        return self.line(col, **kwargs)
 
     def figure(self) -> go.Figure:
         fig = make_subplots(

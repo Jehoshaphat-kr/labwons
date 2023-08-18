@@ -1,14 +1,14 @@
-from labwons.equity._deprecated import _calc
+from labwons.common.basis import baseDataFrameChart
+from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
-from plotly.offline import plot
 from plotly.subplots import make_subplots
 from urllib.request import urlopen
 import pandas as pd
 import json
 
 
-class short(pd.DataFrame):
-    def __init__(self, base:_calc):
+class short(baseDataFrameChart):
+    def __init__(self, base:fetch):
         """
         Business Model Products
         :return:
@@ -17,49 +17,28 @@ class short(pd.DataFrame):
         url = f"http://cdn.fnguide.com/SVO2/json/chart/11_01/chart_A{base.ticker}_SELL1Y.json"
         data = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
         _short = pd.DataFrame(data['CHART']).rename(
-            columns={'TRD_DT': 'date', 'VAL': 'short_sell', 'ADJ_PRC': 'close'}
+            columns={'TRD_DT': 'date', 'VAL': 'Short Sell', 'ADJ_PRC': 'Close'}
         ).set_index(keys='date')
         _short.index = pd.to_datetime(_short.index)
-        _short['short_sell'] = _short['short_sell'].astype(float)
-        _short['close'] = _short['close'].astype(int)
+        _short['Short Sell'] = _short['Short Sell'].astype(float)
+        _short['Close'] = _short['Close'].astype(int)
 
         url = f"http://cdn.fnguide.com/SVO2/json/chart/11_01/chart_A{base.ticker}_BALANCE1Y.json"
         data = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
         _balance = pd.DataFrame(data['CHART']).rename(
-            columns={'TRD_DT': 'date', 'BALANCE_RT': 'short_balance'}
+            columns={'TRD_DT': 'date', 'BALANCE_RT': 'Short Balance'}
         ).set_index(keys='date')
         _balance.index = pd.to_datetime(_balance.index)
-        _balance['short_balance'] = _balance['short_balance'].astype(float)
-        basis = _short.join(_balance['short_balance'], how='left')[['close', 'short_sell', 'short_balance']]
-        super().__init__(
-            index=basis.index,
-            columns=basis.columns,
-            data=basis.values
-        )
+        _balance['Short Balance'] = _balance['Short Balance'].astype(float)
+
+        basis = _short.join(_balance['Short Balance'], how='left')[['Close', 'Short Sell', 'Short Balance']]
+        super().__init__(basis, **getattr(base, '_valid_prop'))
         self._base_ = base
+        self._filename_ = 'Short'
         return
 
-    def __call__(self, col:str):
-        return self.trace(col)
-
-    def trace(self, col:str) -> go.Scatter:
-        name = col.upper().replace('_', ' ')
-        color = dict(close='royalblue', short_sell='brown', short_balance='red')[col]
-        return go.Scatter(
-            name=name,
-            x=self.index,
-            y=self[col],
-            showlegend=True,
-            visible='legendonly' if 'balance' in col else True,
-            mode='lines',
-            line=dict(
-                color=color,
-                dash='solid' if col == 'close' else 'dot'
-            ),
-            xhoverformat='%Y/%m/%d',
-            yhoverformat=',d' if col == 'close' else '.2f',
-            hovertemplate=name + '%{y}' + ('KRW' if col == 'close' else '%') + '<extra></extra>'
-        )
+    def __call__(self, col:str, **kwargs):
+        return self.line(col, **kwargs)
 
     def figure(self) -> go.Figure:
         fig = make_subplots(
@@ -67,7 +46,19 @@ class short(pd.DataFrame):
             specs=[[{'secondary_y': True}]]
         )
         fig.add_traces(
-            data=[self.trace(c) for c in self.columns],
+            data=[
+                self.line(
+                    col,
+                    visible='legendonly' if col == 'Short Sell' else True,
+                    line=dict(
+                        color={'Close': 'royalblue', 'Short Sell': 'brown', 'Short Balance': 'red'}[col],
+                        dash='solid' if col == 'Close' else 'dot'
+                    ),
+                    yhoverformat=',d' if col == 'Close' else '.2f',
+                    hovertemplate=col + ': %{y}' + ('KRW' if col == 'Close' else '%') + '<extra></extra>'
+                )
+                for col in self
+            ],
             rows=[1, 1, 1], cols=[1, 1, 1],
             secondary_ys=[False, True, True]
         )
@@ -99,18 +90,3 @@ class short(pd.DataFrame):
             ),
         )
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
-
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
-            auto_open=False,
-            filename=f'{self._base_.path}/SHORT.html'
-        )
-        kwargs.update(setter)
-        plot(**kwargs)
-        return

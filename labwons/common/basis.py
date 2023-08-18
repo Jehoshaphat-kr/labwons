@@ -107,8 +107,10 @@ class baseDataFrameChart(DataFrame):
     def _filename_(self, filename:str):
         self._prop_['filename'] = filename
 
-    def line(self, col:Union[str, tuple], data:DataFrame=DataFrame(), **kwargs) -> go.Scatter:
-        data = (self if data.empty else data)[col].dropna()
+    def line(self, col:Union[str, tuple], data:DataFrame=DataFrame(), drop:bool=True, **kwargs) -> go.Scatter:
+        data = (self if data.empty else data)[col]
+        if drop:
+            data = data.dropna()
         name = col if isinstance(col, str) else col[1]
         unit = kwargs['unit'] if 'unit' in kwargs else self._unit_
         trace = go.Scatter(
@@ -122,6 +124,23 @@ class baseDataFrameChart(DataFrame):
             xhoverformat='%Y/%m/%d',
             yhoverformat=self._form_,
             hovertemplate=name + '<br>%{y}' + unit + '@%{x}<extra></extra>'
+        )
+        return self._overwrite(go.Scatter, trace, **kwargs)
+
+    def linemarker(self, col:str, data:Series=Series(dtype=float), drop:bool=True, **kwargs) -> go.Scatter:
+        data = (self if data.empty else data)[col]
+        if drop:
+            data = data.dropna()
+        trace = go.Scatter(
+            name=col,
+            x=data.index,
+            y=data,
+            mode='lines+markers+text',
+            visible=True,
+            showlegend=True,
+            textposition="bottom center",
+            texttemplate="%{y:.2f}%",
+            hovertemplate='%{y:.2f}%<extra></extra>'
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 
@@ -149,10 +168,13 @@ class baseDataFrameChart(DataFrame):
         )
         return self._overwrite(go.Candlestick, trace, **kwargs)
 
-    def bar(self, col:str, data:DataFrame=DataFrame(), **kwargs) -> go.Bar:
-        data = (self if data.empty else data)[col].dropna()
+    def bar(self, col:Union[str, tuple], data:DataFrame=DataFrame(), drop:bool=True, **kwargs) -> go.Bar:
+        data = (self if data.empty else data)[col]
+        if drop:
+            data = data.dropna()
+        name = col if isinstance(col, str) else col[1]
         trace = go.Bar(
-            name=col,
+            name=name,
             x=data.index,
             y=data,
             visible=True,
@@ -162,8 +184,10 @@ class baseDataFrameChart(DataFrame):
         )
         return self._overwrite(go.Bar, trace, **kwargs)
 
-    def scatter(self, col:str, data:DataFrame=DataFrame(), **kwargs) -> go.Scatter:
-        data = (self if data.empty else data)[col].dropna()
+    def scatter(self, col:str, data:DataFrame=DataFrame(), drop:bool=True, **kwargs) -> go.Scatter:
+        data = (self if data.empty else data)[col]
+        if drop:
+            data = data.dropna()
         trace = go.Scatter(
             name=col,
             x=data.index,
@@ -241,6 +265,21 @@ class baseSeriesChart(Series):
             xhoverformat='%Y/%m/%d',
             yhoverformat=self._form_,
             hovertemplate=self._name_ + '<br>%{y}' + self._unit_ + '@%{x}<extra></extra>'
+        )
+        return self._overwrite(go.Scatter, trace, **kwargs)
+
+    def linemarker(self, data:Series=Series(dtype=float), **kwargs) -> go.Scatter:
+        data = (self if data.empty else data).dropna()
+        trace = go.Scatter(
+            name=self._name_,
+            x=data.index,
+            y=data,
+            mode='lines+markers+text',
+            visible=True,
+            showlegend=True,
+            textposition="bottom center",
+            texttemplate="%{y:.2f}%",
+            hovertemplate='%{x}: %{y:.2f}%<extra></extra>'
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 

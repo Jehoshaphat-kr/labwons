@@ -1,16 +1,14 @@
-from labwons.common.config import COLORS
-from labwons.equity._deprecated import _calc
-from typing import Union
+from labwons.common.basis import baseDataFrameChart
+from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
-from plotly.offline import plot
 from urllib.request import urlopen
 import pandas as pd
 import json
 
 
 
-class products(pd.DataFrame):
-    def __init__(self, base:_calc):
+class products(baseDataFrameChart):
+    def __init__(self, base:fetch):
         """
         Business Model Products
         :return:
@@ -31,18 +29,14 @@ class products(pd.DataFrame):
         basis['Sum'] = basis.astype(float).sum(axis=1)
         basis = basis[(90 <= basis.Sum) & (basis.Sum < 110)].astype(float)
         basis[i] = basis[i] - (basis.Sum - 100)
-        basis = basis.drop(columns=['Sum'])
 
-        super().__init__(
-            index=basis.index,
-            columns=basis.columns,
-            data=basis.values
-        )
+        super().__init__(basis.drop(columns=['Sum']), **getattr(base, '_valid_prop'))
         self._base_ = base
+        self._filename_ = 'Products'
         return
 
-    def __call__(self, mode:str='bar'):
-        return self.trace(mode)
+    def __call__(self, col:str='bar'):
+        return self.bar(col)
 
     def recent(self) -> pd.Series:
         i = -1 if self.iloc[-1].astype(float).sum() > 10 else -2
@@ -51,52 +45,29 @@ class products(pd.DataFrame):
         df[df.index[i]] += (100 - df.sum())
         return df[df.values != 0]
 
-    def trace(self, mode:str='bar') -> Union[list, go.Bar, go.Pie]:
-        if mode == 'bar':
-            return [
-                go.Bar(
-                    name=f"{c}",
-                    x=self.index,
-                    y=self[c],
-                    showlegend=True,
-                    legendgroup=c,
-                    visible=True,
-                    marker=dict(
-                        color=COLORS[n]
-                    ),
-                    opacity=0.9,
-                    textposition="inside",
-                    texttemplate=c + "<br>%{y:.2f}%",
-                    hovertemplate=c + "<br>%{y:.2f}%<extra></extra>"
-                ) for n, c in enumerate(self.columns)
-            ]
-        else:
-            df = self.recent()
-            return [
-                go.Pie(
-                    labels=df.index,
-                    values=df,
-                    showlegend=True,
-                    visible=True,
-                    automargin=True,
-                    opacity=0.9,
-                    textfont=dict(
-                        color='white'
-                    ),
-                    textinfo='label+percent',
-                    insidetextorientation='radial',
-                    hoverinfo='label+percent',
-                )
-            ]
-
+    def pie(self) -> go.Pie:
+        df = self.recent()
+        return go.Pie(
+            labels=df.index,
+            values=df,
+            showlegend=True,
+            visible=True,
+            automargin=True,
+            opacity=0.9,
+            textfont=dict(
+                color='white'
+            ),
+            textinfo='label+percent',
+            insidetextorientation='radial',
+            hoverinfo='label+percent',
+        )
 
     def figure(self) -> go.Figure:
         fig = go.Figure(
-            data=self.trace(),
+            data=[self.pie()],
             layout=go.Layout(
                 title=f"<b>{self._base_.name}({self._base_.ticker})</b> Products",
                 plot_bgcolor='white',
-                barmode='stack',
                 legend=dict(
                     orientation="h",
                     xanchor="right",
@@ -104,31 +75,6 @@ class products(pd.DataFrame):
                     x=0.96,
                     y=1
                 ),
-                xaxis=dict(
-                    title='기말'
-                ),
-                yaxis=dict(
-                    title='비율 [%]',
-                    showgrid=True,
-                    gridcolor='lightgrey',
-                    zeroline=True,
-                    zerolinecolor='lightgrey'
-                ),
             )
         )
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
-
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
-            auto_open=False,
-            filename=f'{self._base_.path}/PRODUCTS.html'
-        )
-        kwargs.update(setter)
-        plot(**kwargs)
-        return

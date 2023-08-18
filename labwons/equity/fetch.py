@@ -1,6 +1,7 @@
-from labwons.common.basis import baseDataFrameChart, baseSeriesChart
+from labwons.common.basis import baseDataFrameChart
 from labwons.equity.ticker import _ticker
 from labwons.equity.technical.ohlcv import ohlcv
+from labwons.equity.fundamental.statement import statement
 from pykrx.stock import get_market_ohlcv_by_date
 from datetime import datetime, timedelta
 from pytz import timezone
@@ -171,9 +172,9 @@ class fetch(_ticker):
         return self.__getattribute__(self._attr('benchmark'))
 
     @property
-    def statement(self) -> pd.DataFrame:
+    def statement(self) -> statement:
         if not self.market == 'KOR':
-            return pd.DataFrame()
+            return statement(pd.DataFrame())
 
         if not hasattr(self, f'__state_{self.statementBy}__'):
             url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?" \
@@ -194,7 +195,7 @@ class fetch(_ticker):
             else:
                 s.columns = s.iloc[0]
                 s.drop(index=s.index[0], inplace=True)
-            self.__setattr__(f'__state_{self.statementBy}__', s.T.astype(float))
+            self.__setattr__(f'__state_{self.statementBy}__', statement(s.T.astype(float), **self._valid_prop))
         return self.__getattribute__(f'__state_{self.statementBy}__')
 
 
@@ -203,8 +204,8 @@ if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
     API_ECOS = "CEW3KQU603E6GA8VX0O9"
 
-    # test = _ohlcv(ticker='383310')
-    test = fetch(ticker='AAPL', period=12, enddate='20230105')
+    test = fetch(ticker='064290')
+    # test = fetch(ticker='AAPL', period=12, enddate='20230105')
     # test = _fetch(ticker='TSLA')
     # test = _fetch(ticker='KRE')
     # test = _fetch(ticker='DGS10')
@@ -220,6 +221,6 @@ if __name__ == "__main__":
     # print(test.close)
     # test.close.show()
     # print(test.ta)
-    print(test.benchmark)
-
+    # print(test.benchmark)
+    print(test.statement)
 

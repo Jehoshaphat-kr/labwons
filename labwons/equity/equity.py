@@ -9,21 +9,15 @@ from labwons.equity.technical.moneyflow import moneyflow
 from labwons.equity.technical.psar import psar
 from labwons.equity.technical.macd import macd
 from labwons.equity.technical.backtest import backtest
-#     # moneyflow,
-#     # psar,
-#     # macd
-# )
-from labwons.equity.fundamental import (
-    foreigner,
-    products,
-    consensus,
-    short,
-    expense,
-    multipleband,
-    benchmarkmultiple,
-    performance,
-    statement
-)
+from labwons.equity.fundamental.earnings import earnings
+from labwons.equity.fundamental.foreigner import foreigner
+from labwons.equity.fundamental.consensus import consensus
+from labwons.equity.fundamental.short import short
+from labwons.equity.fundamental.products import products
+from labwons.equity.fundamental.expense import expense
+# from labwons.equity.fundamental.multipleband import multipleband
+from labwons.equity.fundamental.benchmarkmultiple import benchmarkmultiple
+
 
 
 class Equity(fetch):
@@ -114,30 +108,39 @@ class Equity(fetch):
         if not self.__hasattr__(self._attr('foreignrate')):
             self.__setattr__(self._attr('foreignrate'), foreigner(self))
         return self.__getattribute__(self._attr('foreignrate'))
-    #
-    # @property
-    # def products(self) -> foreigner:
-    #     if not self.__hasattr__('__products__'):
-    #         self.__setattr__('__products__', products(self))
-    #     return self.__getattribute__('__products__')
-    #
-    # @property
-    # def consensus(self) -> consensus:
-    #     if not self.__hasattr__('__concensus__'):
-    #         self.__setattr__('__concensus__', consensus(self))
-    #     return self.__getattribute__('__concensus__')
-    #
-    # @property
-    # def short(self) -> short:
-    #     if not self.__hasattr__('__short__'):
-    #         self.__setattr__('__short__', short(self))
-    #     return self.__getattribute__('__short__')
-    #
-    # @property
-    # def expense(self) -> expense:
-    #     if not self.__hasattr__('__expense__'):
-    #         self.__setattr__('__expense__', expense(self))
-    #     return self.__getattribute__('__expense__')
+
+    @property
+    def consensus(self) -> consensus:
+        if not self.__hasattr__(self._attr('consensus')):
+            self.__setattr__(self._attr('consensus'), consensus(self))
+        return self.__getattribute__(self._attr('consensus'))
+
+    @property
+    def short(self) -> short:
+        if not self.__hasattr__(self._attr('short')):
+            self.__setattr__(self._attr('short'), short(self))
+        return self.__getattribute__(self._attr('short'))
+
+    """
+    FUNDAMENTALS
+    """
+    @property
+    def earnings(self) -> earnings:
+        if not self.__hasattr__(self._attr('earnings')):
+            self.__setattr__(self._attr('earnings'), earnings(self))
+        return self.__getattribute__(self._attr('earnings'))
+
+    @property
+    def products(self) -> foreigner:
+        if not self.__hasattr__(self._attr('products')):
+            self.__setattr__(self._attr('products'), products(self))
+        return self.__getattribute__(self._attr('products'))
+
+    @property
+    def expense(self) -> expense:
+        if not self.__hasattr__(self._attr('expense')):
+            self.__setattr__(self._attr('expense'), expense(self))
+        return self.__getattribute__(self._attr('expense'))
     #
     # @property
     # def multipleBand(self) -> multipleband:
@@ -145,20 +148,9 @@ class Equity(fetch):
     #         self.__setattr__('__multipleband__', multipleband(self))
     #     return self.__getattribute__('__multipleband__')
     #
-    # @property
-    # def benchmarkMultiple(self) -> benchmarkmultiple:
-    #     if not self.__hasattr__('__benchmarkmultiple__'):
-    #         self.__setattr__('__benchmarkmultiple__', benchmarkmultiple(self))
-    #     return self.__getattribute__('__benchmarkmultiple__')
-    #
-    # @property
-    # def performance(self) -> performance:
-    #     if not self.__hasattr__(f'__performance_{self.by}__'):
-    #         self.__setattr__(f'__performance_{self.by}__', performance(self, by=self.by))
-    #     return self.__getattribute__(f'__performance_{self.by}__')
-    #
-    # @property
-    # def statement(self) -> statement:
-    #     if not self.__hasattr__(f'__statement_{self.by}__'):
-    #         self.__setattr__(f'__statement_{self.by}__', statement(self, by=self.by))
-    #     return self.__getattribute__(f'__statement_{self.by}__')
+    @property
+    def benchmarkMultiple(self) -> benchmarkmultiple:
+        if not self.__hasattr__(self._attr('benchmarkMultiple')):
+            self.__setattr__(self._attr('benchmarkMultiple'), benchmarkmultiple(self))
+        return self.__getattribute__(self._attr('benchmarkMultiple'))
+

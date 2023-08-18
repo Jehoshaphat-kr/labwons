@@ -146,15 +146,87 @@ equity = lw.Equity('005930', period=20)
 # equity.macd.show()
 # equity.macd.save()
 
+""" ========== < Financial Statement > ========== """
+# print(equity.statement)
+# print(equity.statement._dataName_)
+# print(equity.statement._ticker_)
+# print(equity.statement._unit_)
+# print(equity.statement._form_)
+# print(equity.statement._path_)
+# equity.statement.show()
+# equity.statement.save()
+
+""" ========== < Earnings > ========== """
+# print(equity.earnings)
+# print(equity.earnings._dataName_)
+# print(equity.earnings._ticker_)
+# print(equity.earnings._unit_)
+# print(equity.earnings._form_)
+# print(equity.earnings._path_)
+# equity.earnings.show()
+# equity.statement.save()
+
 """ ========== < Foreign Rate > ========== """
-print(equity.foreignRate)
+# print(equity.foreignRate)
 # print(equity.foreignRate._dataName_)
 # print(equity.foreignRate._ticker_)
 # print(equity.foreignRate._unit_)
 # print(equity.foreignRate._form_)
 # print(equity.foreignRate._path_)
-equity.foreignRate.show()
-# equity.macd.save()
+# equity.foreignRate.show()
+# equity.foreignRate.save()
+
+""" ========== < Consensus > ========== """
+# print(equity.consensus)
+# print(equity.consensus._dataName_)
+# print(equity.consensus._ticker_)
+# print(equity.consensus._unit_)
+# print(equity.consensus._form_)
+# print(equity.consensus._path_)
+# equity.consensus.show()
+# equity.consensus.save()
+
+""" ========== < Short > ========== """
+# print(equity.short)
+# print(equity.short._dataName_)
+# print(equity.short._ticker_)
+# print(equity.short._unit_)
+# print(equity.short._form_)
+# print(equity.short._path_)
+# equity.short.show()
+# equity.short.save()
+
+""" ========== < Products > ========== """
+# print(equity.products)
+# print(equity.products._dataName_)
+# print(equity.products._ticker_)
+# print(equity.products._unit_)
+# print(equity.products._form_)
+# print(equity.products._path_)
+# equity.products.show()
+# equity.products.save()
+
+""" ========== < Expenses > ========== """
+# print(equity.expense)
+# print(equity.expense._dataName_)
+# print(equity.expense._ticker_)
+# print(equity.expense._unit_)
+# print(equity.expense._form_)
+# print(equity.expense._path_)
+# equity.expense.show()
+# equity.expense.save()
+
+""" ========== < Benchmark Multiples > ========== """
+print(equity.benchmarkMultiple)
+# print(equity.expense._dataName_)
+# print(equity.expense._ticker_)
+# print(equity.expense._unit_)
+# print(equity.expense._form_)
+# print(equity.expense._path_)
+# equity.expense.show()
+# equity.expense.save()
+
+
 
 # print(equity.backtest)
 # print(equity.trend.backTestSignal())

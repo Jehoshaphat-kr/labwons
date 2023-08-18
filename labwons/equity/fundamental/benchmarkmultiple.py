@@ -1,14 +1,14 @@
-from labwons.equity._deprecated import _calc
+from labwons.common.basis import baseDataFrameChart
+from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
-from plotly.offline import plot
 from urllib.request import urlopen
 import pandas as pd
 import numpy as np
 import json
 
 
-class benchmarkmultiple(pd.DataFrame):
-    def __init__(self, base:_calc):
+class benchmarkmultiple(baseDataFrameChart):
+    def __init__(self, base:fetch):
         """
         Benchmark Multiple
         :return:
@@ -32,39 +32,42 @@ class benchmarkmultiple(pd.DataFrame):
             for col in inner1.columns:
                 inner1[col] = inner1[col].apply(lambda x: np.nan if x == '-' else x)
             objs[label] = inner1.T
-        basis = pd.concat(objs=objs, axis=1).astype(float)
-        super().__init__(
-            index=basis.index,
-            columns=basis.columns,
-            data=basis.values
-        )
+
+        super().__init__(pd.concat(objs=objs, axis=1).astype(float), **getattr(base, '_valid_prop'))
         self._base_ = base
+        self._filename_ = 'Benchmark Multiples'
         return
 
-    def __call__(self, col1:str, col2:str):
-        return self.trace(col1, col2)
-
-    def trace(self, col1:str, col2:str) -> go.Bar:
-        index = self.columns.tolist().index((col1, col2))
-        color = ['royalblue', 'brown', 'green'][index % 3]
-        return go.Bar(
-            name=col1.upper(),
-            x=self.index,
-            y=self[col1][col2],
-            showlegend=True if index in [0, 3, 6] else False,
-            legendgroup=col1,
-            visible=True if col1 == 'PER' else 'legendonly',
-            texttemplate=col2 + '<br>%{y}' + ('%' if col1 == 'ROE' else ''),
-            marker=dict(
-                color=color,
-                opacity=0.8
-            ),
-            yhoverformat='.2f',
-            hovertemplate=col2 + '<br>%{y}<extra></extra>'
-        )
+    # def __call__(self, col1:str, col2:str):
+    #     return self.trace(col1, col2)
+    #
+    # def trace(self, col1:str, col2:str) -> go.Bar:
+    #     index = self.columns.tolist().index((col1, col2))
+    #     color = ['royalblue', 'brown', 'green'][index % 3]
+    #     return go.Bar(
+    #         name=col1.upper(),
+    #         x=self.index,
+    #         y=self[col1][col2],
+    #         showlegend=True if index in [0, 3, 6] else False,
+    #         legendgroup=col1,
+    #         visible=True if col1 == 'PER' else 'legendonly',
+    #         texttemplate=col2 + '<br>%{y}' + ('%' if col1 == 'ROE' else ''),
+    #         marker=dict(
+    #             color=color,
+    #             opacity=0.8
+    #         ),
+    #         yhoverformat='.2f',
+    #         hovertemplate=col2 + '<br>%{y}<extra></extra>'
+    #     )
 
     def figure(self) -> go.Figure:
-        data = [self.trace(col1, col2) for col1, col2 in self.columns]
+        data = [
+            self.bar(
+                col,
+                name=col[0],
+                # showlegend=
+            ) for n, col in enumerate(self)
+        ]
         fig = go.Figure(
             data=data,
             layout=go.Layout(
@@ -90,18 +93,3 @@ class benchmarkmultiple(pd.DataFrame):
             )
         )
         return fig
-
-    def show(self):
-        self.figure().show()
-        return
-
-    def save(self, **kwargs):
-        setter = kwargs.copy()
-        kwargs = dict(
-            figure_or_data=self.figure(),
-            auto_open=False,
-            filename=f'{self._base_.path}/BENCHMARK-MULTIPLE.html'
-        )
-        kwargs.update(setter)
-        plot(**kwargs)
-        return

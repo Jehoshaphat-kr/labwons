@@ -38,34 +38,21 @@ class benchmarkmultiple(baseDataFrameChart):
         self._filename_ = 'Benchmark Multiples'
         return
 
-    # def __call__(self, col1:str, col2:str):
-    #     return self.trace(col1, col2)
-    #
-    # def trace(self, col1:str, col2:str) -> go.Bar:
-    #     index = self.columns.tolist().index((col1, col2))
-    #     color = ['royalblue', 'brown', 'green'][index % 3]
-    #     return go.Bar(
-    #         name=col1.upper(),
-    #         x=self.index,
-    #         y=self[col1][col2],
-    #         showlegend=True if index in [0, 3, 6] else False,
-    #         legendgroup=col1,
-    #         visible=True if col1 == 'PER' else 'legendonly',
-    #         texttemplate=col2 + '<br>%{y}' + ('%' if col1 == 'ROE' else ''),
-    #         marker=dict(
-    #             color=color,
-    #             opacity=0.8
-    #         ),
-    #         yhoverformat='.2f',
-    #         hovertemplate=col2 + '<br>%{y}<extra></extra>'
-    #     )
-
     def figure(self) -> go.Figure:
         data = [
             self.bar(
                 col,
                 name=col[0],
-                # showlegend=
+                showlegend=False if n % 3 else True,
+                legendgroup=col[0],
+                visible=True if col[0] == 'PER' else 'legendonly',
+                texttemplate=col[1] + "<br>%{y}" + ("%" if col[0] == 'ROE' else ''),
+                marker=dict(
+                    color=['lightgreen', 'lightpink', 'lightblue'][n % 3],
+                    opacity=0.9
+                ),
+                yhoverformat='.2f',
+                hovertemplate='%{y}' + ("%" if col[0] == 'ROE' else '') + '<extra>' + col[1] + '</extra>'
             ) for n, col in enumerate(self)
         ]
         fig = go.Figure(

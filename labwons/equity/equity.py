@@ -15,7 +15,7 @@ from labwons.equity.fundamental.consensus import consensus
 from labwons.equity.fundamental.short import short
 from labwons.equity.fundamental.products import products
 from labwons.equity.fundamental.expense import expense
-# from labwons.equity.fundamental.multipleband import multipleband
+from labwons.equity.fundamental.multipleband import multipleband
 from labwons.equity.fundamental.benchmarkmultiple import benchmarkmultiple
 
 
@@ -104,10 +104,10 @@ class Equity(fetch):
     SUPPLY
     """
     @property
-    def foreignRate(self) -> foreigner:
-        if not self.__hasattr__(self._attr('foreignrate')):
-            self.__setattr__(self._attr('foreignrate'), foreigner(self))
-        return self.__getattribute__(self._attr('foreignrate'))
+    def foreignHold(self) -> foreigner:
+        if not self.__hasattr__(self._attr('foreignhold')):
+            self.__setattr__(self._attr('foreignhold'), foreigner(self))
+        return self.__getattribute__(self._attr('foreignhold'))
 
     @property
     def consensus(self) -> consensus:
@@ -141,13 +141,13 @@ class Equity(fetch):
         if not self.__hasattr__(self._attr('expense')):
             self.__setattr__(self._attr('expense'), expense(self))
         return self.__getattribute__(self._attr('expense'))
-    #
-    # @property
-    # def multipleBand(self) -> multipleband:
-    #     if not self.__hasattr__('__multipleband__'):
-    #         self.__setattr__('__multipleband__', multipleband(self))
-    #     return self.__getattribute__('__multipleband__')
-    #
+
+    @property
+    def multipleBand(self) -> multipleband:
+        if not self.__hasattr__(self._attr('multipleband')):
+            self.__setattr__(self._attr('multipleband'), multipleband(self))
+        return self.__getattribute__(self._attr('multipleband'))
+
     @property
     def benchmarkMultiple(self) -> benchmarkmultiple:
         if not self.__hasattr__(self._attr('benchmarkMultiple')):

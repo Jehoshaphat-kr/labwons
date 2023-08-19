@@ -217,13 +217,23 @@ equity = lw.Equity('005930', period=20)
 # equity.expense.save()
 
 """ ========== < Benchmark Multiples > ========== """
-print(equity.benchmarkMultiple)
-# print(equity.expense._dataName_)
-# print(equity.expense._ticker_)
-# print(equity.expense._unit_)
-# print(equity.expense._form_)
-# print(equity.expense._path_)
-# equity.expense.show()
+# print(equity.benchmarkMultiple)
+# print(equity.benchmarkMultiple._dataName_)
+# print(equity.benchmarkMultiple._ticker_)
+# print(equity.benchmarkMultiple._unit_)
+# print(equity.benchmarkMultiple._form_)
+# print(equity.benchmarkMultiple._path_)
+# equity.benchmarkMultiple.show()
+# equity.expense.save()
+
+""" ========== < Multiple Band > ========== """
+print(equity.multipleBand)
+print(equity.multipleBand._dataName_)
+print(equity.multipleBand._ticker_)
+print(equity.multipleBand._unit_)
+print(equity.multipleBand._form_)
+print(equity.multipleBand._path_)
+equity.multipleBand.show()
 # equity.expense.save()
 
 

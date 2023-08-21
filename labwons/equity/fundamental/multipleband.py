@@ -39,45 +39,36 @@ class multipleband(baseDataFrameChart):
         self._filename_ = 'MultipleBand'
         return
 
-    # def __call__(self, col1:str) -> list:
-    #     df = self[col1]
-    #     return [self.trace(col1, col2) for col2 in df.columns]
-    #
-    # def trace(self, col1:str, col2:str) -> go.Scatter:
-    #     return go.Scatter(
-    #         name=col2 if col2 == '수정주가' else f"{col1.upper()} Band",
-    #         x=self.index,
-    #         y=self[col1][col2].astype(float),
-    #         showlegend=True if (col1, col2) == self.columns[-1] or (col1, col2) == self.columns[1] or col2 == '수정주가' else False,
-    #         legendgroup=None if col2 == '수정주가' else col1,
-    #         visible=True if col1 == 'per' else 'legendonly',
-    #         mode='lines',
-    #         line=dict(
-    #             color='royalblue' if col2 == '수정주가' else None,
-    #             dash='solid' if col2 == '수정주가' else 'dot'
-    #         ),
-    #         xhoverformat='%Y/%m/%d',
-    #         yhoverformat=',d' if col2 == '수정주가' else '.2f',
-    #         hovertemplate=col2 + '%{y}KRW @%{x}<extra></extra>'
-    #     )
-
     def figure(self) -> go.Figure:
         data = [
             self.line(
                 col,
-                name=col[1] if col[1] == '수정주가' else f"{col[0].upper()} Band",
-                showlegend=True if n == len(self.columns) - 1 or n == 1 or col[1] == '수정주가' else False,
+                name=col[1].replace('수정', ''),
+                showlegend=False,
                 legendgroup=None if col[1] == '수정주가' else col[0],
-                visible=True if col[0] == 'per' else 'legendonly',
+                visible=True if col[0] == 'per' else False,
                 line=dict(
                     color='royalblue' if col[1] == '수정주가' else None,
                     dash='solid' if col[1] == '수정주가' else 'dash'
                 ),
                 yhoverformat=',d' if col[1] == '수정주가' else '.2f',
-                hovertemplate='%{y}' + ('KRW' if col[1] == '수정주가' else '')
+                hovertemplate='%{y}' + 'KRW'
             )
-            for n, col in enumerate(self) if not (col[0] == 'pbr' and col[1] == '수정주가')
+            for n, col in enumerate(self) if not col == ('pbr', '수정주가')
         ]
+        buttons = [
+            dict(
+                label='PER BAND',
+                method='update',
+                args=[{'visible': [True, True, True, True, True, True, False, False, False, False, False]}]
+            ),
+            dict(
+                label='PBR BAND',
+                method='update',
+                args=[{'visible': [True, False, False, False, False, False, True, True, True, True, True]}]
+            )
+        ]
+
         fig = go.Figure(
             data=data,
             layout=go.Layout(
@@ -92,6 +83,15 @@ class multipleband(baseDataFrameChart):
                     x=0.98,
                     y=1.02
                 ),
+                updatemenus=[
+                    dict(
+                        direction="down",
+                        active=0,
+                        xanchor='left', x=0.0,
+                        yanchor='bottom', y=1.0,
+                        buttons=buttons
+                    )
+                ],
                 xaxis=dict(
                     title='Date',
                     showgrid=True,

@@ -227,12 +227,12 @@ equity = lw.Equity('005930', period=20)
 # equity.expense.save()
 
 """ ========== < Multiple Band > ========== """
-print(equity.multipleBand)
-print(equity.multipleBand._dataName_)
-print(equity.multipleBand._ticker_)
-print(equity.multipleBand._unit_)
-print(equity.multipleBand._form_)
-print(equity.multipleBand._path_)
+# print(equity.multipleBand)
+# print(equity.multipleBand._dataName_)
+# print(equity.multipleBand._ticker_)
+# print(equity.multipleBand._unit_)
+# print(equity.multipleBand._form_)
+# print(equity.multipleBand._path_)
 equity.multipleBand.show()
 # equity.expense.save()
 

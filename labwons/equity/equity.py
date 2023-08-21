@@ -142,6 +142,9 @@ class Equity(fetch):
             self.__setattr__(self._attr('expense'), expense(self))
         return self.__getattribute__(self._attr('expense'))
 
+    """
+    MULTIPLES
+    """
     @property
     def multipleBand(self) -> multipleband:
         if not self.__hasattr__(self._attr('multipleband')):

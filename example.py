@@ -47,7 +47,7 @@ TEST :: INDICATORS
 TEST :: EQUITIES
 """
 # equity = lw.Equity('QQQ', period=30)
-equity = lw.Equity('005930', period=20)
+equity = lw.Equity('010140', period=30)
 # equity = lw.Equity('005930', period=10)
 # equity = lw.Equity('000660', period=10)
 
@@ -76,6 +76,7 @@ equity = lw.Equity('005930', period=20)
 # print(equity.sma._path_)
 # print(equity.sma._filename_)
 # print(equity.sma.goldenCross)
+equity.sma.show()
 
 """ ========== < TREND > ========== """
 # print(equity.trend)
@@ -233,7 +234,7 @@ equity = lw.Equity('005930', period=20)
 # print(equity.multipleBand._unit_)
 # print(equity.multipleBand._form_)
 # print(equity.multipleBand._path_)
-equity.multipleBand.show()
+# equity.multipleBand.show()
 # equity.expense.save()
 
 
@@ -244,61 +245,6 @@ equity.multipleBand.show()
 # equity.trend.show()
 # equity.trend.show('flat')
 
-
-
-# print(equity.drawDown)
-
-# print(equity.trend)
-# print(equity.trend.flatten())
-# print(equity.bollingerBand)
-# print(equity.rsi)
-# print(equity.moneyFlow)
-# print(equity.psar)
-# for up in equity.psar.upsides:
-#     print(up)
-# for dn in equity.psar.downsides:
-#     print(dn)
-# print(equity.macd)
-# print(equity.foreigner)
-# print(equity.products)
-# print(equity.consensus)
-# print(equity.short)
-# print(equity.expense)
-# print(equity.multipleBand)
-# print(equity.benchmarkMultiple)
-# print(equity.performance)
-# print(equity.statement)
-
-# equity.ohlcv.save()
-# equity.ohlcv.o.save()
-# equity.ohlcv.t.save()
-# equity.sma.save()
-# equity.trend.save()
-# equity.trend.save('flat')
-# equity.benchmark.save()
-# equity.drawDown.save()
-# equity.sma.save()
-# equity.bollingerBand.save()
-# equity.rsi.save()
-# equity.moneyFlow.save()
-# equity.psar.save()
-# equity.macd.save()
-# equity.foreigner.save()
-# equity.expense.save()
-# equity.multipleBand.save()
-
-# equity.ohlcv.show()
-# equity.trend.show()
-# equity.trend.show('flat')
-# equity.trend.show('flat', ['A', 'H', 'Q', '5Y', '3Y', '1Y'])
-# equity.foreigner.show()
-# equity.products.show()
-# equity.consensus.show()
-# equity.short.show()
-# equity.expense.show()
-# equity.benchmarkMultiple.show()
-# equity.performance.show()
-# equity.statement.show()
 
 # signaled = equity.backtest.addSignal(
     # equity.sma.goldenCross['longTerm']

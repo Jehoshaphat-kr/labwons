@@ -74,7 +74,7 @@ class sma(baseDataFrameChart):
         if goldenCross:
             data = self.goldenCross.copy()
             fig.add_traces(
-                data=[self.scatter(col, data, marker=dict(symbol='triangle-up')) for col in data],
+                data=[self.scatter(col, data, visible='legendonly', marker=dict(symbol='triangle-up')) for col in data],
                 rows=[1] * len(data.columns),
                 cols=[1] * len(data.columns)
             )

@@ -112,6 +112,9 @@ class trend(baseDataFrameChart):
             objs[col] = (base + (frm[col][-1] - frm[col][0])) / base
         return pd.DataFrame(data=objs, index=[self._dataName_])
 
+    def gaps(self) -> pd.DataFrame:
+        return pd.DataFrame(data=self.flatten().tail(1).values, index=[self._ticker_])
+
     def backTest(self, window:int=252) -> pd.Series:
         date, data = [], []
         for n in range(0, len(self._base_.ohlcv.t) - window, 5):
@@ -144,7 +147,7 @@ class trend(baseDataFrameChart):
         return go.Figure(
             data=data,
             layout=go.Layout(
-                title=f"{self._name_}({self._ticker_}) Trend",
+                title=f"{self._base_.name}({self._base_.ticker}) Trend",
                 plot_bgcolor="white",
                 legend=dict(
                     orientation="h",
@@ -208,7 +211,7 @@ class trend(baseDataFrameChart):
             cols=[1, 2, 1, 2, 1, 2][:len(columns)]
         )
         fig.update_layout(
-            title=f"{self._name_}({self._ticker_}) %Trend Diff.",
+            title=f"{self._base_.name}({self._base_.ticker}) %Trend Diff.",
             plot_bgcolor="white",
         )
         fig.update_xaxes(

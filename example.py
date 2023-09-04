@@ -47,8 +47,9 @@ TEST :: INDICATORS
 TEST :: EQUITIES
 """
 # equity = lw.Equity('QQQ', period=30)
-equity = lw.Equity('010140', period=30)
-# equity = lw.Equity('005930', period=10)
+# equity = lw.Equity('010140', period=30)
+# equity = lw.Equity('005930', period=20)
+equity = lw.Equity('172670', period=20)
 # equity = lw.Equity('000660', period=10)
 
 """ ========== < OHLCV > ========== """
@@ -76,10 +77,10 @@ equity = lw.Equity('010140', period=30)
 # print(equity.sma._path_)
 # print(equity.sma._filename_)
 # print(equity.sma.goldenCross)
-equity.sma.show()
+# equity.sma.show()
 
 """ ========== < TREND > ========== """
-# print(equity.trend)
+print(equity.trend)
 # print(equity.trend._dataName_)
 # print(equity.trend._ticker_)
 # print(equity.trend._unit_)
@@ -88,6 +89,9 @@ equity.sma.show()
 # print(equity.trend._filename_)
 # print(equity.trend.flatten())
 # print(equity.trend.strength())
+# print(equity.trend.gaps())
+# equity.trend.show()
+# equity.trend.show('flat')
 
 """ ========== < BENCHMARK > ========== """
 # print(equity.benchmarkReturn)
@@ -238,6 +242,9 @@ equity.sma.show()
 # equity.expense.save()
 
 
+
+# print(lw.MetaData)
+# print(lw.MetaData[lw.MetaData['industry'] == 'WI26 반도체'])
 
 # print(equity.backtest)
 # print(equity.trend.backTestSignal())

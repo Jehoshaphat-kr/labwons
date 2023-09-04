@@ -78,7 +78,7 @@ class ohlcv(baseDataFrameChart):
                 orientation="h",
                 xanchor="right",
                 yanchor="bottom",
-                x=0.98,
+                x=0.99,
                 y=1.02
             ),
             # legend=dict(tracegroupgap=5),

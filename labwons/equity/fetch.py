@@ -15,6 +15,10 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 class fetch(_ticker):
 
     def __init__(self, ticker:str, **kwargs):
+        """
+        :param ticker:
+        :param kwargs: [dict] @period, @freq, @enddate
+        """
         super().__init__(ticker=ticker, **kwargs)
 
         self._period = kwargs['period'] if 'period' in kwargs else 10

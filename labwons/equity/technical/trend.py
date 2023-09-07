@@ -104,16 +104,18 @@ class trend(baseDataFrameChart):
             objs[col] = frm['sign'] * abs(frm[self._base_.ohlcv.t.name] - frm[col]) / residual
         return pd.concat(objs=objs, axis=1)
 
-    def strength(self) -> pd.DataFrame:
+    def strength(self) -> pd.Series:
         objs = dict()
         for col in self:
             frm = pd.concat([self._base_.ohlcv.t, self[col]], axis=1).dropna()
             base = frm[self._base_.ohlcv.t.name][0]
             objs[col] = (base + (frm[col][-1] - frm[col][0])) / base
-        return pd.DataFrame(data=objs, index=[self._dataName_])
+        return pd.Series(data=objs)
 
-    def gaps(self) -> pd.DataFrame:
-        return pd.DataFrame(data=self.flatten().tail(1).values, index=[self._ticker_])
+    def gaps(self) -> pd.Series:
+        data = self.flatten().iloc[-1]
+        data.name = self._ticker_
+        return data
 
     def backTest(self, window:int=252) -> pd.Series:
         date, data = [], []

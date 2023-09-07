@@ -11,6 +11,7 @@ from labwons.indicator import Indicator
 from labwons.equity import Equity
 from labwons.apps.correlation import Correlation
 from labwons.apps.multichart import MultiChart
+from labwons.apps.market import Market
 
 
 """ API Settings """

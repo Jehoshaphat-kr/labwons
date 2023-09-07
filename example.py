@@ -49,7 +49,7 @@ TEST :: EQUITIES
 # equity = lw.Equity('QQQ', period=30)
 # equity = lw.Equity('010140', period=30)
 # equity = lw.Equity('005930', period=20)
-equity = lw.Equity('172670', period=20)
+equity = lw.Equity('316140', period=20)
 # equity = lw.Equity('000660', period=10)
 
 """ ========== < OHLCV > ========== """
@@ -80,7 +80,7 @@ equity = lw.Equity('172670', period=20)
 # equity.sma.show()
 
 """ ========== < TREND > ========== """
-print(equity.trend)
+# print(equity.trend)
 # print(equity.trend._dataName_)
 # print(equity.trend._ticker_)
 # print(equity.trend._unit_)
@@ -88,8 +88,8 @@ print(equity.trend)
 # print(equity.trend._path_)
 # print(equity.trend._filename_)
 # print(equity.trend.flatten())
-# print(equity.trend.strength())
-# print(equity.trend.gaps())
+print(equity.trend.strength())
+print(equity.trend.gaps())
 # equity.trend.show()
 # equity.trend.show('flat')
 

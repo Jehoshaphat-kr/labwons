@@ -24,7 +24,7 @@ class _ticker(object):
             'unit': np.nan,
             'path': '',
             'sector': np.nan,
-            'market': np.nan,
+            'country': np.nan,
             "businessSummary": np.nan,
             "previousClose": np.nan,
             "foreignRate": np.nan,
@@ -68,11 +68,11 @@ class _ticker(object):
             return
         # ticker, name, quoteType, market, exchange, unit, shortName, longName, korName, sector, industry, benchmarkTicker, benchmarkName
         self.ticker = ticker
-        self.dtype = self._valid_prop['dtype'] = ',d' if self.market == 'KOR' else '.2f'
+        self.dtype = self._valid_prop['dtype'] = ',d' if self.country == 'KOR' else '.2f'
         self._is_etf = self.quoteType == 'ETF'
-        if self.market == 'KOR':
+        if self.country == 'KOR':
             self.__kr__()
-        elif self.market == 'USA':
+        elif self.country == 'USA':
             self.__us__()
         else:
             pass
@@ -212,12 +212,12 @@ class _ticker(object):
         self._valid_prop['sector'] = sector
 
     @property
-    def market(self) -> str:
-        return self._valid_prop['market']
+    def country(self) -> str:
+        return self._valid_prop['country']
 
-    @market.setter
-    def market(self, market:str):
-        self._valid_prop['market'] = market
+    @country.setter
+    def country(self, country:str):
+        self._valid_prop['country'] = country
 
     @property
     def businessSummary(self) -> str:

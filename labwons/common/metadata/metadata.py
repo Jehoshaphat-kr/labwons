@@ -25,7 +25,7 @@ class metadata(pd.DataFrame):
     _col = [
         'name',
         'quoteType',
-        'market',
+        'country',
         'exchange',
         'unit',
         'shortName',
@@ -76,19 +76,19 @@ class metadata(pd.DataFrame):
 
     @property
     def KRSTOCK(self) -> pd.DataFrame:
-        return self[(self['quoteType'] == 'EQUITY') & (self['market'] == 'KOR')]
+        return self[(self['quoteType'] == 'EQUITY') & (self['country'] == 'KOR')]
 
     @property
     def USSTOCK(self) -> pd.DataFrame:
-        return self[(self['quoteType'] == 'EQUITY') & (self['market'] == 'USA')]
+        return self[(self['quoteType'] == 'EQUITY') & (self['country'] == 'USA')]
 
     @property
     def KRETF(self) -> pd.DataFrame:
-        return self[(self['quoteType'] == 'ETF') & (self['market'] == 'KOR')]
+        return self[(self['quoteType'] == 'ETF') & (self['country'] == 'KOR')]
 
     @property
     def USETF(self) -> pd.DataFrame:
-        return self[(self['quoteType'] == 'ETF') & (self['market'] == 'USA')]
+        return self[(self['quoteType'] == 'ETF') & (self['country'] == 'USA')]
 
     @property
     def KRSTOCKwMultiples(self):
@@ -116,7 +116,7 @@ class metadata(pd.DataFrame):
         # ------------------------------------------------------------------------------------
         # Stock Symbol API: Get English Name of Listed Companies
         # [DataFrame *index]   : 'ticker'
-        # [DataFrame *columns] : ['shortName', 'longName', 'quoteType', 'market']
+        # [DataFrame *columns] : ['shortName', 'longName', 'quoteType', 'country']
         # ------------------------------------------------------------------------------------
         data = data.join(fetchKrxEnglish(self.API_STOCK_SYMBOL), how='left')
 
@@ -132,7 +132,7 @@ class metadata(pd.DataFrame):
 
         fdef = lambda x: x['korName'] if pd.isna(x['shortName']) else x['shortName']
         data['name'] = data[['shortName', 'korName']].apply(fdef, axis=1)
-        data['market'] = 'KOR'
+        data['country'] = 'KOR'
         data['exchange'] = ['KOSPI' if t in ks else 'KOSDAQ' if t in kq else 'Unknown' for t in data.index]
         data['unit'] = 'KRW'
 

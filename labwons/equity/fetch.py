@@ -23,7 +23,7 @@ class fetch(_ticker):
 
         self._period = kwargs['period'] if 'period' in kwargs else 10
         self._today = datetime.now(timezone('Asia/Seoul')).strftime("%Y%m%d")
-        self._freq = kwargs['freq'] if 'freq' in kwargs else 'd' if self.market == 'KOR' else '1d'
+        self._freq = kwargs['freq'] if 'freq' in kwargs else 'd' if self.country == 'KOR' else '1d'
         self._ddate = self._today
         if 'enddate' in kwargs:
             self._ddate = kwargs['enddate']
@@ -89,20 +89,20 @@ class fetch(_ticker):
 
     @freq.setter
     def freq(self, freq:str):
-        if (self.market == 'KOR' and not freq in ['d', 'm', 'y']) or \
-           (self.market == 'USA' and not freq in ['30m', '60m', '1h', '1d', '5d', '1wk', '1mo', '3mo']):
-            raise KeyError(f"Frequency key error for market: {self.market}: {freq}")
+        if (self.country == 'KOR' and not freq in ['d', 'm', 'y']) or \
+           (self.country == 'USA' and not freq in ['30m', '60m', '1h', '1d', '5d', '1wk', '1mo', '3mo']):
+            raise KeyError(f"Frequency key error for country: {self.country}: {freq}")
         self._freq = freq
 
     @property
     def ohlcv(self) -> ohlcv:
         if not hasattr(self, self._attr('ohlcv')):
-            if self.market == 'KOR':
+            if self.country == 'KOR':
                 fetch = self.fetchKrse(self.ticker, self.startdate, self._today, self.freq)
-            elif self.market == 'USA':
+            elif self.country == 'USA':
                 fetch = self.fetchNyse(self.ticker, self.period, self.freq)
             else:
-                raise AttributeError(f"Unknown Market: {self.market}({self.exchange}) is an invalid attribute.")
+                raise AttributeError(f"Unknown Country/Exchange: {self.country}({self.exchange}) is an invalid attribute.")
             fetch.index = pd.to_datetime(fetch.index)
             fetch = fetch[fetch.index <= self._ddate]
             self.__setattr__(self._attr('ohlcv'), ohlcv(fetch, **self._valid_prop))
@@ -162,13 +162,13 @@ class fetch(_ticker):
     @property
     def benchmark(self) -> pd.DataFrame:
         if not hasattr(self, self._attr('benchmark')):
-            if self.market == 'KOR' and self.benchmarkTicker:
+            if self.country == 'KOR' and self.benchmarkTicker:
                 df = self.fetchKrse(self.benchmarkTicker, self.startdate, self.enddate, self.freq)
-            elif self.market == 'USA' and self.benchmarkTicker:
+            elif self.country == 'USA' and self.benchmarkTicker:
                 df = self.fetchNyse(self.benchmarkTicker, self.period, self.freq)
-            elif self.market == 'KOR':
+            elif self.country == 'KOR':
                 df = self.fetchKrse('069500', self.startdate, self.enddate, self.freq)
-            elif self.market == 'USA':
+            elif self.country == 'USA':
                 df = self.fetchNyse('SPY', self.period, self.freq)
             else:
                 raise KeyError('Unidentify market attribute')
@@ -177,7 +177,7 @@ class fetch(_ticker):
 
     @property
     def statement(self) -> statement:
-        if not self.market == 'KOR':
+        if not self.country == 'KOR':
             return statement(pd.DataFrame())
 
         if not hasattr(self, f'__state_{self.statementBy}__'):

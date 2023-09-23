@@ -1,0 +1,15 @@
+numpy
+pandas
+pykrx
+lxml
+plotly
+scipy
+requests
+bs4
+ta
+yfinance
+tqdm
+pytz
+matplotlib
+pandas_datareader
+stocksymbol

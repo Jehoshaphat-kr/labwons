@@ -49,11 +49,14 @@ TEST :: EQUITIES
 # equity = lw.Equity('QQQ', period=30)
 # equity = lw.Equity('010140', period=30)
 # equity = lw.Equity('005930', period=20)
-equity = lw.Equity('316140', period=20)
-# equity = lw.Equity('000660', period=10)
+# equity = lw.Equity('316140', period=20)
+equity = lw.Equity('000660', period=10)
+
+""" ========= < Description > =========="""
+# print(equity.description())
 
 """ ========== < OHLCV > ========== """
-# print(equity.ohlcv)
+print(equity.ohlcv)
 # print(equity.ohlcv.o)
 # print(equity.ohlcv.h)
 # print(equity.ohlcv.l)
@@ -90,8 +93,8 @@ equity.ohlcv.show()
 # print(equity.trend.flatten())
 # print(equity.trend.strength())
 # print(equity.trend.gaps())
-equity.trend.show()
-equity.trend.show('flat')
+# equity.trend.show()
+# equity.trend.show('flat')
 
 """ ========== < BENCHMARK > ========== """
 # print(equity.benchmarkReturn)

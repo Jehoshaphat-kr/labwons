@@ -56,7 +56,7 @@ equity = lw.Equity('000660', period=10)
 # print(equity.description())
 
 """ ========== < OHLCV > ========== """
-print(equity.ohlcv)
+# print(equity.ohlcv)
 # print(equity.ohlcv.o)
 # print(equity.ohlcv.h)
 # print(equity.ohlcv.l)
@@ -69,7 +69,17 @@ print(equity.ohlcv)
 # print(equity.ohlcv._form_)
 # print(equity.ohlcv._path_)
 # print(equity.ohlcv._filename_)
-equity.ohlcv.show()
+# equity.ohlcv.show()
+fig = equity.ohlcv.figure()
+fig.data[0]['visible'] = False
+fig.add_traces(
+    data=[
+        equity.ohlcv.t(),  # 전형적 가격
+        equity.ohlcv.c()   # 종가
+    ]
+)
+fig.show()
+
 
 """ ========== < SMA > ========== """
 # print(equity.sma)

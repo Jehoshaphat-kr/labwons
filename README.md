@@ -154,5 +154,54 @@ myEquity.ohlcv()
 ```
 
 * 결과:
-![Alt text](common/archive/ohlcv.png)
+![Alt text](labwons/common/archive/ohlcv.png)
 
+20년치의 데이터가 호출되었습니다. 시계열 기간은 period 속성으로 조절할 수 있음을 참고하시기 바랍니다.
+
+또한 ```ohlcv```는 각 하위 가격을 속성으로 가지고 있습니다. 아래 예시를 확인하시기 바랍니다.
+
+* 실행:
+```commandline
+# print(equity.ohlcv.o)
+# print(equity.ohlcv.h)
+# print(equity.ohlcv.l)
+print(equity.ohlcv.c)    # 종가 데이터만 출력
+# print(equity.ohlcv.v)
+# print(equity.ohlcv.t)
+```
+
+* 결과:
+```commandline
+date
+2013-09-25     29750
+2013-09-26     30350
+2013-09-27     30350
+2013-09-30     30250
+2013-10-01     29950
+               ...  
+2023-09-18    119000
+2023-09-19    119200
+2023-09-20    118000
+2023-09-21    116500
+2023-09-22    117300
+Name: SK hynix(C), Length: 2462, dtype: int32
+```
+
+개별 가격들의 경우 속성으로 호출하면 데이터를 리턴하며 메서드로 호출하면 ```plotly.graph_objects```의 ```Figure```를 객체로 리턴합니다. 이러한 ```Figure```를 중첩해서 그려볼 수도 있습니다. 다음은 전형적 가격과 종가를 함께 그린 예시입니다.
+
+* 예시:
+```commandline
+import plotly.graph_objects as go
+
+fig = go.Figure()
+fig.add_traces(
+    data=[
+        myEquity.ohlcv.t(),  # 전형적 가격
+        myEquity.ohlcv.c()   # 종가
+    ]
+)
+fig.show()
+```
+
+* 결과:
+![Alt text](labwons/common/archive/t-c.png)

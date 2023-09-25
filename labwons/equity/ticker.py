@@ -52,6 +52,7 @@ class _ticker(object):
             "korName": np.nan,
             "targetPrice": np.nan,
             "returnOnEquity": np.nan,
+            "similar": np.nan
         }
 
         if not ticker in MetaData.index:
@@ -119,6 +120,11 @@ class _ticker(object):
                 dataset[key].append(line)
         return (pd.DataFrame(data=eval(f"[{''.join(dataset[k][1:])}]")).set_index(keys='val01')['val02'] for k in dataset)
 
+    @staticmethod
+    def _findSimilar(ticker:str):
+
+        return
+
     def __kr__(self):
         str2int = lambda x: int(x.replace(', ', '').replace(',', ''))
         nav2num = lambda x, n: float(x.replace(' ', '').replace('배', '').replace('원', '').replace(',', '').split('l')[n])
@@ -154,7 +160,7 @@ class _ticker(object):
                 "floatShares": str2int(src.find('ff_sher').text),
                 "shares": str2int(src.find('listed_stock_1').text),
             })
-        if self._is_etf:
+        else:
             price, mul, sec = self._fnguideEtf(self.ticker)
             self._valid_prop.update({
                 "trailingPE": mul['PER'],
@@ -361,8 +367,8 @@ if __name__ == "__main__":
 
     # tester = _ticker('LTPZ', exchange='NYSE')
     # tester = _ticker('QQQ')
-    tester = _ticker('AAPL')
-    # tester = _ticker('000660')
+    # tester = _ticker('AAPL')
+    tester = _ticker('000660')
     # tester = _ticker('457690')
     # tester = _ticker('383310')
     # print(tester.description())
@@ -382,6 +388,7 @@ if __name__ == "__main__":
     # print(tester.sharesFloat)
     # print(tester.previousClose)
     # print(tester.targetPrice)
+    tester._findSimilar('000660')
 
     # import random
     # samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)

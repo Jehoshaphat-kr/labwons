@@ -34,6 +34,11 @@ def xml2df(url: str) -> pd.DataFrame:
 
     return pd.DataFrame(data=data) if data else pd.DataFrame()
 
+def stringDel(string:str, deleter:list) -> str:
+    while deleter:
+        string = string.replace(deleter.pop(0), '')
+    return string
+
 def normalize(series:pd.Series, lim:Union[list, tuple]=None) -> pd.Series:
     """
     :param series :

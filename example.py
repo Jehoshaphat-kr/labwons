@@ -49,8 +49,8 @@ TEST :: EQUITIES
 # equity = lw.Equity('QQQ', period=30)
 # equity = lw.Equity('010140', period=30)
 # equity = lw.Equity('005930', period=20)
-# equity = lw.Equity('316140', period=20)
-equity = lw.Equity('000660', period=10)
+equity = lw.Equity('006400', period=20)
+# equity = lw.Equity('000660', period=10)
 
 """ ========= < Description > =========="""
 # print(equity.description())
@@ -70,15 +70,6 @@ equity = lw.Equity('000660', period=10)
 # print(equity.ohlcv._path_)
 # print(equity.ohlcv._filename_)
 # equity.ohlcv.show()
-fig = equity.ohlcv.figure()
-fig.data[0]['visible'] = False
-fig.add_traces(
-    data=[
-        equity.ohlcv.t(),  # 전형적 가격
-        equity.ohlcv.c()   # 종가
-    ]
-)
-fig.show()
 
 
 """ ========== < SMA > ========== """
@@ -185,14 +176,14 @@ fig.show()
 # equity.statement.save()
 
 """ ========== < Foreign Rate > ========== """
-# print(equity.foreignRate)
-# print(equity.foreignRate._dataName_)
-# print(equity.foreignRate._ticker_)
-# print(equity.foreignRate._unit_)
-# print(equity.foreignRate._form_)
-# print(equity.foreignRate._path_)
-# equity.foreignRate.show()
-# equity.foreignRate.save()
+# print(equity.foreignHold)
+# print(equity.foreignHold._dataName_)
+# print(equity.foreignHold._ticker_)
+# print(equity.foreignHold._unit_)
+# print(equity.foreignHold._form_)
+# print(equity.foreignHold._path_)
+equity.foreignHold.show()
+# equity.foreignHold.save()
 
 """ ========== < Consensus > ========== """
 # print(equity.consensus)

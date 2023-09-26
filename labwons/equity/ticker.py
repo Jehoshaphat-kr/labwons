@@ -1,5 +1,6 @@
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.config import PATH
+from labwons.common.tools import stringDel
 from bs4 import BeautifulSoup as Soup
 import xml.etree.ElementTree as xml
 import yfinance as yf
@@ -52,7 +53,7 @@ class _ticker(object):
             "korName": np.nan,
             "targetPrice": np.nan,
             "returnOnEquity": np.nan,
-            "similar": np.nan
+            "similar": pd.DataFrame()
         }
 
         if not ticker in MetaData.index:
@@ -121,9 +122,18 @@ class _ticker(object):
         return (pd.DataFrame(data=eval(f"[{''.join(dataset[k][1:])}]")).set_index(keys='val01')['val02'] for k in dataset)
 
     @staticmethod
-    def _findSimilar(ticker:str):
-
-        return
+    def _findSimilar(ticker:str) -> pd.DataFrame:
+        url = f"https://finance.naver.com/item/main.naver?code={ticker}"
+        sim = pd.read_html(io=url, header=0, encoding='euc-kr')[4]
+        sim = sim.set_index(keys='종목명')
+        sim = sim.drop(index=['전일대비'])
+        sim.index.name = None
+        for col in sim:
+            sim[col] = sim[col].apply(lambda x: stringDel(str(x), ['하향', '상향', '%', '+', ' ']))
+        tickers = [c.replace('*', '')[-6:] for c in sim.columns]
+        labels = [c.replace('*', '')[:-6] for c in sim.columns]
+        sim.columns = tickers
+        return pd.concat(objs=[pd.DataFrame(columns=tickers, index=['종목명'], data=[labels]), sim], axis=0)
 
     def __kr__(self):
         str2int = lambda x: int(x.replace(', ', '').replace(',', ''))
@@ -159,6 +169,7 @@ class _ticker(object):
                 "returnOnEquity": comp.iloc[11, 1],  # Most Recent
                 "floatShares": str2int(src.find('ff_sher').text),
                 "shares": str2int(src.find('listed_stock_1').text),
+                "similar": self._findSimilar(self.ticker)
             })
         else:
             price, mul, sec = self._fnguideEtf(self.ticker)
@@ -344,10 +355,14 @@ class _ticker(object):
         return round(100 * (self.previousClose / self.fiftyTwoWeekLow - 1), 2)
 
     @property
-    def gapTargetPrice(self):
+    def gapTargetPrice(self) -> float or None:
         if not self.targetPrice:
             return None
         return round(100 * (self.previousClose / self.targetPrice - 1), 2)
+
+    @property
+    def similar(self) -> pd.DataFrame:
+        return self._valid_prop['similar']
 
     def description(self) -> pd.Series:
         series = pd.Series(data=self._valid_prop)
@@ -388,12 +403,13 @@ if __name__ == "__main__":
     # print(tester.sharesFloat)
     # print(tester.previousClose)
     # print(tester.targetPrice)
-    tester._findSimilar('000660')
+    # print(tester.similar)
 
-    # import random
-    # samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)
+    import random
+    samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)
     # samples = random.sample(MetaData.USSTOCK.index.tolist(), 10)
-    # for sample in samples:
-    #     print(f'\n{sample}', "=" * 75)
-    #     stock = _ticker(sample)
+    for sample in samples:
+        print(f'\n{sample}', "=" * 75)
+        stock = _ticker(sample)
     #     print(stock.description())
+        print(stock.similar)

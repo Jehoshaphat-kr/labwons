@@ -17,6 +17,7 @@ from labwons.equity.fundamental.products import products
 from labwons.equity.fundamental.expense import expense
 from labwons.equity.fundamental.multipleband import multipleband
 from labwons.equity.fundamental.benchmarkmultiple import benchmarkmultiple
+from labwons.equity.fundamental.similarity import similarity
 
 
 
@@ -156,4 +157,13 @@ class Equity(fetch):
         if not self.__hasattr__(self._attr('benchmarkMultiple')):
             self.__setattr__(self._attr('benchmarkMultiple'), benchmarkmultiple(self))
         return self.__getattribute__(self._attr('benchmarkMultiple'))
+
+    """
+    ETC
+    """
+    @property
+    def similarities(self) -> similarity:
+        if not self.__hasattr__(self._attr('similarity')):
+            self.__setattr__(self._attr('similarity'), similarity(self.similar))
+        return self.__getattribute__(self._attr('similarity'))
 

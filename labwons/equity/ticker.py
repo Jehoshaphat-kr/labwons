@@ -133,7 +133,7 @@ class _ticker(object):
         tickers = [c.replace('*', '')[-6:] for c in sim.columns]
         labels = [c.replace('*', '')[:-6] for c in sim.columns]
         sim.columns = tickers
-        return pd.concat(objs=[pd.DataFrame(columns=tickers, index=['종목명'], data=[labels]), sim], axis=0)
+        return pd.concat(objs=[pd.DataFrame(columns=tickers, index=['종목명'], data=[labels]), sim], axis=0).T
 
     def __kr__(self):
         str2int = lambda x: int(x.replace(', ', '').replace(',', ''))
@@ -383,7 +383,7 @@ if __name__ == "__main__":
     # tester = _ticker('LTPZ', exchange='NYSE')
     # tester = _ticker('QQQ')
     # tester = _ticker('AAPL')
-    tester = _ticker('000660')
+    tester = _ticker('058470')
     # tester = _ticker('457690')
     # tester = _ticker('383310')
     # print(tester.description())
@@ -403,13 +403,13 @@ if __name__ == "__main__":
     # print(tester.sharesFloat)
     # print(tester.previousClose)
     # print(tester.targetPrice)
-    # print(tester.similar)
+    print(tester.similar)
 
-    import random
-    samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)
+    # import random
+    # samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)
     # samples = random.sample(MetaData.USSTOCK.index.tolist(), 10)
-    for sample in samples:
-        print(f'\n{sample}', "=" * 75)
-        stock = _ticker(sample)
+    # for sample in samples:
+    #     print(f'\n{sample}', "=" * 75)
+    #     stock = _ticker(sample)
     #     print(stock.description())
-        print(stock.similar)
+    #     print(stock.similar)

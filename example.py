@@ -182,7 +182,7 @@ equity = lw.Equity('006400', period=20)
 # print(equity.foreignHold._unit_)
 # print(equity.foreignHold._form_)
 # print(equity.foreignHold._path_)
-equity.foreignHold.show()
+# equity.foreignHold.show()
 # equity.foreignHold.save()
 
 """ ========== < Consensus > ========== """
@@ -244,6 +244,11 @@ equity.foreignHold.show()
 # print(equity.multipleBand._path_)
 # equity.multipleBand.show()
 # equity.expense.save()
+
+""" ========== < Similarities > ========== """
+print(equity.similarities)
+equity.similarities.figure('등락률').show()
+equity.similarities.figure('시가총액(억)').show()
 
 
 

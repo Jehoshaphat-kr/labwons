@@ -2,6 +2,7 @@
 This app is recommended to run on .ipynb file
 """
 from labwons.common.metadata.metadata import MetaData
+from labwons.common.tools import normalDistribution
 from labwons.equity.equity import Equity
 from typing import Union, Tuple, List
 from datetime import datetime
@@ -62,13 +63,6 @@ class Market(pd.DataFrame):
             __obj = getattr(__obj, _prop)
         return __obj
 
-    @staticmethod
-    def normDist(series:pd.Series) -> pd.Series:
-        m = series.mean()
-        s = series.std()
-        norm =  np.exp(-((series - m) ** 2) / (2 * s ** 2)) / (s * np.sqrt(2 * np.pi))
-        return pd.Series(index=norm, data=series.values)
-
     def append(self, prop:str, column:str=''):
         operand = ''
         for optype in ['.iloc', '.loc', '.iat', '.at', '[']:
@@ -126,7 +120,7 @@ class Market(pd.DataFrame):
                 hovertemplate='%{meta}<br>x: %{x}<br>y: %{y}<extra></extra>'
             )
         )
-        ynorm = self.normDist(self[y])
+        ynorm = normalDistribution(self[y])
         fig.add_trace(
             row=1, col=1,
             trace=go.Scatter(
@@ -137,7 +131,7 @@ class Market(pd.DataFrame):
                 hovertemplate=y + ': %{y}<extra></extra>'
             )
         )
-        xnorm = self.normDist(self[x])
+        xnorm = normalDistribution(self[x])
         fig.add_trace(
             row=2, col=2,
             trace=go.Scatter(

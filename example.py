@@ -49,7 +49,7 @@ TEST :: EQUITIES
 # equity = lw.Equity('QQQ', period=30)
 # equity = lw.Equity('010140', period=30)
 # equity = lw.Equity('005930', period=20)
-equity = lw.Equity('006400', period=20)
+equity = lw.Equity('058470', period=20)
 # equity = lw.Equity('000660', period=10)
 
 """ ========= < Description > =========="""
@@ -246,9 +246,8 @@ equity = lw.Equity('006400', period=20)
 # equity.expense.save()
 
 """ ========== < Similarities > ========== """
-print(equity.similarities)
-equity.similarities.figure('등락률').show()
-equity.similarities.figure('시가총액(억)').show()
+# print(equity.similarities)
+# equity.similarities.figure().show()
 
 
 

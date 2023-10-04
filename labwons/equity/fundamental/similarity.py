@@ -1,11 +1,6 @@
-from labwons.common.basis import baseDataFrameChart
-from labwons.equity.fetch import fetch
+from labwons.common.tools import int2won
 from plotly import graph_objects as go
-from plotly.subplots import make_subplots
-from urllib.request import urlopen
 import pandas as pd
-import numpy as np
-import json
 
 
 class similarity(pd.DataFrame):
@@ -17,7 +12,9 @@ class similarity(pd.DataFrame):
         'purple',
         'navy'
     ]
+
     def __init__(self, simMatrix:pd.DataFrame):
+        simMatrix = simMatrix.drop(columns=['조정영업이익(억)'])
         super().__init__(
             index=simMatrix.index,
             columns=simMatrix.columns,
@@ -26,31 +23,55 @@ class similarity(pd.DataFrame):
         self.index.name = '종목코드'
         return
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self):
+        self.figure().show()
         return
+    @staticmethod
+    def _buttonVisibility(col:str, data:list):
+        visible = list()
+        for trace in data:
+            visible.append(True if trace.meta == col else False)
+        return visible
 
     def _bars(self, col:str) -> list:
-        series = self[col].astype(int if '억' in col or '원' in col else float)
+        series = self[col].apply(lambda x: float(x) if '.' in x else int(x))
         color = ['royalblue' if v < 0 else 'red' for v in series] if col == '등락률' else self.colors
+        unit = '원' if '억' in col or '원' in col else '배' if '배' in col else '%'
         return [
             go.Bar(
                 name=self.loc[ticker, '종목명'],
                 x=[self.loc[ticker, '종목명']],
                 y=[series[ticker]],
                 showlegend=True,
-                visible=True,
+                visible=True if col == '등락률' else False,
                 marker=dict(
                     color=color[n],
                     opacity=0.9
                 ),
-                hovertemplate='%{y}',
+                text=[int2won(series[ticker]) if '억' in col else series[ticker]],
+                texttemplate='%{text}' + unit,
+                hoverinfo='skip',
                 meta=col,
             ) for n, ticker in enumerate(self.index)
         ]
 
-    def figure(self, col:str) -> go.Figure:
+    def figure(self) -> go.Figure:
+        loop = [col for col in self if not col in ["종목명", "현재가"]]
+        data = list()
+        for col in loop:
+            data += self._bars(col)
+        menu = dict(
+            # type='buttons',
+            direction='down',
+            active=0,
+            xanchor='left', x=0.0,
+            yanchor='bottom', y=1.0,
+            buttons=[
+                dict(label=col, method='update', args=[{'visible': self._buttonVisibility(col, data)}]) for col in loop
+            ]
+        )
         layout = go.Layout(
-            title=f"<b>{self.iloc[0, 0]}({self.index[0]})</b> SIMILARITIES",
+            title=f"<b>{self.iloc[0, 0]}({self.index[0]})</b> SIMILARITIES(Q)",
             plot_bgcolor='white',
             legend=dict(
                 orientation="h",
@@ -59,8 +80,9 @@ class similarity(pd.DataFrame):
                 x=1,
                 y=1.04
             ),
+            updatemenus=[menu],
             yaxis=dict(
-                title='[억원, 원, %, 배]',
+                title='[원, %, 배]',
                 showgrid=True,
                 gridwidth=0.5,
                 gridcolor="lightgrey",
@@ -70,7 +92,7 @@ class similarity(pd.DataFrame):
             ),
         )
         fig = go.Figure(
-            data=self._bars(col),
+            data=data,
             layout=layout
         )
         return fig

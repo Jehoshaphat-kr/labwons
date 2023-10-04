@@ -165,7 +165,7 @@ class _ticker(object):
                 "forwardEps": None if mul.iloc[1, 1].startswith('N/A') else nav2num(mul.iloc[1, 1], 1),
                 "priceToBook": None if mul.iloc[2, 1].startswith('N/A') else nav2num(mul.iloc[2, 1], 0),
                 "bookValue": None if mul.iloc[2, 1].startswith('N/A') else nav2num(mul.iloc[2, 1], 1),
-                "targetPrice": None if cons.iloc[0, 1].startswith('N/A') else nav2num(cons.iloc[0, 1], 1),
+                "targetPrice": None if cons.iloc[0, 1].endswith('N/A') else nav2num(cons.iloc[0, 1], 1),
                 "returnOnEquity": comp.iloc[11, 1],  # Most Recent
                 "floatShares": str2int(src.find('ff_sher').text),
                 "shares": str2int(src.find('listed_stock_1').text),
@@ -383,9 +383,10 @@ if __name__ == "__main__":
     # tester = _ticker('LTPZ', exchange='NYSE')
     # tester = _ticker('QQQ')
     # tester = _ticker('AAPL')
-    tester = _ticker('058470')
+    # tester = _ticker('058470')
     # tester = _ticker('457690')
     # tester = _ticker('383310')
+    tester = _ticker('142210')
     # print(tester.description())
     # print(tester.name)
     # print(tester.exchange)
@@ -403,7 +404,7 @@ if __name__ == "__main__":
     # print(tester.sharesFloat)
     # print(tester.previousClose)
     # print(tester.targetPrice)
-    print(tester.similar)
+    # print(tester.similar)
 
     # import random
     # samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)

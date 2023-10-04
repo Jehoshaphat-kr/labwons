@@ -25,7 +25,7 @@ class Market(pd.DataFrame):
         proc:bool=True,
         **kwargs
     ):
-        loop = enumerate(tickers)
+        loop = tickers
         if proc:
             if env.endswith('ipynb'):
                 from tqdm.notebook import tqdm
@@ -34,9 +34,11 @@ class Market(pd.DataFrame):
             else:
                 raise ImportError('Unknown Environment!')
             self._tqdm_ = tqdm
-            loop = enumerate(tqdm(tickers, desc='initialize...'))
+            loop = tqdm(tickers)
 
-        for n, t in loop:
+        for n, t in enumerate(loop):
+            if proc:
+                loop.set_description(desc=f'initialize...{t}')
             self._slot_[t] = Equity(t, **kwargs)
             if not n % 20:
                 time.sleep(0.5)
@@ -74,7 +76,7 @@ class Market(pd.DataFrame):
         prop = prop[:prop.find('(')] if ')' in prop else prop
         loop = self._tqdm_(self._slot_.items()) if self._proc_ else self._slot_.items()
         data = []
-        for ticker, slot in loop:
+        for n, (ticker, slot) in enumerate(loop):
             if self._proc_:
                 loop.set_description(desc=f'{ticker}... ')
 
@@ -89,6 +91,8 @@ class Market(pd.DataFrame):
             if isinstance(_data, pd.DataFrame) or isinstance(_data, pd.Series):
                 raise TypeError(f'Append new market data must be 1x1 single data format, Not dataframe or series')
             data.append(_data)
+            if not n % 20:
+                time.sleep(0.5)
         self[column if column else prop] = data
         return
 
@@ -201,7 +205,8 @@ class Market(pd.DataFrame):
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
 
-    indices = MetaData[MetaData['industry'] == 'WI26 반도체'].head(10)
+    # indices = MetaData[MetaData['industry'] == 'WI26 반도체'].head(10)
+    indices = MetaData[MetaData['industry'] == 'WI26 반도체']
     bubble = Market(indices.index, env='.py', proc=True)
     # print(bubble)
     # bubble = Market(['005930'], proc=False)

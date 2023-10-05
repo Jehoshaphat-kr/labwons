@@ -5,7 +5,7 @@ from labwons.common.metadata.metadata import MetaData
 from labwons.common.tools import normalDistribution
 from labwons.equity.equity import Equity
 from typing import Union, Tuple, List
-from datetime import datetime
+from datetime import datetime, timedelta
 from pykrx import stock
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
@@ -25,7 +25,12 @@ class Market(pd.DataFrame):
         proc:bool=True,
         **kwargs
     ):
-        loop = tickers
+        self._proc_ = proc
+        meta = MetaData.KRSTOCKwMultiples.copy()
+        meta = meta[meta.index.isin(tickers)]
+        meta = meta[meta['IPO'] < (datetime.today() - timedelta(183))]
+
+        loop = meta.index
         if proc:
             if env.endswith('ipynb'):
                 from tqdm.notebook import tqdm
@@ -34,7 +39,7 @@ class Market(pd.DataFrame):
             else:
                 raise ImportError('Unknown Environment!')
             self._tqdm_ = tqdm
-            loop = tqdm(tickers)
+            loop = tqdm(loop)
 
         for n, t in enumerate(loop):
             if proc:
@@ -42,16 +47,6 @@ class Market(pd.DataFrame):
             self._slot_[t] = Equity(t, **kwargs)
             if not n % 20:
                 time.sleep(0.5)
-
-        self._proc_ = proc
-        meta = MetaData[MetaData.index.isin(tickers)][[
-            'name', 'quoteType', 'market', 'korName'
-        ]].copy()
-        meta = meta[meta['market'] == 'KOR']
-        caps = stock.get_market_cap_by_ticker(datetime.today().strftime("%Y%m%d"))[
-            ['종가', '시가총액']
-        ].rename(columns=dict(종가='close', 시가총액='marketCap'))
-        meta = meta.join(caps, how='left')
 
         super().__init__(data=meta.values, index=meta.index, columns=meta.columns)
         return
@@ -208,7 +203,7 @@ if __name__ == "__main__":
     # indices = MetaData[MetaData['industry'] == 'WI26 반도체'].head(10)
     indices = MetaData[MetaData['industry'] == 'WI26 반도체']
     bubble = Market(indices.index, env='.py', proc=True)
-    # print(bubble)
+    print(bubble)
     # bubble = Market(['005930'], proc=False)
     # print(bubble)
     bubble.append('trend.strength()["3M"]', column='trendStrength3M')

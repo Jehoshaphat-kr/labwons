@@ -21,7 +21,7 @@ import os
 class metadata(pd.DataFrame):
     _api_ss = ''
     _api_ec = ''
-    _icm_kr = None
+    _icm_kr = pd.DataFrame()
     _col = [
         'name',
         'quoteType',
@@ -92,7 +92,7 @@ class metadata(pd.DataFrame):
 
     @property
     def KRSTOCKwMultiples(self):
-        if not self._icm_kr:
+        if self._icm_kr.empty:
             self._icm_kr = self.KRSTOCK.join(fetchKrseMarketCapMultipleIpo(), how='left')
         return self._icm_kr
 

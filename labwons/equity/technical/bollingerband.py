@@ -29,7 +29,7 @@ class bollingerband(baseDataFrameChart):
     def __call__(self, col:str):
         return self.trace(col)
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = make_subplots(
             rows=4,
             cols=1,
@@ -126,6 +126,7 @@ class bollingerband(baseDataFrameChart):
             ),
             xaxis4=dict(
                 title="DATE",
+                tickformat="%Y/%m/%d",
                 showgrid=True,
                 gridwidth=0.5,
                 gridcolor="lightgrey",
@@ -183,4 +184,11 @@ class bollingerband(baseDataFrameChart):
                 autorange=True
             ),
         )
+        for k, v in kwargs.items():
+            if k in vars(go.Layout):
+                fig.update_layout({k:v})
         return fig
+
+    def show(self, **kwargs):
+        self.figure(**kwargs).show()
+        return

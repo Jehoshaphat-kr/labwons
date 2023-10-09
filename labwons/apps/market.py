@@ -101,11 +101,10 @@ class Market(pd.DataFrame):
         for n, ticker in enumerate(__loop__):
             if self.processbar:
                 __loop__.set_description(desc=f'{prop} ... {ticker}')
-
-            _data = self.__prop__(self._slot_[ticker], prop)
             if len(self._slot_[ticker].ohlcv) < 126:
                 data.append(np.nan)
                 continue
+            _data = self.__prop__(self._slot_[ticker], prop)
             if callable(_data):
                 _data = _data()
             if operand:
@@ -129,7 +128,7 @@ class Market(pd.DataFrame):
             horizontal_spacing=0
         )
         self['size'] = np.log2(self['marketCap'].astype(float))
-        self['size'] = 10 * self['size'] / self['size'].max()
+        self['size'] = 20 * self['size'] / self['size'].max()
         fig.add_trace(
             row=1, col=2,
             trace=go.Scatter(
@@ -143,7 +142,7 @@ class Market(pd.DataFrame):
                 ),
                 showlegend=False,
                 meta=self['name'] + '(' + self.index + ')',
-                hovertemplate='%{meta}<br>x: %{x}<br>y: %{y}<extra></extra>'
+                hovertemplate='%{meta}<br>' + x + ': %{x}<br>' + y + ': %{y}<extra></extra>'
             )
         )
 
@@ -155,7 +154,8 @@ class Market(pd.DataFrame):
                 y=ynorm.index,
                 mode='markers',
                 showlegend=False,
-                hovertemplate=y + ': %{y}<extra></extra>'
+                meta=self['name'] + '(' + self.index + ')',
+                hovertemplate='%{meta}: %{y}<extra></extra>'
             )
         )
         xnorm = normalDistribution(self[x].astype(float))
@@ -166,13 +166,14 @@ class Market(pd.DataFrame):
                 y=xnorm,
                 mode='markers',
                 showlegend=False,
-                hovertemplate=x +': %{x}<extra></extra>'
+                meta=self['name'] + '(' + self.index + ')',
+                hovertemplate='%{meta}: %{x}<extra></extra>'
             )
         )
         fig.add_vline(x=self[x].mean(), row=1, col=2, line_width=0.5, line_dash="dash", line_color="black")
         fig.add_hline(y=self[y].mean(), row=1, col=2, line_width=0.5, line_dash="dash", line_color="black")
         fig.update_layout(
-            title=f'Scatter x: {x} / y: {y}',
+            # title=f'Scatter x: {x} / y: {y}',
             plot_bgcolor='white',
             yaxis=dict(
                 title=f'{y}',
@@ -234,10 +235,10 @@ if __name__ == "__main__":
 
     bubble = Market(indices.index)
     bubble.env = '.py'
-    print(bubble)
+    # print(bubble)
 
-    # bubble.append('trend.strength()["3M"]', column='trendStrength3M')
-    # bubble.append('trend.gaps()["1Y"]', column='trendGap1Y')
+    bubble.append('trend.strength()["3M"]', column='trendStrength3M')
+    bubble.append('trend.gaps()["1Y"]', column='trendGap1Y')
     # print(bubble)
 
     # bubble.scatter(x='trendStrength3M', y='trendGap1Y').show()

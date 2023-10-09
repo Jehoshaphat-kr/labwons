@@ -17,6 +17,7 @@ class trend(baseDataFrameChart):
         Trend line
         :param base : [_ohlcv] parent class "<class; ohlcv>"
         """
+
         objs = [self._regress(self._timeSlice(base.ohlcv.t, start), col) for col, start in self._timeSpan(base.ohlcv.t)]
         super().__init__(pd.concat(objs=objs, axis=1), **getattr(base, '_valid_prop'))
         self._filename_ = lambda x: f'TREND{"" if x == "unflat" else "_F"}'

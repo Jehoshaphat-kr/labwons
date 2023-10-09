@@ -143,6 +143,7 @@ class _ticker(object):
         guide = f"http://cdn.fnguide.com/SVO2/xml/Snapshot_all/{self.ticker}.xml"
         src = xml.fromstring(requests.get(url=guide).text).find('price')
         self._valid_prop.update({
+
             "previousClose": str2int(src.find('close_val').text),
             "foreignRate": float(src.find('frgn_rate').text),
             "beta": float(src.find('beta').text) if src.find('beta').text else None,

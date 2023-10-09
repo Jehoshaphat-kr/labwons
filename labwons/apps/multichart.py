@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 
 
 class MultiChart(object):
+
     def __init__(self, *args):
         self.args = args
         self.units = list()
@@ -19,6 +20,56 @@ class MultiChart(object):
         self._trs = list()
         self._ys = list()
         return
+
+    @staticmethod
+    def f1x1y2() -> go.Figure:
+        fig = make_subplots(
+            rows=1, cols=1,
+            x_title='날짜', shared_xaxes=True,
+            specs=[
+                [{'secondary_y': True}]
+            ]
+        )
+        fig.update_layout(
+            plot_bgcolor='white',
+            margin=dict(r=0),
+            legend=dict(
+                orientation="h",
+                xanchor="right",
+                yanchor="bottom",
+                x=0.96,
+                y=1
+            ),
+            xaxis_rangeslider=dict(visible=False),
+            xaxis_rangeselector=dict(
+                buttons=list([
+                    dict(count=1, label="1M", step="month", stepmode="backward"),
+                    dict(count=3, label="3M", step="month", stepmode="backward"),
+                    dict(count=6, label="6M", step="month", stepmode="backward"),
+                    dict(count=1, label="YTD", step="year", stepmode="todate"),
+                    dict(count=1, label="1Y", step="year", stepmode="backward"),
+                    dict(count=2, label="3Y", step="year", stepmode="backward"),
+                    dict(step="all")
+                ])
+            ),
+            hovermode="x unified",
+            xaxis=dict(
+                tickformat="%Y/%m/%d",
+                showticklabels=True,
+                showgrid=True,
+                gridcolor='lightgrey',
+            ),
+            yaxis=dict(
+                # title=f'[{self.units[0]}]',
+                showgrid=True,
+                gridcolor='lightgrey',
+            ),
+            yaxis2=dict(
+                # title=f'[{self.units[1]}]'
+            )
+        )
+        return fig
+
 
     def _traces(self) -> list:
         if self._trs:

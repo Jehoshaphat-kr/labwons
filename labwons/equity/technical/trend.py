@@ -7,6 +7,7 @@ from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.offline import plot
 import pandas as pd
+import numpy as np
 
 
 class trend(baseDataFrameChart):
@@ -17,8 +18,17 @@ class trend(baseDataFrameChart):
         Trend line
         :param base : [_ohlcv] parent class "<class; ohlcv>"
         """
+        tt = base.ohlcv.t
 
-        objs = [self._regress(self._timeSlice(base.ohlcv.t, start), col) for col, start in self._timeSpan(base.ohlcv.t)]
+        objs = []
+        for yy in [5, 3, 2, 1, 0.5, 0.25]:
+            label = f"{yy}Y" if isinstance(yy, int) else f"{int(yy * 12)}M"
+            date = tt.index[-1] - timedelta(int(yy * 365))
+            if tt.index[0] <= date:
+                objs.append(self.calcTrend(tt[tt.index >= date].copy(), label))
+            else:
+                objs.append(pd.Series(name=label, index=tt.index))
+
         super().__init__(pd.concat(objs=objs, axis=1), **getattr(base, '_valid_prop'))
         self._filename_ = lambda x: f'TREND{"" if x == "unflat" else "_F"}'
         self._form_ = '.2f'
@@ -29,48 +39,7 @@ class trend(baseDataFrameChart):
         return self.line(col)
 
     @staticmethod
-    def _timeSpan(series:pd.Series) -> list:
-        sizeof, times = len(series), series.index
-        # span = [('ALL', times[0])]
-        span = []
-        if sizeof >= 5 * 252 * 1.03:
-            span.append(('5Y', times[-1] - timedelta(5 * 365)))
-        if sizeof >= 3 * 252 * 1.03:
-            span.append(('3Y', times[-1] - timedelta(3 * 365)))
-        if sizeof >= 2 * 252 * 1.03:
-            span.append(('2Y', times[-1] - timedelta(2 * 365)))
-        if sizeof >= 1 * 252 * 1.03:
-            span.append(('1Y', times[-1] - timedelta(365)))
-        if sizeof >= 0.5 * 252 * 1.03:
-            span.append(('6M', times[-1] - timedelta(183)))
-        if sizeof >= 0.25 * 252 * 1.03:
-            span.append(('3M', times[-1] - timedelta(91)))
-        return span
-
-    @staticmethod
-    def _timeSlice(series:pd.Series, start:Union[str, int], end:Union[str, int]='') -> pd.Series:
-        if isinstance(start, str):
-            start = pd.Timestamp(datetime.strptime(start, "%Y%m%d"))
-        elif isinstance(start, int):
-            start = series.index[start]
-        elif isinstance(start, datetime) or isinstance(start, pd.Timestamp):
-            pass
-        else:
-            raise KeyError
-
-        end = end if end else series.index[-1]
-        if isinstance(end, str):
-            end = pd.Timestamp(datetime.strptime(end, "%Y%m%d"))
-        elif isinstance(end, int):
-            end = series.index[end]
-        elif isinstance(end, datetime) or isinstance(end, pd.Timestamp):
-            pass
-        else:
-            raise KeyError
-        return series[(series.index >= start) & (series.index <= end)].copy()
-
-    @staticmethod
-    def _regress(series:pd.Series, col:str='') -> pd.Series:
+    def calcTrend(series:pd.Series, col:str='') -> pd.Series:
         if not series.index.name == 'date':
             raise IndexError
         col = col if col else series.name
@@ -100,6 +69,9 @@ class trend(baseDataFrameChart):
         objs = dict()
         for col in self:
             frm = pd.concat([self._base_.ohlcv.t, self[col]], axis=1).dropna()
+            if frm.empty:
+                objs[col] = pd.Series(name=col)
+                continue
             frm['sign'] = frm.apply(lambda row: -1 if row[self._base_.ohlcv.t.name] <= row[col] else 1, axis=1)
             residual = abs(frm[self._base_.ohlcv.t.name] - frm[col]).sum() / len(frm) # 평균 괴리 값
             objs[col] = frm['sign'] * abs(frm[self._base_.ohlcv.t.name] - frm[col]) / residual
@@ -109,6 +81,9 @@ class trend(baseDataFrameChart):
         objs = dict()
         for col in self:
             frm = pd.concat([self._base_.ohlcv.t, self[col]], axis=1).dropna()
+            if frm.empty:
+                objs[col] = np.nan
+                continue
             base = frm[self._base_.ohlcv.t.name][0]
             objs[col] = (base + (frm[col][-1] - frm[col][0])) / base
         return pd.Series(data=objs)
@@ -122,7 +97,7 @@ class trend(baseDataFrameChart):
         date, data = [], []
         for n in range(0, len(self._base_.ohlcv.t) - window, 5):
             ser = self._base_.ohlcv.t[n : n + window]
-            reg = self._regress(ser, col=str(n))
+            reg = self.calcTrend(ser, col=str(n))
             fit = pd.concat([ser, reg], axis=1)
             if fit.empty:
                 continue

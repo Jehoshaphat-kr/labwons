@@ -48,6 +48,7 @@ class Market(pd.DataFrame):
             kor = kor[kor['IPO'] < (datetime.today() - timedelta(183))]
             base = pd.concat(objs=[kor, base], axis=0)
         super().__init__(data=base.values, index=base.index, columns=base.columns)
+        self.drop(index=self[self['marketCap'].isna()].index, inplace=True)
         return
 
     def __loop__(self, contents=None):
@@ -229,16 +230,16 @@ class Market(pd.DataFrame):
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
 
-    indices = MetaData[MetaData['industry'] == 'WI26 반도체'].head(10)
-    # indices = MetaData[MetaData['industry'] == 'WI26 반도체']
+    # indices = MetaData[MetaData['industry'] == 'WI26 반도체'].head(10)
+    indices = MetaData[MetaData['industry'] == 'WI26 반도체']
     # indices = ['AAPL', '']
 
     bubble = Market(indices.index)
     bubble.env = '.py'
     # print(bubble)
 
-    bubble.append('trend.strength()["3M"]', column='trendStrength3M')
-    bubble.append('trend.gaps()["1Y"]', column='trendGap1Y')
+    # bubble.append('trend.strength()["3M"]', column='trendStrength3M')
+    # bubble.append('trend.gaps()["1Y"]', column='trendGap1Y')
     # print(bubble)
 
     # bubble.scatter(x='trendStrength3M', y='trendGap1Y').show()

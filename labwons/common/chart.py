@@ -1,10 +1,109 @@
-from labwons.common.config import PATH
-from labwons.equity.equity import Equity
-from labwons.indicator import Indicator
+# from labwons.common.config import PATH
+# from labwons.equity.equity import Equity
+# from labwons.indicator import Indicator
 from plotly.subplots import make_subplots
-from plotly.offline import plot
 import plotly.graph_objects as go
 
+
+plot = {
+    "bgcolor" : "white"
+}
+
+legendV = {
+    "bgcolor" : "white",                # [str]
+    "bordercolor" : "#444",             # [str]
+    "borderwidth" : 0,                  # [float]
+    "font" : {
+        ''' User Defaults '''
+    },
+    "grouptitlefont" : {
+        ''' User Defaults '''
+    },
+    "itemdoubleclick" : "toggleothers", # [str | bool] one of ( "toggle" | "toggleothers" | False )
+    "itemsizing" : "trace",             # [str] one of ( "trace" | "constant" )
+    "itemwidth" : 30,                   # [int] greater than or equal to 30
+    "orientation" : "v",                # [str] one of ( "v" | "h" )
+    "title" : {
+        ''' User Defaults '''
+    },
+    "tracegroupgap" : 10,               # [int] greater than or equal to 0
+    "traceorder" : "normal",            # [str] Any combination of "reversed", "grouped" joined with a "+" OR "normal"
+    "valign" : "middle",                # [str] one of ( "top" | "middle" | "bottom" )
+    "visible" : True,                   # [bool]
+    "xref" : "paper",                   # [str] one of ( "container" | "paper" )
+    "x" : 1.02,                         # [float]
+    "xanchor" : "left",                 # [str] one of ( "auto" | "left" | "center" | "right" )
+    "yref" : "paper",                   # [str] one of ( "container" | "paper" )
+    "y" : 1,                            # [float]
+    "yahcnor" : "auto"                  # [str] one of ( "auto" | "top" | "middle" | "bottom" )
+}
+
+legendH = legendV.copy().update({
+    "orientation" : "h",
+    "xanchor" : "right",
+    "yanchor" : "bottom",
+    "x" : 0.96,
+    "y" : 1
+})
+
+hovermode = "closeset"                  # [str] one of ( "x" | "y" | "closest" | False | "x unified" | "y unified" )
+
+dragmode = "zoom"                       # [str] one of ( "zoom" | "pan" | "select" | "lasso" | "drawclosedpath" |
+                                        #                "drawopenpath" | "drawline" | "drawrect" | "drawcircle" |
+                                        #                "orbit" | "turntable" | False )
+xaxis = {
+    "autorange" : True,                 # [str | bool] one of ( True | False | "reversed" | "min reversed" |
+                                        #                       "max reversed" | "min" | "max" )
+    "color" : "#444",                   # [str]
+    "showgrid" : True,                  # [bool]
+    "gridcolor" : "lightgrey",          # [str]
+    "griddash" : "solid",               # [str] one of ( "solid" | "dot" | "dash" | "longdash" | "dashdot" )
+    "gridwidth" : 0.5,                  # [float]
+    "showline" : True,                  # [bool]
+    "linecolor" : "grey",               # [str]
+    "linewidth" : 1,                    # [float]
+    "mirror" : False,                   # [str | bool] one of ( True | "ticks" | False | "all" | "allticks" )
+    "rangeslider" : {
+        "visible" : False
+    },
+    "rangeselector" : {
+        "visible" : True,
+        "bgcolor" : "#eee",             # [str]
+        "bordercolor" : "#444",         # [str]
+        "borderwidth" : 0,              # [float]
+        "buttons" : [
+            dict(count=1, label="1M", step="month", stepmode="backward"),
+            dict(count=3, label="3M", step="month", stepmode="backward"),
+            dict(count=6, label="6M", step="month", stepmode="backward"),
+            dict(count=1, label="YTD", step="year", stepmode="todate"),
+            dict(count=1, label="1Y", step="year", stepmode="backward"),
+            dict(count=2, label="3Y", step="year", stepmode="backward"),
+            dict(step="all")
+        ]
+    },
+    "showticklabels" : True,            # [bool]
+    "tickformat" : "%Y/%m/%d",          # [str]
+    "zeroline" : True,                  # [bool]
+    "zerolinecolor" : "lightgrey",      # [str]
+    "zerolinewidth" : 1                 # [float]
+}
+
+yaxis = {
+    "autorange" : True,                 # [str | bool] one of ( True | False | "reversed" | "min reversed" |
+                                        #                       "max reversed" | "min" | "max" )
+    "color" : "#444",                   # [str]
+    "showgrid" : True,                  # [bool]
+    "griddash" : "solid",               # [str] one of ( "solid" | "dot" | "dash" | "longdash" | "dashdot" )
+    "gridwidth" : 0.5,                  # [float]
+    "showline" : True,                  # [bool]
+    "linecolor" : "grey",               # [str]
+    "linewidth" : 1,                    # [float]
+    "mirror" : False,                   # [str | bool] one of ( True | "ticks" | False | "all" | "allticks" )
+    "showticklabels" : True,            # [bool]
+    "zeroline" : True,                  # [bool]
+    "zerolinecolor" : "lightgrey",      # [str]
+    "zerolinewidth" : 1                 # [float]
+}
 
 
 

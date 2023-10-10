@@ -47,9 +47,9 @@ TEST :: INDICATORS
 TEST :: EQUITIES
 """
 # equity = lw.Equity('QQQ', period=30)
-# equity = lw.Equity('010140', period=30)
+equity = lw.Equity('252990')
 # equity = lw.Equity('005930', period=20)
-equity = lw.Equity('058470', period=20)
+# equity = lw.Equity('058470', period=20)
 # equity = lw.Equity('000660', period=10)
 
 """ ========= < Description > =========="""
@@ -91,9 +91,9 @@ equity = lw.Equity('058470', period=20)
 # print(equity.trend._form_)
 # print(equity.trend._path_)
 # print(equity.trend._filename_)
-# print(equity.trend.flatten())
+print(equity.trend.flatten())
 # print(equity.trend.strength())
-# print(equity.trend.gaps())
+print(equity.trend.gaps())
 # equity.trend.show()
 # equity.trend.show('flat')
 

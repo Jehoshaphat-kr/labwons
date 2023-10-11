@@ -1,4 +1,5 @@
 from labwons.common.basis import baseDataFrameChart, baseSeriesChart
+from labwons.common.chart import Chart
 from typing import Union
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
@@ -63,80 +64,84 @@ class ohlcv(baseDataFrameChart):
         return baseSeriesChart((self['low'] + self['high'] + self['close']) / 3, **attrib)
 
     def figure(self) -> go.Figure:
-        fig = make_subplots(
-            rows=2,
-            cols=1,
-            shared_xaxes=True,
-            row_width=[0.15, 0.85],
-            vertical_spacing=0.01
-        )
-        fig.add_traces(data=[self('candle'), self('bar')], rows=[1, 2], cols=[1, 1])
-        fig.update_layout(
-            title=f"{self._dataName_}({self._ticker_}) {self._filename_}",
-            plot_bgcolor="white",
-            legend=dict(
-                orientation="h",
-                xanchor="right",
-                yanchor="bottom",
-                x=0.99,
-                y=1.02
-            ),
-            # legend=dict(tracegroupgap=5),
-            xaxis_rangeslider=dict(visible=False),
-            xaxis_rangeselector=dict(
-                buttons=list([
-                    dict(count=1, label="1M", step="month", stepmode="backward"),
-                    dict(count=3, label="3M", step="month", stepmode="backward"),
-                    dict(count=6, label="6M", step="month", stepmode="backward"),
-                    dict(count=1, label="YTD", step="year", stepmode="todate"),
-                    dict(count=1, label="1Y", step="year", stepmode="backward"),
-                    dict(count=2, label="3Y", step="year", stepmode="backward"),
-                    dict(step="all")
-                ])
-            ),
-            xaxis=dict(
-                title="",
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            xaxis2=dict(
-                title="DATE",
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            yaxis=dict(
-                title=f"[{self._unit_}]",
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            yaxis2=dict(
-                title=f"",
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            )
-        )
+        fig = Chart.r2c1nsy
+        fig.add_trace(self('price'), row=1, col=1)
+        fig.add_trace(self('volume'), row=2, col=1)
+        # fig = make_subplots(
+        #     rows=2,
+        #     cols=1,
+        #     shared_xaxes=True,
+        #     row_width=[0.15, 0.85],
+        #     vertical_spacing=0.01
+        # )
+        # fig.add_traces(data=[self('candle'), self('bar')], rows=[1, 2], cols=[1, 1])
+        # fig.update_layout(
+        #     title=f"{self._dataName_}({self._ticker_}) {self._filename_}",
+        #     plot_bgcolor="white",
+        #     legend=dict(
+        #         orientation="h",
+        #         xanchor="right",
+        #         yanchor="bottom",
+        #         x=0.99,
+        #         y=1.02
+        #     ),
+        #     # legend=dict(tracegroupgap=5),
+        #     xaxis_rangeslider=dict(visible=False),
+        #     xaxis_rangeselector=dict(
+        #         buttons=list([
+        #             dict(count=1, label="1M", step="month", stepmode="backward"),
+        #             dict(count=3, label="3M", step="month", stepmode="backward"),
+        #             dict(count=6, label="6M", step="month", stepmode="backward"),
+        #             dict(count=1, label="YTD", step="year", stepmode="todate"),
+        #             dict(count=1, label="1Y", step="year", stepmode="backward"),
+        #             dict(count=2, label="3Y", step="year", stepmode="backward"),
+        #             dict(step="all")
+        #         ])
+        #     ),
+        #     xaxis=dict(
+        #         title="",
+        #         showgrid=True,
+        #         gridwidth=0.5,
+        #         gridcolor="lightgrey",
+        #         showline=True,
+        #         linewidth=1,
+        #         linecolor="grey",
+        #         mirror=False,
+        #         autorange=True
+        #     ),
+        #     xaxis2=dict(
+        #         title="DATE",
+        #         showgrid=True,
+        #         gridwidth=0.5,
+        #         gridcolor="lightgrey",
+        #         showline=True,
+        #         linewidth=1,
+        #         linecolor="grey",
+        #         mirror=False,
+        #         autorange=True
+        #     ),
+        #     yaxis=dict(
+        #         title=f"[{self._unit_}]",
+        #         showgrid=True,
+        #         gridwidth=0.5,
+        #         gridcolor="lightgrey",
+        #         showline=True,
+        #         linewidth=1,
+        #         linecolor="grey",
+        #         mirror=False,
+        #         autorange=True
+        #     ),
+        #     yaxis2=dict(
+        #         title=f"",
+        #         showgrid=True,
+        #         gridwidth=0.5,
+        #         gridcolor="lightgrey",
+        #         showline=True,
+        #         linewidth=1,
+        #         linecolor="grey",
+        #         mirror=False,
+        #         autorange=True
+        #     )
+        # )
         return fig
+

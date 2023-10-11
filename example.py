@@ -69,7 +69,7 @@ equity = lw.Equity('252990')
 # print(equity.ohlcv._form_)
 # print(equity.ohlcv._path_)
 # print(equity.ohlcv._filename_)
-# equity.ohlcv.show()
+equity.ohlcv.show()
 
 
 """ ========== < SMA > ========== """
@@ -91,9 +91,9 @@ equity = lw.Equity('252990')
 # print(equity.trend._form_)
 # print(equity.trend._path_)
 # print(equity.trend._filename_)
-print(equity.trend.flatten())
+# print(equity.trend.flatten())
 # print(equity.trend.strength())
-print(equity.trend.gaps())
+# print(equity.trend.gaps())
 # equity.trend.show()
 # equity.trend.show('flat')
 

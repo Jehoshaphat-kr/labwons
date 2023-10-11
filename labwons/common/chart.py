@@ -4,26 +4,26 @@ import plotly.graph_objects as go
 
 class chart:
 
-    def __init__(self):
-        self._layout_r1c1nsy = self.layout(
-            legend=self.legend(),
-            xaxis=self.xaxis(),
-            yaxis=self.yaxis()
-        )
-        self._layout_r1c1sy1 = self.layout(
-            legend=self.legend(),
-            xaxis=self.xaxis(),
-            yaxis=self.yaxis(),
-            # yaxis2=self.yaxis(showgrid=False)
-        )
-        self._layout_r2c1nsy = self.layout(
-            legend=self.legend(),
-            xaxis=self.xaxis(rangeselector=None, showticklabels=False),
-            xaxis2=self.xaxis(),
-            yaxis=self.yaxis(),
-            yaxis2=self.yaxis()
-        )
-        return
+    # def __init__(self):
+    #     self._layout_r1c1nsy = self.layout(
+    #         legend=self.legend(),
+    #         xaxis=self.xaxis(),
+    #         yaxis=self.yaxis()
+    #     )
+    #     self._layout_r1c1sy1 = self.layout(
+    #         legend=self.legend(),
+    #         xaxis=self.xaxis(),
+    #         yaxis=self.yaxis(),
+    #         # yaxis2=self.yaxis(showgrid=False)
+    #     )
+    #     self._layout_r2c1nsy = self.layout(
+    #         legend=self.legend(),
+    #         xaxis=self.xaxis(rangeselector=None, showticklabels=False),
+    #         xaxis2=self.xaxis(),
+    #         yaxis=self.yaxis(),
+    #         yaxis2=self.yaxis()
+    #     )
+    #     return
 
     @staticmethod
     def xaxis(**kwargs) -> dict:
@@ -158,6 +158,8 @@ class chart:
 
         fig.update_xaxes(row=1, col=1, patch=self.xaxis(showticklabels=False))
         fig.update_xaxes(row=2, col=1, patch=self.xaxis(rangeselector=None))
+        fig.update_yaxes(row=1, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=2, col=1, patch=self.yaxis())
         return fig
 
 

@@ -153,7 +153,7 @@ class fetch(_ticker):
             self.__setattr__(
                 self._attr('ta'),
                 baseDataFrameChart(
-                    add_all_ta_features(self.ohlcv.copy(), 'open', 'high', 'low', 'close', 'volume'),
+                    data=add_all_ta_features(self.ohlcv.copy(), 'open', 'high', 'low', 'close', 'volume'),
                     **self._valid_prop
                 )
             )

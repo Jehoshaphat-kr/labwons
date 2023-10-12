@@ -12,31 +12,30 @@ import numpy as np
 
 class trend(baseDataFrameChart):
 
-    _base_ = None
+    underlying = None
     def __init__(self, base:fetch):
-        """
-        Trend line
-        :param base : [_ohlcv] parent class "<class; ohlcv>"
-        """
-        tt = base.ohlcv.t
-
-        objs = []
+        self.underlying = tp = base.ohlcv.t.copy()
+        objs = [self.calcTrend(tp, 'A')]
         for yy in [5, 3, 2, 1, 0.5, 0.25]:
-            label = f"{yy}Y" if isinstance(yy, int) else f"{int(yy * 12)}M"
-            date = tt.index[-1] - timedelta(int(yy * 365))
-            if tt.index[0] <= date:
-                objs.append(self.calcTrend(tt[tt.index >= date].copy(), label))
-            else:
-                objs.append(pd.Series(name=label, index=tt.index))
-
-        super().__init__(pd.concat(objs=objs, axis=1), **getattr(base, '_valid_prop'))
-        self._filename_ = lambda x: f'TREND{"" if x == "unflat" else "_F"}'
-        self._form_ = '.2f'
-        self._base_ = base
+            col = f"{yy}Y" if isinstance(yy, int) else f"{int(yy * 12)}M"
+            date = tp.index[-1] - timedelta(int(yy * 365))
+            if tp.index[0] > date:
+                objs.append(pd.Series(name=col, index=tp.index))
+                continue
+            objs.append(self.calcTrend(tp[tp.index >= date], col))
+        super().__init__(
+            data=pd.concat(objs=objs, axis=1),
+            name="TREND",
+            subject=f"{base.name}({base.ticker})",
+            path=base.path,
+            form='.1f',
+            unit=base.unit,
+            ref=base
+        )
         return
 
     def __call__(self, col:str):
-        return self.line(col)
+        return self.lineTY(col)
 
     @staticmethod
     def calcTrend(series:pd.Series, col:str='') -> pd.Series:

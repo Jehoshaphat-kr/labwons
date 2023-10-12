@@ -53,7 +53,7 @@ class chart:
                     dict(count=6, label="6M", step="month", stepmode="backward"),
                     dict(count=1, label="YTD", step="year", stepmode="todate"),
                     dict(count=1, label="1Y", step="year", stepmode="backward"),
-                    dict(count=2, label="3Y", step="year", stepmode="backward"),
+                    # dict(count=2, label="3Y", step="year", stepmode="backward"),
                     dict(step="all")
                 ]
             },
@@ -108,7 +108,7 @@ class chart:
             "traceorder": "normal",             # [str] combination of "normal", "reversed", "grouped" joined with "+"
             "valign": "middle",                 # [str] one of ( "top" | "middle" | "bottom" )
             "xanchor": "right",                 # [str] one of ( "auto" | "left" | "center" | "right" )
-            "x": 0.99,                          # [float] 1.02 for "v", 0.96 for "h"
+            "x": 1.0,                           # [float] 1.02 for "v", 0.96 for "h"
             "yanchor": "top",                   # [str] one of ( "auto" | "top" | "middle" | "bottom" )
             "y": 1.0,                           # [float] 1.0 for both "v" and "h",
 
@@ -122,7 +122,7 @@ class chart:
     def layout(**kwargs) -> dict:
         layout = {
             "plot_bgcolor": "white",            # [str] colors
-            "hovermode": "closest",             # [str] one of ( "x" | "y" | "closest" | False | "x unified" |
+            "hovermode": "x unified",           # [str] one of ( "x" | "y" | "closest" | False | "x unified" |
                                                 #                "y unified" )
             "dragmode": "zoom",                 # [str] one of ( "zoom" | "pan" | "select" | "lasso" |
                                                 #                "drawclosedpath" | "drawopenpath" | "drawline" |
@@ -139,6 +139,14 @@ class chart:
             if k in vars(go.Layout):
                 layout.update({k: v})
         return layout
+
+    @property
+    def r1c1nsy(self) -> go.Figure:
+        fig = go.Figure()
+        fig.update_layout(**self.layout(legend=self.legend()))
+        fig.update_xaxes(patch=self.xaxis())
+        fig.update_yaxes(patch=self.yaxis())
+        return fig
 
     @property
     def r1c1sy1(self) -> go.Figure:

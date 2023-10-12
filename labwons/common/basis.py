@@ -1,3 +1,5 @@
+from labwons.common.config import PATH
+from labwons.common.chart import Chart
 from typing import Any, Union
 from pandas import DataFrame, Series
 from plotly import graph_objects as go
@@ -6,49 +8,44 @@ import os
 
 
 class baseDataFrameChart(DataFrame):
-    _prop_ = {
-        'dataName': '',
-        'ticker': '',
-        'unit': '',
-        'path': '',
-        'form': '.2f',
-        'filename': '',
-    }
-    def __init__(self, frame:DataFrame, **kwargs):
+    name = ''
+    subject = ''
+    path = ''
+    form = ''
+    unit = ''
+    ref = None
+    def __init__(
+        self,
+        data:DataFrame,
+        name:str='',
+        subject:str='',
+        path:str=PATH.BASE,
+        form:str='.2f',
+        unit:str='',
+        ref:Any=None,
+        **kwargs
+    ):
         """
-        Plotly 속성을 포함한 DataFrame
-        :param df     : [DataFrame] 기본 데이터프레임
-        :param kwargs : [dict] 속성 값 (아래는 필수 속성 키)
-                        - @name, @unit, @path, @dtype
+        Plotly Trace 를 포함한 Pandas DataFrame
+        :param data:    [DataFrame]* 기본 데이터프레임
+        :param name:    [str] 데이터프레임 이름
+        :param subject: [str] "{종목명(종목코드)}"
+        :param path:    [str] 데이터프레임 및 시각 그래프 저장 경로
+        :param form:    [str] 데이터프레임 포맷
+        :param unit:    [str] 데이터프레임 단위
+        :param ref:     [Any] 상위 레퍼런스 클래스
         """
-        # self._prop_ = {
-        #     'dataName': '',
-        #     'ticker': '',
-        #     'unit': '',
-        #     'path': '',
-        #     'form': '.2f',
-        #     'filename': '',
-        # }
-        labels = {
-            'dataName': 'name',
-            'ticker': 'ticker',
-            'unit': 'unit',
-            'path': 'path',
-            'form': 'dtype',
-            'filename': 'filename'
-        }
-
         super(baseDataFrameChart, self).__init__(
-            index=frame.index,
-            columns=frame.columns,
-            data=frame.values
+            index=data.index,
+            columns=data.columns,
+            data=data.values
         )
-        self._prop_ = self._prop_.copy()
-        for k in self._prop_:
-            if labels[k] in kwargs:
-                self._prop_[k] = kwargs[labels[k]]
-
-        self._prop_['filename'] = self._prop_['dataName']
+        self.name = name
+        self.subject = subject
+        self.path = path
+        self.form = form
+        self.unit = unit
+        self.ref = ref
         return
 
     @staticmethod
@@ -58,61 +55,10 @@ class baseDataFrameChart(DataFrame):
                 setattr(inst, k, kwargs[k])
         return inst
 
-    @property
-    def _dataName_(self) -> str:
-        return self._prop_['dataName']
-
-    @_dataName_.setter
-    def _dataName_(self, dataName:str):
-        self._prop_['dataName'] = dataName
-
-    @property
-    def _ticker_(self) -> str:
-        return self._prop_['ticker']
-
-    @_ticker_.setter
-    def _ticker_(self, ticker:str):
-        self._prop_['ticker'] = ticker
-
-    @property
-    def _unit_(self) -> str:
-        return self._prop_['unit']
-
-    @_unit_.setter
-    def _unit_(self, unit:str):
-        self._prop_['unit'] = unit
-
-    @property
-    def _path_(self) -> str:
-        return self._prop_['path']
-
-    @_path_.setter
-    def _path_(self, path:str):
-        self._prop_['path'] = path
-
-    @property
-    def _form_(self) -> str:
-        return self._prop_['form']
-
-    @_form_.setter
-    def _form_(self, form:str):
-        self._prop_['form'] = form
-
-
-    @property
-    def _filename_(self) -> str:
-        return self._prop_['filename']
-
-    @_filename_.setter
-    def _filename_(self, filename:str):
-        self._prop_['filename'] = filename
-
-    def line(self, col:Union[str, tuple], data:DataFrame=DataFrame(), drop:bool=True, **kwargs) -> go.Scatter:
-        data = (self if data.empty else data)[col]
-        if drop:
-            data = data.dropna()
-        name = col if isinstance(col, str) else col[1]
-        unit = kwargs['unit'] if 'unit' in kwargs else self._unit_
+    def lineTY(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Scatter:
+        data = self[col].dropna() if drop else self[col]
+        name = col if isinstance(col, str) else '/'.join(tuple)
+        unit = kwargs['unit'] if 'unit' in kwargs else self.unit
         trace = go.Scatter(
             name=name,
             x=data.index,
@@ -122,34 +68,65 @@ class baseDataFrameChart(DataFrame):
             showlegend=True,
             connectgaps=True,
             xhoverformat='%Y/%m/%d',
-            yhoverformat=self._form_,
-            hovertemplate=name + '<br>%{y}' + unit + '@%{x}<extra></extra>'
+            yhoverformat=self.form,
+            hovertemplate=name + ': %{y}' + unit + '<extra></extra>'
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 
-    def linemarker(self, col:str, data:Series=Series(dtype=float), drop:bool=True, **kwargs) -> go.Scatter:
-        data = (self if data.empty else data)[col]
-        if drop:
-            data = data.dropna()
+    # def lineMarker(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Scatter:
+    #     data = self[col].dropna() if drop else self[col]
+    #     name = col if isinstance(col, str) else '/'.join(tuple)
+    #     unit = kwargs['unit'] if 'unit' in kwargs else self.unit
+    #     trace = go.Scatter(
+    #         name=name,
+    #         x=data.index,
+    #         y=data,
+    #         mode='lines+markers+text',
+    #         visible=True,
+    #         showlegend=True,
+    #         textposition="bottom center",
+    #         texttemplate="%{y:.2f}" + unit,
+    #         hovertemplate="%{y:.2f}" + unit + "<extra></extra>"
+    #     )
+    #     return self._overwrite(go.Scatter, trace, **kwargs)
+    #
+    # def bar(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Bar:
+    #     data = self[col].dropna() if drop else self[col]
+    #     name = col if isinstance(col, str) else '/'.join(tuple)
+    #     unit = kwargs['unit'] if 'unit' in kwargs else self.unit
+    #     trace = go.Bar(
+    #         name=name,
+    #         x=data.index,
+    #         y=data,
+    #         visible=True,
+    #         showlegend=True,
+    #         xhoverformat='%Y/%m/%d',
+    #         hovertemplate="%{y}" + unit + "<extra></extra>"
+    #     )
+    #     return self._overwrite(go.Bar, trace, **kwargs)
+
+    def scatterTY(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Scatter:
+        data = self[col].dropna() if drop else self[col]
+        name = col if isinstance(col, str) else '/'.join(tuple)
+        unit = kwargs['unit'] if 'unit' in kwargs else self.unit
         trace = go.Scatter(
-            name=col,
+            name=name,
             x=data.index,
             y=data,
-            mode='lines+markers+text',
+            mode='markers',
             visible=True,
             showlegend=True,
-            textposition="bottom center",
-            texttemplate="%{y:.2f}%",
-            hovertemplate='%{y:.2f}%<extra></extra>'
+            xhoverformat='%Y/%m/%d',
+            yhoverformat=self.form,
+            hovertemplate="%{y}" + unit + "<extra></extra>"
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 
-    def candle(self, data:DataFrame=DataFrame(), **kwargs) -> go.Candlestick:
-        data = self if data.empty else data
-        if not all([c in data for c in ['open', 'high', 'low', 'close']]):
-            raise ValueError(f"Candlestick requires 'open', 'high', 'low', 'close' column data")
+    def candleStick(self, **kwargs) -> go.Candlestick:
+        if not all([c in self for c in ['open', 'high', 'low', 'close']]):
+            raise ValueError(f"Candlestick requires ['open', 'high', 'low', 'close'] column data")
         trace = go.Candlestick(
-            name=self._dataName_,
+            name=self.subject,
             x=self.index,
             open=self['open'],
             high=self['high'],
@@ -163,43 +140,11 @@ class baseDataFrameChart(DataFrame):
             decreasing_line=dict(
                 color='royalblue'
             ),
+            hoverinfo='y',
             xhoverformat='%Y/%m/%d',
-            yhoverformat=self._form_,
+            yhoverformat=self.form,
         )
         return self._overwrite(go.Candlestick, trace, **kwargs)
-
-    def bar(self, col:Union[str, tuple], data:DataFrame=DataFrame(), drop:bool=True, **kwargs) -> go.Bar:
-        data = (self if data.empty else data)[col]
-        if drop:
-            data = data.dropna()
-        name = col if isinstance(col, str) else col[1]
-        trace = go.Bar(
-            name=name,
-            x=data.index,
-            y=data,
-            visible=True,
-            showlegend=False,
-            xhoverformat='%Y/%m/%d',
-            hovertemplate='%{y} @%{x}<extra></extra>'
-        )
-        return self._overwrite(go.Bar, trace, **kwargs)
-
-    def scatter(self, col:str, data:DataFrame=DataFrame(), drop:bool=True, **kwargs) -> go.Scatter:
-        data = (self if data.empty else data)[col]
-        if drop:
-            data = data.dropna()
-        trace = go.Scatter(
-            name=col,
-            x=data.index,
-            y=data,
-            mode='markers',
-            visible=True,
-            showlegend=True,
-            xhoverformat='%Y/%m/%d',
-            yhoverformat=self._form_,
-            hovertemplate='%{y} @%{x}<extra></extra>'
-        )
-        return self._overwrite(go.Scatter, trace, **kwargs)
 
     def figure(self) -> go.Figure:
         pass
@@ -208,42 +153,55 @@ class baseDataFrameChart(DataFrame):
         self.figure().show()
         return
 
-    def save(self, filename:str=''):
-        os.makedirs(self._path_, exist_ok=True)
-        filename = filename if filename else self._filename_
+    def save(self):
+        os.makedirs(self.path, exist_ok=True)
         plot(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{self._path_}/{filename}.html'
+            filename=f'{self.path}/{self.name}.html'
         )
         return
 
 
 class baseSeriesChart(Series):
-
-    def __init__(self, series:Series, **kwargs):
+    subject = ''
+    path = ''
+    form = ''
+    unit = ''
+    def __init__(
+        self,
+        data:Series,
+        name:str='',
+        subject:str='',
+        path:str=PATH.BASE,
+        form:str='.2f',
+        unit:str='',
+        **kwargs
+    ):
         """
-        Plotly 속성을 포함한 Series
-        :param df     : [Series] 기본 데이터
-        :param kwargs : [dict] 속성 값 (아래는 필수 속성 키)
-                        - @name, @unit, @path, @dtype
+        Plotly Trace 를 포함한 Pandas DataFrame
+        :param data:    [Series]* 기본 시계열데이터
+        :param name:    [str] 시계열데이터 이름
+        :param subject: [str] "{종목명(종목코드)}"
+        :param path:    [str] 시계열데이터 및 시각 그래프 저장 경로
+        :param form:    [str] 시계열데이터 포맷
+        :param unit:    [str] 시계열데이터 단위
         """
-        super().__init__(index=series.index, data=series.values, dtype=series.dtype, name=series.name)
-        self.name = self._name_ = kwargs['name'] if 'name' in kwargs else ''
-        self._ticker_ = kwargs['ticker'] if 'ticker' in kwargs else ''
-        self._unit_ = kwargs['unit'] if 'unit' in kwargs else ''
-        self._path_ = kwargs['path'] if 'path' in kwargs else r'./'
-        self._form_ = kwargs['form'] if 'form' in kwargs else '.2f'
-        self._filename_ = f"{self._name_}"
+        super(baseSeriesChart, self).__init__(
+            index=data.index,
+            data=data.values,
+            dtype=data.dtype,
+            name=name if name else data.name
+        )
+        self.subject = subject
+        self.path = path
+        self.form = form
+        self.unit = unit
         return
 
-    def __call__(self, mode:str='line', **kwargs) -> Union[go.Scatter, go.Bar]:
-        if mode == 'line':
-            return self.line(**kwargs)
-        elif mode == 'bar':
-            return self.bar(**kwargs)
-        else:
-            raise KeyError
+    def __call__(self, mode:str='lineTY', drop:bool=True, **kwargs):
+        f = getattr(self, ''.join([method for method in dir(self) if method == mode]))
+        return f(drop, **kwargs)
 
     @staticmethod
     def _overwrite(cls:Any, inst:Any, **kwargs) -> Any:
@@ -252,10 +210,11 @@ class baseSeriesChart(Series):
                 setattr(inst, k, kwargs[k])
         return inst
 
-    def line(self, data:Series=Series(dtype=float), **kwargs) -> go.Scatter:
-        data = (self if data.empty else data).dropna()
+    def lineTY(self, drop:bool=True, **kwargs) -> go.Scatter:
+        data = self.dropna() if drop else self
+        name = kwargs['name'] if 'name' in kwargs else str(self.name)
         trace = go.Scatter(
-            name=self._name_,
+            name=name,
             x=data.index,
             y=data,
             mode='lines',
@@ -263,100 +222,98 @@ class baseSeriesChart(Series):
             showlegend=True,
             connectgaps=True,
             xhoverformat='%Y/%m/%d',
-            yhoverformat=self._form_,
-            hovertemplate=self._name_ + '<br>%{y}' + self._unit_ + '@%{x}<extra></extra>'
+            yhoverformat=self.form,
+            hovertemplate=name + ': %{y}' + self.unit + '<extra></extra>'
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 
-    def linemarker(self, data:Series=Series(dtype=float), **kwargs) -> go.Scatter:
-        data = (self if data.empty else data).dropna()
+    def lineXY(self, drop:bool=True, **kwargs) -> go.Scatter:
+        data = self.dropna() if drop else self
         trace = go.Scatter(
-            name=self._name_,
+            name=self.name,
             x=data.index,
             y=data,
             mode='lines+markers+text',
             visible=True,
             showlegend=True,
             textposition="bottom center",
-            texttemplate="%{y:.2f}%",
-            hovertemplate='%{x}: %{y:.2f}%<extra></extra>'
+            texttemplate="%{y}" + self.unit,
+            yhoverformat=self.form,
+            hovertemplate="%{x}: %{y}" + self.unit + "<extra></extra>"
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 
-    def bar(self, data:Series=Series(dtype=float), **kwargs) -> go.Bar:
-        data = (self if data.empty else data).dropna()
+    def barTY(self, drop:bool=True, **kwargs) -> go.Bar:
+        data = self.dropna() if drop else self
+        name = kwargs['name'] if 'name' in kwargs else str(self.name)
         trace = go.Bar(
-            name=self._name_,
+            name=name,
+            x=data.index,
+            y=data,
+            visible=True,
+            showlegend=True,
+            xhoverformat='%Y/%m/%d',
+            yhoverformat=self.form,
+            hovertemplate=name + ": %{y}" + self.unit + "<extra></extra>"
+        )
+        return self._overwrite(go.Bar, trace, **kwargs)
+
+    def barXY(self, drop:bool=True, **kwargs) -> go.Bar:
+        data = self.dropna() if drop else self
+        trace = go.Bar(
+            name=self.name,
             x=data.index,
             y=data,
             visible=True,
             showlegend=False,
-            xhoverformat='%Y/%m/%d',
-            hovertemplate='%{y} @%{x}<extra></extra>'
+            textposition="inside",
+            texttemplate="%{y}" + self.unit,
+            yhoverformat=self.form,
+            hovertemplate="%{x}: %{y}" + self.unit + "<extra></extra>"
         )
         return self._overwrite(go.Bar, trace, **kwargs)
 
-    def scatter(self, data:Series=Series(dtype=float), **kwargs) -> go.Scatter:
-        data = (self if data.empty else data).dropna()
+    def scatterXY(self, drop:bool=True, **kwargs) -> go.Scatter:
+        data = self.dropna() if drop else self
         trace = go.Scatter(
-            name=self._name_,
+            name=self.name,
             x=data.index,
             y=data,
             mode='markers',
             visible='legendonly',
             showlegend=True,
-            xhoverformat='%Y/%m/%d',
-            yhoverformat=self._form_,
-            hovertemplate='%{y} @%{x}<extra></extra>'
+            yhoverformat=self.form,
+            hovertemplate="%{x}: %{y}" + self.unit + "<extra></extra>"
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 
-    def figure(self, mode:str='line') -> go.Figure:
-        layout = go.Layout(
-            title=self._name_,
-            plot_bgcolor='white',
-            legend=dict(
-                xanchor='left',
-                yanchor='top',
-                x=0.0,
-                y=1.0
-            ),
-            xaxis=dict(
-                title='Date',
-                showgrid=True,
-                gridcolor='lightgrey',
-                zeroline=True,
-                zerolinecolor='lightgrey',
-                zerolinewidth=0.8,
-                showline=True,
-                linecolor='grey',
-                linewidth=1.0
-            ),
-            yaxis=dict(
-                title=self._unit_,
-                showgrid=True,
-                gridcolor='lightgrey',
-                zeroline=True,
-                zerolinecolor='lightgrey',
-                zerolinewidth=0.8,
-                showline=True,
-                linecolor='grey',
-                linewidth=1.0
-            )
+    def figure(self, mode:str='lineTY', drop:bool=True, **kwargs) -> go.Figure:
+        fig = Chart.r1c1nsy
+        fig.add_trace(self(mode, drop, **kwargs))
+        fig.update_layout(
+            title=self.name
         )
-        fig = go.Figure(data=self(mode), layout=layout)
+        fig.update_xaxes(dict(
+            title='Date'
+        ))
+        fig.update_yaxes(dict(
+            title=f'{self.name}[{self.unit}]'
+        ))
         return fig
 
-    def show(self, mode:str='line'):
-        self.figure(mode).show()
+    def show(self, mode:str='lineTY', drop:bool=True, **kwargs):
+        self.figure(mode, drop, **kwargs).show()
         return
 
-    def save(self, filename:str='', mode:str='line'):
-        os.makedirs(self._path_, exist_ok=True)
-        filename = filename if filename else self._filename_
+    def save(self, mode:str='lineTY', drop:bool=True, **kwargs):
+        os.makedirs(self.path, exist_ok=True)
         plot(
-            figure_or_data=self.figure(mode),
+            figure_or_data=self.figure(mode, drop, **kwargs),
             auto_open=False,
-            filename=f'{self._path_}/{filename}.html'
+            filename=f'{self.path}/{self.name}.html'
         )
         return
+
+if __name__ == "__main__":
+    test = baseSeriesChart(Series())
+    print(test())

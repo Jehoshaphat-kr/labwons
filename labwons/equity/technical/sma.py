@@ -3,79 +3,49 @@ from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 import pandas as pd
 
+
 class sma(baseDataFrameChart):
 
-    _base_ = None
-    _goldenCross_ = None
     def __init__(self, base:fetch):
-        DEFAULT_WINDOWS = [5, 10, 20, 60, 120, 200]
-        DEFAULT_FRAME = pd.concat(objs={f'MA{w}D': self.add(base.ohlcv.t, w) for w in DEFAULT_WINDOWS}, axis=1)
-
-        super().__init__(frame=DEFAULT_FRAME, **getattr(base, '_valid_prop'))
-        self._filename_ = 'SMA'
-        self._form_ = '.2f'
-        self._base_ = base
-        self._goldenCross_ = pd.DataFrame()
+        underlying = base.ohlcv.t.copy()
+        objs = {
+            "MA5D" : underlying.rolling(5).mean(),
+            "MA1M": underlying.rolling(21).mean(),
+            "MA3M": underlying.rolling(63).mean(),
+            "MA6M": underlying.rolling(126).mean(),
+            "MA1Y": underlying.rolling(200).mean(),
+        }
+        super(sma, self).__init__(
+            data=pd.concat(objs=objs, axis=1),
+            name="SMA",
+            subject=f"{base.name}({base.ticker})",
+            path=base.path,
+            form='.1f',
+            unit=base.unit,
+            ref=base
+        )
         return
 
     def __call__(self, col:str, **kwargs) -> go.Scatter:
-        return self.line(
-            col,
-            visible='legendonly',
-            line=dict(dash='dot', width=1.0)
-        )
+        return self.lineTY(col, visible='legendonly', line=dict(dash='dot', width=1.0), **kwargs)
 
-    @staticmethod
-    def add(series:pd.Series, window:int) -> pd.Series:
-        return series.rolling(window).mean()
+    def addMA(self, col:str, window:int):
+        if not col in self and col.startswith('MA'):
+            self[col] = self.ref.ohlcv.t.rolling(window).mean()
+        return
 
-    @property
-    def goldenCross(self) -> pd.DataFrame:
-        if self._goldenCross_.empty:
-            df = pd.concat(
-                objs={
-                    's': self['MA20D'] - self['MA60D'],
-                    'm': self['MA60D'] - self['MA120D'],
-                    'l': self['MA60D'] - self['MA200D'],
-                }, axis=1
-            )
+    def addGC(self, col:str, bottom:str, top:str):
+        # DEPRECATED
+        return
 
-            prev, short, mid, long = [], [], [], []
-            for n, (date, s, m, l) in enumerate(df.itertuples()):
-                if not n:
-                    prev = [s, m, l]
-                    continue
+    def addDC(self, col:str, bottom:str, top:str):
+        # DEPRECATED
+        return
 
-                if s * prev[0] < 0 < s:
-                    short.append(date)
-                if m * prev[1] < 0 < m:
-                    mid.append(date)
-                if l * prev[2] < 0 < l:
-                    long.append(date)
-                prev = [s, m, l]
-
-            objs = {self._base_.ohlcv.t.name: self._base_.ohlcv.t.copy()}
-            for dates, label in ((short, 'short'), (mid, 'mid'), (long, 'long')):
-                objs[f'{label}Term'] = pd.Series(index=dates, data=[1] * len(dates))
-            gc = pd.concat(objs=objs, axis=1)
-            for label in gc.columns[1:]:
-                gc[label] = gc[gc.columns[0]] * gc[label]
-            self._goldenCross_ = gc.drop(columns=[self._base_.ohlcv.t.name])
-        return self._goldenCross_
-
-    def figure(self, goldenCross:bool=True) -> go.Figure:
-        fig = self._base_.ohlcv.figure()
-        fig.add_trace(self._base_.ohlcv.t(), row=1, col=1)
-        fig.add_traces(
-            data=[self(col) for col in self],
-            rows=[1] * len(self.columns),
-            cols=[1] * len(self.columns)
-        )
-        if goldenCross:
-            data = self.goldenCross.copy()
-            fig.add_traces(
-                data=[self.scatter(col, data, visible='legendonly', marker=dict(symbol='triangle-up')) for col in data],
-                rows=[1] * len(data.columns),
-                cols=[1] * len(data.columns)
-            )
+    def figure(self) -> go.Figure:
+        fig = self.ref.ohlcv.figure()
+        for col in self:
+            if col.startswith('MA'):
+                fig.add_trace(row=1, col=1, trace=self(col))
+        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
         return fig

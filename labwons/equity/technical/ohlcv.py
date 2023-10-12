@@ -1,76 +1,102 @@
 from labwons.common.basis import baseDataFrameChart, baseSeriesChart
 from labwons.common.chart import Chart
-from typing import Union
 from plotly import graph_objects as go
-from plotly.subplots import make_subplots
 from pandas import DataFrame
 
 class ohlcv(baseDataFrameChart):
 
+    fig = None
     def __init__(self, base:DataFrame, **kwargs):
-        super().__init__(frame=base, **kwargs)
-        self._prop_['filename'] = 'OHLCV'
+        super().__init__(
+            data = base,
+            name = "OHLCV",
+            subject = f"{kwargs['name']}({kwargs['ticker']})",
+            path = kwargs['path'],
+            form = kwargs['dtype'],
+            unit = kwargs['unit']
+        )
+        self.fig = None
         return
 
-    def __call__(self, key:str='candle', **kwargs) -> Union[go.Scatter, go.Bar]:
-        if key.lower() in ['candle', 'ohlc', 'price']:
-            trace = self.candle()
-        elif key.lower() in ['volume', 'bar']:
-            trace = self.bar('volume')
-            trace.showlegend = False
-            trace.marker = dict(
-                color = self['volume'].pct_change().apply(lambda x: 'royalblue' if x <= 0 else 'red')
-            )
-        else:
-            raise KeyError(f"Unknown parameter: {key}")
-        return trace
+    def __call__(self, **kwargs) -> go.Candlestick:
+        return self.candleStick(**kwargs)
 
     @property
     def o(self) -> baseSeriesChart:
-        attrib = self._prop_.copy()
-        attrib['name'] = f"{self._dataName_}(O)"
-        return baseSeriesChart(self['open'], **attrib)
+        return baseSeriesChart(
+            data=self['open'],
+            name=f"{self.subject}(O)",
+            subject=self.subject,
+            path=self.path,
+            form=self.form,
+            unit=self.unit
+        )
 
     @property
     def h(self) -> baseSeriesChart:
-        attrib = self._prop_.copy()
-        attrib['name'] = f"{self._dataName_}(H)"
-        return baseSeriesChart(self['high'], **attrib)
+        return baseSeriesChart(
+            data=self['high'],
+            name=f"{self.subject}(H)",
+            subject=self.subject,
+            path=self.path,
+            form=self.form,
+            unit=self.unit
+        )
 
     @property
     def l(self) -> baseSeriesChart:
-        attrib = self._prop_.copy()
-        attrib['name'] = f"{self._dataName_}(L)"
-        return baseSeriesChart(self['low'], **attrib)
+        return baseSeriesChart(
+            data=self['low'],
+            name=f"{self.subject}(L)",
+            subject=self.subject,
+            path=self.path,
+            form=self.form,
+            unit=self.unit
+        )
 
     @property
     def c(self) -> baseSeriesChart:
-        attrib = self._prop_.copy()
-        attrib['name'] = f"{self._dataName_}(C)"
-        return baseSeriesChart(self['close'], **attrib)
+        return baseSeriesChart(
+            data=self['close'],
+            name=f"{self.subject}(C)",
+            subject=self.subject,
+            path=self.path,
+            form=self.form,
+            unit=self.unit
+        )
 
     @property
     def v(self) -> baseSeriesChart:
-        attrib = self._prop_.copy()
-        attrib['name'] = f"{self._dataName_} Vol"
-        attrib['form'] = ',d'
-        return baseSeriesChart(self['volume'].astype(int), **attrib)
+        return baseSeriesChart(
+            data=self['volume'],
+            name=f"{self.subject}(V)",
+            subject=self.subject,
+            path=self.path,
+            form=',d',
+            unit=''
+        )
 
     @property
     def t(self) -> baseSeriesChart:
-        attrib = self._prop_.copy()
-        attrib['name'] = f"{self._dataName_}(T)"
-        attrib['form'] = ".2f"
-        return baseSeriesChart((self['low'] + self['high'] + self['close']) / 3, **attrib)
+        return baseSeriesChart(
+            data=(self['low'] + self['high'] + self['close']) / 3,
+            name=f"{self.subject}(T)",
+            subject=self.subject,
+            path=self.path,
+            form=".1f",
+            unit=self.unit
+        )
 
     def figure(self) -> go.Figure:
-        fig = Chart.r2c1nsy
-        fig.add_trace(self('price'), row=1, col=1)
-        fig.add_trace(self('volume'), row=2, col=1)
-        fig.update_layout(
-            title=f"{self._dataName_}({self._ticker_}) {self._filename_}",
-            yaxis_title=f"[{self._unit_}]",
-            yaxis2_title="[Vol]"
-        )
-        return fig
+        if not self.fig:
+            self.fig = Chart.r2c1nsy
+            self.fig.add_trace(row=1, col=1, trace=self())
+            self.fig.add_trace(row=1, col=1, trace=self.t('lineTY', name='TP', visible='legendonly'))
+            self.fig.add_trace(row=2, col=1, trace=self.v('barTY', name='거래량', showlegend=False))
+            self.fig.update_layout(
+                title=f"<b>{self.subject}</b> : {self.name}",
+                yaxis_title=f"[{self.unit}]",
+                yaxis2_title="Volume"
+            )
+        return self.fig
 

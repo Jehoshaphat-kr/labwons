@@ -1,13 +1,46 @@
 from labwons.common.basis import baseDataFrameChart
+from labwons.common.chart import Chart
 from labwons.equity.fetch import fetch
-from datetime import datetime, timedelta
+from datetime import timedelta
 from scipy.stats import linregress
-from typing import Union
 from plotly import graph_objects as go
-from plotly.subplots import make_subplots
-from plotly.offline import plot
 import pandas as pd
 import numpy as np
+
+
+class _disparate(baseDataFrameChart):
+
+    def __init__(self, data:pd.DataFrame, subject:str, path:str):
+        objs = {}
+        cols = data.columns.tolist()
+        for col in cols[1:]:
+            both = data[[cols[0], col]].dropna()
+            if data.empty:
+                objs[col] = pd.Series(name=col, dtype=float)
+                continue
+            objs[col] = (both[cols[0]] - both[col]) / (abs(both[cols[0]] - both[col]).sum() / len(both))
+
+        super(_disparate, self).__init__(
+            data=pd.concat(objs=objs, axis=1),
+            name="TREND-DISPARATE",
+            subject=subject,
+            path=path,
+            form='.4f',
+            unit='',
+        )
+        return
+
+    def figure(self) -> go.Figure:
+        fig = Chart.r2c3nsy(subplot_titles=self.columns)
+        fig.add_trace(row=1, col=1, trace=self.barTY('A', showlegend=False, marker={"color":'grey'}))
+        for name, row, col in (('5Y', 1, 2), ('2Y', 1, 3), ('1Y', 2, 1), ('6M', 2, 2), ('3M', 2, 3)):
+            if self[name].dropna().empty:
+                fig.add_annotation(row=row, col=col, x=0.5, y=0.5, text="<b>No Data</b>", showarrow=False)
+            else:
+                fig.add_trace(row=row, col=col, trace=self.barTY(name, showlegend=False, marker={"color":'grey'}))
+        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
+        fig.update_yaxes(autorange=False, range=[1.1 * self.min().min(), 1.1 * self.max().max()])
+        return fig
 
 
 class trend(baseDataFrameChart):
@@ -15,14 +48,13 @@ class trend(baseDataFrameChart):
     underlying = None
     def __init__(self, base:fetch):
         self.underlying = tp = base.ohlcv.t.copy()
-        objs = [self.calcTrend(tp, 'A')]
-        for yy in [5, 3, 2, 1, 0.5, 0.25]:
+        objs = [tp, self.reg(tp, 'A')]
+        for yy in [5, 2, 1, 0.5, 0.25]:
             col = f"{yy}Y" if isinstance(yy, int) else f"{int(yy * 12)}M"
             date = tp.index[-1] - timedelta(int(yy * 365))
-            if tp.index[0] > date:
-                objs.append(pd.Series(name=col, index=tp.index))
-                continue
-            objs.append(self.calcTrend(tp[tp.index >= date], col))
+            data = pd.Series(name=col, index=tp.index) if tp.index[0] > date else self.reg(tp[tp.index >= date], col)
+            objs.append(data)
+
         super().__init__(
             data=pd.concat(objs=objs, axis=1),
             name="TREND",
@@ -38,7 +70,7 @@ class trend(baseDataFrameChart):
         return self.lineTY(col)
 
     @staticmethod
-    def calcTrend(series:pd.Series, col:str='') -> pd.Series:
+    def reg(series:pd.Series, col:str='') -> pd.Series:
         if not series.index.name == 'date':
             raise IndexError
         col = col if col else series.name
@@ -50,183 +82,47 @@ class trend(baseDataFrameChart):
         fitted.name = col
         return pd.concat(objs=[series, fitted], axis=1).set_index(keys='date')[col]
 
-    def _naming(self) -> str:
-        n = 1
-        while f"custom{str(n).zfill(2)}" in self.columns:
-            n += 1
-        return f"custom{str(n).zfill(2)}"
-
-    def _buttons(self) -> list:
-        _buttons = list()
-        for col in self.columns:
-            dates = self[col].dropna().index
-            count = (dates[-1] - dates[0]).days
-            _buttons.append(dict(count=count, label=col, step="day", stepmode="backward"))
-        return _buttons
-
-    def flatten(self) -> pd.DataFrame:
-        objs = dict()
-        for col in self:
-            frm = pd.concat([self._base_.ohlcv.t, self[col]], axis=1).dropna()
-            if frm.empty:
-                objs[col] = pd.Series(name=col)
-                continue
-            frm['sign'] = frm.apply(lambda row: -1 if row[self._base_.ohlcv.t.name] <= row[col] else 1, axis=1)
-            residual = abs(frm[self._base_.ohlcv.t.name] - frm[col]).sum() / len(frm) # 평균 괴리 값
-            objs[col] = frm['sign'] * abs(frm[self._base_.ohlcv.t.name] - frm[col]) / residual
-        return pd.concat(objs=objs, axis=1)
-
-    def strength(self) -> pd.Series:
-        objs = dict()
-        for col in self:
-            frm = pd.concat([self._base_.ohlcv.t, self[col]], axis=1).dropna()
-            if frm.empty:
+    @property
+    def intensity(self) -> pd.Series:
+        objs = {}
+        cols = self.columns.tolist()
+        for col in cols[1:]:
+            both = self[[cols[0], col]].dropna()
+            if both.empty:
                 objs[col] = np.nan
                 continue
-            base = frm[self._base_.ohlcv.t.name][0]
-            objs[col] = (base + (frm[col][-1] - frm[col][0])) / base
-        return pd.Series(data=objs)
+            objs[col] = (both[cols[0]][0] + both[col][-1] - both[col][0]) / both[cols[0]][0] - 1
+        return pd.Series(data=objs, dtype=float)
 
-    def gaps(self) -> pd.Series:
-        data = self.flatten().iloc[-1]
-        data.name = self._ticker_
-        return data
-
-    def backTest(self, window:int=252) -> pd.Series:
-        date, data = [], []
-        for n in range(0, len(self._base_.ohlcv.t) - window, 5):
-            ser = self._base_.ohlcv.t[n : n + window]
-            reg = self.calcTrend(ser, col=str(n))
-            fit = pd.concat([ser, reg], axis=1)
-            if fit.empty:
-                continue
-
-            pr, td = fit[fit.columns[0]], fit[fit.columns[1]]
-            basis = (pr - td) / (abs(pr - td).sum() / len(fit))
-            factor = (basis[-3] / basis[-1]) * (pr[-2] / pr[-4])
-
-            date.append(ser.index[-1])
-            data.append(factor * basis[-1])
-            # data['Residue'].append(res)
-            # data['isUnderValued'].append(isUnderValued)
-            # data['isDeValued'].append(isDeValued)
-            # data['isRising'].append(isRising)
-            # data['Signal'].append(pr[-1] * isUnderValued * isDeValued * isRising)
-        return pd.Series(index=date, data=data, name='Score')
+    @property
+    def disparate(self) -> baseDataFrameChart:
+        return _disparate(data=self.copy(), subject=self.subject, path=self.path)
 
     def figure(self) -> go.Figure:
-        data = [self._base_.ohlcv.t()]
-        for col in self:
-            trace = self.line(col)
-            trace.visible = 'legendonly'
-            trace.line = dict(color='black', dash='dash', width=0.8)
-            data.append(trace)
-        return go.Figure(
-            data=data,
-            layout=go.Layout(
-                title=f"{self._base_.name}({self._base_.ticker}) Trend",
-                plot_bgcolor="white",
-                legend=dict(
-                    orientation="h",
-                    xanchor="right",
-                    yanchor="bottom",
-                    x=0.98,
-                    y=1.02
-                ),
-                xaxis_rangeslider=dict(visible=False),
-                xaxis_rangeselector=dict(buttons=self._buttons()),
-                xaxis=dict(
-                    title="Date",
-                    tickformat='%Y/%m/%d',
-                    showgrid=True,
-                    gridwidth=0.5,
-                    gridcolor="lightgrey",
-                    showline=True,
-                    linewidth=1,
-                    linecolor="grey",
-                    mirror=False,
-                    autorange=True
-                ),
-                yaxis=dict(
-                    title=f"[{self._unit_}]",
-                    showgrid=True,
-                    gridwidth=0.5,
-                    gridcolor="lightgrey",
-                    showline=True,
-                    linewidth=1,
-                    linecolor="grey",
-                    mirror=False,
-                    autorange=True
-                ),
+        fig = self.ref.ohlcv.figure()
+        for col in self.columns[1:]:
+            kwargs = dict(
+                col=col,
+                visible='legendonly',
+                line=dict(
+                    color='black',
+                    dash='dash',
+                    width=0.8
+                )
             )
-        )
+            fig.add_trace(row=1, col=1, trace=self.lineTY(**kwargs))
 
-    def figure_flat(self, columns:list=None) -> go.Figure:
-        frm = self.flatten().copy()
-        columns = columns if columns else frm.columns[:6]
-        if len(columns) > 6:
-            raise KeyError(f"The number of columns must be 6")
-
-        data = list()
-        for col in columns:
-            bar = self.bar(col, frm)
-            bar.marker = dict(
-                color=['royalblue' if v <= 0 else 'red' for v in frm[col].dropna()],
-                opacity=0.9
-            )
-            data.append(bar)
-
-        fig = make_subplots(
-            rows=3, cols=2,
-            vertical_spacing=0.08, horizontal_spacing=0.04,
-            y_title='[x1 Average]', x_title='Date',
-            subplot_titles=columns
-        )
-        fig.add_traces(
-            data=data,
-            rows=[1, 1, 2, 2, 3, 3][:len(columns)],
-            cols=[1, 2, 1, 2, 1, 2][:len(columns)]
-        )
-        fig.update_layout(
-            title=f"{self._base_.name}({self._base_.ticker}) %Trend Diff.",
-            plot_bgcolor="white",
-        )
-        fig.update_xaxes(
-            dict(
-                tickformat='%Y/%m/%d',
-            )
-        )
-        fig.update_yaxes(
-            dict(
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                zeroline=True,
-                zerolinecolor='grey',
-                zerolinewidth=0.8,
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            )
-        )
+        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
+        fig.update_xaxes(row=1, col=1, patch={
+            "rangeselector": {
+                "buttons": [
+                    dict(count=3, label="3M", step="month", stepmode="backward"),
+                    dict(count=6, label="6M", step="month", stepmode="backward"),
+                    dict(count=1, label="1Y", step="year", stepmode="backward"),
+                    dict(count=2, label="2Y", step="year", stepmode="backward"),
+                    dict(count=5, label="5Y", step="year", stepmode="backward"),
+                    dict(step="all")
+                ]
+            }
+        })
         return fig
-
-    def show(self, mode:str='unflat', columns:list=None):
-        if mode == 'unflat':
-            self.figure().show()
-        else:
-            self.figure_flat(columns).show()
-        return
-
-    def save(self, mode:str='unflat', columns:list=None, filename:str=''):
-        fig = self.figure() if mode == 'unflat' else self.figure_flat(columns)
-        filename = filename if filename else self._filename_(mode)
-        plot(
-            figure_or_data=fig,
-            auto_open=False,
-            filename=f'{self._path_}/{filename}.html'
-        )
-        return
-

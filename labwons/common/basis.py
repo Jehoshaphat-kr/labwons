@@ -57,8 +57,9 @@ class baseDataFrameChart(DataFrame):
 
     def lineTY(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Scatter:
         data = self[col].dropna() if drop else self[col]
-        name = col if isinstance(col, str) else '/'.join(tuple)
+        name = kwargs['name'] if 'name' in kwargs else col if isinstance(col, str) else '/'.join(col)
         unit = kwargs['unit'] if 'unit' in kwargs else self.unit
+        form = kwargs['form'] if 'form' in kwargs else self.form
         trace = go.Scatter(
             name=name,
             x=data.index,
@@ -68,14 +69,14 @@ class baseDataFrameChart(DataFrame):
             showlegend=True,
             connectgaps=True,
             xhoverformat='%Y/%m/%d',
-            yhoverformat=self.form,
+            yhoverformat=form,
             hovertemplate=name + ': %{y}' + unit + '<extra></extra>'
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 
     # def lineMarker(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Scatter:
     #     data = self[col].dropna() if drop else self[col]
-    #     name = col if isinstance(col, str) else '/'.join(tuple)
+    #     name = col if isinstance(col, str) else '/'.join(col)
     #     unit = kwargs['unit'] if 'unit' in kwargs else self.unit
     #     trace = go.Scatter(
     #         name=name,
@@ -89,25 +90,25 @@ class baseDataFrameChart(DataFrame):
     #         hovertemplate="%{y:.2f}" + unit + "<extra></extra>"
     #     )
     #     return self._overwrite(go.Scatter, trace, **kwargs)
-    #
-    # def bar(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Bar:
-    #     data = self[col].dropna() if drop else self[col]
-    #     name = col if isinstance(col, str) else '/'.join(tuple)
-    #     unit = kwargs['unit'] if 'unit' in kwargs else self.unit
-    #     trace = go.Bar(
-    #         name=name,
-    #         x=data.index,
-    #         y=data,
-    #         visible=True,
-    #         showlegend=True,
-    #         xhoverformat='%Y/%m/%d',
-    #         hovertemplate="%{y}" + unit + "<extra></extra>"
-    #     )
-    #     return self._overwrite(go.Bar, trace, **kwargs)
+
+    def barTY(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Bar:
+        data = self[col].dropna() if drop else self[col]
+        name = kwargs['name'] if 'name' in kwargs else col if isinstance(col, str) else '/'.join(col)
+        unit = kwargs['unit'] if 'unit' in kwargs else self.unit
+        trace = go.Bar(
+            name=name,
+            x=data.index,
+            y=data,
+            visible=True,
+            showlegend=True,
+            xhoverformat='%Y/%m/%d',
+            hovertemplate="%{y}" + unit + "<extra></extra>"
+        )
+        return self._overwrite(go.Bar, trace, **kwargs)
 
     def scatterTY(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Scatter:
         data = self[col].dropna() if drop else self[col]
-        name = col if isinstance(col, str) else '/'.join(tuple)
+        name = kwargs['name'] if 'name' in kwargs else col if isinstance(col, str) else '/'.join(col)
         unit = kwargs['unit'] if 'unit' in kwargs else self.unit
         trace = go.Scatter(
             name=name,
@@ -288,7 +289,7 @@ class baseSeriesChart(Series):
         return self._overwrite(go.Scatter, trace, **kwargs)
 
     def figure(self, mode:str='lineTY', drop:bool=True, **kwargs) -> go.Figure:
-        fig = Chart.r1c1nsy
+        fig = Chart.r1c1nsy()
         fig.add_trace(self(mode, drop, **kwargs))
         fig.update_layout(
             title=self.name

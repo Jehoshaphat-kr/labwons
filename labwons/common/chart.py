@@ -4,27 +4,6 @@ import plotly.graph_objects as go
 
 class chart:
 
-    # def __init__(self):
-    #     self._layout_r1c1nsy = self.layout(
-    #         legend=self.legend(),
-    #         xaxis=self.xaxis(),
-    #         yaxis=self.yaxis()
-    #     )
-    #     self._layout_r1c1sy1 = self.layout(
-    #         legend=self.legend(),
-    #         xaxis=self.xaxis(),
-    #         yaxis=self.yaxis(),
-    #         # yaxis2=self.yaxis(showgrid=False)
-    #     )
-    #     self._layout_r2c1nsy = self.layout(
-    #         legend=self.legend(),
-    #         xaxis=self.xaxis(rangeselector=None, showticklabels=False),
-    #         xaxis2=self.xaxis(),
-    #         yaxis=self.yaxis(),
-    #         yaxis2=self.yaxis()
-    #     )
-    #     return
-
     @staticmethod
     def xaxis(**kwargs) -> dict:
         xaxis = {
@@ -53,7 +32,6 @@ class chart:
                     dict(count=6, label="6M", step="month", stepmode="backward"),
                     dict(count=1, label="YTD", step="year", stepmode="todate"),
                     dict(count=1, label="1Y", step="year", stepmode="backward"),
-                    # dict(count=2, label="3Y", step="year", stepmode="backward"),
                     dict(step="all")
                 ]
             },
@@ -140,7 +118,6 @@ class chart:
                 layout.update({k: v})
         return layout
 
-    @property
     def r1c1nsy(self) -> go.Figure:
         fig = go.Figure()
         fig.update_layout(**self.layout(legend=self.legend()))
@@ -148,26 +125,85 @@ class chart:
         fig.update_yaxes(patch=self.yaxis())
         return fig
 
-    @property
     def r1c1sy1(self) -> go.Figure:
         return go.Figure()
 
-    @property
-    def r2c1nsy(self) -> go.Figure:
-        fig = make_subplots(
+    def r2c1nsy(self, **kwargs) -> go.Figure:
+        _kwargs_ = dict(
             rows=2, cols=1,
             shared_xaxes=True,
             row_heights=[0.85, 0.15],
             vertical_spacing=0.01,
             x_title='Date',
-            specs=[[{}], [{}]]
         )
-        fig.update_layout(**self.layout(legend=self.legend()))
+        _kwargs_.update(kwargs)
+        fig = make_subplots(**_kwargs_)
 
+        fig.update_layout(**self.layout(legend=self.legend()))
         fig.update_xaxes(row=1, col=1, patch=self.xaxis(showticklabels=False))
         fig.update_xaxes(row=2, col=1, patch=self.xaxis(rangeselector=None))
         fig.update_yaxes(row=1, col=1, patch=self.yaxis())
         fig.update_yaxes(row=2, col=1, patch=self.yaxis())
+        return fig
+
+    def r2c3nsy(self, **kwargs) -> go.Figure:
+        _kwargs_ = dict(
+            rows=2, cols=3,
+            vertical_spacing=0.08,
+            horizontal_spacing=0.04,
+            x_title='Date',
+            y_title='[x1 Average]',
+        )
+        _kwargs_.update(kwargs)
+        fig = make_subplots(**_kwargs_)
+
+        fig.update_layout(**self.layout())
+        fig.update_yaxes(patch=self.yaxis())
+        fig.update_xaxes(patch=self.xaxis(rangeselector=None))
+        return fig
+
+    def r4c1nsy(self, **kwargs) -> go.Figure:
+        _kwargs_ = dict(
+            rows=4, cols=1,
+            shared_xaxes=True,
+            row_width=[0.12, 0.12, 0.1, 0.66],
+            vertical_spacing=0.01
+        )
+        _kwargs_.update(kwargs)
+        fig = make_subplots(**_kwargs_)
+
+        fig.update_layout(**self.layout(legend=self.legend()))
+        fig.update_xaxes(row=1, col=1, patch=self.xaxis(showticklabels=False))
+        fig.update_xaxes(row=2, col=1, patch=self.xaxis(showticklabels=False, rangeselector=None))
+        fig.update_xaxes(row=3, col=1, patch=self.xaxis(showticklabels=False, rangeselector=None))
+        fig.update_xaxes(row=4, col=1, patch=self.xaxis(rangeselector=None))
+        fig.update_yaxes(row=1, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=2, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=3, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=4, col=1, patch=self.yaxis())
+        return fig
+
+    def r5c1nsy(self, **kwargs) -> go.Figure:
+        _kwargs_ = dict(
+            rows=5, cols=1,
+            shared_xaxes=True,
+            row_width=[0.15, 0.15, 0.15, 0.1, 0.45],
+            vertical_spacing=0.01
+        )
+        _kwargs_.update(kwargs)
+        fig = make_subplots(**_kwargs_)
+
+        fig.update_layout(**self.layout(legend=self.legend()))
+        fig.update_xaxes(row=1, col=1, patch=self.xaxis(showticklabels=False))
+        fig.update_xaxes(row=2, col=1, patch=self.xaxis(showticklabels=False, rangeselector=None))
+        fig.update_xaxes(row=3, col=1, patch=self.xaxis(showticklabels=False, rangeselector=None))
+        fig.update_xaxes(row=4, col=1, patch=self.xaxis(showticklabels=False, rangeselector=None))
+        fig.update_xaxes(row=5, col=1, patch=self.xaxis(rangeselector=None))
+        fig.update_yaxes(row=1, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=2, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=3, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=4, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=5, col=1, patch=self.yaxis())
         return fig
 
 
@@ -175,7 +211,7 @@ class chart:
 Chart = chart()
 
 if __name__ == "__main__":
-    myChart = Chart.r2c1nsy
+    myChart = Chart.r2c1nsy()
     myChart.add_trace(go.Scatter(x=[0, 2], y=[4, 2]), row=1, col=1)
     myChart.add_trace(go.Scatter(x=[1, 2], y=[1, 2]), row=2, col=1)
     myChart.show()

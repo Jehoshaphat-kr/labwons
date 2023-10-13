@@ -64,9 +64,9 @@ equity = lw.Equity('252990')
 # print(equity.ohlcv.v)
 # print(equity.ohlcv.t)
 # equity.ohlcv.show()
+# equity.ohlcv.save()
 # equity.ohlcv.c.show()
 # equity.ohlcv.t.show()
-# equity.ohlcv.save()
 
 """ ========== < SMA > ========== """
 # print(equity.sma)
@@ -74,55 +74,38 @@ equity = lw.Equity('252990')
 # equity.sma.save()
 
 """ ========== < TREND > ========== """
-print(equity.trend)
-# print(equity.trend.flatten())
-# print(equity.trend.strength())
-# print(equity.trend.gaps())
+# print(equity.trend)
+# print(equity.trend.disparate)
+# print(equity.trend.intensity)
 # equity.trend.show()
-# equity.trend.show('flat')
+# equity.trend.save()
+# equity.trend.disparate.show()
+# equity.trend.disparate.save()
 
 """ ========== < BENCHMARK > ========== """
 # print(equity.benchmarkReturn)
-# print(equity.benchmarkReturn._dataName_)
-# print(equity.benchmarkReturn._ticker_)
-# print(equity.benchmarkReturn._unit_)
-# print(equity.benchmarkReturn._form_)
-# print(equity.benchmarkReturn._path_)
-# print(equity.benchmarkReturn._filename_)
+# equity.benchmarkReturn.show()
 # equity.benchmarkReturn.save()
 
 """ ========== < DRAWDOWN > ========== """
 # print(equity.drawDown)
-# print(equity.drawDown._dataName_)
-# print(equity.drawDown._ticker_)
-# print(equity.drawDown._unit_)
-# print(equity.drawDown._form_)
-# print(equity.drawDown._path_)
 # equity.drawDown.show()
+# equity.drawDown.save()
 
 """ ========== < BOLLINGER > ========== """
 # print(equity.bollingerBand)
-# print(equity.bollingerBand._dataName_)
-# print(equity.bollingerBand._ticker_)
-# print(equity.bollingerBand._unit_)
-# print(equity.bollingerBand._form_)
-# print(equity.bollingerBand._path_)
 # equity.bollingerBand.show()
+# equity.bollingerBand.save()
 
 """ ========== < RSI > ========== """
-# print(equity.rsi)
-# print(equity.rsi._dataName_)
-# print(equity.rsi._ticker_)
-# print(equity.rsi._unit_)
-# print(equity.rsi._form_)
-# print(equity.rsi._path_)
+print(equity.rsi)
 # equity.rsi.show()
-# equity.rsi.save()
+equity.rsi.save()
 
 """ ========== < PSAR > ========== """
 # print(equity.psar)
 # equity.psar.show()
-equity.psar.save()
+# equity.psar.save()
 
 """ ========== < MACD > ========== """
 # print(equity.macd)

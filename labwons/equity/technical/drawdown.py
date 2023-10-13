@@ -1,99 +1,61 @@
 from labwons.common.basis import baseDataFrameChart
+from labwons.common.chart import Chart
 from labwons.equity.fetch import fetch
 from datetime import timedelta
 import plotly.graph_objects as go
 import pandas as pd
 
 
-
-
-
 class drawdown(baseDataFrameChart):
 
     def __init__(self, base:fetch):
-        objs = dict()
-        for col in base.ohlcv:
-            objs[(col, base.name)] = base.ohlcv[col]
-            objs[(col, base.benchmarkName)] = base.benchmark[col]
-        frame = pd.concat(objs=objs, axis=1)
+        close = pd.concat(objs={base.name: base.ohlcv.c, base.benchmarkName: base.benchmark.close}, axis=1)
+        objs = {}
+        for yy in [5, 3, 2, 1, 0.5]:
+            col = f"{yy}Y" if isinstance(yy, int) else f"{int(yy * 12)}M"
+            date = close.index[-1] - timedelta(int(yy * 365))
+            data = close[close.index >= date].dropna()
+            objs[col] = 100 * (data - data.cummax()) / data.cummax()
 
-        objs = dict()
-        for cond, tag, _ in self._days_far(frame, [('3M', 92), ('6M', 183), ('1Y', 365), ('3Y', 1095), ('5Y', 1825)]):
-            price = frame[cond]['close']
-            objs[tag] = round(100 * (price - price.cummax()) / price.cummax(), 4)
-
-        super().__init__(pd.concat(objs=objs, axis=1), **getattr(base, '_valid_prop'))
-        self._base_ = base
-        self._form_ = '.2f'
-        self._unit_ = '%'
-        self._filename_ = 'Benchmark Draw Down'
+        super(drawdown, self).__init__(
+            data=pd.concat(objs=objs, axis=1),
+            name="DRAWDOWN",
+            subject=f"{base.name}({base.ticker})",
+            path=base.path,
+            form='.2f',
+            unit='%',
+            ref=base
+        )
         return
 
-    @staticmethod
-    def _days_far(series: pd.Series or pd.DataFrame, days: list) -> list:
-        return [(series.index >= (series.index[-1] - timedelta(day)), tag, day) for tag, day in days]
-
     @property
-    def _slider(self) -> list:
+    def sliders(self) -> list:
         steps = []
-        for n, col in enumerate(self.columns):
-            if n % 2:
-                continue
+        for n, col in enumerate(self):
+            if n % 2: continue
             step = dict(
                 method='update',
                 label=col[0],
                 args=[
-                    dict(visible=[True if (i == n) or (i == n + 1) else False for i in range(len(self.columns))]),
-                    # dict(title=f"{self._base_.name}({self._base_.ticker}) Drawdowns: {label}")
+                    dict(visible=[True if i in [n, n + 1] else False for i in range(len(self.columns))]),
+                    dict(title=f"<b>{self.subject}</b> :  Draw Down - {col[0]}")
                 ]
             )
             steps.append(step)
-        slider = [dict(active=0, currentvalue=dict(prefix="비교 기간: "), pad=dict(t=50), steps=steps)]
+        slider = [dict(active=0, currentvalue=dict(prefix="Period: "), pad=dict(t=50), steps=steps)]
         return slider
 
     def figure(self) -> go.Figure:
-        data = [
-            self.line(
-                col,
-                visible=True if col[0] == '3M' else False,
+        fig = Chart.r1c1nsy()
+        for col in self:
+            fig.add_trace(self.lineTY(
+                col=col, name=col[1],
+                visible=True if col in self.columns[:2] else False,
                 line=dict(
-                    color='royalblue' if col[1] == self._base_.name else 'black',
-                    dash='solid' if col[1] == self._base_.name else 'dot'
-                ),
-                hovertemplate=col[1] + '<br>%{y}' + self._unit_ + '@%{x}<extra></extra>'
-            ) for col in self
-        ]
-        fig = go.Figure(data=data)
-        fig.update_layout(
-            # title=f"{self._base_.name}({self._base_.ticker}) Draw Downs",
-            plot_bgcolor="white",
-            sliders=self._slider,
-            hovermode='x unified',
-            xaxis_rangeslider=dict(visible=False),
-            xaxis=dict(
-                title="DATE",
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            yaxis=dict(
-                title=f"[%]",
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                zeroline=True,
-                zerolinecolor="grey",
-                zerolinewidth=1.0,
-                mirror=False,
-                autorange=True
-            )
-        )
+                    color='royalblue' if col[1] == self.ref.name else 'black',
+                    dash='solid' if col[1] == self.ref.name else 'dash'
+                )
+            ))
+        fig.update_layout(sliders=self.sliders)
+        fig.update_xaxes(rangeselector=None)
         return fig

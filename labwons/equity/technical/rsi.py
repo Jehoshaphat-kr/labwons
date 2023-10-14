@@ -89,7 +89,7 @@ class rsi(baseDataFrameChart):
 
         super().__init__(
             data=base.ta[sampler.keys()].rename(columns=sampler),
-            name="RSI",
+            name="RSI FAMILY",
             subject=f"{base.name}({base.ticker})",
             path=base.path,
             form='.2f',
@@ -101,21 +101,21 @@ class rsi(baseDataFrameChart):
     def figure(self) -> go.Figure:
         fig = Chart.r5c1nsy()
         fig.add_trace(row=1, col=1, trace=self.ref.ohlcv())
-        fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='거래량', showlegend=False))
-        fig.add_trace(row=3, col=1, trace=self.lineTY('rsi', unit='%'))
+        fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='Vol.', showlegend=False))
+        fig.add_trace(row=3, col=1, trace=self('rsi', name='RSI', unit='%'))
         fig.add_hrect(row=3, col=1, y0=70, y1=100, line_width=0, fillcolor='red', opacity=0.2)
         fig.add_hrect(row=3, col=1, y0=0, y1=30, line_width=0, fillcolor='green', opacity=0.2)
-        fig.add_trace(row=4, col=1, trace=self.lineTY('stoch-osc', unit='%'))
-        fig.add_trace(row=4, col=1, trace=self.lineTY('stoch-osc-sig', unit='%', line_dash='dash'))
+        fig.add_trace(row=4, col=1, trace=self('stoch-osc', name='S.OSC', unit='%'))
+        fig.add_trace(row=4, col=1, trace=self('stoch-osc-sig', name='S.OSC.Sig', unit='%', line_dash='dash'))
         fig.add_hrect(row=4, col=1, y0=80, y1=100, line_width=0, fillcolor='red', opacity=0.2)
         fig.add_hrect(row=4, col=1, y0=0, y1=20, line_width=0, fillcolor='green', opacity=0.2)
-        fig.add_trace(row=5, col=1, trace=self.lineTY('stoch-rsi', unit=''))
-        fig.add_trace(row=5, col=1, trace=self.lineTY('stoch-rsi-k', unit=''))
-        fig.add_trace(row=5, col=1, trace=self.lineTY('stoch-rsi-d', unit=''))
+        fig.add_trace(row=5, col=1, trace=self('stoch-rsi', name='S.RSI', unit=''))
+        fig.add_trace(row=5, col=1, trace=self('stoch-rsi-k', name='S.RSI-K', unit=''))
+        fig.add_trace(row=5, col=1, trace=self('stoch-rsi-d', name='S.RSI-D', unit=''))
         fig.add_hrect(row=5, col=1, y0=0.8, y1=1.0, line_width=0, fillcolor='red', opacity=0.2)
         fig.add_hrect(row=5, col=1, y0=0, y1=0.2, line_width=0, fillcolor='green', opacity=0.2)
 
-        fig.update_layout(title=f"<b>{self.subject}</b> : RSI FAMILY")
+        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
         fig.update_yaxes(row=1, col=1, patch={"title": f"[{self.unit}]"})
         fig.update_yaxes(row=2, col=1, patch={"title": f"Vol."})
         fig.update_yaxes(row=3, col=1, patch={"title": f"RSI [%]"})

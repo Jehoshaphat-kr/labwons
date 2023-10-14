@@ -5,7 +5,6 @@ from pandas import DataFrame
 
 class ohlcv(baseDataFrameChart):
 
-    fig = None
     def __init__(self, base:DataFrame, **kwargs):
         super().__init__(
             data = base,
@@ -15,7 +14,6 @@ class ohlcv(baseDataFrameChart):
             form = kwargs['dtype'],
             unit = kwargs['unit']
         )
-        self.fig = None
         return
 
     def __call__(self, **kwargs) -> go.Candlestick:
@@ -88,15 +86,13 @@ class ohlcv(baseDataFrameChart):
         )
 
     def figure(self) -> go.Figure:
-        if not self.fig:
-            self.fig = Chart.r2c1nsy()
-            self.fig.add_trace(row=1, col=1, trace=self())
-            self.fig.add_trace(row=1, col=1, trace=self.t('lineTY', name='TP', visible='legendonly'))
-            self.fig.add_trace(row=2, col=1, trace=self.v('barTY', name='거래량', showlegend=False))
-            self.fig.update_layout(
-                title=f"<b>{self.subject}</b> : {self.name}",
-                yaxis_title=f"[{self.unit}]",
-                yaxis2_title="Vol."
-            )
-        return self.fig
+        fig = Chart.r2c1nsy()
+        fig.add_trace(row=1, col=1, trace=self())
+        fig.add_trace(row=1, col=1, trace=self.t(name='TP', visible='legendonly', line={"color": "royalblue"}))
+        fig.add_trace(row=2, col=1, trace=self.v('barTY', name='Vol.', showlegend=False))
+        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
+        fig.update_yaxes(row=1, col=1, patch={"title" : f"[{self.unit}]"})
+        fig.update_yaxes(row=2, col=1, patch={"title" : "Vol."})
+        fig.update_xaxes(patch={"autorange" : False, "range" : [self.index[0], self.index[-1]]})
+        return fig
 

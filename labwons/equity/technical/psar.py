@@ -27,7 +27,7 @@ class psar(baseDataFrameChart):
         self._ups_, self._dns_ = [], []
         return
 
-    def __call__(self, col:str):
+    def __call__(self, col:str, mode:str='scatterTY', drop:bool=True, **kwargs):
         trace = self.scatterTY(col)
         trace.name = 'Signal' if col == '*up' else col
         trace.showlegend = True if col == '*up' else False

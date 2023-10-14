@@ -48,12 +48,12 @@ class drawdown(baseDataFrameChart):
     def figure(self) -> go.Figure:
         fig = Chart.r1c1nsy()
         for col in self:
-            fig.add_trace(self.lineTY(
+            fig.add_trace(self(
                 col=col, name=col[1],
                 visible=True if col in self.columns[:2] else False,
                 line=dict(
-                    color='royalblue' if col[1] == self.ref.name else 'black',
-                    dash='solid' if col[1] == self.ref.name else 'dash'
+                    color='royalblue' if col[1] == self.ref.name else 'grey',
+                    dash='solid'
                 )
             ))
         fig.update_layout(sliders=self.sliders)

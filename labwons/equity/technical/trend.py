@@ -32,12 +32,11 @@ class _disparate(baseDataFrameChart):
 
     def figure(self) -> go.Figure:
         fig = Chart.r2c3nsy(subplot_titles=self.columns)
-        fig.add_trace(row=1, col=1, trace=self.barTY('A', showlegend=False, marker={"color":'grey'}))
-        for name, row, col in (('5Y', 1, 2), ('2Y', 1, 3), ('1Y', 2, 1), ('6M', 2, 2), ('3M', 2, 3)):
+        for name, row, col in (('A', 1, 1), ('5Y', 1, 2), ('2Y', 1, 3), ('1Y', 2, 1), ('6M', 2, 2), ('3M', 2, 3)):
             if self[name].dropna().empty:
                 fig.add_annotation(row=row, col=col, x=0.5, y=0.5, text="<b>No Data</b>", showarrow=False)
             else:
-                fig.add_trace(row=row, col=col, trace=self.barTY(name, showlegend=False, marker={"color":'grey'}))
+                fig.add_trace(row=row, col=col, trace=self(name, 'barTY', showlegend=False, marker={"color":'grey'}))
         fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
         fig.update_yaxes(autorange=False, range=[1.1 * self.min().min(), 1.1 * self.max().max()])
         return fig
@@ -65,9 +64,6 @@ class trend(baseDataFrameChart):
             ref=base
         )
         return
-
-    def __call__(self, col:str):
-        return self.lineTY(col)
 
     @staticmethod
     def reg(series:pd.Series, col:str='') -> pd.Series:
@@ -110,7 +106,7 @@ class trend(baseDataFrameChart):
                     width=0.8
                 )
             )
-            fig.add_trace(row=1, col=1, trace=self.lineTY(**kwargs))
+            fig.add_trace(row=1, col=1, trace=self(**kwargs))
 
         fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
         fig.update_xaxes(row=1, col=1, patch={

@@ -36,22 +36,22 @@ class bollingerband(baseDataFrameChart):
     def figure(self, **kwargs) -> go.Figure:
         fig = Chart.r4c1nsy()
         fig.add_trace(row=1, col=1, trace=self.ref.ohlcv())
-        fig.add_trace(row=1, col=1, trace=self.lineTY('middle'))
-        fig.add_trace(row=1, col=1, trace=self.lineTY(
+        fig.add_trace(row=1, col=1, trace=self('middle'))
+        fig.add_trace(row=1, col=1, trace=self(
             'upperband', name='x2 Band', legendgroup='x2', line={"dash":"dash", "color":"maroon"}
         ))
-        fig.add_trace(row=1, col=1, trace=self.lineTY(
+        fig.add_trace(row=1, col=1, trace=self(
             'lowerband', name='x2 Band', legendgroup='x2', showlegend=False, line={"dash": "dash", "color": "maroon"}
         ))
-        fig.add_trace(row=1, col=1, trace=self.lineTY(
+        fig.add_trace(row=1, col=1, trace=self(
             'uppertrend', name='x1 Band', legendgroup='x1', line={"dash": "dot", "color": "lightgreen"}
         ))
-        fig.add_trace(row=1, col=1, trace=self.lineTY(
+        fig.add_trace(row=1, col=1, trace=self(
             'lowertrend', name='x1 Band', legendgroup='x1', showlegend=False, line={"dash": "dot", "color": "lightgreen"}
         ))
-        fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='거래량', showlegend=False))
-        fig.add_trace(row=3, col=1, trace=self.lineTY('width', name='Width', unit='%', form='.2f'))
-        fig.add_trace(row=4, col=1, trace=self.lineTY('pctb', name='%B', unit='', form='.2f'))
+        fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='Vol.', showlegend=False))
+        fig.add_trace(row=3, col=1, trace=self('width', name='Width', unit='%', form='.2f'))
+        fig.add_trace(row=4, col=1, trace=self('pctb', name='%B', unit='', form='.2f'))
 
         fig.update_layout(title=f"<b>{self.subject}</b> : BOLLINGER-BAND")
         fig.update_yaxes(row=1, col=1, patch={"title":f"[{self.unit}]"})

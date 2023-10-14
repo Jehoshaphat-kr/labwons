@@ -48,6 +48,10 @@ class baseDataFrameChart(DataFrame):
         self.ref = ref
         return
 
+    def __call__(self, col:Union[str, tuple], mode:str='lineTY', drop:bool=True, **kwargs):
+        f = getattr(self, ''.join([method for method in dir(self) if method == mode]))
+        return f(col, drop, **kwargs)
+
     @staticmethod
     def _overwrite(cls:Any, inst:Any, **kwargs) -> Any:
         for k in vars(cls):
@@ -102,7 +106,7 @@ class baseDataFrameChart(DataFrame):
             visible=True,
             showlegend=True,
             xhoverformat='%Y/%m/%d',
-            hovertemplate="%{y}" + unit + "<extra></extra>"
+            hovertemplate=name + ": %{y}" + unit + "<extra></extra>"
         )
         return self._overwrite(go.Bar, trace, **kwargs)
 
@@ -123,16 +127,17 @@ class baseDataFrameChart(DataFrame):
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 
-    def candleStick(self, **kwargs) -> go.Candlestick:
+    def candleStick(self, drop:bool=True, **kwargs) -> go.Candlestick:
         if not all([c in self for c in ['open', 'high', 'low', 'close']]):
             raise ValueError(f"Candlestick requires ['open', 'high', 'low', 'close'] column data")
+        data = self.dropna() if drop else self
         trace = go.Candlestick(
             name=self.subject,
-            x=self.index,
-            open=self['open'],
-            high=self['high'],
-            low=self['low'],
-            close=self['close'],
+            x=data.index,
+            open=data['open'],
+            high=data['high'],
+            low=data['low'],
+            close=data['close'],
             visible=True,
             showlegend=True,
             increasing_line=dict(

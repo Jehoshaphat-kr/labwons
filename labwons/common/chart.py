@@ -33,7 +33,11 @@ class chart:
                     dict(count=1, label="YTD", step="year", stepmode="todate"),
                     dict(count=1, label="1Y", step="year", stepmode="backward"),
                     dict(step="all")
-                ]
+                ],
+                "xanchor" : "left",         # [str] one of ( "auto" | "left" | "center" | "right" )
+                "x" : 0.005,                # [float]
+                "yanchor" : "bottom",       # [str] one of ( "auto" | "top" | "middle" | "bottom" )
+                "y" : 1.0                   # [float]
             },
             "showticklabels": True,         # [bool]
             "tickformat": "%Y/%m/%d",       # [str]
@@ -87,7 +91,7 @@ class chart:
             "valign": "middle",                 # [str] one of ( "top" | "middle" | "bottom" )
             "xanchor": "right",                 # [str] one of ( "auto" | "left" | "center" | "right" )
             "x": 1.0,                           # [float] 1.02 for "v", 0.96 for "h"
-            "yanchor": "top",                   # [str] one of ( "auto" | "top" | "middle" | "bottom" )
+            "yanchor": "bottom",                # [str] one of ( "auto" | "top" | "middle" | "bottom" )
             "y": 1.0,                           # [float] 1.0 for both "v" and "h",
 
         }
@@ -160,6 +164,31 @@ class chart:
         fig.update_layout(**self.layout())
         fig.update_yaxes(patch=self.yaxis())
         fig.update_xaxes(patch=self.xaxis(rangeselector=None))
+        return fig
+
+    def r3c1sy2(self, **kwargs) -> go.Figure:
+        _kwargs_ = dict(
+            rows=3, cols=1,
+            shared_xaxes=True,
+            row_width=[0.35, 0.15, 0.5],
+            vertical_spacing=0.01,
+            x_title='Date',
+            specs=[
+                [{"secondary_y":False, "r":-0.06}],
+                [{"secondary_y":False, "r":-0.06}],
+                [{"secondary_y":True, "r":-0.06}]
+            ]
+        )
+        _kwargs_.update(kwargs)
+        fig = make_subplots(**_kwargs_)
+
+        fig.update_layout(**self.layout(legend=self.legend()))
+        fig.update_xaxes(row=1, col=1, patch=self.xaxis(showticklabels=False))
+        fig.update_xaxes(row=2, col=1, patch=self.xaxis(showticklabels=False, rangeselector=None))
+        fig.update_xaxes(row=3, col=1, patch=self.xaxis(rangeselector=None))
+        fig.update_yaxes(row=1, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=2, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=3, col=1, patch=self.yaxis(), secondary_y=False)
         return fig
 
     def r4c1nsy(self, **kwargs) -> go.Figure:

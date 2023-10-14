@@ -26,9 +26,6 @@ class sma(baseDataFrameChart):
         )
         return
 
-    def __call__(self, col:str, **kwargs) -> go.Scatter:
-        return self.lineTY(col, visible='legendonly', line=dict(dash='dot', width=1.0), **kwargs)
-
     def addMA(self, col:str, window:int):
         if not col in self and col.startswith('MA'):
             self[col] = self.ref.ohlcv.t.rolling(window).mean()
@@ -46,6 +43,6 @@ class sma(baseDataFrameChart):
         fig = self.ref.ohlcv.figure()
         for col in self:
             if col.startswith('MA'):
-                fig.add_trace(row=1, col=1, trace=self(col))
+                fig.add_trace(row=1, col=1, trace=self(col, visible='legendonly', line={"dash": "dot", "width": 1.0}))
         fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
         return fig

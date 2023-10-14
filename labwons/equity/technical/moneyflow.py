@@ -1,4 +1,5 @@
 from labwons.common.basis import baseDataFrameChart
+from labwons.common.chart import Chart
 from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
@@ -105,171 +106,40 @@ class moneyflow(baseDataFrameChart):
     """
 
     def __init__(self, base:fetch):
-        COLUMNS = dict(
+        sampler = dict(
             volume_obv = 'obv',
             volume_cmf = 'cmf',
             volume_mfi = 'mfi',
         )
-        super().__init__(frame=base.ta[COLUMNS.keys()].rename(columns=COLUMNS), **getattr(base, '_valid_prop'))
-        self._base_ = base
-        self._unit_ = ''
-        self._form_ = '.2f'
-        self._filename_ = 'MoneyFlow'
+        super().__init__(
+            data = base.ta[sampler.keys()].rename(columns=sampler),
+            name = "MONEYFLOW INDEX",
+            subject = f"{base.name}({base.ticker})",
+            path = base.path,
+            form = '.2f',
+            unit = base.unit,
+            ref = base
+        )
         return
 
-    def __call__(self, col:str) -> go.Scatter:
-        return self.trace(col)
-
     def figure(self) -> go.Figure:
-        fig = make_subplots(
-            rows=5,
-            cols=1,
-            shared_xaxes=True,
-            row_width=[0.15, 0.15, 0.15, 0.1, 0.45],
-            vertical_spacing=0.01
-        )
-        fig.add_traces(
-            data=[
-                self._base_.ohlcv('candle'),
-                self._base_.ohlcv('volume'),
-                self.line('mfi', unit='%'),
-                self.line('cmf'),
-                self.line('obv'),
-            ],
-            rows=[1, 2, 3, 4, 5],
-            cols=[1, 1, 1, 1, 1]
-        )
-        fig.add_hrect(y0=80, y1=100, line_width=0, fillcolor='red', opacity=0.2, row=3, col=1)
-        fig.add_hrect(y0=0, y1=20, line_width=0, fillcolor='green', opacity=0.2, row=3, col=1)
-        # fig.add_hrect(y0=0.8, y1=1.0, line_width=0, fillcolor='red', opacity=0.2, row=5, col=1)
-        # fig.add_hrect(y0=0, y1=0.2, line_width=0, fillcolor='green', opacity=0.2, row=5, col=1)
-        fig.update_layout(
-            title=f"{self._base_.name}({self._base_.ticker}) MF Family",
-            plot_bgcolor="white",
-            legend=dict(tracegroupgap=5),
-            xaxis_rangeslider=dict(visible=False),
-            xaxis_rangeselector=dict(
-                buttons=list([
-                    dict(count=1, label="1M", step="month", stepmode="backward"),
-                    dict(count=3, label="3M", step="month", stepmode="backward"),
-                    dict(count=6, label="6M", step="month", stepmode="backward"),
-                    dict(count=1, label="YTD", step="year", stepmode="todate"),
-                    dict(count=1, label="1Y", step="year", stepmode="backward"),
-                    dict(count=2, label="3Y", step="year", stepmode="backward"),
-                    dict(step="all")
-                ])
-            ),
-            xaxis=dict(
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            xaxis2=dict(
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            xaxis3=dict(
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            xaxis4=dict(
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            xaxis5=dict(
-                title="DATE",
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            yaxis=dict(
-                title=f"[{self._base_.unit}]",
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            yaxis2=dict(
-                title=f"",
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            yaxis3=dict(
-                title='MFI [%]',
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                mirror=False,
-                autorange=True
-            ),
-            yaxis4=dict(
-                title='CMF [-]',
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                zeroline=True,
-                zerolinecolor='grey',
-                zerolinewidth=0.8,
-                mirror=False,
-                autorange=True
-            ),
-            yaxis5=dict(
-                title='OBV [-]',
-                showgrid=True,
-                gridwidth=0.5,
-                gridcolor="lightgrey",
-                showline=True,
-                linewidth=1,
-                linecolor="grey",
-                zeroline=True,
-                zerolinecolor='lightgrey',
-                zerolinewidth=0.5,
-                mirror=False,
-                autorange=True
-            ),
-        )
+        fig = Chart.r5c1nsy()
+        fig.add_trace(row=1, col=1, trace=self.ref.ohlcv())
+        fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='Vol.', showlegend=False))
+        fig.add_trace(row=3, col=1, trace=self('mfi', name='MFI', unit='%'))
+        fig.add_hrect(row=3, col=1, y0=80, y1=100, line_width=0, fillcolor='red', opacity=0.2)
+        fig.add_hrect(row=3, col=1, y0=0, y1=20, line_width=0, fillcolor='green', opacity=0.2)
+        fig.add_trace(row=4, col=1, trace=self('cmf', name='CMF', unit=''))
+        # fig.add_hrect(row=4, col=1, y0=80, y1=100, line_width=0, fillcolor='red', opacity=0.2)
+        # fig.add_hrect(row=4, col=1, y0=0, y1=20, line_width=0, fillcolor='green', opacity=0.2)
+        fig.add_trace(row=5, col=1, trace=self('obv', name='OBV', unit=''))
+        # fig.add_hrect(row=5, col=1, y0=0.8, y1=1.0, line_width=0, fillcolor='red', opacity=0.2)
+        # fig.add_hrect(row=5, col=1, y0=0, y1=0.2, line_width=0, fillcolor='green', opacity=0.2)
+
+        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
+        fig.update_yaxes(row=1, col=1, patch={"title": f"[{self.unit}]"})
+        fig.update_yaxes(row=2, col=1, patch={"title": f"Vol."})
+        fig.update_yaxes(row=3, col=1, patch={"title": f"MFI [%]"})
+        fig.update_yaxes(row=4, col=1, patch={"title": f"CMF [-]"})
+        fig.update_yaxes(row=5, col=1, patch={"title": f"OBV [-]"})
         return fig

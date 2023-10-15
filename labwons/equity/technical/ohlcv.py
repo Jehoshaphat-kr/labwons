@@ -89,7 +89,7 @@ class ohlcv(baseDataFrameChart):
         fig = Chart.r2c1nsy()
         fig.add_trace(row=1, col=1, trace=self())
         fig.add_trace(row=1, col=1, trace=self.t(name='TP', visible='legendonly', line={"color": "royalblue"}))
-        fig.add_trace(row=2, col=1, trace=self.v('barTY', name='Vol.', showlegend=False))
+        fig.add_trace(row=2, col=1, trace=self.v('barTY', name='Vol.', showlegend=False, marker={"color": "grey"}))
         fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
         fig.update_yaxes(row=1, col=1, patch={"title" : f"[{self.unit}]"})
         fig.update_yaxes(row=2, col=1, patch={"title" : "Vol."})

@@ -1,7 +1,6 @@
 from labwons.common.basis import baseDataFrameChart
 from labwons.equity.ticker import _ticker
 from labwons.equity.technical.ohlcv import ohlcv
-from labwons.equity.fundamental.statement import statement
 from pykrx.stock import get_market_ohlcv_by_date
 from datetime import datetime, timedelta
 from pytz import timezone
@@ -29,8 +28,10 @@ class fetch(_ticker):
             self._ddate = kwargs['enddate']
         if isinstance(self._ddate, str):
             self._ddate = datetime.strptime(self._ddate, "%Y%m%d")
+        if self.country == 'KOR' and self.quoteType == 'EQUITY':
+            self._annualstatement = self.fetchStatement(self.ticker, 'annual')
+            self._quarterstatement = self.fetchStatement(self.ticker, 'quarter')
         self._attr = lambda x: f"_{x}_{self._period}_{self._ddate}_{self._freq}_"
-        self.statementBy = 'annual'
         return
 
     @staticmethod
@@ -59,6 +60,33 @@ class fetch(_ticker):
         # ohlcv['date'] = ohlcv['date'].tz_localize(timezone('Asia/Seoul'))
         ohlcv.index = ohlcv['date'].dt.date
         return ohlcv.drop(columns=['date'])
+
+    @staticmethod
+    def fetchStatement(ticker: str, period: str) -> pd.DataFrame:
+        url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?" \
+              f"pGB=1&gicode=A{ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=Y&stkGb=701"
+        html = pd.read_html(url, header=0)
+        if period == 'annual':
+            data = html[14] if html[11].iloc[0].isnull().sum() > html[14].iloc[0].isnull().sum() else html[11]
+        elif period == 'quarter':
+            data = html[15] if html[11].iloc[0].isnull().sum() > html[14].iloc[0].isnull().sum() else html[12]
+        else:
+            raise KeyError
+        #TODO
+        # 연결 또는 별도에 따라 컨센서스(추정치) 값이 없는 경우가 있음
+        # 대체로 지주사 및 우량 주들은 "연결"로 IFRS에 컨센서스가 존재하나
+        # "별도"로 존재하는 경우가 있어 컨센서스 값 존재여부로 Financial Highlight를 새로 Fetch 해야 함.
+        _data = data.set_index(keys=[data.columns[0]])
+        _data.index.name = None
+        if isinstance(_data.columns[0], tuple):
+            _data.columns = _data.columns.droplevel()
+        else:
+            _data.columns = _data.iloc[0]
+            _data = _data.drop(index=_data.index[0])
+        _data = _data.T
+        _data = _data.head(len(_data) - len([i for i in _data.index if i.endswith(')')]) + 1)
+        _data.index.name = '기말'
+        return _data
 
     @property
     def enddate(self) -> str:
@@ -175,32 +203,38 @@ class fetch(_ticker):
             self.__setattr__(self._attr('benchmark'), df)
         return self.__getattribute__(self._attr('benchmark'))
 
-    @property
-    def statement(self) -> statement:
-        if not self.country == 'KOR':
-            return statement(pd.DataFrame())
-
-        if not hasattr(self, f'__state_{self.statementBy}__'):
-            url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?" \
-                  f"pGB=1&gicode=A{self.ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=Y&stkGb=701"
-            html = pd.read_html(url, header=0)
-            if self.statementBy == 'annual':
-                s = html[14] if html[11].iloc[0].isnull().sum() > html[14].iloc[0].isnull().sum() else html[11]
-            elif self.statementBy == 'quarter':
-                s = html[15] if html[11].iloc[0].isnull().sum() > html[14].iloc[0].isnull().sum() else html[12]
-            else:
-                raise KeyError(f'Statement can only be fetched either by "annual" or "quarter": {self.statementBy}')
-
-            cols = s.columns.tolist()
-            s.set_index(keys=[cols[0]], inplace=True)
-            s.index.name = None
-            if isinstance(s.columns[0], tuple):
-                s.columns = s.columns.droplevel()
-            else:
-                s.columns = s.iloc[0]
-                s.drop(index=s.index[0], inplace=True)
-            self.__setattr__(f'__state_{self.statementBy}__', statement(s.T.astype(float), **self._valid_prop))
-        return self.__getattribute__(f'__state_{self.statementBy}__')
+    # @property
+    # def statement(self) -> Union[statement, pd.DataFrame]:
+    #     def _refactor(data:pd.DataFrame) -> pd.DataFrame:
+    #         _data = data.set_index(keys=[data.columns[0]])
+    #         _data.index.name = None
+    #         if isinstance(_data.columns[0], tuple):
+    #             _data.columns = _data.columns.droplevel()
+    #         else:
+    #             _data.columns = _data.iloc[0]
+    #             _data = _data.drop(index=_data.index[0])
+    #         return _data.T
+    #
+    #     columns = [
+    #         "매출액", "영업이익", "영업이익(발표기준)", "당기순이익", "지배주주순이익", "비지배주주순이익",
+    #         "자산총계", "부채총계", "자본총계", "지배주주지분", "비지배주주지분", "자본금",
+    #         "부채비율", "유보율", "영업이익률", "지배주주순이익률",
+    #         "ROA", "ROE", "EPS(원)", "BPS(원)", "DPS(원)", "PER", "PBR", "발행주식수", "배당수익률"
+    #     ]
+    #
+    #     if not self.country == 'KOR':
+    #         return pd.DataFrame(columns=columns)
+    #
+    #     if not hasattr(self, f'__statement__'):
+    #         url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?" \
+    #               f"pGB=1&gicode=A{self.ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=Y&stkGb=701"
+    #         html = pd.read_html(url, header=0)
+    #         A = html[14] if html[11].iloc[0].isnull().sum() > html[14].iloc[0].isnull().sum() else html[11]
+    #         Q = html[15] if html[11].iloc[0].isnull().sum() > html[14].iloc[0].isnull().sum() else html[12]
+    #         financialHighlight = pd.concat(objs={"A": _refactor(A), "Q": _refactor(Q)}, axis=1)
+    #
+    #         self.__setattr__("__statement__", statement(financialHighlight, **self._valid_prop))
+    #     return self.__getattribute__("__statement__")
 
 
 
@@ -208,14 +242,14 @@ if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
     API_ECOS = "CEW3KQU603E6GA8VX0O9"
 
-    test = fetch(ticker='064290')
+    test = fetch(ticker='058470')
     # test = fetch(ticker='AAPL', period=12, enddate='20230105')
-    # test = _fetch(ticker='TSLA')
-    # test = _fetch(ticker='KRE')
-    # test = _fetch(ticker='DGS10')
-    # test = _fetch(ticker="151Y003", ecoskeys=["예금은행", "전국"])
-    # test = _fetch(ticker="121Y002", ecoskeys=["저축성수신"], name='평균수신')
-    # test = _fetch(ticker='LORSGPRT', market='KOR')
+    # test = fetch(ticker='TSLA')
+    # test = fetch(ticker='KRE')
+    # test = fetch(ticker='DGS10')
+    # test = fetch(ticker="151Y003", ecoskeys=["예금은행", "전국"])
+    # test = fetch(ticker="121Y002", ecoskeys=["저축성수신"], name='평균수신')
+    # test = fetch(ticker='LORSGPRT', market='KOR')
     # print(test.ticker)
     # print(test.exchange)
     # print(test.ohlcv)
@@ -226,5 +260,5 @@ if __name__ == "__main__":
     # test.close.show()
     # print(test.ta)
     # print(test.benchmark)
-    print(test.statement)
+    print(test._annualstatement)
 

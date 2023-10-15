@@ -9,7 +9,7 @@ from labwons.equity.technical.moneyflow import moneyflow
 from labwons.equity.technical.psar import psar
 from labwons.equity.technical.macd import macd
 from labwons.equity.technical.backtest import backtest
-from labwons.equity.fundamental.earnings import earnings
+from labwons.equity.fundamental.performance import performance
 from labwons.equity.fundamental.foreigner import foreigner
 from labwons.equity.fundamental.consensus import consensus
 from labwons.equity.fundamental.short import short
@@ -126,10 +126,10 @@ class Equity(fetch):
     FUNDAMENTALS
     """
     @property
-    def earnings(self) -> earnings:
-        if not self.__hasattr__(self._attr('earnings')):
-            self.__setattr__(self._attr('earnings'), earnings(self))
-        return self.__getattribute__(self._attr('earnings'))
+    def performance(self) -> performance:
+        if not self.__hasattr__(self._attr('performance')):
+            self.__setattr__(self._attr('performance'), performance(self))
+        return self.__getattribute__(self._attr('performance'))
 
     @property
     def products(self) -> foreigner:

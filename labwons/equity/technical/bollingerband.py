@@ -49,7 +49,7 @@ class bollingerband(baseDataFrameChart):
         fig.add_trace(row=1, col=1, trace=self(
             'lowertrend', name='x1 Band', legendgroup='x1', showlegend=False, line={"dash": "dot", "color": "lightgreen"}
         ))
-        fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='Vol.', showlegend=False))
+        fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='Vol.', showlegend=False, marker={"color": "grey"}))
         fig.add_trace(row=3, col=1, trace=self('width', name='Width', unit='%', form='.2f'))
         fig.add_trace(row=4, col=1, trace=self('pctb', name='%B', unit='', form='.2f'))
 

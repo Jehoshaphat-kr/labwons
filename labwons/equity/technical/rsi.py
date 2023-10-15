@@ -101,7 +101,7 @@ class rsi(baseDataFrameChart):
     def figure(self) -> go.Figure:
         fig = Chart.r5c1nsy()
         fig.add_trace(row=1, col=1, trace=self.ref.ohlcv())
-        fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='Vol.', showlegend=False))
+        fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='Vol.', showlegend=False, marker={"color": "grey"}))
         fig.add_trace(row=3, col=1, trace=self('rsi', name='RSI', unit='%'))
         fig.add_hrect(row=3, col=1, y0=70, y1=100, line_width=0, fillcolor='red', opacity=0.2)
         fig.add_hrect(row=3, col=1, y0=0, y1=30, line_width=0, fillcolor='green', opacity=0.2)

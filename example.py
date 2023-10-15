@@ -50,7 +50,8 @@ TEST :: EQUITIES
 # equity = lw.Equity('252990')
 # equity = lw.Equity('005930', period=20)
 # equity = lw.Equity('058470', period=20)
-equity = lw.Equity('000660', period=10)
+# equity = lw.Equity('000660', period=10)
+equity = lw.Equity('058470', period=5)
 
 """ ========= < Description > =========="""
 # print(equity.description())
@@ -63,72 +64,62 @@ equity = lw.Equity('000660', period=10)
 # print(equity.ohlcv.c)
 # print(equity.ohlcv.v)
 # print(equity.ohlcv.t)
-equity.ohlcv.show()
+# equity.ohlcv.show()
 # equity.ohlcv.save()
 # equity.ohlcv.c.show()
 # equity.ohlcv.t.show()
 
 """ ========== < SMA > ========== """
 # print(equity.sma)
-equity.sma.show()
+# equity.sma.show()
 # equity.sma.save()
 
 """ ========== < TREND > ========== """
 # print(equity.trend)
 # print(equity.trend.disparate)
 # print(equity.trend.intensity)
-equity.trend.show()
+# equity.trend.show()
 # equity.trend.save()
-equity.trend.disparate.show()
+# equity.trend.disparate.show()
 # equity.trend.disparate.save()
 
 """ ========== < BENCHMARK > ========== """
 # print(equity.benchmarkReturn)
-equity.benchmarkReturn.show()
+# equity.benchmarkReturn.show()
 # equity.benchmarkReturn.save()
 
 """ ========== < DRAWDOWN > ========== """
 # print(equity.drawDown)
-equity.drawDown.show()
+# equity.drawDown.show()
 # equity.drawDown.save()
 
 """ ========== < BOLLINGER > ========== """
 # print(equity.bollingerBand)
-equity.bollingerBand.show()
+# equity.bollingerBand.show()
 # equity.bollingerBand.save()
 
 """ ========== < RSI > ========== """
 # print(equity.rsi)
-equity.rsi.show()
+# equity.rsi.show()
 # equity.rsi.save()
 
 """ ========== < PSAR > ========== """
 # print(equity.psar)
-equity.psar.show()
+# equity.psar.show()
 # equity.psar.save()
 
 """ ========== < MACD > ========== """
 # print(equity.macd)
-equity.macd.show()
+# equity.macd.show()
 # equity.macd.save()
 
 """ ========== < MONEY FLOW > ========== """
 # print(equity.moneyFlow)
-equity.moneyFlow.show()
+# equity.moneyFlow.show()
 # equity.moneyFlow.save()
 
-""" ========== < Financial Statement > ========== """
-# print(equity.statement)
-# equity.statement.show()
-# equity.statement.save()
-
-""" ========== < Earnings > ========== """
-# print(equity.earnings)
-# print(equity.earnings._dataName_)
-# print(equity.earnings._ticker_)
-# print(equity.earnings._unit_)
-# print(equity.earnings._form_)
-# print(equity.earnings._path_)
+""" ========== < PERFORMANCE > ========== """
+print(equity.performance)
 # equity.earnings.show()
 # equity.statement.save()
 

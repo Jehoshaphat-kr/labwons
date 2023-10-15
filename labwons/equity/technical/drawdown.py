@@ -56,6 +56,9 @@ class drawdown(baseDataFrameChart):
                     dash='solid'
                 )
             ))
-        fig.update_layout(sliders=self.sliders)
+        fig.update_layout(
+            title=f"<b>{self.subject}</b> :  Draw Down - {self.columns[0][0]}",
+            sliders=self.sliders
+        )
         fig.update_xaxes(rangeselector=None)
         return fig

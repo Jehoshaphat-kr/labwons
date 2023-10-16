@@ -48,8 +48,8 @@ class baseDataFrameChart(DataFrame):
         self.ref = ref
         return
 
-    def __call__(self, col:Union[str, tuple], mode:str='lineTY', drop:bool=True, **kwargs):
-        f = getattr(self, ''.join([method for method in dir(self) if method == mode]))
+    def __call__(self, col:Union[str, tuple], style:str='lineTY', drop:bool=True, **kwargs):
+        f = getattr(self, ''.join([method for method in dir(self) if method == style]))
         return f(col, drop, **kwargs)
 
     @staticmethod

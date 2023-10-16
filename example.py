@@ -4,7 +4,7 @@ pd.set_option('display.expand_frame_repr', False)
 
 lw.API.SSYM = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
 lw.API.ECOS = "CEW3KQU603E6GA8VX0O9"
-lw.PATH.BASE = r"\\kefico\keti\ENT\Softroom\Temp\J.H.Lee\labwons"
+# lw.PATH.BASE = r"\\kefico\keti\ENT\Softroom\Temp\J.H.Lee\labwons"
 
 
 """
@@ -125,7 +125,7 @@ equity = lw.Equity('058470', period=5)
 # equity.performance.save()
 
 """ ========== < SOUNDNESS > ========== """
-# print(equity.soundness)
+print(equity.soundness)
 # print(equity.soundness.Q)
 # equity.soundness.show()
 equity.soundness.save()

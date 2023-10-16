@@ -10,6 +10,7 @@ from labwons.equity.technical.psar import psar
 from labwons.equity.technical.macd import macd
 from labwons.equity.technical.backtest import backtest
 from labwons.equity.fundamental.performance import performance
+from labwons.equity.fundamental.soundness import soundness
 from labwons.equity.fundamental.foreigner import foreigner
 from labwons.equity.fundamental.consensus import consensus
 from labwons.equity.fundamental.short import short
@@ -130,6 +131,12 @@ class Equity(fetch):
         if not self.__hasattr__(self._attr('performance')):
             self.__setattr__(self._attr('performance'), performance(self))
         return self.__getattribute__(self._attr('performance'))
+
+    @property
+    def soundness(self) -> soundness:
+        if not self.__hasattr__(self._attr('soundness')):
+            self.__setattr__(self._attr('soundness'), soundness(self))
+        return self.__getattribute__(self._attr('soundness'))
 
     @property
     def products(self) -> foreigner:

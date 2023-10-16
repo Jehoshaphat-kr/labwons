@@ -129,8 +129,19 @@ class chart:
         fig.update_yaxes(patch=self.yaxis())
         return fig
 
-    def r1c1sy1(self) -> go.Figure:
-        return go.Figure()
+    def r1c1sy1(self, **kwargs) -> go.Figure:
+        _kwargs_ = dict(
+            rows=1, cols=1,
+            shared_xaxes=True,
+            x_title='Date',
+            specs=[[{"secondary_y": True, "r":-0.06}]]
+        )
+        _kwargs_.update(kwargs)
+        fig = make_subplots(**_kwargs_)
+        fig.update_layout(**self.layout(legend=self.legend()))
+        fig.update_xaxes(patch=self.xaxis(rangeselector=None))
+        fig.update_yaxes(patch=self.yaxis(), secondary_y=False)
+        return fig
 
     def r2c1nsy(self, **kwargs) -> go.Figure:
         _kwargs_ = dict(

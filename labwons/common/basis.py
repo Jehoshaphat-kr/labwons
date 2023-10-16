@@ -78,22 +78,24 @@ class baseDataFrameChart(DataFrame):
         )
         return self._overwrite(go.Scatter, trace, **kwargs)
 
-    # def lineMarker(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Scatter:
-    #     data = self[col].dropna() if drop else self[col]
-    #     name = col if isinstance(col, str) else '/'.join(col)
-    #     unit = kwargs['unit'] if 'unit' in kwargs else self.unit
-    #     trace = go.Scatter(
-    #         name=name,
-    #         x=data.index,
-    #         y=data,
-    #         mode='lines+markers+text',
-    #         visible=True,
-    #         showlegend=True,
-    #         textposition="bottom center",
-    #         texttemplate="%{y:.2f}" + unit,
-    #         hovertemplate="%{y:.2f}" + unit + "<extra></extra>"
-    #     )
-    #     return self._overwrite(go.Scatter, trace, **kwargs)
+    def lineXY(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Scatter:
+        data = self[col].dropna() if drop else self[col]
+        name = col if isinstance(col, str) else '/'.join(col)
+        unit = kwargs['unit'] if 'unit' in kwargs else self.unit
+        form = kwargs['form'] if 'form' in kwargs else self.form
+        trace = go.Scatter(
+            name=name,
+            x=data.index,
+            y=data,
+            mode='lines+markers+text',
+            visible=True,
+            showlegend=True,
+            textposition="bottom center",
+            texttemplate="%{y:" + form + "}" + unit,
+            yhoverformat=form,
+            hovertemplate="%{y}" + unit + "<extra></extra>"
+        )
+        return self._overwrite(go.Scatter, trace, **kwargs)
 
     def barTY(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Bar:
         data = self[col].dropna() if drop else self[col]
@@ -106,7 +108,22 @@ class baseDataFrameChart(DataFrame):
             visible=True,
             showlegend=True,
             xhoverformat='%Y/%m/%d',
-            hovertemplate=name + ": %{y}" + unit + "<extra></extra>"
+            hovertemplate=name + ": %{y}" + unit + "<extra></extra>",
+        )
+        return self._overwrite(go.Bar, trace, **kwargs)
+
+    def barXY(self, col:Union[str, tuple], drop:bool=True, **kwargs) -> go.Bar:
+        data = self[col].dropna() if drop else self[col]
+        name = kwargs['name'] if 'name' in kwargs else col if isinstance(col, str) else '/'.join(col)
+        unit = kwargs['unit'] if 'unit' in kwargs else self.unit
+        trace = go.Bar(
+            name=name,
+            x=data.index,
+            y=data,
+            visible=True,
+            showlegend=True,
+            textposition="inside",
+            hovertemplate="%{y}" + unit + "<extra></extra>"
         )
         return self._overwrite(go.Bar, trace, **kwargs)
 

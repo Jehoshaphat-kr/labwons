@@ -1,6 +1,6 @@
 from labwons.common.basis import baseDataFrameChart
 from labwons.common.chart import Chart
-from labwons.common.tools import int2won
+from labwons.common.service.tools import int2won
 from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 import pandas as pd
@@ -35,12 +35,13 @@ class soundness(baseDataFrameChart):
 
     @property
     def buttons(self) -> list:
+        n = len(self.factors)
         buttons = [
             {
                 "label" : "Annual",
                 "method" : "update",
                 "args" : [
-                    {"visible" : [True] * len(self.columns) + [False] * len(self.Q.columns)},
+                    {"visible" : ['legendonly' if f == "영업이익" else True for f in self.factors] + [False] * n},
                     {"title" : f"<b>{self.subject}</b> : {self.name} (Annual)"}
                 ]
             },
@@ -48,7 +49,7 @@ class soundness(baseDataFrameChart):
                 "label": "Quarter",
                 "method": "update",
                 "args": [
-                    {"visible": [False] * len(self.columns) + [True] * len(self.Q.columns)},
+                    {"visible": [False] * n + ['legendonly' if f == "영업이익" else True for f in self.factors]},
                     {"title": f"<b>{self.subject}</b> : {self.name} (Quarter)"}
                 ]
             }
@@ -57,18 +58,25 @@ class soundness(baseDataFrameChart):
 
     def figure(self) -> go.Figure:
         fig = Chart.r1c1sy1(x_title='기말')
-        # for n, obj in enumerate([self, self.Q]):
-        for n, obj in enumerate([self]):
+        for n, obj in enumerate([self, self.Q]):
+        # for n, obj in enumerate([self]):
             visible = False if n else True
             for col in self.factors:
                 secondary_y = False
                 if col.endswith('율'):
-                    trace = obj(col, 'lineXY', form=',.2f', unit='%', visible=visible, hovertemplate=col + ": %{y}%<extra></extra>")
+                    trace = obj(
+                        col, 'lineXY',
+                        form='.2f',
+                        unit='%',
+                        visible=visible,
+                        hovertemplate=col + ": %{y}%<extra></extra>"
+                    )
                     secondary_y = True
                 elif col.startswith("자산"):
                     trace = obj(
                         col, 'barXY',
                         y=[0] * len(self[col].dropna()),
+                        visible=visible,
                         showlegend=False,
                         base=None,
                         width=0.4,
@@ -99,15 +107,15 @@ class soundness(baseDataFrameChart):
         fig.update_layout(
             title=f"<b>{self.subject}</b> : {self.name} (Annual)",
             barmode='stack',
-            # updatemenus=[
-            #     dict(
-            #         direction="down",
-            #         active=0,
-            #         xanchor='left', x=0.0,
-            #         yanchor='bottom', y=1.0,
-            #         buttons=self.buttons
-            #     )
-            # ],
+            updatemenus=[
+                dict(
+                    direction="down",
+                    active=0,
+                    xanchor='left', x=0.0,
+                    yanchor='bottom', y=1.0,
+                    buttons=self.buttons
+                )
+            ],
         )
         fig.update_yaxes(secondary_y=True, patch={"title": "부채율 [%]"})
         fig.update_yaxes(secondary_y=False, patch={"title": "[억원]"})

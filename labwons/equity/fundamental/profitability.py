@@ -6,7 +6,7 @@ from plotly import graph_objects as go
 import pandas as pd
 
 
-class performance(baseDataFrameChart):
+class profitability(baseDataFrameChart):
 
     Q = pd.DataFrame()
     def __init__(self, base:fetch):

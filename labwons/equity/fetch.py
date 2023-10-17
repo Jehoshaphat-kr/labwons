@@ -6,6 +6,7 @@ from pykrx.stock import get_market_cap_by_date
 from datetime import datetime, timedelta
 from pytz import timezone
 from ta import add_all_ta_features
+import numpy as np
 import pandas as pd
 import yfinance as yf
 import warnings
@@ -13,13 +14,6 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
 class fetch(_ticker):
-
-    _statement_columns = [
-        "매출액", "영업이익", "영업이익(발표기준)", "당기순이익", "지배주주순이익", "비지배주주순이익",
-        "자산총계", "부채총계", "자본총계", "지배주주지분", "비지배주주지분", "자본금",
-        "부채비율", "유보율", "영업이익률", "지배주주순이익률",
-        "ROA", "ROE", "EPS(원)", "BPS(원)", "DPS(원)", "PER", "PBR", "발행주식수", "배당수익률"
-    ]
 
     def __init__(self, ticker:str, **kwargs):
         """
@@ -36,6 +30,7 @@ class fetch(_ticker):
             self._ddate = kwargs['enddate']
         if isinstance(self._ddate, str):
             self._ddate = datetime.strptime(self._ddate, "%Y%m%d")
+        self._report = 'D' # 연결: 'D" / 별도: 'B'
         self._attr = lambda x: f"_{x}_{self._period}_{self._ddate}_{self._freq}_"
         return
 
@@ -88,10 +83,10 @@ class fetch(_ticker):
 
     def fetchStatement(self, period: str) -> pd.DataFrame:
         url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?" \
-              f"pGB=1&gicode=A{self.ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=Y&stkGb=701"
-        if not hasattr(self, '__fnguide'):
-            self.__setattr__('__fnguide', pd.read_html(url, header=0))
-        html = self.__getattribute__('__fnguide')
+              f"pGB=1&gicode=A{self.ticker}&cID=&MenuYn=Y&ReportGB=&NewMenuID=Y&stkGb=701"
+        if not hasattr(self, '_fnguide_main'):
+            self.__setattr__('_fnguide_main', pd.read_html(url, header=0))
+        html = self.__getattribute__('_fnguide_main')
 
         if period == 'annual':
             data = html[14] if html[11].iloc[1].isnull().sum() > html[14].iloc[1].isnull().sum() else html[11]
@@ -114,6 +109,27 @@ class fetch(_ticker):
         cap = self.fetchMarketCap().copy()
         cap.index = cap.index[:-1].tolist() + [_data.index[-1]]
         return _data.join(other=cap, how='left')[cap.columns.tolist() + _data.columns.tolist()].astype(float)
+
+    def fetchFinancialRatio(self, period: str) -> pd.DataFrame:
+        url = f"http://comp.fnguide.com/SVO2/ASP/SVD_FinanceRatio.asp?" \
+              f"pGB=1&gicode=A{self.ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=104&stkGb=701"
+        if not hasattr(self, '_fnguide_financialratio'):
+            self.__setattr__('_fnguide_financialratio', pd.read_html(url, header=0))
+        html = self.__getattribute__('_fnguide_financialratio')
+        # for n, t in enumerate(html):
+        #     print(t)
+        #     print(n, '-' * 80)
+        dropper = ["안정성비율", "성장성비율", "수익성비율", "활동성비율"]
+        data = html[0 if period == 'annual' else 1]
+        data = data.set_index(keys=[data.columns[0]])
+        data.index.name = None
+        data.index = np.array([i.replace("계산에 참여한 계정 펼치기", "") for i in data.index])
+        data = data.T
+        data = data.drop(columns=[col for col in data if col in dropper])
+        if period == "annual":
+            data.index = data.index[:-1].tolist() + [f"{data.index[-1][:4]}/최근"]
+        print(data)
+        return data
 
     @property
     def enddate(self) -> str:
@@ -248,10 +264,18 @@ class fetch(_ticker):
 
 
 if __name__ == "__main__":
+
+    # "매출액", "영업이익", "영업이익(발표기준)", "당기순이익", "지배주주순이익", "비지배주주순이익",
+    # "자산총계", "부채총계", "자본총계", "지배주주지분", "비지배주주지분", "자본금",
+    # "부채비율", "유보율", "영업이익률", "지배주주순이익률",
+    # "ROA", "ROE", "EPS(원)", "BPS(원)", "DPS(원)", "PER", "PBR", "발행주식수", "배당수익률"
+
+
     pd.set_option('display.expand_frame_repr', False)
     API_ECOS = "CEW3KQU603E6GA8VX0O9"
 
     test = fetch(ticker='058470')
+    # test = fetch(ticker='000660')
     # test = fetch(ticker='AAPL', period=12, enddate='20230105')
     # test = fetch(ticker='TSLA')
     # test = fetch(ticker='KRE')
@@ -259,7 +283,7 @@ if __name__ == "__main__":
     # test = fetch(ticker="151Y003", ecoskeys=["예금은행", "전국"])
     # test = fetch(ticker="121Y002", ecoskeys=["저축성수신"], name='평균수신')
     # test = fetch(ticker='LORSGPRT', market='KOR')
-    print("-" * 80)
+
     # print(test.ticker)
     # print(test.exchange)
     # print(test.ohlcv)
@@ -271,5 +295,7 @@ if __name__ == "__main__":
     # print(test.ta)
     # print(test.benchmark)
     # print(test.fetchMarketCap())
-    print(test.annualStatement)
-    print(test.quarterStatement)
+    # print(test.annualStatement)
+    # print(test.quarterStatement)
+    # test.fetchFinancialRatio('annual')
+    test.fetchFinancialRatio('quarter')

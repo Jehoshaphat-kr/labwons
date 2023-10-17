@@ -125,10 +125,10 @@ equity = lw.Equity('058470', period=5)
 # equity.performance.save()
 
 """ ========== < SOUNDNESS > ========== """
-print(equity.soundness)
+# print(equity.soundness)
 # print(equity.soundness.Q)
 # equity.soundness.show()
-equity.soundness.save()
+# equity.soundness.save()
 
 """ ========== < Foreign Rate > ========== """
 # print(equity.foreignHold)

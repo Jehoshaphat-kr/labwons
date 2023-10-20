@@ -14,11 +14,15 @@ class performance(baseDataFrameChart):
         Performance
         :return:
         """
-        columns = base.annualStatement.columns.tolist()
+        src = getattr(base, '_fnguide')
+        annualOverview = src.annualOverview
+        quarterOverview = src.quarterOverview
+
+        columns = annualOverview.columns.tolist()
         columns = columns[:columns.index('당기순이익') + 1]
         columns = [col for col in columns if not '(' in col and not col =='거래량'] + ['EPS(원)']
-        annual = base.annualStatement[columns]
-        quarter = base.quarterStatement[columns]
+        annual = annualOverview[columns]
+        quarter = quarterOverview[columns]
         self.Q = baseDataFrameChart(quarter)
         super().__init__(
             data=annual,
@@ -64,7 +68,7 @@ class performance(baseDataFrameChart):
                         col,
                         'barXY',
                         visible=False if n else True,
-                        meta=[int2won(x) for x in self[col].dropna()],
+                        meta=[int2won(x) for x in obj[col].dropna()],
                         texttemplate="%{meta}원",
                         hovertemplate=col + ": %{meta}원<extra></extra>"
                     )

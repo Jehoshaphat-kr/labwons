@@ -131,13 +131,9 @@ equity = lw.Equity('058470', period=5)
 # equity.soundness.save()
 
 """ ========== < Foreign Rate > ========== """
-# print(equity.foreignHold)
-# print(equity.foreignHold._dataName_)
-# print(equity.foreignHold._ticker_)
-# print(equity.foreignHold._unit_)
-# print(equity.foreignHold._form_)
-# print(equity.foreignHold._path_)
-# equity.foreignHold.show()
+print(equity.foreignHold)
+print(equity.foreignRate)
+equity.foreignRate.show()
 # equity.foreignHold.save()
 
 """ ========== < Consensus > ========== """

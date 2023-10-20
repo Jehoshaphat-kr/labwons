@@ -1,6 +1,7 @@
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.config import PATH
 from labwons.common.service.tools import stringDel
+from labwons.common.service.fnguide import fnguide
 from bs4 import BeautifulSoup as Soup
 import xml.etree.ElementTree as xml
 import yfinance as yf
@@ -28,7 +29,7 @@ class _ticker(object):
             'country': np.nan,
             "businessSummary": np.nan,
             "previousClose": np.nan,
-            "foreignRate": np.nan,
+            "foreignHold": np.nan,
             "dividendYield": np.nan,
             "benchmarkTicker": np.nan,
             "benchmarkName": np.nan,
@@ -73,6 +74,7 @@ class _ticker(object):
         self.dtype = self._valid_prop['dtype'] = ',d' if self.country == 'KOR' else '.2f'
         self._is_etf = self.quoteType == 'ETF'
         if self.country == 'KOR':
+            self._fnguide = fnguide(ticker)
             self.__kr__()
         elif self.country == 'USA':
             self.__us__()
@@ -81,19 +83,6 @@ class _ticker(object):
 
         self.path = self._valid_prop['path'] = os.path.join(PATH.BASE, f"{self.ticker}_{self.name}")
         return
-
-    @staticmethod
-    def _fnguideSummary(ticker:str):
-        url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?pGB=1&gicode=A" \
-              f"{ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=Y&stkGb=701"
-        html = Soup(requests.get(url).content, 'lxml').find('ul', id='bizSummaryContent').find_all('li')
-        t = '\n\n '.join([e.text for e in html])
-        w = [
-            '.\n' if t[n] == '.' and not any([t[n - 1].isdigit(), t[n + 1].isdigit(), t[n + 1].isalpha()]) else t[n]
-            for n in range(1, len(t) - 2)
-        ]
-        s = ' ' + t[0] + ''.join(w) + t[-2] + t[-1]
-        return s.replace(' ', '').replace('\xa0\xa0', ' ').replace('\xa0', ' ').replace('\n ', '\n')
 
     @staticmethod
     def _fnguideEtf(ticker: str):
@@ -145,7 +134,7 @@ class _ticker(object):
         self._valid_prop.update({
 
             "previousClose": str2int(src.find('close_val').text),
-            "foreignRate": float(src.find('frgn_rate').text),
+            "foreignHold": float(src.find('frgn_rate').text),
             "beta": float(src.find('beta').text) if src.find('beta').text else None,
             "volume": str2int(src.find('deal_cnt').text),
             "marketCap": str2int(src.find('mkt_cap_1').text) * 100000000,
@@ -158,7 +147,7 @@ class _ticker(object):
                 io=f"https://finance.naver.com/item/main.naver?code={self.ticker}", encoding='euc-kr'
             ))
             self._valid_prop.update({
-                'businessSummary': self._fnguideSummary(self.ticker),
+                'businessSummary': self._fnguide.summary,
                 "dividendYield": str(mul.iloc[3, 1]).replace('%', ''),
                 "trailingPE": None if mul.iloc[0, 1].startswith('N/A') else nav2num(mul.iloc[0, 1], 0),
                 "trailingEps": None if mul.iloc[0, 1].startswith('N/A') else nav2num(mul.iloc[0, 1], 1),
@@ -246,8 +235,8 @@ class _ticker(object):
         return self._valid_prop['previousClose']
 
     @property
-    def foreignRate(self) -> int or float:
-        return self._valid_prop['foreignRate']
+    def foreignHold(self) -> int or float:
+        return self._valid_prop['foreignHold']
 
     @property
     def dividendYield(self) -> int or float:
@@ -388,7 +377,7 @@ if __name__ == "__main__":
     # tester = _ticker('457690')
     # tester = _ticker('383310')
     tester = _ticker('142210')
-    # print(tester.description())
+    print(tester.description())
     # print(tester.name)
     # print(tester.exchange)
     # print(tester.quote)

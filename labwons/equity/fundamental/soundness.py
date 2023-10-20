@@ -10,10 +10,10 @@ class soundness(baseDataFrameChart):
 
     factors = ["시가총액", "자본총계", "부채총계", "자산총계", "영업이익", "부채비율"]
     colors = {
-        "시가총액": "#BDCDCD",
+        "시가총액": "royalblue",
         "자본총계": "lightgreen",
         "부채총계": "red",
-        "영업이익": "royalblue"
+        "영업이익": "cadetblue"
     }
     Q = pd.DataFrame()
     def __init__(self, base:fetch):
@@ -21,8 +21,9 @@ class soundness(baseDataFrameChart):
         Soundness
         :return:
         """
-        annual = base.annualStatement[self.factors]
-        self.Q = baseDataFrameChart(base.quarterStatement[self.factors])
+        src = getattr(base, '_fnguide')
+        annual = src.annualOverview[self.factors]
+        self.Q = baseDataFrameChart(src.quarterOverview[self.factors])
         super().__init__(
             data=annual,
             name='FINANCIAL-SOUNDNESS',
@@ -75,13 +76,13 @@ class soundness(baseDataFrameChart):
                 elif col.startswith("자산"):
                     trace = obj(
                         col, 'barXY',
-                        y=[0] * len(self[col].dropna()),
+                        y=[0] * len(obj[col].dropna()),
                         visible=visible,
                         showlegend=False,
                         base=None,
                         width=0.4,
                         offset=0.0,
-                        meta=[int2won(x) for x in self[col].dropna()],
+                        meta=[int2won(x) for x in obj[col].dropna()],
                         texttemplate = "총 자산: %{meta}원",
                         textposition = "outside",
                         hoverinfo='none',
@@ -98,7 +99,7 @@ class soundness(baseDataFrameChart):
                             color=self.colors[col],
                             opacity=0.8 if col == '영업이익' else 0.9
                         ),
-                        meta=[int2won(x) for x in self[col].dropna()],
+                        meta=[int2won(x) for x in obj[col].dropna()],
                         texttemplate="%{meta}원",
                         hovertemplate=col + ": %{meta}원<extra></extra>"
                     )

@@ -106,10 +106,10 @@ class Equity(fetch):
     SUPPLY
     """
     @property
-    def foreignHold(self) -> foreigner:
-        if not self.__hasattr__(self._attr('foreignhold')):
-            self.__setattr__(self._attr('foreignhold'), foreigner(self))
-        return self.__getattribute__(self._attr('foreignhold'))
+    def foreignRate(self) -> foreigner:
+        if not self.__hasattr__(self._attr('foreignrate')):
+            self.__setattr__(self._attr('foreignrate'), foreigner(self))
+        return self.__getattribute__(self._attr('foreignrate'))
 
     @property
     def consensus(self) -> consensus:

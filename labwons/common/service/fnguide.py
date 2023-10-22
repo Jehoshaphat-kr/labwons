@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from bs4 import BeautifulSoup as Soup
 from pykrx.stock import get_market_cap_by_date
 from urllib.request import urlopen
+import xml.etree.ElementTree as xml_parse
 import pandas as pd
 import numpy as np
 import requests, json
@@ -11,14 +12,18 @@ class fnguide(object):
 
     def __init__(self, ticker:str):
         self._t = ticker
-        self._u = f"http://comp.fnguide.com/SVO2/ASP/SVD_%s.asp?" \
+        self._u = f"http://comp.fnguide.com/SVO2/ASP/%s.asp?" \
                   f"pGB=1&" \
                   f"gicode=A{ticker}&" \
                   f"cID=&" \
                   f"MenuYn=Y&" \
                   f"ReportGB=%s&" \
                   f"NewMenuID=%s&" \
-                  f"stkGb=701"
+                  f"stkGb=%s"
+        xml = xml_parse.fromstring(
+            requests.get(url=f"http://cdn.fnguide.com/SVO2/xml/Snapshot_all/{ticker}.xml").text
+        ).find('price')
+
         return
 
     def __url__(self, page:str, hold:str='') -> str:
@@ -28,30 +33,40 @@ class fnguide(object):
         :return:
         """
         pages = {
-            "Main": {
+            "SVD_Main": {
                 "ReportGB": "",
-                "NewMenuID": "Y"
+                "NewMenuID": "Y",
+                "stkGb": "701"
             },
-            "Corp": {
+            "SVD_Corp": {
                 "ReportGB": "",
-                "NewMenuID": "102"
+                "NewMenuID": "102",
+                "stkGb": "701"
             },
-            "Finance": {
+            "SVD_Finance": {
                 "ReportGB": hold,
-                "NewMenuID": "103"
+                "NewMenuID": "103",
+                "stkGb": "701"
             },
-            "FinanceRatio": {
+            "SVD_FinanceRatio": {
                 "ReportGB": hold,
-                "NewMenuID": "104"
+                "NewMenuID": "104",
+                "stkGb": "701"
             },
-            "Invest": {
+            "SVD_Invest": {
                 "ReportGB": "",
-                "NewMenuID": "105"
+                "NewMenuID": "105",
+                "stkGb": "701"
             },
+            "ETF_Snapshot": {
+                "ReportGB": "",
+                "NewMenuID": "401",
+                "stkGb": "770"
+            }
         }
         if not page in pages or not hold in ['', 'D', 'B']:
             raise KeyError
-        return self._u % (page, pages[page]["ReportGB"], pages[page]["NewMenuID"])
+        return self._u % (page, pages[page]["ReportGB"], pages[page]["NewMenuID"], pages[page]["stkGb"])
 
     def __html__(self, page:str, hold:str='') -> list:
         if not hasattr(self, f"_u{page}{hold}"):
@@ -60,7 +75,7 @@ class fnguide(object):
 
     def __hold__(self) -> str:
         if not hasattr(self, f"_hold"):
-            html = self.__html__('Main')
+            html = self.__html__('SVD_Main')
             if html[11].iloc[1].isnull().sum() > html[14].iloc[1].isnull().sum():
                 self.__setattr__('_hold', 'B') # 별도
             else:
@@ -131,7 +146,7 @@ class fnguide(object):
 
     @property
     def summary(self) -> str:
-        html = Soup(requests.get(self.__url__('Main')).content, 'lxml').find('ul', id='bizSummaryContent').find_all('li')
+        html = Soup(requests.get(self.__url__('SVD_Main')).content, 'lxml').find('ul', id='bizSummaryContent').find_all('li')
         t = '\n\n '.join([e.text for e in html])
         w = [
             '.\n' if t[n] == '.' and not any([t[n - 1].isdigit(), t[n + 1].isdigit(), t[n + 1].isalpha()]) else t[n]
@@ -142,7 +157,7 @@ class fnguide(object):
 
     @property
     def annualOverview(self) -> pd.DataFrame:
-        return self._overview(self.__html__('Main')[11] if self.__hold__() == 'D' else self.__html__('Main')[14])
+        return self._overview(self.__html__('SVD_Main')[11] if self.__hold__() == 'D' else self.__html__('SVD_Main')[14])
 
     @property
     def annualProducts(self) -> pd.DataFrame:
@@ -161,7 +176,7 @@ class fnguide(object):
 
     @property
     def annualExpenses(self) -> pd.DataFrame:
-        html = self.__html__('Corp')
+        html = self.__html__('SVD_Corp')
         data = pd.concat(
             objs=[
                 html[4 if self.__hold__() == 'D' else 6].set_index(keys=['항목']).T,  # 매출원가율
@@ -174,7 +189,7 @@ class fnguide(object):
 
     @property
     def annualSalesShares(self) -> pd.DataFrame:
-        data = self.__html__('Corp')[10 if self.__hold__() == 'D' else 11]
+        data = self.__html__('SVD_Corp')[10 if self.__hold__() == 'D' else 11]
         data = data[data.index.isin([0, len(data) - 1])]
         data = data[[col for col in data if col.startswith('20')]]
         values = []
@@ -189,66 +204,66 @@ class fnguide(object):
 
     @property
     def annualHolders(self) -> pd.DataFrame:
-        data = self.__html__('Corp')[12]
+        data = self.__html__('SVD_Corp')[12]
         data = data.set_index(keys=[data.columns[0]])
         data.index.name = None
         return data.T
 
     @property
     def annualProfitLoss(self) -> pd.DataFrame:
-        return self._finance(self.__html__('Finance', self.__hold__())[0])
+        return self._finance(self.__html__('SVD_Finance', self.__hold__())[0])
 
     @property
     def annualAsset(self) -> pd.DataFrame:
-        return self._finance(self.__html__('Finance', self.__hold__())[2])
+        return self._finance(self.__html__('SVD_Finance', self.__hold__())[2])
 
     @property
     def annualCashFlow(self) -> pd.DataFrame:
-        return self._finance(self.__html__('Finance', self.__hold__())[4])
+        return self._finance(self.__html__('SVD_Finance', self.__hold__())[4])
 
     @property
     def annualGrowthRate(self) -> pd.DataFrame:
-        data = self.__html__('FinanceRatio', self.__hold__())[0]
+        data = self.__html__('SVD_FinanceRatio', self.__hold__())[0]
         index = data[data.columns[0]].tolist()
         return self._finance(data.iloc[index.index('성장성비율') + 1 : index.index('수익성비율')])
     
     @property
     def annualProfitRate(self) -> pd.DataFrame:
-        data = self.__html__('FinanceRatio', self.__hold__())[0]
+        data = self.__html__('SVD_FinanceRatio', self.__hold__())[0]
         index = data[data.columns[0]].tolist()
         return self._finance(data.iloc[index.index('수익성비율') + 1: index.index('활동성비율')])
 
     @property
     def annualMultiples(self) -> pd.DataFrame:
-        data = self.__html__('Invest', self.__hold__())[3]
+        data = self.__html__('SVD_Invest', self.__hold__())[3]
         data = data[~data[data.columns[0]].isin(["Per\xa0Share", "Dividends", "Multiples", "FCF"])]
         return self._finance(data)
 
     @property
     def quarterOverview(self) -> pd.DataFrame:
-        return self._overview(self.__html__('Main')[12] if self.__hold__() == 'D' else self.__html__('Main')[15])
+        return self._overview(self.__html__('SVD_Main')[12] if self.__hold__() == 'D' else self.__html__('SVD_Main')[15])
 
     @property
     def quarterProfitLoss(self) -> pd.DataFrame:
-        return self._finance(self.__html__('Finance', self.__hold__())[1])
+        return self._finance(self.__html__('SVD_Finance', self.__hold__())[1])
 
     @property
     def quarterAsset(self) -> pd.DataFrame:
-        return self._finance(self.__html__('Finance', self.__hold__())[3])
+        return self._finance(self.__html__('SVD_Finance', self.__hold__())[3])
 
     @property
     def quarterCashFlow(self) -> pd.DataFrame:
-        return self._finance(self.__html__('Finance', self.__hold__())[5])
+        return self._finance(self.__html__('SVD_Finance', self.__hold__())[5])
 
     @property
     def quarterGrowthRate(self) -> pd.DataFrame:
-        data = self.__html__('FinanceRatio', self.__hold__())[1]
+        data = self.__html__('SVD_FinanceRatio', self.__hold__())[1]
         index = data[data.columns[0]].tolist()
         return self._finance(data.iloc[index.index('성장성비율') + 1: index.index('수익성비율')])
 
     @property
     def quarterProfitRate(self) -> pd.DataFrame:
-        data = self.__html__('FinanceRatio', self.__hold__())[1]
+        data = self.__html__('SVD_FinanceRatio', self.__hold__())[1]
         index = data[data.columns[0]].tolist()
         return self._finance(data.iloc[index.index('수익성비율') + 1: ])
 
@@ -383,14 +398,35 @@ class fnguide(object):
         data.index = pd.to_datetime(data.index)
         return data.astype(float)
 
+    def etf(self):
+        url = self.__url__('ETF_Snapshot')
+        key = ''
+        dataset = {'price': [], 'comp': [], 'sector': []}
+        for line in requests.get(url).text.split('\n'):
+            if "etf1PriceData" in line:
+                key = 'price'
+            if "etf1StyleInfoStkData" in line:
+                key = 'comp'
+            if "etf1StockInfoData" in line:
+                key = 'sector'
+            if "]" in line and key:
+                key = ''
+            if key:
+                dataset[key].append(line)
+
+        return (pd.DataFrame(data=eval(f"[{''.join(dataset[k][1:])}]")).set_index(keys='val01')['val02'] for k in
+                dataset)
 
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
     # ticker = '000660' # SK하이닉스
     # ticker = '003800' # 에이스침대
-    ticker = '058470' # 리노공업
+    # ticker = '058470' # 리노공업
+    ticker = '102780' # KODEX 삼성그룹
 
     guide = fnguide(ticker)
+
+    # EQUITY
     # print(guide.summary)
     # print(guide.annualOverview)
     # print(guide.annualProducts)
@@ -413,5 +449,11 @@ if __name__ == "__main__":
     # print(guide.consensus)
     # print(guide.perBand)
     # print(guide.pbrBand)
-    print(guide.shortRatio)
-    print(guide.shortBalance)
+    # print(guide.shortRatio)
+    # print(guide.shortBalance)
+
+    # ETF
+    price, mul, sec = guide.etf()
+    print(price)
+    print(mul)
+    print(sec)

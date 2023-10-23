@@ -1,8 +1,12 @@
+from labwons.common.metadata.metadata import MetaData
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup as Soup
-from pykrx.stock import get_market_cap_by_date
+from pykrx.stock import (
+    get_market_cap_by_date,
+    get_etf_portfolio_deposit_file
+)
 from urllib.request import urlopen
-import xml.etree.ElementTree as xml_parse
+from lxml import etree
 import pandas as pd
 import numpy as np
 import requests, json
@@ -20,10 +24,21 @@ class fnguide(object):
                   f"ReportGB=%s&" \
                   f"NewMenuID=%s&" \
                   f"stkGb=%s"
-        xml = xml_parse.fromstring(
-            requests.get(url=f"http://cdn.fnguide.com/SVO2/xml/Snapshot_all/{ticker}.xml").text
+
+        xml = etree.fromstring(
+            requests.get(
+                url=f"http://cdn.fnguide.com/SVO2/xml/Snapshot_all/{ticker}.xml"
+            ).text[39:]
         ).find('price')
 
+        str2num = lambda x: int(x.replace(', ', '').replace(',', ''))
+        self.previousClose = str2num(xml.find('close_val').text)
+        self.foreignHold = float(xml.find('frgn_rate').text)
+        self.beta = float(xml.find('beta').text) if xml.find('beta').text else np.nan
+        self.volume = str2num(xml.find('deal_cnt').text)
+        self.marketCap = str2num(xml.find('mkt_cap_1').text) # 억원
+        self.fiftyTwoWeekLow = str2num(xml.find('low52week').text)
+        self.fiftyTwoWeekHigh = str2num(xml.find('high52week').text)
         return
 
     def __url__(self, page:str, hold:str='') -> str:
@@ -111,6 +126,33 @@ class fnguide(object):
         data = data[header.keys()].replace('-', np.nan).replace('', np.nan)
         data['GS_YM'] = pd.to_datetime(data['GS_YM'])
         return data.rename(columns=header).set_index(keys='날짜').astype(float)
+    
+    def _consensusProfit(self, period:str) -> pd.DataFrame:
+        columns = {
+            "GS_YM": "기말",
+            "SALES_R": "매출실적", "SALES_F": "매출전망",
+            "OP_R": "영업이익실적", "OP_F": "영업이익전망"
+        }
+        url = f"https://cdn.fnguide.com/SVO2/json/chart/07_01/chart_A{self._t}_{self.__hold__()}_{period}.json"
+        raw = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
+        basis = pd.DataFrame(raw['CHART']).replace('-', np.nan)[columns.keys()]
+        basis = basis.rename(columns=columns)
+        return basis.set_index(keys="기말")
+
+    def _consensusSeries(self, year:str) -> pd.DataFrame:
+        columns = {
+            "STD_DT": "날짜",
+            "SALES": "매출", "SALES_MAX": "매출(최대)", "SALES_MIN": "매출(최소)",
+            "OP": "영업이익", "OP_MAX": "영업이익(최대)", "OP_MIN": "영업이익(최소)",
+            "EPS": "EPS", "EPS_MAX": "EPS(최대)", "EPS_MIN": "EPS(최소)",
+            "PER": "PER", "PER_MAX": "PER(최대)", "PER_MIN": "PER(최소)", "PER_12F": "12M PER"
+        }
+        url = f"https://cdn.fnguide.com/SVO2/json/chart/07_02/chart_A{self._t}_{self.__hold__()}_FY{year}.json"
+        raw = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
+        basis = pd.DataFrame(raw['CHART'])[columns.keys()]
+        basis = basis.rename(columns=columns)
+        basis = basis.set_index(keys='날짜')
+        return basis
 
     @staticmethod
     def _finance(data:pd.DataFrame) -> pd.DataFrame:
@@ -320,6 +362,83 @@ class fnguide(object):
         return basis
 
     @property
+    def consensusAnnualProfit(self) -> pd.DataFrame:
+        """
+        컨센서스 영업이익 실적(연간)
+        :return:
+                   매출실적    매출전망  영업이익실적  영업이익전망
+        기말
+        2020/12  2368069.88  2363386.08     359938.76     362889.46
+        2021/12  2796047.99  2781487.45     516338.56        528376
+        2022/12   3022313.6  3047210.04      433766.3     459810.75
+        2023/12         NaN  2609787.67           NaN      72144.57
+        2024/12         NaN  2955967.19           NaN     331331.43
+        2025/12         NaN  3259557.88           NaN     456468.88
+        """
+        return self._consensusProfit('A')
+
+    @property
+    def consensusQuarterProfit(self) -> pd.DataFrame:
+        """
+        컨센서스 영업이익 실적(분기)
+        :return:
+                  매출실적   매출전망  영업이익실적  영업이익전망
+        분기
+        2023/03  637453.71  642011.82       6401.78      10000.91
+        2023/06  600055.33  618592.73       6685.47       2817.73
+        2023/09     670000  679076.36         24000      21343.64
+        2023/12        NaN  700258.57           NaN       36391.9
+        2024/03        NaN  711187.78           NaN      50888.89
+        2024/06        NaN  700681.11           NaN      65308.89
+        """
+        return self._consensusProfit('Q')
+
+    @property
+    def consensusThisYear(self) -> pd.DataFrame:
+        """
+        컨센서스 추이
+        :return:
+                       매출  매출(최대)  매출(최소)   영업이익  영업이익(최대) 영업이익(최소)      EPS  EPS(최대)  EPS(최소)    PER  PER(최대)  PER(최소)  12M PER
+        날짜
+        2022/11   3063374.5     3288390     2826800     336985          419430         265250  3935.14    4842.57    3249.68  15.81      19.14      12.84     15.3
+        2022/12  2942704.08     3173270     2635050     291990          389990         196600  3463.21    4294.48    2662.58  15.97      20.77      12.88    15.97
+        2023/01  2820243.82     3073260     2635050  211293.59          342396         128930  2583.89    4140.17    1589.21  23.61      38.38      14.73    22.15
+        2023/02  2728378.14     3073260     2581450  168233.05          329278          97490  2269.22    3734.23    1346.16  26.71      45.02      16.23    22.45
+        2023/03   2723824.5     2900830     2594060  114761.09          184940          42540  1735.61    3137.21     758.32  36.87       84.4       20.4    25.65
+        2023/04  2688688.59     2884560     2560260     100754          184940          46570  1624.44    3351.85     932.77  40.32      70.22      19.54    25.21
+        2023/05  2678715.91     2884560     2540150   95985.36          122270          59390  1556.63    3351.85    1068.80  45.87       66.8       21.3    24.93
+        2023/06  2660441.74     2785651     2476590   95079.48          122270          59390  1548.96    3477.57    1068.80  46.61      67.55      20.76    23.27
+        2023/07  2604180.14     2708860     2527000   85640.81          126210          61590  1593.81    3442.83     963.24  43.79      72.46      20.27    19.75
+        2023/08  2609199.41     2708860     2527000   85829.45          126210          46620  1510.10    3442.83     963.24   44.3      69.45      19.43       18
+        2023/09   2613926.3     2708860     2527000   71636.43          100390          41620  1358.22    3442.83     832.63  50.36      82.15      19.87    18.16
+        2023/10  2609787.67     2661845     2528300   72144.57           96690          57010  1264.41    1722.45     908.63  54.41      75.72      39.94    19.22
+        """
+        return self._consensusSeries('1')
+
+    @property
+    def consensusNextYear(self) -> pd.DataFrame:
+        """
+        컨센서스 추이
+        :return:
+                       매출  매출(최대)  매출(최소)   영업이익  영업이익(최대) 영업이익(최소)      EPS  EPS(최대)  EPS(최소)    PER  PER(최대)  PER(최소)  12M PER
+        날짜
+        2022/11   3063374.5     3288390     2826800     336985          419430         265250  3935.14    4842.57    3249.68  15.81      19.14      12.84     15.3
+        2022/12  2942704.08     3173270     2635050     291990          389990         196600  3463.21    4294.48    2662.58  15.97      20.77      12.88    15.97
+        2023/01  2820243.82     3073260     2635050  211293.59          342396         128930  2583.89    4140.17    1589.21  23.61      38.38      14.73    22.15
+        2023/02  2728378.14     3073260     2581450  168233.05          329278          97490  2269.22    3734.23    1346.16  26.71      45.02      16.23    22.45
+        2023/03   2723824.5     2900830     2594060  114761.09          184940          42540  1735.61    3137.21     758.32  36.87       84.4       20.4    25.65
+        2023/04  2688688.59     2884560     2560260     100754          184940          46570  1624.44    3351.85     932.77  40.32      70.22      19.54    25.21
+        2023/05  2678715.91     2884560     2540150   95985.36          122270          59390  1556.63    3351.85    1068.80  45.87       66.8       21.3    24.93
+        2023/06  2660441.74     2785651     2476590   95079.48          122270          59390  1548.96    3477.57    1068.80  46.61      67.55      20.76    23.27
+        2023/07  2604180.14     2708860     2527000   85640.81          126210          61590  1593.81    3442.83     963.24  43.79      72.46      20.27    19.75
+        2023/08  2609199.41     2708860     2527000   85829.45          126210          46620  1510.10    3442.83     963.24   44.3      69.45      19.43       18
+        2023/09   2613926.3     2708860     2527000   71636.43          100390          41620  1358.22    3442.83     832.63  50.36      82.15      19.87    18.16
+        2023/10  2609787.67     2661845     2528300   72144.57           96690          57010  1264.41    1722.45     908.63  54.41      75.72      39.94    19.22
+        """
+        return self._consensusSeries('2')
+
+
+    @property
     def perBand(self) -> pd.DataFrame:
         """
         PER 밴드
@@ -398,35 +517,84 @@ class fnguide(object):
         data.index = pd.to_datetime(data.index)
         return data.astype(float)
 
-    def etf(self):
-        url = self.__url__('ETF_Snapshot')
-        key = ''
-        dataset = {'price': [], 'comp': [], 'sector': []}
-        for line in requests.get(url).text.split('\n'):
-            if "etf1PriceData" in line:
-                key = 'price'
-            if "etf1StyleInfoStkData" in line:
-                key = 'comp'
-            if "etf1StockInfoData" in line:
-                key = 'sector'
-            if "]" in line and key:
-                key = ''
-            if key:
-                dataset[key].append(line)
+    @property
+    def etfComponent(self) -> pd.DataFrame:
+        """
+        ETF 구성 비중
+        :return:
+                            이름        비중
+        티커
+        005930          삼성전자  26.469999
+        006400           삼성SDI  18.270000
+        207940  삼성바이오로직스  10.450000
+        028260          삼성물산   8.730000
+        000810          삼성화재   6.720000
+        009150          삼성전기   6.400000
+        032830          삼성생명   5.080000
+        010140        삼성중공업   3.960000
+        018260    삼성에스디에스   3.640000
+        028050    삼성엔지니어링   3.490000
+        016360          삼성증권   1.830000
+        008770          호텔신라   1.760000
+        012750            에스원   1.150000
+        030000          제일기획   1.130000
+        029780          삼성카드   0.600000
+        """
+        data = get_etf_portfolio_deposit_file(self._t)
+        data['이름'] = MetaData[MetaData.index.isin(data.index)]['korName']
+        return data[['이름', '비중']]
 
-        return (pd.DataFrame(data=eval(f"[{''.join(dataset[k][1:])}]")).set_index(keys='val01')['val02'] for k in
-                dataset)
+    @property
+    def etfSectors(self) -> pd.DataFrame:
+        """
+        ETF 섹터 비중
+        :return:
+                   KODEX 삼성그룹  유사펀드   시장
+        섹터
+        에너지                                2.44
+        소재                                 10.09
+        산업재              17.44      7.48   9.92
+        경기소비재           2.67     11.58  10.57
+        필수소비재                            2.85
+        의료                10.37      5.64   7.46
+        금융                12.47      6.49   7.74
+        IT                  57.05     52.54  47.36
+        통신서비스                            1.01
+        유틸리티                              0.57
+        미분류
+        """
+        n, base = 100, ""
+        src = requests.get(url=self.__url__('ETF_Snapshot')).text.split('\r\n')
+        while n < len(src):
+            if 'etf1StockInfoData' in src[n]:
+                while not "];" in src[n + 1]:
+                    base += src[n + 1]
+                    n += 1
+                break
+            n += 1
+        data = pd.DataFrame(data=eval(base)).drop(columns=['val05'])
+        data.columns = np.array(["섹터", MetaData.loc[self._t, 'name'], "유사펀드", "시장"])
+        return data.set_index(keys='섹터')
+
 
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
+    ticker = '005930'
     # ticker = '000660' # SK하이닉스
     # ticker = '003800' # 에이스침대
     # ticker = '058470' # 리노공업
-    ticker = '102780' # KODEX 삼성그룹
+    # ticker = '102780' # KODEX 삼성그룹
 
     guide = fnguide(ticker)
 
     # EQUITY
+    # print(guide.previousClose)
+    # print(guide.foreignHold)
+    # print(guide.beta)
+    # print(guide.volume)
+    # print(guide.marketCap)
+    # print(guide.fiftyTwoWeekLow)
+    # print(guide.fiftyTwoWeekHigh)
     # print(guide.summary)
     # print(guide.annualOverview)
     # print(guide.annualProducts)
@@ -447,13 +615,22 @@ if __name__ == "__main__":
     # print(guide.quarterProfitRate)
     # print(guide.foreignRate)
     # print(guide.consensus)
+    # print(guide.consensusAnnualProfit)
+    # print(guide.consensusQuarterProfit)
+    print(guide.consensusThisYear)
+    print(guide.consensusNextYear)
     # print(guide.perBand)
     # print(guide.pbrBand)
     # print(guide.shortRatio)
     # print(guide.shortBalance)
 
     # ETF
-    price, mul, sec = guide.etf()
-    print(price)
-    print(mul)
-    print(sec)
+    # print(guide.previousClose)
+    # print(guide.foreignHold)
+    # print(guide.beta)
+    # print(guide.volume)
+    # print(guide.marketCap)
+    # print(guide.fiftyTwoWeekLow)
+    # print(guide.fiftyTwoWeekHigh)
+    # print(guide.etfSectors)
+    # print(guide.etfComponent)

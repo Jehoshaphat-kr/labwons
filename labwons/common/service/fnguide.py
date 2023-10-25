@@ -24,21 +24,39 @@ class fnguide(object):
                   f"ReportGB=%s&" \
                   f"NewMenuID=%s&" \
                   f"stkGb=%s"
+        self._p = page = Soup(requests.get(self.__url__('SVD_Main')).content, 'lxml')
 
         xml = etree.fromstring(
             requests.get(
                 url=f"http://cdn.fnguide.com/SVO2/xml/Snapshot_all/{ticker}.xml"
             ).text[39:]
         ).find('price')
-
-        str2num = lambda x: int(x.replace(', ', '').replace(',', ''))
+        str2num = lambda x: np.nan if not x else int(x.replace(', ', '').replace(',', ''))
         self.previousClose = str2num(xml.find('close_val').text)
         self.foreignHold = float(xml.find('frgn_rate').text)
         self.beta = float(xml.find('beta').text) if xml.find('beta').text else np.nan
         self.volume = str2num(xml.find('deal_cnt').text)
+        self.shares = str2num(xml.find('listed_stock_1').text)
+        self.floatShares = str2num(xml.find('ff_sher').text)
         self.marketCap = str2num(xml.find('mkt_cap_1').text) # 억원
         self.fiftyTwoWeekLow = str2num(xml.find('low52week').text)
         self.fiftyTwoWeekHigh = str2num(xml.find('high52week').text)
+
+        try:
+            header = [val for val in page.find('div', id='corp_group2').text.split('\n') if val]
+            forwardPE = header[header.index('12M PER') + 1]
+            self.dividendYield = float(header[header.index('배당수익률') + 1].replace('%', ''))
+            self.trailingPE = float(header[header.index('PER') + 1])
+            self.forwardPE = np.nan if '-' in forwardPE else float(forwardPE)
+            self.priceToBook = float(header[header.index('PBR') + 1])
+        except AttributeError:
+            script = page.find_all('script')[-1].text
+            self.dividendYield = float(page.find_all('td', class_='r cle')[-1].text)
+            print(script)
+            self.trailingPE = script[script.find('"PER"'):]
+            self.forwardPE = np.nan
+            self.priceToBook = script[script.find('"PBR"'):]
+            return
         return
 
     def __url__(self, page:str, hold:str='') -> str:
@@ -187,8 +205,8 @@ class fnguide(object):
         return self.__getattribute__('__cap')
 
     @property
-    def summary(self) -> str:
-        html = Soup(requests.get(self.__url__('SVD_Main')).content, 'lxml').find('ul', id='bizSummaryContent').find_all('li')
+    def businessSummary(self) -> str:
+        html = self._p.find('ul', id='bizSummaryContent').find_all('li')
         t = '\n\n '.join([e.text for e in html])
         w = [
             '.\n' if t[n] == '.' and not any([t[n - 1].isdigit(), t[n + 1].isdigit(), t[n + 1].isalpha()]) else t[n]
@@ -437,6 +455,12 @@ class fnguide(object):
         """
         return self._consensusSeries('2')
 
+    @property
+    def targetPrice(self) -> float:
+        try:
+            return float(self.__html__('SVD_Main')[7]["목표주가"][0])
+        except ValueError:
+            return self.fiftyTwoWeekHigh
 
     @property
     def perBand(self) -> pd.DataFrame:
@@ -579,11 +603,11 @@ class fnguide(object):
 
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
-    ticker = '005930'
+    # ticker = '005930'
     # ticker = '000660' # SK하이닉스
     # ticker = '003800' # 에이스침대
     # ticker = '058470' # 리노공업
-    # ticker = '102780' # KODEX 삼성그룹
+    ticker = '102780' # KODEX 삼성그룹
 
     guide = fnguide(ticker)
 
@@ -593,9 +617,13 @@ if __name__ == "__main__":
     # print(guide.beta)
     # print(guide.volume)
     # print(guide.marketCap)
-    print(guide.fiftyTwoWeekLow)
-    print(guide.fiftyTwoWeekHigh)
-    # print(guide.summary)
+    # print(guide.fiftyTwoWeekLow)
+    # print(guide.fiftyTwoWeekHigh)
+    print(guide.dividendYield)
+    print(guide.trailingPE)
+    print(guide.forwardPE)
+    print(guide.priceToBook)
+    # print(guide.businessSummary)
     # print(guide.annualOverview)
     # print(guide.annualProducts)
     # print(guide.annualExpenses)
@@ -607,22 +635,23 @@ if __name__ == "__main__":
     # print(guide.annualGrowthRate)
     # print(guide.annualProfitRate)
     # print(guide.annualMultiples)
-    print(guide.quarterOverview)
+    # print(guide.quarterOverview)
     # print(guide.quarterProfitLoss)
     # print(guide.quarterAsset)
     # print(guide.quarterCashFlow)
     # print(guide.quarterGrowthRate)
     # print(guide.quarterProfitRate)
     # print(guide.foreignRate)
-    print(guide.consensus)
+    # print(guide.consensus)
     # print(guide.consensusAnnualProfit)
     # print(guide.consensusQuarterProfit)
-    print(guide.consensusThisYear)
+    # print(guide.consensusThisYear)
     # print(guide.consensusNextYear)
     # print(guide.perBand)
     # print(guide.pbrBand)
     # print(guide.shortRatio)
     # print(guide.shortBalance)
+    # print(guide.targetPrice)
 
     # ETF
     # print(guide.previousClose)

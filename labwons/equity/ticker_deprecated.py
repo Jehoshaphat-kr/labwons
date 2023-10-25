@@ -1,9 +1,8 @@
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.config import PATH
-from labwons.common.service.tools import stringDel
+# from labwons.common.service.tools import stringDel
 from labwons.common.service.fnguide import fnguide
-from bs4 import BeautifulSoup as Soup
-import xml.etree.ElementTree as xml
+# import xml.etree.ElementTree as xml
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -11,92 +10,86 @@ import requests, os
 
 
 class _ticker(object):
-    _valid_prop = {
-        "name": None,            # Metadata
-        "quoteType": None,       # Metadata
-        "country": None,         # Metadata
-        "exchange": None,        # Metadata
-        "unit": None,            # Metadata
-        "shortName": None,       # Metadata
-        "longName": None,        # Metadata
-        "korName": None,         # Metadata
-        "sector": None,          # Metadata
-        "industry": None,        # Metadata
-        "benchmarkTicker": None, # Metadata
-        "benchmarkName": None,   # Metadata
+    _attributes = [
+        "ticker",
+        "name",
+        "quoteType",
+        "country",
+        "exchange",
+        "unit",
+        "shortName",
+        "longName",
+        "korName",
+        "sector",
+        "industry",
+        "benchmarkTicker",
+        "benchmarkName",
 
-        "previousClose": None,
-        "fiftyTwoWeekLow": None,
-        "fiftyTwoWeekHigh": None,
-        "targetPrice": None,
-        "marketCap": None,
-        "shares": None,
-        "floatShares": None,
-        "volume": None,
-        "foreignHold": None,
-        "dividendYield": None,
+        # 'name',
+        # 'ticker',
+        # 'unit',
+        # 'path',
+        # 'sector',
+        # 'country',
+        # "businessSummary",
+        # "previousClose",
+        # "foreignHold",
+        # "dividendYield",
+        # "benchmarkTicker",
+        # "benchmarkName",
+        # "beta",
+        # "trailingPE",
+        # "trailingEps",
+        # "forwardPE",
+        # "forwardEps",
+        # "volume",
+        # "marketCap",
+        # "fiftyTwoWeekLow",
+        # "fiftyTwoWeekHigh",
+        # "floatShares",
+        # "shares",
+        # "priceToBook",
+        # "bookValue",
+        # "pegRatio",
+        # "exchange",
+        # "quoteType",
+        # "shortName",
+        # "longName",
+        # "korName",
+        # "targetPrice",
+        # "returnOnEquity",
+    ]
 
-        "businessSummary": None,
-        "beta": None,
-        "trailingPE": None,
-        "forwardPE": None,
-        "priceToBook": None,
-        "pegRatio": None,
+    _valid_args = [
+        'KOSPI', 'KOSDAQ',
+        'NYSE', 'NASDAQ', 'OTC', 'PCX', 'AMEX', 'CBOE', 'NCM', 'NMS'
+        'FRED', 'ECOS', 'OECD'
+    ]
 
-        "path": '',
-    }
 
     def __init__(self, ticker:str, **kwargs):
-        if ticker not in MetaData.index and 'exchange' not in kwargs:
-            """
-            Possible @exchange list
-            - for KOR: "KOSPI", "KOSDAQ",
-            - for USA: "NYSE", "NASDAQ", "OTC", "PCX", "AMEX", "CBOE", "NCM", "NMS", ... ,
-            - others : "FRED", "ECOS", "OECD"            
-            """
-            raise KeyError(
-                f'@ticker not found in MetaData, @exchange must be specified for ticker: {ticker}'
-            )
+        self.__setattr__('A', 6)
+        # if ticker in MetaData.index:
 
-        if ticker in MetaData.index:
-            kwargs.update(MetaData.loc[ticker].to_dict())
 
-        self.ticker = ticker
-        self.__init_prop__()
-        for key in self._valid_prop:
-            if key in kwargs:
-                self._valid_prop[key] = kwargs[key]
 
-        if self._valid_prop['exchange'].upper() in ['FRED', 'OECD', 'ECOS']:
-            return
 
-        self._serv = None
-        if self._valid_prop['country'].upper() == 'KOR' or self._valid_prop['exchange'].startswith('KO'):
-            self._serv = srv = fnguide(ticker)
-            for prop in self._valid_prop:
-                if hasattr(srv, prop):
-                    self._valid_prop[prop] = getattr(srv,prop)
-            # self._valid_prop.update({
-            #     "previousClose": srv.previousClose,
-            #     "fiftyTwoWeekLow": srv.fiftyTwoWeekLow,
-            #     "fiftyTwoWeekHigh": srv.fiftyTwoWeekHigh,
-            #     "targetPrice": srv.targetPrice,
-            #     "marketCap": srv.marketCap,
-            #     "shares": srv.shares,
-            #     "floatShares": srv.floatShares,
-            #     "volume": srv.volume,
-            #     "foreignHold": srv.foreignHold,
-            #     "dividendYield": None,
-            #     "businessSummary": srv.businessSummary,
-            #     "beta": srv.beta,
-            #     "trailingPE": None,
-            #     "forwardPE": None,
-            #     "priceToBook": None,
-            #     "pegRatio": None,
-            #     "path": os.path.join(PATH.BASE, f"{ticker}_{self._valid_prop['name']}")
-            # })
-
-        self._valid_prop["path"] = os.path.join(PATH.BASE, f"{ticker}_{self._valid_prop['name']}")
+        # if not ticker in MetaData.index:
+        #     if 'exchange' not in kwargs:
+        #         raise KeyError(f"_ticker Not Found Error: @exchange must be specified for ticker, {ticker}")
+        #     if not kwargs['exchange'].lower() in [v.lower for v in self._valid_args]:
+        #         raise KeyError(f"Invalid @exchange! Valid arguments: {self._valid_args}")
+        #     kwargs.update(dict(name=ticker))
+        #     self._valid_prop.update({key:kwargs[key] for key in self._valid_prop if key in kwargs})
+        # else:
+        #     self._valid_prop.update({key:MetaData.loc[ticker, key] for key in MetaData.columns})
+        #
+        # if self.exchange in ['FRED', 'OECD', 'ECOS']:
+        #     return
+        # # ticker, name, quoteType, market, exchange, unit, shortName, longName, korName, sector, industry, benchmarkTicker, benchmarkName
+        # self.ticker = ticker
+        # self.dtype = self._valid_prop['dtype'] = ',d' if self.country == 'KOR' else '.2f'
+        # self._is_etf = self.quoteType == 'ETF'
         # if self.country == 'KOR':
         #     self._fnguide = fnguide(ticker)
         #     self.__kr__()
@@ -104,13 +97,8 @@ class _ticker(object):
         #     self.__us__()
         # else:
         #     pass
-
-
-        return
-
-    def __init_prop__(self):
-        for key in self._valid_prop:
-            self._valid_prop[key] = np.nan
+        #
+        # self.path = self._valid_prop['path'] = os.path.join(PATH.BASE, f"{self.ticker}_{self.name}")
         return
 
     @staticmethod
@@ -405,9 +393,9 @@ if __name__ == "__main__":
     # tester = _ticker('058470')
     # tester = _ticker('457690')
     # tester = _ticker('383310')
-    # tester = _ticker('142210')
-    tester = _ticker('VVZZXX')
+    tester = _ticker('142210')
 
+    print(tester.A)
     # print(tester.description())
     # print(tester.name)
     # print(tester.exchange)

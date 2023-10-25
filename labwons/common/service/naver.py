@@ -14,7 +14,6 @@ class naver(object):
         )
         return
 
-
     @property
     def similarity(self) -> pd.DataFrame:
         sim = self._html_[4]

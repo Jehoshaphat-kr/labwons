@@ -9,7 +9,7 @@ from urllib.request import urlopen
 from lxml import etree
 import pandas as pd
 import numpy as np
-import requests, json
+import requests, json, re
 
 
 class fnguide(object):
@@ -41,21 +41,36 @@ class fnguide(object):
         self.marketCap = str2num(xml.find('mkt_cap_1').text) # 억원
         self.fiftyTwoWeekLow = str2num(xml.find('low52week').text)
         self.fiftyTwoWeekHigh = str2num(xml.find('high52week').text)
-
+        self.dividendYield = np.nan
+        self.trailingPE = np.nan
+        self.forwardPE = np.nan
+        self.priceToBook = np.nan
         try:
             header = [val for val in page.find('div', id='corp_group2').text.split('\n') if val]
             forwardPE = header[header.index('12M PER') + 1]
-            self.dividendYield = float(header[header.index('배당수익률') + 1].replace('%', ''))
-            self.trailingPE = float(header[header.index('PER') + 1])
-            self.forwardPE = np.nan if '-' in forwardPE else float(forwardPE)
+            try:
+                self.dividendYield = float(header[header.index('배당수익률') + 1].replace('%', ''))
+            except ValueError:
+                pass
+            try:
+                self.trailingPE = float(header[header.index('PER') + 1])
+            except ValueError:
+                pass
+            try:
+                self.forwardPE = np.nan if '-' in forwardPE else float(forwardPE)
+            except ValueError:
+                pass
             self.priceToBook = float(header[header.index('PBR') + 1])
         except AttributeError:
-            script = page.find_all('script')[-1].text
             self.dividendYield = float(page.find_all('td', class_='r cle')[-1].text)
-            print(script)
-            self.trailingPE = script[script.find('"PER"'):]
-            self.forwardPE = np.nan
-            self.priceToBook = script[script.find('"PBR"'):]
+            pattern = r"[-+]?\d*\.\d+|\d+"
+            script = page.find_all('script')[-1].text.split('\n')
+            for n, line in enumerate(script):
+                if "PER" in line:
+                    self.trailingPE = float(re.findall(pattern, script[n + 1])[-1])
+                if "PBR" in line:
+                    self.priceToBook = float(re.findall(pattern, script[n + 1])[-1])
+                    break
             return
         return
 

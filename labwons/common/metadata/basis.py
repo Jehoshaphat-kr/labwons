@@ -69,7 +69,7 @@ def fetchKrxEtf() -> pd.DataFrame:
     df['marketCap'] = df['marketCap'] * 100000000
     df['exchange'] = 'KOSPI'
     df['quoteType'] = 'ETF'
-    df['unit'] = 'KRW'
+    df['currency'] = 'KRW'
     df['country'] = 'KOR'
     return df.set_index(keys='ticker').drop_duplicates()
 
@@ -82,12 +82,12 @@ def fetchNyse(api:str) -> pd.DataFrame:
     df = df.rename(columns=dict(symbol='ticker')).set_index(keys='ticker')
     df['name'] = df['longName']
     df['quoteType'] = 'EQUITY'
-    df['unit'] = 'USD'
+    df['currency'] = 'USD'
     df['country'] = 'USA'
     df['benchmarkTicker'] = df['exchange'].apply(lambda x: 'QQQ' if x == 'NASDAQ' else 'SPY')
     df['benchmarkName'] = df['exchange'].apply(lambda x: 'Nasdaq' if x == 'NASDAQ' else 'S&P500')
     return df[[
-        'name', 'shortName', 'longName', 'exchange', 'quoteType', 'unit', 'country', 'benchmarkTicker', 'benchmarkName'
+        'name', 'shortName', 'longName', 'exchange', 'quoteType', 'currency', 'country', 'benchmarkTicker', 'benchmarkName'
     ]]
 
 def fetchNyseEtfWikipedia() -> pd.DataFrame:
@@ -101,7 +101,7 @@ def fetchNyseEtfWikipedia() -> pd.DataFrame:
         dr = text[io + 1: ic].replace(':', '').replace('|', '').replace(' ', '').replace('\xa0', '').lower()
         tn = dr.replace('nysearca', '').replace('nasdaq', '').upper()
         ex = 'NASDAQ' if 'nasdaq' in dr else 'NYSE'
-        return dict(ticker=tn, name=tn, exchange=ex, quoteType='ETF', unit='USD', country='USA')
+        return dict(ticker=tn, name=tn, exchange=ex, quoteType='ETF', currency='USD', country='USA')
 
     data = list()
     url = "https://en.wikipedia.org/wiki/List_of_American_exchange-traded_funds"
@@ -131,7 +131,7 @@ def fetchNyseEtfNasdaq() -> pd.DataFrame:
             name=ticker,
             exchange='NASDAQ',
             quoteType='ETF',
-            unit='USD',
+            currency='USD',
             country='USA',
             benchmarkTicker='QQQ',
             benchmarkName='NASDAQ'
@@ -147,7 +147,7 @@ def fetchNyseEtfCBOE() -> pd.DataFrame:
     url = "https://www.cboe.com/us/equities/market_statistics/listed_symbols/xml/"
     src = BeautifulSoup(requests.get(url).text, "lxml")
     for s in src.find_all("symbol"):
-        data.append(dict(ticker=s['name'], name=s['name'], exchange='CBOE', quoteType='ETF', unit='USD', country='USA'))
+        data.append(dict(ticker=s['name'], name=s['name'], exchange='CBOE', quoteType='ETF', currency='USD', country='USA'))
     return pd.DataFrame(data=data).set_index(keys='ticker').drop_duplicates()
 
 def fetchECOS(api) -> pd.DataFrame:
@@ -161,7 +161,7 @@ def fetchECOS(api) -> pd.DataFrame:
     df = df.rename(columns=dict(STAT_CODE='ticker', STAT_NAME='name', CYCLE='cycle', ORG_NAME='by'))
     df['exchange'] = 'ECOS'
     df['quoteType'] = 'INDEX'
-    df['unit'] = '%, 억, -'
+    df['currency'] = '%, 억, -'
     return df[['ticker', 'name', 'exchange', 'quoteType', 'cycle']].set_index(keys='ticker')
 
 def fetchKrxIndex() -> pd.DataFrame:

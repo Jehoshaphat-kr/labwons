@@ -27,7 +27,7 @@ class metadata(pd.DataFrame):
         'quoteType',
         'country',
         'exchange',
-        'unit',
+        'currency',
         'shortName',
         'longName',
         'korName',
@@ -134,7 +134,7 @@ class metadata(pd.DataFrame):
         data['name'] = data[['shortName', 'korName']].apply(fdef, axis=1)
         data['country'] = 'KOR'
         data['exchange'] = ['KOSPI' if t in ks else 'KOSDAQ' if t in kq else 'Unknown' for t in data.index]
-        data['unit'] = 'KRW'
+        data['currency'] = 'KRW'
 
         bench = meta[['name', 'benchmarkTicker', 'benchmarkName']].set_index(keys='name').to_dict(orient='index')
         data['benchmarkTicker'] = data['industry'].apply(lambda x:bench[x.replace("WI26 ", "")]['benchmarkTicker'])

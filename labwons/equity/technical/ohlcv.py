@@ -11,8 +11,8 @@ class ohlcv(baseDataFrameChart):
             name = "OHLCV",
             subject = f"{kwargs['name']}({kwargs['ticker']})",
             path = kwargs['path'],
-            form = kwargs['dtype'],
-            unit = kwargs['unit']
+            form = kwargs['form'],
+            unit = kwargs['currency']
         )
         return
 

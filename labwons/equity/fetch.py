@@ -2,11 +2,9 @@ from labwons.common.basis import baseDataFrameChart
 from labwons.equity.ticker import _ticker
 from labwons.equity.technical.ohlcv import ohlcv
 from pykrx.stock import get_market_ohlcv_by_date
-from pykrx.stock import get_market_cap_by_date
 from datetime import datetime, timedelta
 from pytz import timezone
 from ta import add_all_ta_features
-import numpy as np
 import pandas as pd
 import yfinance as yf
 import warnings
@@ -30,7 +28,6 @@ class fetch(_ticker):
             self._ddate = kwargs['enddate']
         if isinstance(self._ddate, str):
             self._ddate = datetime.strptime(self._ddate, "%Y%m%d")
-        self._report = 'D' # 연결: 'D" / 별도: 'B'
         self._attr = lambda x: f"_{x}_{self._period}_{self._ddate}_{self._freq}_"
         return
 
@@ -60,72 +57,6 @@ class fetch(_ticker):
         # ohlcv['date'] = ohlcv['date'].tz_localize(timezone('Asia/Seoul'))
         ohlcv.index = ohlcv['date'].dt.date
         return ohlcv.drop(columns=['date'])
-
-    # def fetchMarketCap(self) -> pd.DataFrame:
-    #     if not hasattr(self, '__statementCap'):
-    #         cap = get_market_cap_by_date(
-    #             fromdate=(datetime.today() - timedelta(365 * 5)).strftime("%Y%m%d"),
-    #             todate=datetime.today().strftime("%Y%m%d"),
-    #             freq='m',
-    #             ticker=self.ticker
-    #         )
-    #         cap = cap[
-    #             cap.index.astype(str).str.contains('03') | \
-    #             cap.index.astype(str).str.contains('06') | \
-    #             cap.index.astype(str).str.contains('09') | \
-    #             cap.index.astype(str).str.contains('12') | \
-    #             (cap.index == cap.index[-1])
-    #         ]
-    #         cap.index = cap.index.strftime("%Y/%m")
-    #         cap['시가총액'] = round(cap['시가총액'] / 100000000, 0)
-    #         self.__setattr__('__statementCap', cap[['시가총액', '거래량']])
-    #     return self.__getattribute__('__statementCap')
-
-    # def fetchStatement(self, period: str) -> pd.DataFrame:
-    #     url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?" \
-    #           f"pGB=1&gicode=A{self.ticker}&cID=&MenuYn=Y&ReportGB=&NewMenuID=Y&stkGb=701"
-    #     if not hasattr(self, '_fnguide_main'):
-    #         self.__setattr__('_fnguide_main', pd.read_html(url, header=0))
-    #     html = self.__getattribute__('_fnguide_main')
-    #
-    #     if period == 'annual':
-    #         data = html[14] if html[11].iloc[1].isnull().sum() > html[14].iloc[1].isnull().sum() else html[11]
-    #     elif period == 'quarter':
-    #         data = html[15] if html[12].iloc[1].isnull().sum() > html[15].iloc[1].isnull().sum() else html[12]
-    #     else:
-    #         raise KeyError
-    #
-    #     _data = data.set_index(keys=[data.columns[0]])
-    #     _data.index.name = None
-    #     if isinstance(_data.columns[0], tuple):
-    #         _data.columns = _data.columns.droplevel()
-    #     else:
-    #         _data.columns = _data.iloc[0]
-    #         _data = _data.drop(index=_data.index[0])
-    #     _data = _data.T
-    #     _data = _data.head(len(_data) - len([i for i in _data.index if i.endswith(')')]) + 1)
-    #     _data.index.name = '기말'
-    #
-    #     cap = self.fetchMarketCap().copy()
-    #     cap.index = cap.index[:-1].tolist() + [_data.index[-1]]
-    #     return _data.join(other=cap, how='left')[cap.columns.tolist() + _data.columns.tolist()].astype(float)
-
-    # def fetchFinancialRatio(self, period: str) -> pd.DataFrame:
-    #     url = f"http://comp.fnguide.com/SVO2/ASP/SVD_FinanceRatio.asp?" \
-    #           f"pGB=1&gicode=A{self.ticker}&cID=&MenuYn=Y&ReportGB=D&NewMenuID=104&stkGb=701"
-    #     if not hasattr(self, '_fnguide_financialratio'):
-    #         self.__setattr__('_fnguide_financialratio', pd.read_html(url, header=0))
-    #     html = self.__getattribute__('_fnguide_financialratio')
-    #     dropper = ["안정성비율", "성장성비율", "수익성비율", "활동성비율"]
-    #     data = html[0 if period == 'annual' else 1]
-    #     data = data.set_index(keys=[data.columns[0]])
-    #     data.index.name = None
-    #     data.index = np.array([i.replace("계산에 참여한 계정 펼치기", "") for i in data.index])
-    #     data = data.T
-    #     data = data.drop(columns=[col for col in data if col in dropper])
-    #     if period == "annual":
-    #         data.index = data.index[:-1].tolist() + [f"{data.index[-1][:4]}/최근"]
-    #     return data
 
     @property
     def enddate(self) -> str:
@@ -242,22 +173,6 @@ class fetch(_ticker):
             self.__setattr__(self._attr('benchmark'), df)
         return self.__getattribute__(self._attr('benchmark'))
 
-    # @property
-    # def annualStatement(self) -> pd.DataFrame:
-    #     if not (self.country == 'KOR' and self.quoteType == 'EQUITY'):
-    #         raise AttributeError('NONE "Korean" market and NONE "Equity" Type')
-    #     if not hasattr(self, self._attr('annualS')):
-    #         self.__setattr__(self._attr('annualS'), self.fetchStatement('annual'))
-    #     return self.__getattribute__(self._attr('annualS'))
-    #
-    # @property
-    # def quarterStatement(self) -> pd.DataFrame:
-    #     if not (self.country == 'KOR' and self.quoteType == 'EQUITY'):
-    #         raise AttributeError('NONE "Korean" market and NONE "Equity" Type')
-    #     if not hasattr(self, self._attr('quarterS')):
-    #         self.__setattr__(self._attr('quarterS'), self.fetchStatement('quarter'))
-    #     return self.__getattribute__(self._attr('quarterS'))
-
 
 if __name__ == "__main__":
 
@@ -290,8 +205,3 @@ if __name__ == "__main__":
     # test.close.show()
     # print(test.ta)
     # print(test.benchmark)
-    # print(test.fetchMarketCap())
-    # print(test.annualStatement)
-    # print(test.quarterStatement)
-    # test.fetchFinancialRatio('annual')
-    test.fetchFinancialRatio('quarter')

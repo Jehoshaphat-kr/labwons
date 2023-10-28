@@ -2,8 +2,6 @@ from labwons.common.basis import baseDataFrameChart
 from labwons.common.chart import Chart
 from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
-from plotly.subplots import make_subplots
-
 import warnings
 warnings.filterwarnings(
     "ignore",
@@ -117,7 +115,7 @@ class moneyflow(baseDataFrameChart):
             subject = f"{base.name}({base.ticker})",
             path = base.path,
             form = '.2f',
-            unit = base.unit,
+            unit = base.currency,
             ref = base
         )
         return
@@ -133,8 +131,6 @@ class moneyflow(baseDataFrameChart):
         # fig.add_hrect(row=4, col=1, y0=80, y1=100, line_width=0, fillcolor='red', opacity=0.2)
         # fig.add_hrect(row=4, col=1, y0=0, y1=20, line_width=0, fillcolor='green', opacity=0.2)
         fig.add_trace(row=5, col=1, trace=self('obv', name='OBV', unit=''))
-        # fig.add_hrect(row=5, col=1, y0=0.8, y1=1.0, line_width=0, fillcolor='red', opacity=0.2)
-        # fig.add_hrect(row=5, col=1, y0=0, y1=0.2, line_width=0, fillcolor='green', opacity=0.2)
 
         fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
         fig.update_yaxes(row=1, col=1, patch={"title": f"[{self.unit}]"})

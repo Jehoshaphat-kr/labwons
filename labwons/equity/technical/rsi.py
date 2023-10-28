@@ -93,7 +93,7 @@ class rsi(baseDataFrameChart):
             subject=f"{base.name}({base.ticker})",
             path=base.path,
             form='.2f',
-            unit=base.unit,
+            unit=base.currency,
             ref=base
         )
         return

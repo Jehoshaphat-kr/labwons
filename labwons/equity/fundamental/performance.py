@@ -14,7 +14,7 @@ class performance(baseDataFrameChart):
         Performance
         :return:
         """
-        src = getattr(base, '_fnguide')
+        src = getattr(base, '_serv')
         annualOverview = src.annualOverview
         quarterOverview = src.quarterOverview
 
@@ -80,8 +80,8 @@ class performance(baseDataFrameChart):
                 dict(
                     direction="down",
                     active=0,
-                    xanchor='left', x=0.0,
-                    yanchor='bottom', y=1.0,
+                    xanchor='left', x=0.005,
+                    yanchor='bottom', y=0.99,
                     buttons=self.buttons
                 )
             ],

@@ -163,7 +163,7 @@ class baseDataFrameChart(DataFrame):
             decreasing_line=dict(
                 color='royalblue'
             ),
-            hoverinfo='y',
+            hoverinfo='x+y',
             xhoverformat='%Y/%m/%d',
             yhoverformat=self.form,
         )

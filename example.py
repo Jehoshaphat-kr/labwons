@@ -1,5 +1,6 @@
 import labwons as lw
 import pandas as pd
+import random
 pd.set_option('display.expand_frame_repr', False)
 
 lw.API.SSYM = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
@@ -46,12 +47,13 @@ TEST :: INDICATORS
 """
 TEST :: EQUITIES
 """
+ticker = random.sample(lw.MetaData.KRSTOCK.index.tolist(), 1)[0]
 # equity = lw.Equity('QQQ', period=30)
 # equity = lw.Equity('252990')
 # equity = lw.Equity('005930', period=20)
-# equity = lw.Equity('058470', period=20)
-# equity = lw.Equity('000660', period=10)
-equity = lw.Equity('058470', period=5)
+equity = lw.Equity('000660', period=10)
+# equity = lw.Equity('058470', period=5)
+# equity = lw.Equity(ticker, period=5)
 
 """ ========= < Description > =========="""
 # print(equity.description())
@@ -79,8 +81,8 @@ equity = lw.Equity('058470', period=5)
 # print(equity.trend.disparate)
 # print(equity.trend.intensity)
 # equity.trend.show()
-# equity.trend.save()
 # equity.trend.disparate.show()
+# equity.trend.save()
 # equity.trend.disparate.save()
 
 """ ========== < BENCHMARK > ========== """
@@ -131,20 +133,27 @@ equity = lw.Equity('058470', period=5)
 # equity.soundness.save()
 
 """ ========== < Foreign Rate > ========== """
-print(equity.foreignHold)
-print(equity.foreignRate)
-equity.foreignRate.show()
+# print(equity.previousForeignRate)
+# print(equity.foreignRate)
+# equity.foreignRate.show()
 # equity.foreignHold.save()
 
-""" ========== < Consensus > ========== """
-# print(equity.consensus)
-# print(equity.consensus._dataName_)
-# print(equity.consensus._ticker_)
-# print(equity.consensus._unit_)
-# print(equity.consensus._form_)
-# print(equity.consensus._path_)
-# equity.consensus.show()
-# equity.consensus.save()
+""" ========== < Consensus Price > ========== """
+# print(equity.consensusPrice)
+# equity.consensusPrice.show()
+# equity.consensusPrice.save()
+
+""" ========== < Consensus Profit > ========== """
+# print(equity.consensusProfit)
+# print(equity.consensusProfit.Q)
+# equity.consensusProfit.show()
+# equity.consensusProfit.save()
+
+""" ========== < Consensus Tendency > ========== """
+print(equity.consensusTendency)
+print(equity.consensusTendency.N)
+equity.consensusTendency.show()
+# equity.consensusTendency.save()
 
 """ ========== < Short > ========== """
 # print(equity.short)

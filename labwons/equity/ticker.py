@@ -1,18 +1,16 @@
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.config import PATH
-from labwons.common.service.tools import stringDel
 from labwons.common.service.fnguide import fnguide
 from typing import Union
-from bs4 import BeautifulSoup as Soup
-import xml.etree.ElementTree as xml
 import yfinance as yf
 import pandas as pd
 import numpy as np
-import requests, os
+import requests, os, warnings
 
 
 class _ticker(object):
     _valid_prop = {
+        "ticker": None,          # Metadata
         "name": None,            # Metadata
         "quoteType": None,       # Metadata
         "country": None,         # Metadata
@@ -33,7 +31,7 @@ class _ticker(object):
         "shares": None,
         "floatShares": None,
         "volume": None,
-        "previousForignRate": None,
+        "previousForeignRate": None,
         "dividendYield": None,
         "businessSummary": None,
         "beta": None,
@@ -77,43 +75,24 @@ class _ticker(object):
         else:
             try:
                 info = yf.Ticker(self.ticker).info      # [dict]
+                matches = dict(
+                    longBusinessSummary='businessSummary',
+                    sharesOutstanding='shares',
+                    trailingAnnualDividendRate='dividendYield',
+                    targetMeanPrice='targetPrice',
+                    category='sector'
+                )
+                for k, v in matches.items():
+                    if k in info:
+                        info[v] = info[k]
+                for key in info:
+                    if key in self._valid_prop:
+                        self._valid_prop[key] = info[key]
             except requests.exceptions.HTTPError:
-                return
-            matches = dict(
-                longBusinessSummary='businessSummary',
-                sharesOutstanding='shares',
-                trailingAnnualDividendRate='dividendYield',
-                targetMeanPrice='targetPrice',
-                category='sector'
-            )
-            for k, v in matches.items():
-                if k in info:
-                    info[v] = info[k]
-            for key in info:
-                if key in self._valid_prop:
-                    self._valid_prop[key] = info[key]
-            return
+                warnings.warn("Warning: Server Blocked", Warning)
 
-            # self._valid_prop.update({
-            #     "previousClose": srv.previousClose,
-            #     "fiftyTwoWeekLow": srv.fiftyTwoWeekLow,
-            #     "fiftyTwoWeekHigh": srv.fiftyTwoWeekHigh,
-            #     "targetPrice": srv.targetPrice,
-            #     "marketCap": srv.marketCap,
-            #     "shares": srv.shares,
-            #     "floatShares": srv.floatShares,
-            #     "volume": srv.volume,
-            #     "previousForignRate": srv.previousForignRate,
-            #     "dividendYield": None,
-            #     "businessSummary": srv.businessSummary,
-            #     "beta": srv.beta,
-            #     "trailingPE": None,
-            #     "forwardPE": None,
-            #     "priceToBook": None,
-            #     "pegRatio": None,
-            #     "path": os.path.join(PATH.BASE, f"{ticker}_{self._valid_prop['name']}")
-            # })
-
+        self._valid_prop['ticker'] = ticker
+        self._valid_prop["form"] = ',d' if self._valid_prop['currency'] == "KRW" else ',.2f'
         self._valid_prop["path"] = os.path.join(PATH.BASE, f"{ticker}_{self._valid_prop['name']}")
         return
 
@@ -121,116 +100,6 @@ class _ticker(object):
         for key in self._valid_prop:
             self._valid_prop[key] = np.nan
         return
-
-    # @staticmethod
-    # def _fnguideEtf(ticker: str):
-    #     """
-    #     FuGuide provided ETF general information
-    #     :return:
-    #     [Example: 091160]
-    #
-    #     """
-    #     url = f"http://comp.fnguide.com/SVO2/ASP/" \
-    #         f"etf_snapshot.asp?pGB=1&gicode=A{ticker}&cID=&MenuYn=Y&ReportGB=&NewMenuID=401&stkGb=770"
-    #
-    #     key = ''
-    #     dataset = {'price': [], 'comp': [], 'sector': []}
-    #     for line in requests.get(url).text.split('\n'):
-    #         if "etf1PriceData" in line:
-    #             key = 'price'
-    #         if "etf1StyleInfoStkData" in line:
-    #             key = 'comp'
-    #         if "etf1StockInfoData" in line:
-    #             key = 'sector'
-    #         if "]" in line and key:
-    #             key = ''
-    #         if key:
-    #             dataset[key].append(line)
-    #     return (pd.DataFrame(data=eval(f"[{''.join(dataset[k][1:])}]")).set_index(keys='val01')['val02'] for k in dataset)
-
-    # @staticmethod
-    # def _findSimilar(ticker:str) -> pd.DataFrame:
-    #     url = f"https://finance.naver.com/item/main.naver?code={ticker}"
-    #     sim = pd.read_html(io=url, header=0, encoding='euc-kr')[4]
-    #     sim = sim.set_index(keys='종목명')
-    #     sim = sim.drop(index=['전일대비'])
-    #     sim.index.name = None
-    #     for col in sim:
-    #         sim[col] = sim[col].apply(lambda x: stringDel(str(x), ['하향', '상향', '%', '+', ' ']))
-    #     tickers = [c.replace('*', '')[-6:] for c in sim.columns]
-    #     labels = [c.replace('*', '')[:-6] for c in sim.columns]
-    #     sim.columns = tickers
-    #     return pd.concat(objs=[pd.DataFrame(columns=tickers, index=['종목명'], data=[labels]), sim], axis=0).T
-
-    # def __kr__(self):
-    #     str2int = lambda x: int(x.replace(', ', '').replace(',', ''))
-    #     nav2num = lambda x, n: float(x.replace(' ', '').replace('배', '').replace('원', '').replace(',', '').split('l')[n])
-    #
-    #     # Common Properties
-    #     guide = f"http://cdn.fnguide.com/SVO2/xml/Snapshot_all/{self.ticker}.xml"
-    #     src = xml.fromstring(requests.get(url=guide).text).find('price')
-    #     self._valid_prop.update({
-    #
-    #         "previousClose": str2int(src.find('close_val').text),
-    #         "previousForignRate": float(src.find('frgn_rate').text),
-    #         "beta": float(src.find('beta').text) if src.find('beta').text else None,
-    #         "volume": str2int(src.find('deal_cnt').text),
-    #         "marketCap": str2int(src.find('mkt_cap_1').text) * 100000000,
-    #         "fiftyTwoWeekLow": str2int(src.find('low52week').text),
-    #         "fiftyTwoWeekHigh": str2int(src.find('high52week').text),
-    #     })
-    #
-    #     if not self._is_etf:
-    #         _, _, _, _, comp, _, _, cons, mul, _, _, _, _ = tuple(pd.read_html(
-    #             io=f"https://finance.naver.com/item/main.naver?code={self.ticker}", encoding='euc-kr'
-    #         ))
-    #         self._valid_prop.update({
-    #             'businessSummary': self._fnguide.summary,
-    #             "dividendYield": str(mul.iloc[3, 1]).replace('%', ''),
-    #             "trailingPE": None if mul.iloc[0, 1].startswith('N/A') else nav2num(mul.iloc[0, 1], 0),
-    #             "trailingEps": None if mul.iloc[0, 1].startswith('N/A') else nav2num(mul.iloc[0, 1], 1),
-    #             "forwardPE": None if mul.iloc[1, 1].startswith('N/A') else nav2num(mul.iloc[1, 1], 0),
-    #             "forwardEps": None if mul.iloc[1, 1].startswith('N/A') else nav2num(mul.iloc[1, 1], 1),
-    #             "priceToBook": None if mul.iloc[2, 1].startswith('N/A') else nav2num(mul.iloc[2, 1], 0),
-    #             "bookValue": None if mul.iloc[2, 1].startswith('N/A') else nav2num(mul.iloc[2, 1], 1),
-    #             "targetPrice": None if cons.iloc[0, 1].endswith('N/A') else nav2num(cons.iloc[0, 1], 1),
-    #             "returnOnEquity": comp.iloc[11, 1],  # Most Recent
-    #             "floatShares": str2int(src.find('ff_sher').text),
-    #             "shares": str2int(src.find('listed_stock_1').text),
-    #             "similar": self._findSimilar(self.ticker)
-    #         })
-    #     else:
-    #         price, mul, sec = self._fnguideEtf(self.ticker)
-    #         self._valid_prop.update({
-    #             "trailingPE": mul['PER'],
-    #             "bookValue": mul['PBR'],
-    #             "shares": str2int(price['발행주식수']),
-    #             'sector': sec[sec == max(sec)].index[0] if all(sec.values) else None
-    #         })
-    #     return
-
-    # def __us__(self):
-    #     try:
-    #         info = yf.Ticker(self.ticker).info
-    #         # for k, v in info.items():
-    #         #     print(k, ":", v)
-    #     except requests.exceptions.HTTPError:
-    #         return
-    #     matches = dict(
-    #         longBusinessSummary='businessSummary',
-    #         sharesOutstanding='shares',
-    #         trailingAnnualDividendRate='dividendYield',
-    #         targetMeanPrice='targetPrice',
-    #         category='sector'
-    #     )
-    #     for k, v in matches.items():
-    #         if k in info:
-    #             info[v] = info[k]
-    #     info['currency'] = 'USD'
-    #     for key in info:
-    #         if key in self._valid_prop:
-    #             self._valid_prop[key] = info[key]
-    #     return
 
     @property
     def name(self) -> str:
@@ -317,8 +186,8 @@ class _ticker(object):
         return self._valid_prop['volume']
 
     @property
-    def previousForignRate(self) -> Union[int, float]:
-        return self._valid_prop['previousForignRate']
+    def previousForeignRate(self) -> Union[int, float]:
+        return self._valid_prop['previousForeignRate']
 
     @property
     def dividendYield(self) -> Union[int, float]:
@@ -349,8 +218,16 @@ class _ticker(object):
         return self._valid_prop['pegRatio']
 
     @property
+    def path(self) -> str:
+        return self._valid_prop["path"]
+
+    @path.setter
+    def path(self, path:str):
+        self._valid_prop["path"] = path
+
+    @property
     def floatSharesRate(self) -> Union[int, float]:
-        return round(100 * self.floatShares / self.shares)
+        return round(100 * self.floatShares / self.shares, 2)
 
     @property
     def fiftyTwoWeekHighRatio(self) -> float:
@@ -384,14 +261,14 @@ if __name__ == "__main__":
 
     # tester = _ticker('LTPZ', exchange='NYSE')
     # tester = _ticker('QQQ')
-    # tester = _ticker('AAPL')
+    tester = _ticker('AAPL')
     # tester = _ticker('058470')
     # tester = _ticker('457690')
     # tester = _ticker('383310')
     # tester = _ticker('142210')
-    # tester = _ticker('VVZZXX')
+    # tester = _ticker('PDOT.U')
 
-    # print(tester.description())
+    print(tester.description())
     # print(tester.name)
     # print(tester.exchange)
     # print(tester.quote)
@@ -410,9 +287,9 @@ if __name__ == "__main__":
     # print(tester.targetPrice)
 
     import random
-    samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)
+    # samples = random.sample(MetaData.KRSTOCK.index.tolist(), 10)
     # samples = random.sample(MetaData.USSTOCK.index.tolist(), 10)
-    for sample in samples:
-        print(f'\n{sample}', "=" * 75)
-        stock = _ticker(sample)
-        print(stock.description())
+    # for sample in samples:
+    #     print(f'\n{sample}', "=" * 75)
+    #     stock = _ticker(sample)
+    #     print(stock.description())

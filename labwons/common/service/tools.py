@@ -8,15 +8,16 @@ import requests
 def int2won(x) -> str:
     if np.isnan(x) or (not x):
         return np.nan
-    x = int(x)
+    s = '-' if int(x) < 0 else ''
+    x = abs(int(x))
     if x < 10000:
-        return f'{x}억'
+        return f'{s}{x}억'
     else:
         zo = str(x)[:-4]
         ek = str(x)[-4:]
-        if ek.startswith('0'):
+        while ek.startswith('0'):
             ek = ek[1:]
-        return f'{zo}조 {ek}억'
+        return f'{s}{zo}조 {ek}억'
 
 def xml2df(url: str) -> pd.DataFrame:
     exclude = ['row', 'P_STAT_CODE']

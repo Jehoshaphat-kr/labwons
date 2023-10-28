@@ -61,4 +61,5 @@ class drawdown(baseDataFrameChart):
             sliders=self.sliders
         )
         fig.update_xaxes(rangeselector=None)
+        fig.update_yaxes(zerolinewidth=1.8)
         return fig

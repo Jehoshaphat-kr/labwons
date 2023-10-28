@@ -21,7 +21,7 @@ class sma(baseDataFrameChart):
             subject=f"{base.name}({base.ticker})",
             path=base.path,
             form='.1f',
-            unit=base.unit,
+            unit=base.currency,
             ref=base
         )
         return

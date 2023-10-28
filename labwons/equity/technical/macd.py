@@ -2,7 +2,6 @@ from labwons.common.basis import baseDataFrameChart
 from labwons.common.chart import Chart
 from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
-from plotly.subplots import make_subplots
 import warnings
 warnings.filterwarnings(
     "ignore",
@@ -28,7 +27,7 @@ class macd(baseDataFrameChart):
             subject=f"{base.name}({base.ticker})",
             path=base.path,
             form='.2f',
-            unit=base.unit,
+            unit=base.currency,
             ref=base
         )
         return

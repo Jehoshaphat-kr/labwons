@@ -2,13 +2,12 @@ from labwons.common.basis import baseDataFrameChart
 from labwons.common.chart import Chart
 from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
-from plotly.subplots import make_subplots
 
 
 class foreigner(baseDataFrameChart):
     def __init__(self, base:fetch):
         super().__init__(
-            data=getattr(base, '_fnguide').foreignRate,
+            data=getattr(base, '_serv').foreignRate,
             name='FOREIGN-RATE',
             subject=f"{base.name}({base.ticker})",
             path=base.path,
@@ -66,8 +65,8 @@ class foreigner(baseDataFrameChart):
                 dict(
                     direction="down",
                     active=0,
-                    xanchor='left', x=0.0,
-                    yanchor='bottom', y=1.0,
+                    xanchor='left', x=0.005,
+                    yanchor='bottom', y=0.99,
                     buttons=self.buttons
                 )
             ],

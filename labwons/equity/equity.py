@@ -1,3 +1,4 @@
+from typing import Any
 from labwons.equity.fetch import fetch
 from labwons.equity.technical.trend import trend
 from labwons.equity.technical.sma import sma
@@ -12,7 +13,9 @@ from labwons.equity.technical.backtest import backtest
 from labwons.equity.fundamental.performance import performance
 from labwons.equity.fundamental.soundness import soundness
 from labwons.equity.fundamental.foreigner import foreigner
-from labwons.equity.fundamental.consensus import consensus
+from labwons.equity.fundamental.consensusprice import consensusprice
+from labwons.equity.fundamental.consensusprofit import consensusprofit
+from labwons.equity.fundamental.consensustendency import consensustendency
 from labwons.equity.fundamental.short import short
 from labwons.equity.fundamental.products import products
 from labwons.equity.fundamental.expense import expense
@@ -27,95 +30,90 @@ class Equity(fetch):
     def __hasattr__(self, attr):
         return hasattr(self, attr)
 
-    @property
-    def backtest(self) -> backtest:
-        if not self.__hasattr__(self._attr('backt')):
-            self.__setattr__(self._attr('backt'), backtest(self.ohlcv, **self._valid_prop))
-        return self.__getattribute__(self._attr('backt'))
+    def __attr__(self, attr:str, cls:Any, **kwargs):
+        _attr = self._attr(attr)
+        if not hasattr(self, _attr):
+            if kwargs:
+                self.__setattr__(_attr, cls(**kwargs))
+            else:
+                self.__setattr__(_attr, cls(self))
+        return self.__getattribute__(_attr)
+
+    # @property
+    # def backtest(self) -> backtest:
+    #     if not self.__hasattr__(self._attr('backt')):
+    #         self.__setattr__(self._attr('backt'), backtest(self.ohlcv, **self._valid_prop))
+    #     return self.__getattribute__(self._attr('backt'))
 
     @property
     def sma(self) -> sma:
-        if not self.__hasattr__(self._attr('sma')):
-            self.__setattr__(self._attr('sma'), sma(self))
-        return self.__getattribute__(self._attr('sma'))
+        return self.__attr__('sma', sma)
 
     @property
     def trend(self) -> trend:
-        if not self.__hasattr__(self._attr('trend')):
-            self.__setattr__(self._attr('trend'), trend(self))
-        return self.__getattribute__(self._attr('trend'))
+        return self.__attr__('trend', trend)
 
     """
     COMPARISON
     """
     @property
     def benchmarkReturn(self) -> benchmark:
-        if not self.__hasattr__(self._attr('benchmarkReturn')):
-            self.__setattr__(self._attr('benchmarkReturn'), benchmark(self))
-        return self.__getattribute__(self._attr('benchmarkReturn'))
+        return self.__attr__('benchmarkreturn', benchmark)
 
     @property
     def drawDown(self) -> drawdown:
-        if not self.__hasattr__(self._attr('drawdown')):
-            self.__setattr__(self._attr('drawdown'), drawdown(self))
-        return self.__getattribute__(self._attr('drawdown'))
+        return self.__attr__('drawdown', drawdown)
 
     """
     VOLATILITY
     """
     @property
     def bollingerBand(self) -> bollingerband:
-        if not self.__hasattr__(self._attr('bollinger')):
-            self.__setattr__(self._attr('bollinger'), bollingerband(self))
-        return self.__getattribute__(self._attr('bollinger'))
+        return self.__attr__('bollingerband', bollingerband)
 
     """
     MOMENTUM
     """
     @property
     def rsi(self) -> rsi:
-        if not self.__hasattr__(self._attr('rsi')):
-            self.__setattr__(self._attr('rsi'), rsi(self))
-        return self.__getattribute__(self._attr('rsi'))
+        return self.__attr__('rsi', rsi)
 
     """
     VOLUME
     """
     @property
     def moneyFlow(self) -> moneyflow:
-        if not self.__hasattr__(self._attr('moneyflow')):
-            self.__setattr__(self._attr('moneyflow'), moneyflow(self))
-        return self.__getattribute__(self._attr('moneyflow'))
+        return self.__attr__('moneyflow', moneyflow)
 
     """
     TREND
     """
     @property
     def psar(self) -> psar:
-        if not self.__hasattr__(self._attr('psar')):
-            self.__setattr__(self._attr('psar'), psar(self))
-        return self.__getattribute__(self._attr('psar'))
+        return self.__attr__('psar', psar)
 
     @property
     def macd(self) -> macd:
-        if not self.__hasattr__(self._attr('macd')):
-            self.__setattr__(self._attr('macd'), macd(self))
-        return self.__getattribute__(self._attr('macd'))
+        return self.__attr__('macd', macd)
 
     """
     SUPPLY
     """
     @property
     def foreignRate(self) -> foreigner:
-        if not self.__hasattr__(self._attr('foreignrate')):
-            self.__setattr__(self._attr('foreignrate'), foreigner(self))
-        return self.__getattribute__(self._attr('foreignrate'))
+        return self.__attr__('foreignrate', foreigner)
 
     @property
-    def consensus(self) -> consensus:
-        if not self.__hasattr__(self._attr('consensus')):
-            self.__setattr__(self._attr('consensus'), consensus(self))
-        return self.__getattribute__(self._attr('consensus'))
+    def consensusPrice(self) -> consensusprice:
+        return self.__attr__('consensusprice', consensusprice)
+
+    @property
+    def consensusProfit(self) -> consensusprofit:
+        return self.__attr__('consensusprofit', consensusprofit)
+
+    @property
+    def consensusTendency(self) -> consensustendency:
+        return self.__attr__('consensustendency', consensustendency)
 
     @property
     def short(self) -> short:
@@ -128,15 +126,11 @@ class Equity(fetch):
     """
     @property
     def performance(self) -> performance:
-        if not self.__hasattr__(self._attr('performance')):
-            self.__setattr__(self._attr('performance'), performance(self))
-        return self.__getattribute__(self._attr('performance'))
+        return self.__attr__('performance', performance)
 
     @property
     def soundness(self) -> soundness:
-        if not self.__hasattr__(self._attr('soundness')):
-            self.__setattr__(self._attr('soundness'), soundness(self))
-        return self.__getattribute__(self._attr('soundness'))
+        return self.__attr__('soundness', soundness)
 
     @property
     def products(self) -> foreigner:

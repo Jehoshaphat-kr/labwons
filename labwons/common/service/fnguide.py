@@ -33,7 +33,7 @@ class fnguide(object):
         ).find('price')
         str2num = lambda x: np.nan if not x else int(x.replace(', ', '').replace(',', ''))
         self.previousClose = str2num(xml.find('close_val').text)
-        self.foreignHold = float(xml.find('frgn_rate').text)
+        self.previousForeignRate = float(xml.find('frgn_rate').text)
         self.beta = float(xml.find('beta').text) if xml.find('beta').text else np.nan
         self.volume = str2num(xml.find('deal_cnt').text)
         self.shares = str2num(xml.find('listed_stock_1').text)
@@ -170,7 +170,7 @@ class fnguide(object):
         raw = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
         basis = pd.DataFrame(raw['CHART']).replace('-', np.nan)[columns.keys()]
         basis = basis.rename(columns=columns)
-        return basis.set_index(keys="기말")
+        return basis.set_index(keys="기말").astype(float)
 
     def _consensusSeries(self, year:str) -> pd.DataFrame:
         columns = {
@@ -185,7 +185,10 @@ class fnguide(object):
         basis = pd.DataFrame(raw['CHART'])[columns.keys()]
         basis = basis.rename(columns=columns)
         basis = basis.set_index(keys='날짜')
-        return basis
+        basis = basis.replace('', np.nan)
+        for col in basis:
+            basis[col] = basis[col].apply(lambda x: x.replace(',', '') if isinstance(x, str) else x)
+        return basis.astype(float)
 
     @staticmethod
     def _finance(data:pd.DataFrame) -> pd.DataFrame:
@@ -390,8 +393,8 @@ class fnguide(object):
         basis = basis.rename(columns={'TRD_DT': '날짜', 'VAL1': '투자의견', 'VAL2': '컨센서스', 'VAL3': '종가'})
         basis = basis.set_index(keys='날짜')
         basis.index = pd.to_datetime(basis.index)
-        basis['컨센서스'] = basis['컨센서스'].apply(lambda x: int(x) if x else np.nan)
-        basis['격차'] = round(100 * (basis['종가'].astype(int) / basis['컨센서스'] - 1), 2)
+        basis = basis.astype(float)
+        basis['격차'] = round(100 * (basis['종가'] / basis['컨센서스'] - 1), 2)
         return basis
 
     @property

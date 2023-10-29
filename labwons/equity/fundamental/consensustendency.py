@@ -2,7 +2,6 @@ from labwons.common.basis import baseDataFrameChart
 from labwons.common.chart import Chart
 from labwons.common.service.tools import int2won
 from labwons.equity.fetch import fetch
-from plotly import graph_objects as go
 import pandas as pd
 
 
@@ -62,7 +61,7 @@ class consensustendency(baseDataFrameChart):
                     line=dict(dash='dot' if c.endswith(')') else 'solid'),
                     meta=[int2won(x) for x in obj[c].dropna()] if col in ['매출', '영업이익'] else None,
                     texttemplate="%{meta}원" if col in ['매출', '영업이익'] else None,
-                    hovertemplate=col + ": %{meta}원<extra></extra>"
+                    hovertemplate=c + ": %{meta}원<extra></extra>"
                 )
                 fig.add_trace(trace=trace)
         fig.update_layout(

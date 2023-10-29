@@ -113,13 +113,13 @@ class Equity(fetch):
 
     @property
     def consensusTendency(self) -> consensustendency:
+        # TODO
         return self.__attr__('consensustendency', consensustendency)
 
     @property
     def short(self) -> short:
-        if not self.__hasattr__(self._attr('short')):
-            self.__setattr__(self._attr('short'), short(self))
-        return self.__getattribute__(self._attr('short'))
+        # TODO
+        return
 
     """
     FUNDAMENTALS
@@ -133,38 +133,32 @@ class Equity(fetch):
         return self.__attr__('soundness', soundness)
 
     @property
-    def products(self) -> foreigner:
-        if not self.__hasattr__(self._attr('products')):
-            self.__setattr__(self._attr('products'), products(self))
-        return self.__getattribute__(self._attr('products'))
+    def products(self) -> products:
+        # TODO
+        return
 
     @property
     def expense(self) -> expense:
-        if not self.__hasattr__(self._attr('expense')):
-            self.__setattr__(self._attr('expense'), expense(self))
-        return self.__getattribute__(self._attr('expense'))
+        # TODO
+        return
 
     """
     MULTIPLES
     """
     @property
     def multipleBand(self) -> multipleband:
-        if not self.__hasattr__(self._attr('multipleband')):
-            self.__setattr__(self._attr('multipleband'), multipleband(self))
-        return self.__getattribute__(self._attr('multipleband'))
+        # TODO
+        return
 
     @property
     def benchmarkMultiple(self) -> benchmarkmultiple:
-        if not self.__hasattr__(self._attr('benchmarkMultiple')):
-            self.__setattr__(self._attr('benchmarkMultiple'), benchmarkmultiple(self))
-        return self.__getattribute__(self._attr('benchmarkMultiple'))
+        return self.__attr__('benchmarkmultiple', benchmarkmultiple)
 
     """
     ETC
     """
     @property
     def similarities(self) -> similarity:
-        if not self.__hasattr__(self._attr('similarity')):
-            self.__setattr__(self._attr('similarity'), similarity(self.similar))
-        return self.__getattribute__(self._attr('similarity'))
+        # TODO
+        return
 

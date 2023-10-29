@@ -47,13 +47,15 @@ TEST :: INDICATORS
 """
 TEST :: EQUITIES
 """
-ticker = random.sample(lw.MetaData.KRSTOCK.index.tolist(), 1)[0]
+# ticker = random.sample(lw.MetaData.KRSTOCK.index.tolist(), 1)[0]
+ticker = '017670'
 # equity = lw.Equity('QQQ', period=30)
 # equity = lw.Equity('252990')
 # equity = lw.Equity('005930', period=20)
-equity = lw.Equity('000660', period=10)
+# equity = lw.Equity('000660', period=10)
+# equity = lw.Equity('012330', period=10)
 # equity = lw.Equity('058470', period=5)
-# equity = lw.Equity(ticker, period=5)
+equity = lw.Equity(ticker, period=5)
 
 """ ========= < Description > =========="""
 # print(equity.description())
@@ -70,6 +72,7 @@ equity = lw.Equity('000660', period=10)
 # equity.ohlcv.save()
 # equity.ohlcv.c.show()
 # equity.ohlcv.t.show()
+# print(equity.ohlcv.continuousDays())
 
 """ ========== < SMA > ========== """
 # print(equity.sma)
@@ -107,8 +110,9 @@ equity = lw.Equity('000660', period=10)
 
 """ ========== < PSAR > ========== """
 # print(equity.psar)
-# equity.psar.show()
+equity.psar.show()
 # equity.psar.save()
+# print(equity.psar.pctDown2Price())
 
 """ ========== < MACD > ========== """
 # print(equity.macd)
@@ -150,9 +154,12 @@ equity = lw.Equity('000660', period=10)
 # equity.consensusProfit.save()
 
 """ ========== < Consensus Tendency > ========== """
-print(equity.consensusTendency)
-print(equity.consensusTendency.N)
-equity.consensusTendency.show()
+# print(equity.consensusTendency)
+# print(equity.consensusTendency.N)
+# equity.consensusTendency.show('매출')
+# equity.consensusTendency.show('영업이익')
+# equity.consensusTendency.show('EPS')
+# equity.consensusTendency.show('PER')
 # equity.consensusTendency.save()
 
 """ ========== < Short > ========== """
@@ -187,11 +194,6 @@ equity.consensusTendency.show()
 
 """ ========== < Benchmark Multiples > ========== """
 # print(equity.benchmarkMultiple)
-# print(equity.benchmarkMultiple._dataName_)
-# print(equity.benchmarkMultiple._ticker_)
-# print(equity.benchmarkMultiple._unit_)
-# print(equity.benchmarkMultiple._form_)
-# print(equity.benchmarkMultiple._path_)
 # equity.benchmarkMultiple.show()
 # equity.expense.save()
 

@@ -122,6 +122,7 @@ class baseDataFrameChart(DataFrame):
             y=data,
             visible=True,
             showlegend=True,
+            texttemplate="%{y}" + unit,
             textposition="inside",
             hovertemplate="%{y}" + unit + "<extra></extra>"
         )

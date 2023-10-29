@@ -1,7 +1,9 @@
 from labwons.common.basis import baseDataFrameChart
+from labwons.common.chart import Chart
 from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 import numpy as np
+import pandas as pd
 
 
 class psar(baseDataFrameChart):
@@ -24,10 +26,14 @@ class psar(baseDataFrameChart):
         )
         self['*up'] = (self['*up'] * self['up']).replace(0.0, np.nan)
         self['*down'] = (self['*down'] * self['down']).replace(0.0, np.nan)
+        self['psar'] = self[['up', 'down']].apply(lambda x: x['up'] if np.isnan(x['down']) else x['down'], axis=1)
         self._ups_, self._dns_ = [], []
+
+        data = self.join(self.ref.ohlcv.t, how='left')
+        self['pct'] = 100 * (data['psar'] / data[self.ref.ohlcv.t.name] - 1)
         return
 
-    def __call__(self, col:str, mode:str='scatterTY', drop:bool=True, **kwargs):
+    def __tr__(self, col:str, mode:str='scatterTY', drop:bool=True, **kwargs):
         trace = self.scatterTY(col)
         trace.name = 'Signal' if col == '*up' else col
         trace.showlegend = True if col == '*up' else False
@@ -56,11 +62,24 @@ class psar(baseDataFrameChart):
         return self._dns_
 
     def figure(self) -> go.Figure:
-        fig = self.ref.ohlcv.figure()
-        fig.add_trace(row=1, col=1, trace=self('up'))
-        fig.add_trace(row=1, col=1, trace=self('down'))
-        fig.add_trace(row=1, col=1, trace=self('*up'))
-        fig.add_trace(row=1, col=1, trace=self('*down'))
+        fig = Chart.r3c1nsy()
+        fig.add_trace(row=1, col=1, trace=self.ref.ohlcv())
+        fig.add_trace(row=1, col=1, trace=self.__tr__('up'))
+        fig.add_trace(row=1, col=1, trace=self.__tr__('down'))
+        fig.add_trace(row=1, col=1, trace=self.__tr__('*up'))
+        fig.add_trace(row=1, col=1, trace=self.__tr__('*down'))
+        fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='Vol.', showlegend=False, marker={"color": "grey"}))
+        fig.add_trace(row=3, col=1, trace=self('pct', unit='%', showlegend=False))
         fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
+        fig.update_yaxes(row=1, col=1, title=f"[{self.unit}]")
+        fig.update_yaxes(row=2, col=1, title="Vol.")
+        fig.update_yaxes(row=3, col=1, title="Gap [%]", zerolinewidth=1.8)
+        fig.update_xaxes(patch={"autorange": False, "range": [self.index[0], self.index[-1]]})
         return fig
+
+    @property
+    def currentGap(self) -> float:
+        return self['pct'][-1]
+
+
 

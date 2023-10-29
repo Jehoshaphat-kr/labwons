@@ -161,6 +161,19 @@ class chart:
         fig.update_yaxes(row=2, col=1, patch=self.yaxis())
         return fig
 
+    def r2c2nsy(self, **kwargs) -> go.Figure:
+        _kwargs_ = dict(
+            rows=2, cols=2,
+            x_title="기말"
+        )
+        _kwargs_.update(kwargs)
+        fig = make_subplots(**_kwargs_)
+
+        fig.update_layout(**self.layout(legend=self.legend()))
+        fig.update_yaxes(patch=self.yaxis())
+        fig.update_xaxes(patch=self.xaxis(rangeselector=None))
+        return fig
+
     def r2c3nsy(self, **kwargs) -> go.Figure:
         _kwargs_ = dict(
             rows=2, cols=3,
@@ -175,6 +188,26 @@ class chart:
         fig.update_layout(**self.layout())
         fig.update_yaxes(patch=self.yaxis())
         fig.update_xaxes(patch=self.xaxis(rangeselector=None))
+        return fig
+
+    def r3c1nsy(self, **kwargs) -> go.Figure:
+        _kwargs_ = dict(
+            rows=3, cols=1,
+            shared_xaxes=True,
+            row_heights=[0.65, 0.15, 0.2],
+            vertical_spacing=0.01,
+            x_title='Date',
+        )
+        _kwargs_.update(kwargs)
+        fig = make_subplots(**_kwargs_)
+
+        fig.update_layout(**self.layout(legend=self.legend()))
+        fig.update_xaxes(row=1, col=1, patch=self.xaxis(showticklabels=False))
+        fig.update_xaxes(row=2, col=1, patch=self.xaxis(showticklabels=False, rangeselector=None))
+        fig.update_xaxes(row=3, col=1, patch=self.xaxis(rangeselector=None))
+        fig.update_yaxes(row=1, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=2, col=1, patch=self.yaxis())
+        fig.update_yaxes(row=3, col=1, patch=self.yaxis())
         return fig
 
     def r3c1sy2(self, **kwargs) -> go.Figure:

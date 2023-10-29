@@ -481,6 +481,28 @@ class fnguide(object):
             return self.fiftyTwoWeekHigh
 
     @property
+    def benchmarkMultiples(self) -> pd.DataFrame:
+        """
+        벤치마크 베수 비교
+        :return: 
+        """
+        url = f"http://cdn.fnguide.com/SVO2/json/chart/01_04/chart_A{self._t}_{self.__hold__()}.json"
+        data = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
+        objs = dict()
+        for label, index in (('PER', '02'), ('EV/EBITDA', '03'), ('ROE', '04'), ('배당수익률', '05')):
+            header1 = pd.DataFrame(data[f'{index}_H'])[['ID', 'NAME']].set_index(keys='ID')
+            header1['NAME'] = header1['NAME'].astype(str).str.replace("'", "20")
+            header1 = header1.to_dict()['NAME']
+            header1.update({'CD_NM': '이름'})
+
+            inner1 = pd.DataFrame(data[index])[list(header1.keys())].rename(columns=header1).set_index(keys='이름')
+            inner1.index.name = None
+            for col in inner1.columns:
+                inner1[col] = inner1[col].apply(lambda x: np.nan if x == '-' else x)
+            objs[label] = inner1.T
+        return pd.concat(objs=objs, axis=1).astype(float)
+
+    @property
     def perBand(self) -> pd.DataFrame:
         """
         PER 밴드
@@ -621,11 +643,11 @@ class fnguide(object):
 
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
-    # ticker = '005930'
+    ticker = '005930'
     # ticker = '000660' # SK하이닉스
     # ticker = '003800' # 에이스침대
     # ticker = '058470' # 리노공업
-    ticker = '102780' # KODEX 삼성그룹
+    # ticker = '102780' # KODEX 삼성그룹
 
     guide = fnguide(ticker)
 
@@ -637,10 +659,10 @@ if __name__ == "__main__":
     # print(guide.marketCap)
     # print(guide.fiftyTwoWeekLow)
     # print(guide.fiftyTwoWeekHigh)
-    print(guide.dividendYield)
-    print(guide.trailingPE)
-    print(guide.forwardPE)
-    print(guide.priceToBook)
+    # print(guide.dividendYield)
+    # print(guide.trailingPE)
+    # print(guide.forwardPE)
+    # print(guide.priceToBook)
     # print(guide.businessSummary)
     # print(guide.annualOverview)
     # print(guide.annualProducts)
@@ -665,6 +687,7 @@ if __name__ == "__main__":
     # print(guide.consensusQuarterProfit)
     # print(guide.consensusThisYear)
     # print(guide.consensusNextYear)
+    print(guide.benchmarkMultiples)
     # print(guide.perBand)
     # print(guide.pbrBand)
     # print(guide.shortRatio)

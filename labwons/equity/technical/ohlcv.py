@@ -3,6 +3,7 @@ from labwons.common.chart import Chart
 from plotly import graph_objects as go
 from pandas import DataFrame
 
+
 class ohlcv(baseDataFrameChart):
 
     def __init__(self, base:DataFrame, **kwargs):
@@ -96,3 +97,17 @@ class ohlcv(baseDataFrameChart):
         fig.update_xaxes(patch={"autorange" : False, "range" : [self.index[0], self.index[-1]]})
         return fig
 
+    @property
+    def continuousDays(self):
+        data = self.t.values
+        cntr = 1
+        while data[-(cntr + 1)] == data[-cntr]:
+            cntr += 1
+        sign = -1 if data[-(cntr + 1)] > data[-cntr] else 1
+        while True:
+            _sign = -1 if data[-(cntr + 2)] > data[-(cntr + 1)] else 1
+            if _sign == sign:
+                cntr += 1
+            else:
+                break
+        return sign * cntr

@@ -1,10 +1,7 @@
-"""
-This app is recommended to run on .ipynb file
-"""
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.service.tools import normalDistribution
 from labwons.equity.equity import Equity
-from typing import Union, Tuple, List
+from typing import Iterable
 from datetime import datetime, timedelta
 from tqdm import tqdm
 from tqdm.notebook import tqdm_notebook
@@ -18,48 +15,80 @@ import time
 class Market(pd.DataFrame):
     env = '.ipynb'
     processbar = True
-    _slot_ = {}
-    _kwargs_ = {}
-    def __init__(
-        self,
-        tickers:Union[Tuple, List, pd.Series, pd.Index],
-        **kwargs
-    ):
+    _equity_ = {}
+    def __init__(self, tickers:Iterable, **kwargs):
         """
-
-        :param tickers:
-        :param kwargs:
+        :param tickers : [str]
+        :param kwargs  : [Any] Arguments for <class: Equity>
         """
-        self._kwargs_ = kwargs
-
-        '''
-        META DATA 포함 여부 확인
-        <Class: "Market">은 META DATA 포함된 ticker를 대상으로만 동작 가능. 
-        '''
-        base = MetaData[MetaData.index.isin(tickers)].copy()
-
-        '''
-        quoteType == "EQUITY" 및 country == "KOR" 에 대해 기본 정보 포함 추가
-        '''
-        kor = base[(base.quoteType == 'EQUITY') & (base.country == 'KOR')]
-        if not kor.empty:
-            base = base.drop(index=kor.index)
-            kor = MetaData.KRSTOCKwMultiples[MetaData.KRSTOCKwMultiples.index.isin(kor.index)].copy()
-            kor = kor[kor['IPO'] < (datetime.today() - timedelta(183))]
-            base = pd.concat(objs=[kor, base], axis=0)
-        super().__init__(data=base.values, index=base.index, columns=base.columns)
-        self.drop(index=self[self['marketCap'].isna()].index, inplace=True)
+        korean = MetaData.KRSTOCKwMultiples[MetaData.KRSTOCKwMultiples.index.isin(tickers)].copy()
+        others = MetaData[~MetaData.index.isin(korean)]
+        data = pd.concat(objs=[korean, others], axis=0)
+        super().__init__(
+            data=data.values,
+            index=data.index,
+            columns=data.columns
+        )
+        loop = self.__loop__()
+        for ticker in loop:
+            if self.processbar:
+                loop.set_description(f"Initialize {ticker} ... ")
+            self._equity_[ticker] = Equity(ticker, **kwargs)
+        self['previousForeignRate'] =
         return
 
-    def __loop__(self, contents=None):
-        if not contents:
-            contents = self.index
+
+        # self._kwargs_ = kwargs
+        #
+        # '''
+        # META DATA 포함 여부 확인
+        # <Class: "Market">은 META DATA 포함된 ticker를 대상으로만 동작 가능.
+        # '''
+        # base = MetaData[MetaData.index.isin(tickers)].copy()
+        #
+        # '''
+        # quoteType == "EQUITY" 및 country == "KOR" 에 대해 기본 정보 포함 추가
+        # '''
+        # kor = base[(base.quoteType == 'EQUITY') & (base.country == 'KOR')]
+        # if not kor.empty:
+        #     base = base.drop(index=kor.index)
+        #     kor = MetaData.KRSTOCKwMultiples[MetaData.KRSTOCKwMultiples.index.isin(kor.index)].copy()
+        #     kor = kor[kor['IPO'] < (datetime.today() - timedelta(183))]
+        #     base = pd.concat(objs=[kor, base], axis=0)
+        # super().__init__(data=base.values, index=base.index, columns=base.columns)
+        # self.drop(index=self[self['marketCap'].isna()].index, inplace=True)
+        return
+
+    def __call__(self, ticker:str) -> Equity:
+        return self._slot_[ticker]
+
+    def __loop__(self, group:Iterable=None):
+        if not group:
+            group = self.index
         if self.processbar and self.env.endswith('ipynb'):
-            return tqdm_notebook(contents)
+            return tqdm_notebook(group)
         elif self.processbar and self.env.endswith('py'):
-            return tqdm(contents)
+            return tqdm(group)
         else:
-            return contents
+            return group
+
+    def append(self, new_column:str, property_name:str, index:str=''):
+        if new_column in self:
+            return
+        data = []
+        loop = self.__loop__()
+        for ticker in loop:
+            loop.set_description(f'Updating {new_column} {ticker} ... ')
+            inst = getattr(self._equity_[ticker], property_name)
+            if isinstance(inst, pd.Series):
+                data.append(inst[index])
+            elif callable(inst):
+                data.append(inst())
+            else:
+                data.append(inst)
+        self[new_column] = data
+        return
+
 
     def __slot__(self):
         tickers = [ticker for ticker in self.index if not ticker in self._slot_]

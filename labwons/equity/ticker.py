@@ -9,38 +9,6 @@ import requests, os, warnings
 
 
 class _ticker(object):
-    _valid_prop = {
-        "ticker": None,          # Metadata
-        "name": None,            # Metadata
-        "quoteType": None,       # Metadata
-        "country": None,         # Metadata
-        "exchange": None,        # Metadata
-        "currency": None,        # Metadata
-        "shortName": None,       # Metadata
-        "longName": None,        # Metadata
-        "korName": None,         # Metadata
-        "sector": None,          # Metadata
-        "industry": None,        # Metadata
-        "benchmarkTicker": None, # Metadata
-        "benchmarkName": None,   # Metadata
-        "previousClose": None,
-        "fiftyTwoWeekLow": None,
-        "fiftyTwoWeekHigh": None,
-        "targetPrice": None,
-        "marketCap": None,
-        "shares": None,
-        "floatShares": None,
-        "volume": None,
-        "previousForeignRate": None,
-        "dividendYield": None,
-        "businessSummary": None,
-        "beta": None,
-        "trailingPE": None,
-        "forwardPE": None,
-        "priceToBook": None,
-        "pegRatio": None,
-        "path": '',
-    }
 
     def __init__(self, ticker:str, **kwargs):
         if ticker not in MetaData.index and 'exchange' not in kwargs:
@@ -57,8 +25,40 @@ class _ticker(object):
         if ticker in MetaData.index:
             kwargs.update(MetaData.loc[ticker].to_dict())
 
+        self._valid_prop = {
+            "ticker": None,  # Metadata
+            "name": None,  # Metadata
+            "quoteType": None,  # Metadata
+            "country": None,  # Metadata
+            "exchange": None,  # Metadata
+            "currency": None,  # Metadata
+            "shortName": None,  # Metadata
+            "longName": None,  # Metadata
+            "korName": None,  # Metadata
+            "sector": None,  # Metadata
+            "industry": None,  # Metadata
+            "benchmarkTicker": None,  # Metadata
+            "benchmarkName": None,  # Metadata
+            "previousClose": None,
+            "fiftyTwoWeekLow": None,
+            "fiftyTwoWeekHigh": None,
+            "targetPrice": None,
+            "marketCap": None,
+            "shares": None,
+            "floatShares": None,
+            "volume": None,
+            "previousForeignRate": None,
+            "dividendYield": None,
+            "businessSummary": None,
+            "beta": None,
+            "trailingPE": None,
+            "forwardPE": None,
+            "priceToBook": None,
+            "pegRatio": None,
+            "path": '',
+        }
+
         self.ticker = ticker
-        self.__init_prop__()
         for key in self._valid_prop:
             if key in kwargs:
                 self._valid_prop[key] = kwargs[key]
@@ -94,11 +94,6 @@ class _ticker(object):
         self._valid_prop['ticker'] = ticker
         self._valid_prop["form"] = ',d' if self._valid_prop['currency'] == "KRW" else ',.2f'
         self._valid_prop["path"] = os.path.join(PATH.BASE, f"{ticker}_{self._valid_prop['name']}")
-        return
-
-    def __init_prop__(self):
-        for key in self._valid_prop:
-            self._valid_prop[key] = np.nan
         return
 
     @property

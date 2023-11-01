@@ -13,50 +13,42 @@ import time
 
 
 class Market(pd.DataFrame):
-    env = '.ipynb'
-    processbar = True
     _equity_ = {}
+    progressBar = True
+
     def __init__(self, tickers:Iterable, **kwargs):
         """
         :param tickers : [str]
         :param kwargs  : [Any] Arguments for <class: Equity>
         """
-        korean = MetaData.KRSTOCKwMultiples[MetaData.KRSTOCKwMultiples.index.isin(tickers)].copy()
-        others = MetaData[~MetaData.index.isin(korean)]
-        data = pd.concat(objs=[korean, others], axis=0)
+        self.progressBar = kwargs['progress'] if 'progress' in kwargs else True
+        data = MetaData.KRSTOCKwMultiples[MetaData.KRSTOCKwMultiples.index.isin(tickers)].copy()
         super().__init__(
             data=data.values,
             index=data.index,
             columns=data.columns
         )
+        self.drop(inplace=True, index=self[self['marketCap'].isna()].index)
+        self['size'] = 20 * self['marketCap'] / self['marketCap'].max()
+
         loop = self.__loop__()
         for ticker in loop:
-            if self.processbar:
+            if self.progressBar:
                 loop.set_description(f"Initialize {ticker} ... ")
             self._equity_[ticker] = Equity(ticker, **kwargs)
-        self['previousForeignRate'] =
-        return
 
-
-        # self._kwargs_ = kwargs
-        #
-        # '''
-        # META DATA 포함 여부 확인
-        # <Class: "Market">은 META DATA 포함된 ticker를 대상으로만 동작 가능.
-        # '''
-        # base = MetaData[MetaData.index.isin(tickers)].copy()
-        #
-        # '''
-        # quoteType == "EQUITY" 및 country == "KOR" 에 대해 기본 정보 포함 추가
-        # '''
-        # kor = base[(base.quoteType == 'EQUITY') & (base.country == 'KOR')]
-        # if not kor.empty:
-        #     base = base.drop(index=kor.index)
-        #     kor = MetaData.KRSTOCKwMultiples[MetaData.KRSTOCKwMultiples.index.isin(kor.index)].copy()
-        #     kor = kor[kor['IPO'] < (datetime.today() - timedelta(183))]
-        #     base = pd.concat(objs=[kor, base], axis=0)
-        # super().__init__(data=base.values, index=base.index, columns=base.columns)
-        # self.drop(index=self[self['marketCap'].isna()].index, inplace=True)
+        for prop in [
+            "previousForeignRate",
+            "dividendYield",
+            "beta",
+            "trailingPE",
+            "forwardPE",
+            "priceToBook",
+            "fiftyTwoWeekHighRatio",
+            "fiftyTwoWeekLowRatio",
+            "targetPriceRatio"
+        ]:
+            self.append(prop)
         return
 
     def __call__(self, ticker:str) -> Equity:
@@ -65,20 +57,21 @@ class Market(pd.DataFrame):
     def __loop__(self, group:Iterable=None):
         if not group:
             group = self.index
-        if self.processbar and self.env.endswith('ipynb'):
+        if self.progressBar:
             return tqdm_notebook(group)
-        elif self.processbar and self.env.endswith('py'):
-            return tqdm(group)
         else:
             return group
 
-    def append(self, new_column:str, property_name:str, index:str=''):
+    def append(self, property_name:str, new_column:str='', index:str=''):
+        new_column = property_name if not new_column else new_column
         if new_column in self:
             return
         data = []
         loop = self.__loop__()
         for ticker in loop:
-            loop.set_description(f'Updating {new_column} {ticker} ... ')
+            if self.progressBar:
+                loop.set_description(f'Updating {new_column} {ticker} ... ')
+
             inst = getattr(self._equity_[ticker], property_name)
             if isinstance(inst, pd.Series):
                 data.append(inst[index])
@@ -90,62 +83,62 @@ class Market(pd.DataFrame):
         return
 
 
-    def __slot__(self):
-        tickers = [ticker for ticker in self.index if not ticker in self._slot_]
-        if not tickers:
-            return
+    # def __slot__(self):
+    #     tickers = [ticker for ticker in self.index if not ticker in self._slot_]
+    #     if not tickers:
+    #         return
+    #
+    #     __loop__ = self.__loop__(tickers)
+    #     for n, ticker in enumerate(__loop__):
+    #         if self.processbar:
+    #             __loop__.set_description(f"Initializing ...  {ticker}")
+    #         if ticker in self._slot_:
+    #             continue
+    #         self._slot_[ticker] = Equity(ticker, **self._kwargs_)
+    #         if not n % 20:
+    #             time.sleep(0.5)
+    #     return
 
-        __loop__ = self.__loop__(tickers)
-        for n, ticker in enumerate(__loop__):
-            if self.processbar:
-                __loop__.set_description(f"Initializing ...  {ticker}")
-            if ticker in self._slot_:
-                continue
-            self._slot_[ticker] = Equity(ticker, **self._kwargs_)
-            if not n % 20:
-                time.sleep(0.5)
-        return
+    # @staticmethod
+    # def __prop__(__obj, __prop:str):
+    #     props = __prop.split('.')
+    #     for _prop in props:
+    #         if not hasattr(__obj, _prop):
+    #             raise AttributeError(f'No Such attribute: {__prop}')
+    #         __obj = getattr(__obj, _prop)
+    #     return __obj
 
-    @staticmethod
-    def __prop__(__obj, __prop:str):
-        props = __prop.split('.')
-        for _prop in props:
-            if not hasattr(__obj, _prop):
-                raise AttributeError(f'No Such attribute: {__prop}')
-            __obj = getattr(__obj, _prop)
-        return __obj
-
-    def append(self, prop:str, column:str=''):
-        self.__slot__()
-
-        operand = ''
-        for optype in ['.iloc', '.loc', '.iat', '.at', '[']:
-            if optype in prop:
-                operand = optype
-                break
-
-        index = eval(prop[prop.find('[') + 1:prop.find(']')]) if operand else ''
-        prop = prop[:prop.find('(')] if ')' in prop else prop
-        data = []
-        __loop__ = self.__loop__()
-        for n, ticker in enumerate(__loop__):
-            if self.processbar:
-                __loop__.set_description(desc=f'{prop} ... {ticker}')
-            if len(self._slot_[ticker].ohlcv) < 126:
-                data.append(np.nan)
-                continue
-            _data = self.__prop__(self._slot_[ticker], prop)
-            if callable(_data):
-                _data = _data()
-            if operand:
-                _data = _data[index] if operand == '[' else getattr(_data, operand[1:])[index]
-            if isinstance(_data, pd.DataFrame) or isinstance(_data, pd.Series):
-                raise TypeError(f'Append new market data must be 1x1 single data format, Not dataframe or series')
-            data.append(_data)
-            if not n % 20:
-                time.sleep(0.5)
-        self[column if column else prop] = data
-        return
+    # def append(self, prop:str, column:str=''):
+    #     self.__slot__()
+    #
+    #     operand = ''
+    #     for optype in ['.iloc', '.loc', '.iat', '.at', '[']:
+    #         if optype in prop:
+    #             operand = optype
+    #             break
+    #
+    #     index = eval(prop[prop.find('[') + 1:prop.find(']')]) if operand else ''
+    #     prop = prop[:prop.find('(')] if ')' in prop else prop
+    #     data = []
+    #     __loop__ = self.__loop__()
+    #     for n, ticker in enumerate(__loop__):
+    #         if self.processbar:
+    #             __loop__.set_description(desc=f'{prop} ... {ticker}')
+    #         if len(self._slot_[ticker].ohlcv) < 126:
+    #             data.append(np.nan)
+    #             continue
+    #         _data = self.__prop__(self._slot_[ticker], prop)
+    #         if callable(_data):
+    #             _data = _data()
+    #         if operand:
+    #             _data = _data[index] if operand == '[' else getattr(_data, operand[1:])[index]
+    #         if isinstance(_data, pd.DataFrame) or isinstance(_data, pd.Series):
+    #             raise TypeError(f'Append new market data must be 1x1 single data format, Not dataframe or series')
+    #         data.append(_data)
+    #         if not n % 20:
+    #             time.sleep(0.5)
+    #     self[column if column else prop] = data
+    #     return
 
     def scatter(self, x:str, y:str):
         fig = make_subplots(
@@ -259,17 +252,16 @@ class Market(pd.DataFrame):
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
 
-    # indices = MetaData[MetaData['industry'] == 'WI26 반도체'].head(10)
-    indices = MetaData[MetaData['industry'] == 'WI26 반도체']
+    indices = MetaData[MetaData['industry'] == 'WI26 반도체'].head(10)
+    # indices = MetaData[MetaData['industry'] == 'WI26 반도체']
     # indices = ['AAPL', '']
 
-    bubble = Market(indices.index)
-    bubble.env = '.py'
-    # print(bubble)
+    bubble = Market(indices.index, progress=False)
+    print(bubble)
 
     # bubble.append('trend.strength()["3M"]', column='trendStrength3M')
     # bubble.append('trend.gaps()["1Y"]', column='trendGap1Y')
     # print(bubble)
 
     # bubble.scatter(x='trendStrength3M', y='trendGap1Y').show()
-    bubble.scatter(x='PBR', y='PER').show()
+    # bubble.scatter(x='PBR', y='PER').show()

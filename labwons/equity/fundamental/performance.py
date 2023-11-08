@@ -56,7 +56,7 @@ class performance(baseDataFrameChart):
         ]
         return buttons
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = Chart.r1c1sy1(x_title='기말')
         for n, obj in enumerate([self, self.Q]):
             for col in obj:
@@ -68,6 +68,10 @@ class performance(baseDataFrameChart):
                         col,
                         'barXY',
                         visible=False if n else True,
+                        marker=dict(
+                            color="#9BC2E6" if col == self.columns[1] else "#A9D08E" if col == self.columns[2] else None,
+                            opacity=0.85 if col == self.columns[0] else 1.0
+                        ),
                         meta=[int2won(x) for x in obj[col].dropna()],
                         texttemplate="%{meta}원",
                         hovertemplate=col + ": %{meta}원<extra></extra>"
@@ -85,6 +89,7 @@ class performance(baseDataFrameChart):
                     buttons=self.buttons
                 )
             ],
+            **kwargs
         )
         fig.update_yaxes(secondary_y=True, patch={"title": "EPS [원]"})
         fig.update_yaxes(secondary_y=False, patch={"title": "[억원]"})

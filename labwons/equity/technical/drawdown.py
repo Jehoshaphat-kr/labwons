@@ -45,7 +45,7 @@ class drawdown(baseDataFrameChart):
         slider = [dict(active=0, currentvalue=dict(prefix="Period: "), pad=dict(t=50), steps=steps)]
         return slider
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = Chart.r1c1nsy()
         for col in self:
             fig.add_trace(self(
@@ -58,7 +58,8 @@ class drawdown(baseDataFrameChart):
             ))
         fig.update_layout(
             title=f"<b>{self.subject}</b> :  Draw Down - {self.columns[0][0]}",
-            sliders=self.sliders
+            sliders=self.sliders,
+            **kwargs
         )
         fig.update_xaxes(rangeselector=None)
         fig.update_yaxes(zerolinewidth=1.8)

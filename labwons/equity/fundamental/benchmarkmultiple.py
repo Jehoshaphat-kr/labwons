@@ -21,7 +21,7 @@ class benchmarkmultiple(baseDataFrameChart):
         )
         return
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = Chart.r2c2nsy(
             subplot_titles=[col[0] for n, col in enumerate(self) if not n % 3],
             vertical_spacing=0.1,
@@ -41,7 +41,8 @@ class benchmarkmultiple(baseDataFrameChart):
 
         fig.update_layout(
             title=f"<b>{self.subject}</b> : {self.name}",
-            legend=dict(y=1.05)
+            legend=dict(y=1.05),
+            **kwargs
         )
         fig.update_yaxes(row=1, col=1, title='[-]')
         fig.update_yaxes(row=1, col=2, title='[-]')

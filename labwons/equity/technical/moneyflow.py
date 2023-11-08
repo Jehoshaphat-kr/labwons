@@ -120,7 +120,7 @@ class moneyflow(baseDataFrameChart):
         )
         return
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = Chart.r5c1nsy()
         fig.add_trace(row=1, col=1, trace=self.ref.ohlcv())
         fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='Vol.', showlegend=False, marker={"color": "grey"}))
@@ -132,7 +132,7 @@ class moneyflow(baseDataFrameChart):
         # fig.add_hrect(row=4, col=1, y0=0, y1=20, line_width=0, fillcolor='green', opacity=0.2)
         fig.add_trace(row=5, col=1, trace=self('obv', name='OBV', unit=''))
 
-        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
+        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}", **kwargs)
         fig.update_yaxes(row=1, col=1, patch={"title": f"[{self.unit}]"})
         fig.update_yaxes(row=2, col=1, patch={"title": f"Vol."})
         fig.update_yaxes(row=3, col=1, patch={"title": f"MFI [%]"})

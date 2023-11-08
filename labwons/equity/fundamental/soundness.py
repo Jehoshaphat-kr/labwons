@@ -57,10 +57,9 @@ class soundness(baseDataFrameChart):
         ]
         return buttons
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = Chart.r1c1sy1(x_title='기말')
         for n, obj in enumerate([self, self.Q]):
-        # for n, obj in enumerate([self]):
             visible = False if n else True
             for col in self.factors:
                 secondary_y = False
@@ -117,6 +116,7 @@ class soundness(baseDataFrameChart):
                     buttons=self.buttons
                 )
             ],
+            **kwargs
         )
         fig.update_yaxes(secondary_y=True, patch={"title": "부채율 [%]"})
         fig.update_yaxes(secondary_y=False, patch={"title": "[억원]"})

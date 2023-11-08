@@ -46,7 +46,7 @@ class foreigner(baseDataFrameChart):
         ]
         return buttons
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = Chart.r1c1sy1()
         for col in self:
             visible = True if col[0] == '3M' else False
@@ -70,6 +70,7 @@ class foreigner(baseDataFrameChart):
                     buttons=self.buttons
                 )
             ],
+            **kwargs
         )
         fig.update_yaxes(secondary_y=True, patch={"title": "외국인 비중 [%]"})
         fig.update_yaxes(secondary_y=False, patch={"title": "종가 [KRW]"})

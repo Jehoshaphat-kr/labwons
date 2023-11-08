@@ -170,11 +170,11 @@ class baseDataFrameChart(DataFrame):
         )
         return self._overwrite(go.Candlestick, trace, **kwargs)
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         pass
 
-    def show(self):
-        self.figure().show()
+    def show(self, **kwargs):
+        self.figure(**kwargs).show()
         return
 
     def save(self):

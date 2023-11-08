@@ -147,8 +147,7 @@ class Equity(fetch):
     """
     @property
     def multipleBand(self) -> multipleband:
-        # TODO
-        return
+        return self.__attr__('multipleband', multipleband)
 
     @property
     def benchmarkMultiple(self) -> benchmarkmultiple:

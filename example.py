@@ -80,10 +80,10 @@ equity = lw.Equity('058470', period=5)
 # equity.sma.save()
 
 """ ========== < TREND > ========== """
-print(equity.trend)
+# print(equity.trend)
 # print(equity.trend.disparate)
 # print(equity.trend.intensity)
-equity.trend.show()
+# equity.trend.show()
 # equity.trend.disparate.show()
 # equity.trend.save()
 # equity.trend.disparate.save()
@@ -199,13 +199,8 @@ equity.trend.show()
 # equity.benchmarkMultiple.save()
 
 """ ========== < Multiple Band > ========== """
-# print(equity.multipleBand)
-# print(equity.multipleBand._dataName_)
-# print(equity.multipleBand._ticker_)
-# print(equity.multipleBand._unit_)
-# print(equity.multipleBand._form_)
-# print(equity.multipleBand._path_)
-# equity.multipleBand.show()
+print(equity.multipleBand)
+equity.multipleBand.show()
 # equity.expense.save()
 
 """ ========== < Similarities > ========== """

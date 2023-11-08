@@ -53,7 +53,7 @@ class bollingerband(baseDataFrameChart):
         fig.add_trace(row=3, col=1, trace=self('width', name='Width', unit='%', form='.2f'))
         fig.add_trace(row=4, col=1, trace=self('pctb', name='%B', unit='', form='.2f'))
 
-        fig.update_layout(title=f"<b>{self.subject}</b> : BOLLINGER-BAND")
+        fig.update_layout(title=f"<b>{self.subject}</b> : BOLLINGER-BAND", **kwargs)
         fig.update_yaxes(row=1, col=1, patch={"title":f"[{self.unit}]"})
         fig.update_yaxes(row=2, col=1, patch={"title": f"Vol."})
         fig.update_yaxes(row=3, col=1, patch={"title": f"Width [%]"})

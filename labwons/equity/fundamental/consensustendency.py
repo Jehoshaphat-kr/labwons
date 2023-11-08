@@ -47,7 +47,7 @@ class consensustendency(baseDataFrameChart):
         ]
         return buttons
 
-    def figure(self, col:str='매출'):
+    def figure(self, col:str='매출', **kwargs):
         cols = [c for c in self if c.startswith(col)]
         if not cols:
             raise KeyError(f"Not Found {col} in columns, Possible column = ['매출', '영업이익', 'EPS', 'PER']")
@@ -75,6 +75,7 @@ class consensustendency(baseDataFrameChart):
                     buttons=self.buttons
                 )
             ],
+            **kwargs
         )
         fig.update_xaxes(title="전망 일자")
         fig.update_yaxes(title="[억원]" if col in ['매출', '영업이익'] else '[%]')

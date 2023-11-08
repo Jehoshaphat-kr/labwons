@@ -39,10 +39,10 @@ class sma(baseDataFrameChart):
         # DEPRECATED
         return
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = self.ref.ohlcv.figure()
         for col in self:
             if col.startswith('MA'):
                 fig.add_trace(row=1, col=1, trace=self(col, visible='legendonly', line={"dash": "dot", "width": 1.0}))
-        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
+        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}", **kwargs)
         return fig

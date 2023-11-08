@@ -48,7 +48,7 @@ class consensusprofit(baseDataFrameChart):
         ]
         return buttons
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = Chart.r1c1nsy()
         for n, obj in enumerate([self, self.Q]):
             for col in obj:
@@ -73,6 +73,7 @@ class consensusprofit(baseDataFrameChart):
                     buttons=self.buttons
                 )
             ],
+            **kwargs
         )
         fig.update_xaxes(title="기말")
         fig.update_yaxes(title="[억원]")

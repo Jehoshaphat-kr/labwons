@@ -154,7 +154,7 @@ class fnguide(object):
         src = self.__getattribute__('_band_src')
         header = pd.DataFrame(src[header])[['ID', 'NAME']].set_index(keys='ID')
         header = header.to_dict()['NAME']
-        header.update({'GS_YM': '날짜'})
+        header.update({'GS_YM': '날짜', 'PRICE': '종가'})
         data = pd.DataFrame(src['CHART'])
         data = data[header.keys()].replace('-', np.nan).replace('', np.nan)
         data['GS_YM'] = pd.to_datetime(data['GS_YM'])

@@ -61,7 +61,7 @@ class psar(baseDataFrameChart):
                 self._dns_.append(val.set_index(keys='date'))
         return self._dns_
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = Chart.r3c1nsy()
         fig.add_trace(row=1, col=1, trace=self.ref.ohlcv())
         fig.add_trace(row=1, col=1, trace=self.__tr__('up'))
@@ -70,7 +70,7 @@ class psar(baseDataFrameChart):
         fig.add_trace(row=1, col=1, trace=self.__tr__('*down'))
         fig.add_trace(row=2, col=1, trace=self.ref.ohlcv.v('barTY', name='Vol.', showlegend=False, marker={"color": "grey"}))
         fig.add_trace(row=3, col=1, trace=self('pct', unit='%', showlegend=False))
-        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
+        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}", **kwargs)
         fig.update_yaxes(row=1, col=1, title=f"[{self.unit}]")
         fig.update_yaxes(row=2, col=1, title="Vol.")
         fig.update_yaxes(row=3, col=1, title="Gap [%]", zerolinewidth=1.8)

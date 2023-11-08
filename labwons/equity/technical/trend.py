@@ -30,14 +30,14 @@ class _disparate(baseDataFrameChart):
         )
         return
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = Chart.r2c3nsy(subplot_titles=self.columns)
         for name, row, col in (('A', 1, 1), ('5Y', 1, 2), ('2Y', 1, 3), ('1Y', 2, 1), ('6M', 2, 2), ('3M', 2, 3)):
             if self[name].dropna().empty:
                 fig.add_annotation(row=row, col=col, x=0.5, y=0.5, text="<b>No Data</b>", showarrow=False)
             else:
                 fig.add_trace(row=row, col=col, trace=self(name, 'barTY', showlegend=False, marker={"color":'grey'}))
-        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
+        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}", **kwargs)
         fig.update_yaxes(autorange=False, range=[1.1 * self.min().min(), 1.1 * self.max().max()])
         return fig
 
@@ -95,21 +95,25 @@ class trend(baseDataFrameChart):
     def disparate(self) -> baseDataFrameChart:
         return _disparate(data=self.copy(), subject=self.subject, path=self.path)
 
-    def figure(self) -> go.Figure:
+    def figure(self, **kwargs) -> go.Figure:
         fig = self.ref.ohlcv.figure()
         for col in self.columns[1:]:
-            kwargs = dict(
-                col=col,
-                visible='legendonly',
-                line=dict(
-                    color='black',
-                    dash='dash',
-                    width=0.8
+            fig.add_trace(
+                row=1, col=1,
+                trace=self(
+                    **dict(
+                        col=col,
+                        visible='legendonly',
+                        line=dict(
+                            color='black',
+                            dash='dash',
+                            width=0.8
+                        )
+                    )
                 )
             )
-            fig.add_trace(row=1, col=1, trace=self(**kwargs))
 
-        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}")
+        fig.update_layout(title=f"<b>{self.subject}</b> : {self.name}", **kwargs)
         fig.update_xaxes(row=1, col=1, patch={
             "rangeselector": {
                 "buttons": [

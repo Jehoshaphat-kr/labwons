@@ -3,7 +3,7 @@
 .vscode
 *.pyc
 example.py
-example.ipynb
+note/ex.ipynb
 labwons.code-workspace
 
 

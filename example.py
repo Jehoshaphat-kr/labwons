@@ -48,14 +48,14 @@ TEST :: INDICATORS
 TEST :: EQUITIES
 """
 # ticker = random.sample(lw.MetaData.KRSTOCK.index.tolist(), 1)[0]
-ticker = '017670'
+# ticker = '017670'
 # equity = lw.Equity('QQQ', period=30)
 # equity = lw.Equity('252990')
 # equity = lw.Equity('005930', period=20)
 # equity = lw.Equity('000660', period=10)
 # equity = lw.Equity('012330', period=10)
-# equity = lw.Equity('058470', period=5)
-equity = lw.Equity(ticker, period=5)
+equity = lw.Equity('058470', period=5)
+# equity = lw.Equity(ticker, period=5)
 
 """ ========= < Description > =========="""
 # print(equity.description())
@@ -80,10 +80,10 @@ equity = lw.Equity(ticker, period=5)
 # equity.sma.save()
 
 """ ========== < TREND > ========== """
-# print(equity.trend)
+print(equity.trend)
 # print(equity.trend.disparate)
 # print(equity.trend.intensity)
-# equity.trend.show()
+equity.trend.show()
 # equity.trend.disparate.show()
 # equity.trend.save()
 # equity.trend.disparate.save()
@@ -110,7 +110,7 @@ equity = lw.Equity(ticker, period=5)
 
 """ ========== < PSAR > ========== """
 # print(equity.psar)
-equity.psar.show()
+# equity.psar.show()
 # equity.psar.save()
 # print(equity.psar.pctDown2Price())
 
@@ -128,6 +128,7 @@ equity.psar.show()
 # print(equity.performance)
 # print(equity.performance.Q)
 # equity.performance.show()
+# equity.performance.Q.save()
 # equity.performance.save()
 
 """ ========== < SOUNDNESS > ========== """
@@ -140,7 +141,7 @@ equity.psar.show()
 # print(equity.previousForeignRate)
 # print(equity.foreignRate)
 # equity.foreignRate.show()
-# equity.foreignHold.save()
+# equity.foreignRate.save()
 
 """ ========== < Consensus Price > ========== """
 # print(equity.consensusPrice)
@@ -195,7 +196,7 @@ equity.psar.show()
 """ ========== < Benchmark Multiples > ========== """
 # print(equity.benchmarkMultiple)
 # equity.benchmarkMultiple.show()
-# equity.expense.save()
+# equity.benchmarkMultiple.save()
 
 """ ========== < Multiple Band > ========== """
 # print(equity.multipleBand)

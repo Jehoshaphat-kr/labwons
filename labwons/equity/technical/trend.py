@@ -63,6 +63,7 @@ class trend(baseDataFrameChart):
             unit=base.currency,
             ref=base
         )
+        self["C"] = tp[-1]
         return
 
     @staticmethod

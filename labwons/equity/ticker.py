@@ -26,35 +26,35 @@ class _ticker(object):
             kwargs.update(MetaData.loc[ticker].to_dict())
 
         self._valid_prop = {
-            "ticker": None,  # Metadata
-            "name": None,  # Metadata
-            "quoteType": None,  # Metadata
-            "country": None,  # Metadata
-            "exchange": None,  # Metadata
-            "currency": None,  # Metadata
-            "shortName": None,  # Metadata
-            "longName": None,  # Metadata
-            "korName": None,  # Metadata
-            "sector": None,  # Metadata
-            "industry": None,  # Metadata
-            "benchmarkTicker": None,  # Metadata
-            "benchmarkName": None,  # Metadata
-            "previousClose": None,
-            "fiftyTwoWeekLow": None,
-            "fiftyTwoWeekHigh": None,
-            "targetPrice": None,
-            "marketCap": None,
-            "shares": None,
-            "floatShares": None,
-            "volume": None,
-            "previousForeignRate": None,
-            "dividendYield": None,
-            "businessSummary": None,
-            "beta": None,
-            "trailingPE": None,
-            "forwardPE": None,
-            "priceToBook": None,
-            "pegRatio": None,
+            "ticker": np.nan,  # Metadata
+            "name": np.nan,  # Metadata
+            "quoteType": np.nan,  # Metadata
+            "country": np.nan,  # Metadata
+            "exchange": np.nan,  # Metadata
+            "currency": np.nan,  # Metadata
+            "shortName": np.nan,  # Metadata
+            "longName": np.nan,  # Metadata
+            "korName": np.nan,  # Metadata
+            "sector": np.nan,  # Metadata
+            "industry": np.nan,  # Metadata
+            "benchmarkTicker": np.nan,  # Metadata
+            "benchmarkName": np.nan,  # Metadata
+            "previousClose": np.nan,
+            "fiftyTwoWeekLow": np.nan,
+            "fiftyTwoWeekHigh": np.nan,
+            "targetPrice": np.nan,
+            "marketCap": np.nan,
+            "shares": np.nan,
+            "floatShares": np.nan,
+            "volume": np.nan,
+            "previousForeignRate": np.nan,
+            "dividendYield": np.nan,
+            "businessSummary": np.nan,
+            "beta": np.nan,
+            "trailingPE": np.nan,
+            "forwardPE": np.nan,
+            "priceToBook": np.nan,
+            "pegRatio": np.nan,
             "path": '',
         }
 
@@ -238,15 +238,21 @@ class _ticker(object):
             return np.nan
         return round(100 * (self.previousClose / self.targetPrice - 1), 2)
 
-    def description(self) -> pd.Series:
-        series = pd.Series(data=self._valid_prop)
-        series['ticker'] = self.ticker
-        if not self.exchange in ['FRED', 'OECD', 'ECOS']:
-            series['floatSharesRate'] = self.floatSharesRate
-            series['gapFiftyTwoWeekHigh'] = self.fiftyTwoWeekHighRatio
-            series['gapFiftyTwoWeekLow'] = self.fiftyTwoWeekLowRatio
-            series['gapTargetPrice'] = self.targetPriceRatio
-        return series
+    def describe(self, mode:str="dict") -> Union[pd.Series, pd.DataFrame, dict]:
+        data = self._valid_prop.copy()
+        data.update({
+            "ticker": self.ticker,
+            'floatSharesRate': self.floatSharesRate,
+            'gapFiftyTwoWeekHigh': self.fiftyTwoWeekHighRatio,
+            'gapFiftyTwoWeekLow': self.fiftyTwoWeekLowRatio,
+            'gapTargetPrice': self.targetPriceRatio
+        })
+        if mode == "series":
+            return pd.Series(data=data)
+        elif mode == "dataframe":
+            return pd.DataFrame(data=data, index=[self.name])
+        else:
+            return data
 
 
 if __name__ == "__main__":
@@ -263,7 +269,7 @@ if __name__ == "__main__":
     # tester = _ticker('142210')
     # tester = _ticker('PDOT.U')
 
-    print(tester.description())
+    print(tester.describe())
     # print(tester.name)
     # print(tester.exchange)
     # print(tester.quote)
@@ -287,4 +293,4 @@ if __name__ == "__main__":
     # for sample in samples:
     #     print(f'\n{sample}', "=" * 75)
     #     stock = _ticker(sample)
-    #     print(stock.description())
+    #     print(stock.describe())

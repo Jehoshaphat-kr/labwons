@@ -139,7 +139,7 @@ equity = lw.Equity('000660', period=10)
 
 """ ========== < PER > ========== """
 print(equity.per)
-# equity.per.show()
+equity.per.show()
 
 """ ========== < Foreign Rate > ========== """
 # print(equity.previousForeignRate)

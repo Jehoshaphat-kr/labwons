@@ -32,8 +32,7 @@ class naver(object):
         :return:
         """
         src, _ = map(str, self._tables[8].columns[-1].split('l'))
-        per = re.findall(r'\d+\.\d+', src)
-        return float(per[0]) if per else np.nan
+        return np.nan if src.startswith('N/A') else float(src.replace('배', '').replace(' ', ''))
 
     @property
     def trailingEps(self) -> int:
@@ -51,8 +50,8 @@ class naver(object):
         :return:
         """
         src, _ = map(str, self._tables[8].iloc[0].values[-1].split('l'))
-        per = re.findall(r'\d+\.\d+', src)
-        return float(per[0]) if per else np.nan
+        per = np.nan if src.startswith('N/A') else float(src.replace('배', '').replace(' ', ''))
+        return np.nan if per < 0 else per
 
     @property
     def estimateEps(self) -> int:
@@ -97,10 +96,10 @@ if __name__ == "__main__":
     # ticker = '102780' # KODEX 삼성그룹
 
     nav = naver(ticker)
-    print(nav.trailingPE)
-    print(nav.trailingEps)
-    print(nav.estimatePE)
-    print(nav.estimateEps)
-    print(nav.trailingDate)
-    print(nav.estimateDate)
+    # print(nav.trailingPE)
+    # print(nav.trailingEps)
+    # print(nav.estimatePE)
+    # print(nav.estimateEps)
+    # print(nav.trailingDate)
+    # print(nav.estimateDate)
     # print(nav.similarity)

@@ -15,6 +15,7 @@ from labwons.equity.fundamental.soundness import soundness
 from labwons.equity.fundamental.foreigner import foreigner
 from labwons.equity.fundamental.consensusprice import consensusprice
 from labwons.equity.fundamental.consensusprofit import consensusprofit
+from labwons.equity.fundamental.per import per
 from labwons.equity.fundamental.consensustendency import consensustendency
 from labwons.equity.fundamental.short import short
 from labwons.equity.fundamental.products import products
@@ -131,6 +132,10 @@ class Equity(fetch):
     @property
     def soundness(self) -> soundness:
         return self.__attr__('soundness', soundness)
+
+    @property
+    def per(self) -> per:
+        return self.__attr__('per', per)
 
     @property
     def products(self) -> products:

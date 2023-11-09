@@ -38,8 +38,8 @@ class metadata(pd.DataFrame):
     ]
     def __init__(self):
         data = pd.read_csv(
-            # "https://raw.githubusercontent.com/Jehoshaphat-kr/labwons/master/labwons/common/metadata/metadata.csv"
-            os.path.join(os.path.dirname(__file__), r'metadata.csv'),
+            "https://raw.githubusercontent.com/Jehoshaphat-kr/labwons/master/labwons/common/metadata/metadata.csv",
+            # os.path.join(os.path.dirname(__file__), r'metadata.csv'),
             encoding='utf-8',
             index_col='ticker'
         )

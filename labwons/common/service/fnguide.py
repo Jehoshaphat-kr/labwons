@@ -42,24 +42,21 @@ class fnguide(object):
         self.fiftyTwoWeekLow = str2num(xml.find('low52week').text)
         self.fiftyTwoWeekHigh = str2num(xml.find('high52week').text)
         self.dividendYield = np.nan
-        self.trailingPE = np.nan
-        self.forwardPE = np.nan
+        self.trailingPE = np.nan # 직전 연말 결산 EPS / 어제 종가
+        self.forwardPE = np.nan  # 12개월 선행 EPS / 어제 종가
+        self.sectorPE = np.nan
         self.priceToBook = np.nan
         try:
             header = [val for val in page.find('div', id='corp_group2').text.split('\n') if val]
             forwardPE = header[header.index('12M PER') + 1]
-            try:
-                self.dividendYield = float(header[header.index('배당수익률') + 1].replace('%', ''))
-            except ValueError:
-                pass
-            try:
-                self.trailingPE = float(header[header.index('PER') + 1])
-            except ValueError:
-                pass
-            try:
-                self.forwardPE = np.nan if '-' in forwardPE else float(forwardPE)
-            except ValueError:
-                pass
+            try: self.dividendYield = float(header[header.index('배당수익률') + 1].replace('%', ''))
+            except ValueError: pass
+            try: self.trailingPE = float(header[header.index('PER') + 1])
+            except ValueError: pass
+            try: self.forwardPE = np.nan if '-' in forwardPE else float(forwardPE)
+            except ValueError: pass
+            try: self.sectorPE = float(header[header.index('업종 PER') + 1])
+            except ValueError: pass
             self.priceToBook = float(header[header.index('PBR') + 1])
         except AttributeError:
             self.dividendYield = float(page.find_all('td', class_='r cle')[-1].text)
@@ -687,7 +684,7 @@ if __name__ == "__main__":
     # print(guide.consensusQuarterProfit)
     # print(guide.consensusThisYear)
     # print(guide.consensusNextYear)
-    print(guide.benchmarkMultiples)
+    # print(guide.benchmarkMultiples)
     # print(guide.perBand)
     # print(guide.pbrBand)
     # print(guide.shortRatio)

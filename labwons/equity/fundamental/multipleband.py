@@ -14,7 +14,7 @@ class multipleband(baseDataFrameChart):
         :return:
 
         """
-        src = getattr(base, '_serv')
+        src = getattr(base, '_fnguide')
         self.PBR = baseDataFrameChart(src.pbrBand)
         super().__init__(
             data=src.perBand,

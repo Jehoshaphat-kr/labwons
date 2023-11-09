@@ -8,7 +8,7 @@ class consensusprice(baseDataFrameChart):
 
     def __init__(self, base: fetch):
         super().__init__(
-            data=getattr(base, '_serv').consensus,
+            data=getattr(base, '_fnguide').consensus,
             name='CONSENSUS - PRICE',
             subject=f"{base.name}({base.ticker})",
             path=base.path,

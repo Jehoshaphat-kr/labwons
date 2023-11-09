@@ -12,7 +12,7 @@ class benchmarkmultiple(baseDataFrameChart):
     ]
     def __init__(self, base:fetch):
         super().__init__(
-            data=getattr(base, '_serv').benchmarkMultiples,
+            data=getattr(base, '_fnguide').benchmarkMultiples,
             name='BENCHMARK - MULTIPLES',
             subject=f"{base.name}({base.ticker})",
             path=base.path,

@@ -14,7 +14,7 @@ class consensustendency(baseDataFrameChart):
     }
     N = pd.DataFrame()
     def __init__(self, base: fetch):
-        self.N = baseDataFrameChart(getattr(base, '_serv').consensusNextYear)
+        self.N = baseDataFrameChart(getattr(base, '_fnguide').consensusNextYear)
         super().__init__(
             data=getattr(base, '_serv').consensusThisYear,
             name='CONSENSUS - TENDENCY',

@@ -14,7 +14,7 @@ class performance(baseDataFrameChart):
         Performance
         :return:
         """
-        src = getattr(base, '_serv')
+        src = getattr(base, '_fnguide')
         annualOverview = src.annualOverview
         quarterOverview = src.quarterOverview
 

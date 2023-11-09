@@ -21,7 +21,7 @@ class soundness(baseDataFrameChart):
         Soundness
         :return:
         """
-        src = getattr(base, '_serv')
+        src = getattr(base, '_fnguide')
         annual = src.annualOverview[self.factors]
         self.Q = baseDataFrameChart(src.quarterOverview[self.factors])
         super().__init__(

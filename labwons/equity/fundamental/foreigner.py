@@ -7,7 +7,7 @@ from plotly import graph_objects as go
 class foreigner(baseDataFrameChart):
     def __init__(self, base:fetch):
         super().__init__(
-            data=getattr(base, '_serv').foreignRate,
+            data=getattr(base, '_fnguide').foreignRate,
             name='FOREIGN-RATE',
             subject=f"{base.name}({base.ticker})",
             path=base.path,

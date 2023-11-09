@@ -1,6 +1,7 @@
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.config import PATH
 from labwons.common.service.fnguide import fnguide
+from labwons.common.service.naver import naver
 from typing import Union
 import yfinance as yf
 import pandas as pd
@@ -66,12 +67,13 @@ class _ticker(object):
         if self._valid_prop['exchange'].upper() in ['FRED', 'OECD', 'ECOS']:
             return
 
-        self._serv = None
+        self._fnguide, self._naver = None, None
         if self._valid_prop['country'].upper() == 'KOR' or self._valid_prop['exchange'].startswith('KO'):
-            self._serv = srv = fnguide(ticker)
+            self._fnguide = _fnguide = fnguide(ticker)
+            self._naver = naver(ticker)
             for prop in self._valid_prop:
-                if hasattr(srv, prop):
-                    self._valid_prop[prop] = getattr(srv, prop)
+                if hasattr(_fnguide, prop):
+                    self._valid_prop[prop] = getattr(_fnguide, prop)
         else:
             try:
                 info = yf.Ticker(self.ticker).info      # [dict]
@@ -262,14 +264,15 @@ if __name__ == "__main__":
 
     # tester = _ticker('LTPZ', exchange='NYSE')
     # tester = _ticker('QQQ')
-    tester = _ticker('AAPL')
+    # tester = _ticker('AAPL')
     # tester = _ticker('058470')
     # tester = _ticker('457690')
     # tester = _ticker('383310')
     # tester = _ticker('142210')
     # tester = _ticker('PDOT.U')
+    tester = _ticker('005930')
 
-    print(tester.describe())
+    # print(tester.describe())
     # print(tester.name)
     # print(tester.exchange)
     # print(tester.quote)
@@ -281,6 +284,7 @@ if __name__ == "__main__":
     # print(tester.fiftyTwoWeekHigh)
     # print(tester.fiftyTwoWeekLow)
     # print(tester.dividendYield)
+    print(tester.forwardPE)
     # print(tester.beta)
     # print(tester.shares)
     # print(tester.sharesFloat)

@@ -52,9 +52,9 @@ TEST :: EQUITIES
 # equity = lw.Equity('QQQ', period=30)
 # equity = lw.Equity('252990')
 # equity = lw.Equity('005930', period=20)
-# equity = lw.Equity('000660', period=10)
+equity = lw.Equity('000660', period=10)
 # equity = lw.Equity('012330', period=10)
-equity = lw.Equity('058470', period=5)
+# equity = lw.Equity('058470', period=5)
 # equity = lw.Equity(ticker, period=5)
 
 """ ========= < Description > =========="""
@@ -137,6 +137,10 @@ equity = lw.Equity('058470', period=5)
 # equity.soundness.show()
 # equity.soundness.save()
 
+""" ========== < PER > ========== """
+print(equity.per)
+# equity.per.show()
+
 """ ========== < Foreign Rate > ========== """
 # print(equity.previousForeignRate)
 # print(equity.foreignRate)
@@ -199,8 +203,8 @@ equity = lw.Equity('058470', period=5)
 # equity.benchmarkMultiple.save()
 
 """ ========== < Multiple Band > ========== """
-print(equity.multipleBand)
-equity.multipleBand.show()
+# print(equity.multipleBand)
+# equity.multipleBand.show()
 # equity.expense.save()
 
 """ ========== < Similarities > ========== """

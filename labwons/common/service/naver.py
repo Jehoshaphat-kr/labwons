@@ -41,7 +41,7 @@ class naver(object):
         :return:
         """
         _, src = map(str, self._tables[8].columns[-1].split('l'))
-        return int(src.replace(',', '').replace('원', ''))
+        return int(src.replace(' ', '').replace('원', '').replace(',', ''))
 
     @property
     def estimatePE(self) -> float:
@@ -50,7 +50,7 @@ class naver(object):
         :return:
         """
         src, _ = map(str, self._tables[8].iloc[0].values[-1].split('l'))
-        per = np.nan if src.startswith('N/A') else float(src.replace('배', '').replace(' ', ''))
+        per = np.nan if 'N/A' in src else float(src.replace('배', '').replace(' ', ''))
         return np.nan if per < 0 else per
 
     @property
@@ -60,17 +60,7 @@ class naver(object):
         :return:
         """
         _, src = map(str, self._tables[8].iloc[0].values[-1].split('l'))
-        return int(src.replace(',', '').replace('원', ''))
-
-    @property
-    def trailingDate(self) -> datetime.date:
-        src = self._tables[8].columns[0]
-        ymd = datetime.strptime(src[src.index("(") + 1 : src.index(")")], "%Y.%m")
-        return ymd.date()
-
-    @property
-    def estimateDate(self) -> datetime.date:
-        return datetime(datetime.today().year, 12, 31).date()
+        return np.nan if 'N/A' in src else int(src.replace('원', '').replace(' ', '').replace(',', ''))
 
     @property
     def similarity(self) -> pd.DataFrame:
@@ -90,16 +80,14 @@ if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
 
     # ticker = '005930'
-    ticker = '000660' # SK하이닉스
+    # ticker = '000660' # SK하이닉스
     # ticker = '003800' # 에이스침대
-    # ticker = '058470' # 리노공업
+    ticker = '058470' # 리노공업
     # ticker = '102780' # KODEX 삼성그룹
 
     nav = naver(ticker)
-    # print(nav.trailingPE)
-    # print(nav.trailingEps)
-    # print(nav.estimatePE)
-    # print(nav.estimateEps)
-    # print(nav.trailingDate)
-    # print(nav.estimateDate)
+    print(nav.trailingPE)
+    print(nav.trailingEps)
+    print(nav.estimatePE)
+    print(nav.estimateEps)
     # print(nav.similarity)

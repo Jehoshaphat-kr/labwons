@@ -17,7 +17,7 @@ class consensusprofit(baseDataFrameChart):
     def __init__(self, base: fetch):
         self.Q = baseDataFrameChart(getattr(base, '_fnguide').consensusQuarterProfit)
         super().__init__(
-            data=getattr(base, '_serv').consensusAnnualProfit,
+            data=getattr(base, '_fnguide').consensusAnnualProfit,
             name='CONSENSUS - PROFIT',
             subject=f"{base.name}({base.ticker})",
             path=base.path,

@@ -143,6 +143,18 @@ class chart:
         fig.update_yaxes(patch=self.yaxis(), secondary_y=False)
         return fig
 
+    def r1c2nsy(self, **kwargs) -> go.Figure:
+        _kwargs_ = dict(
+            rows=1, cols=2,
+            specs=[[{"type": 'bar'}, {"type": "pie"}]]
+        )
+        _kwargs_.update(kwargs)
+        fig = make_subplots(**_kwargs_)
+        fig.update_layout(**self.layout(legend=self.legend()))
+        fig.update_xaxes(patch=self.xaxis(rangeselector=None))
+        fig.update_yaxes(patch=self.yaxis())
+        return fig
+
     def r2c1nsy(self, **kwargs) -> go.Figure:
         _kwargs_ = dict(
             rows=2, cols=1,

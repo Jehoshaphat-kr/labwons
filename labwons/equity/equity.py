@@ -139,13 +139,11 @@ class Equity(fetch):
 
     @property
     def products(self) -> products:
-        # TODO
-        return
+        return self.__attr__('products', products)
 
     @property
     def expense(self) -> expense:
-        # TODO
-        return
+        return self.__attr__('expense', expense)
 
     """
     MULTIPLES

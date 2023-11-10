@@ -50,9 +50,9 @@ TEST :: EQUITIES
 # ticker = random.sample(lw.MetaData.KRSTOCK.index.tolist(), 1)[0]
 # ticker = '017670'
 # equity = lw.Equity('QQQ', period=30)
-# equity = lw.Equity('252990')
+equity = lw.Equity('252990')
 # equity = lw.Equity('005930', period=20)
-equity = lw.Equity('000660', period=10)
+# equity = lw.Equity('000660', period=10)
 # equity = lw.Equity('012330', period=10)
 # equity = lw.Equity('058470', period=5)
 # equity = lw.Equity(ticker, period=5)
@@ -138,8 +138,13 @@ equity = lw.Equity('000660', period=10)
 # equity.soundness.save()
 
 """ ========== < PER > ========== """
-print(equity.per)
-equity.per.show()
+# print(equity.per)
+# equity.per.show()
+
+""" ========== < Products > ========== """
+# print(equity.products)
+# equity.products.show()
+# equity.products.save()
 
 """ ========== < Foreign Rate > ========== """
 # print(equity.previousForeignRate)
@@ -176,16 +181,6 @@ equity.per.show()
 # print(equity.short._path_)
 # equity.short.show()
 # equity.short.save()
-
-""" ========== < Products > ========== """
-# print(equity.products)
-# print(equity.products._dataName_)
-# print(equity.products._ticker_)
-# print(equity.products._unit_)
-# print(equity.products._form_)
-# print(equity.products._path_)
-# equity.products.show()
-# equity.products.save()
 
 """ ========== < Expenses > ========== """
 # print(equity.expense)

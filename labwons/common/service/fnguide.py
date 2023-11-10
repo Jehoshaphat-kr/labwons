@@ -192,7 +192,7 @@ class fnguide(object):
         data = data.set_index(keys=[data.columns[0]])
         data = data.drop(columns=[col for col in data if not col.startswith('20')])
         data.index.name = None
-        data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/최근"]
+        data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/{int(data.columns[-1][-2:])//3}Q"]
         data.index = [
             i.replace('계산에 참여한 계정 펼치기', '').replace('(', '').replace(')', '').replace('*', '') for i in data.index
         ]
@@ -236,7 +236,7 @@ class fnguide(object):
 
     @property
     def annualProducts(self) -> pd.DataFrame:
-        url = f"http://cdn.fnguide.com/SVO2//json/chart/02/chart_A{ticker}_01_N.json"
+        url = f"http://cdn.fnguide.com/SVO2//json/chart/02/chart_A{self._t}_01_N.json"
         src = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'), strict=False)
         header = pd.DataFrame(src['chart_H'])[['ID', 'NAME']].set_index(keys='ID').to_dict()['NAME']
         header.update({'PRODUCT_DATE': '기말'})
@@ -286,6 +286,14 @@ class fnguide(object):
 
     @property
     def annualProfitLoss(self) -> pd.DataFrame:
+        """
+        :return:
+                 매출액 매출원가 매출총이익 판매비와관리비 영업이익 금융수익 금융원가 기타수익 기타비용 ... 당기순이익
+        2020/12  319004   210898     108106          57980    50126    33279    19804      848     1716 ...      47589
+        2021/12  429978   240456     189522   		 65419   124103    23775    14699     1161     1804 ...      96162
+        2022/12  446216   289937     156279  		 88184    68094    37143    50916     2414    18019 ...      22417
+        2023/2Q  123940   152172     -28231  		 34613   -62844    15203    25144      261      739 ...     -55734
+        """
         return self._finance(self.__html__('SVD_Finance', self.__hold__())[0])
 
     @property
@@ -640,8 +648,8 @@ class fnguide(object):
 
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
-    ticker = '005930'
-    # ticker = '000660' # SK하이닉스
+    # ticker = '005930'
+    ticker = '000660' # SK하이닉스
     # ticker = '003800' # 에이스침대
     # ticker = '058470' # 리노공업
     # ticker = '102780' # KODEX 삼성그룹
@@ -666,7 +674,7 @@ if __name__ == "__main__":
     # print(guide.annualExpenses)
     # print(guide.annualSalesShares)
     # print(guide.annualHolders)
-    # print(guide.annualProfitLoss)
+    print(guide.annualProfitLoss)
     # print(guide.annualAsset)
     # print(guide.annualCashFlow)
     # print(guide.annualGrowthRate)

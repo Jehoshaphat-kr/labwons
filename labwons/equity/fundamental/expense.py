@@ -1,84 +1,42 @@
 from labwons.common.basis import baseDataFrameChart
+from labwons.common.chart import Chart
+from labwons.common.service.tools import int2won
 from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
-from plotly.offline import plot
-from plotly.subplots import make_subplots
 import pandas as pd
 
 
 class expense(baseDataFrameChart):
-    def __init__(self, base:fetch):
-        """
-        Expenses
-        :return:
-        """
-        _columns = {
-            'R&D 투자 총액 / 매출액 비중.1': 'R&D투자비중',
-            '무형자산 처리 / 매출액 비중.1': '무형자산처리비중',
-            '당기비용 처리 / 매출액 비중.1': '당기비용처리비중'
-        }
-        url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Corp.asp?" \
-              f"pGB=1&gicode=A{base.ticker}&cID=&MenuYn=Y&ReportGB=&NewMenuID=102&stkGb=701"
-        html = pd.read_html(url, header=0)
+    colors = {
+        "매출액": "#9BC2E6",
+        "매출원가": "#9BC2E6",
+        "판매비와관리비": "#9BC2E6",
+        "영업이익": "#9BC2E6",
+        "금융수익": "#9BC2E6",
+        "금융원가": "#9BC2E6",
+        "기타수익": "#9BC2E6",
+        "기타비용": "#9BC2E6",
+    #     "매출실적" : "#9BC2E6",
+    #     "매출전망" : "#BDD7EE",
+    #     "영업이익실적" : "#A9D08E",
+    #     "영업이익전망" : "#C6E0B4"
+    }
 
-        rnd = html[8].set_index(keys=['회계연도'])["R&D 투자 총액 / 매출액 비중.1"]
-        rnd.name = 'R&D투자비중'
-        if '관련 데이터가 없습니다.' in rnd.index:
-            rnd.drop(index=['관련 데이터가 없습니다.'], inplace=True)
-        basis = pd.concat(
-            objs=[
-                base.statement['영업이익률'],
-                html[4].set_index(keys=['항목']).T, # 매출원가율
-                html[5].set_index(keys=['항목']).T, # 판관비
-                rnd
-            ],
-            axis=1
-        ).sort_index(ascending=True).astype(float)
-        basis.index.name = '기말'
-        if len(basis.iloc[0].dropna()) <= 1:
-            basis = basis.drop(index=basis.index[0]).drop(index=[i for i in basis.index if '(' in i][1:])
-        super().__init__(basis, **getattr(base, '_valid_prop'))
-        self._base_ = base
-        self._filename_ = 'Expenses'
+    def __init__(self, base: fetch):
+        super().__init__(
+            data=getattr(base, '_fnguide').annualProfitLoss[[self.colors.values()]],
+            name='PROFIT EXPENSES',
+            subject=f"{base.name}({base.ticker})",
+            path=base.path,
+            unit='KRW',
+            ref=base
+        )
+        self["원가비율"] = 100 * self["매출원가"] / self["매출액"]
+        self["판관비율"] = 100 * self["판관비율"] / self["매출액"]
+        self["영업이익율"] = 100 * self["영업이익"] / self["매출액"]
         return
 
     def figure(self) -> go.Figure:
-        fig = make_subplots(
-            rows=2, cols=2,
-            subplot_titles=["Profit Rate", "Sales Cost Rate", "Sales and Management Cost Rate", "R&D Investment Rate"],
-            vertical_spacing=0.1,
-            horizontal_spacing=0.05,
-            x_title="기말",
-            y_title="[%]",
-        )
-        fig.add_traces(
-            data=[
-                self.linemarker("영업이익률", showlegend=False),
-                self.linemarker("매출원가율", showlegend=False),
-                self.linemarker("판관비율", showlegend=False),
-                self.linemarker("R&D투자비중", showlegend=False)
-            ],
-            rows=[1, 1, 2, 2],
-            cols=[1, 2, 1, 2]
-        )
-        fig.update_layout(
-            title=f"<b>{self._base_.name}({self._base_.ticker})</b> Profit Rate and Expenses",
-            plot_bgcolor='white',
-            legend=dict(
-                orientation="h",
-                xanchor="right",
-                yanchor="bottom",
-                x=1,
-                y=1.04
-            ),
-        )
-        fig.update_yaxes(
-            dict(
-                showgrid=True,
-                gridcolor='lightgrey',
-                zeroline=True,
-                zerolinewidth=0.5,
-                zerolinecolor='lightgrey'
-            )
-        )
+        fig = Chart.r1c2nsy()
+
         return fig

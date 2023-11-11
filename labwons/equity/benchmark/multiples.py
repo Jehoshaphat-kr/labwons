@@ -4,7 +4,7 @@ from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 
 
-class benchmarkmultiple(baseDataFrameChart):
+class multiples(baseDataFrameChart):
     colors = [
         'royalblue',
         "#9BC2E6",
@@ -29,7 +29,7 @@ class benchmarkmultiple(baseDataFrameChart):
         )
         for n, col in enumerate(self):
             unit = '' if col[0].startswith('PER') or col[0].startswith('EV') else '%'
-            kwargs = dict(
+            attr = dict(
                 col=col, style='barXY', drop=False,
                 name=col[1], marker=dict(color=self.colors[n % 3]), unit=unit,
                 showlegend=True if n < 3 else False, legendgroup=col[1],
@@ -37,11 +37,11 @@ class benchmarkmultiple(baseDataFrameChart):
             )
             row = 1 if col[0].startswith('PER') or col[0].startswith('EV') else 2
             col = 1 if col[0].startswith('PER') or col[0].startswith('ROE') else 2
-            fig.add_trace(row=row, col=col, trace=self(**kwargs))
+            fig.add_trace(row=row, col=col, trace=self(**attr))
 
         fig.update_layout(
             title=f"<b>{self.subject}</b> : {self.name}",
-            legend=dict(y=1.05),
+            legend=dict(y=1.025),
             **kwargs
         )
         fig.update_yaxes(row=1, col=1, title='[-]')

@@ -1,9 +1,12 @@
-from labwons.common.service.tools import int2won
-from plotly import graph_objects as go
+from labwons.common.basis import baseDataFrameChart
+from labwons.common.chart import Chart
+from labwons.equity.fetch import fetch
+from datetime import timedelta
+import plotly.graph_objects as go
 import pandas as pd
 
 
-class similarity(pd.DataFrame):
+class similarities(baseDataFrameChart):
     colors = [
         'royalblue',
         'green',
@@ -13,19 +16,18 @@ class similarity(pd.DataFrame):
         'navy'
     ]
 
-    def __init__(self, simMatrix:pd.DataFrame):
-        simMatrix = simMatrix.drop(columns=['조정영업이익(억)'])
-        super().__init__(
-            index=simMatrix.index,
-            columns=simMatrix.columns,
-            data=simMatrix.values
+    def __init__(self, base: fetch):
+        super(similarities, self).__init__(
+            data=getattr(base, '_naver').similarities,
+            name="BENCHMARK - Returns",
+            subject=f"{base.name}({base.ticker})",
+            path=base.path,
+            form='.2f',
+            unit='%',
+            ref=base
         )
-        self.index.name = '종목코드'
         return
 
-    def __call__(self):
-        self.figure().show()
-        return
     @staticmethod
     def _buttonVisibility(col:str, data:list):
         visible = list()

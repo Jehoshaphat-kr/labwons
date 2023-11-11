@@ -6,7 +6,7 @@ from plotly import graph_objects as go
 import pandas as pd
 
 
-class consensusprofit(baseDataFrameChart):
+class profitestimate(baseDataFrameChart):
     colors = {
         "매출실적" : "#9BC2E6",
         "매출전망" : "#BDD7EE",

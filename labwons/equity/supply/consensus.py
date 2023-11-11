@@ -4,7 +4,7 @@ from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
 
 
-class consensusprice(baseDataFrameChart):
+class consensus(baseDataFrameChart):
 
     def __init__(self, base: fetch):
         super().__init__(

@@ -17,7 +17,7 @@ class products(baseDataFrameChart):
         return
 
     def figure(self, **kwargs) -> go.Figure:
-        fig = Chart.r1c2nsy(subplot_titles=["연간", "최근"])
+        fig = Chart.r1c2nsy(specs=[[{"type": 'bar'}, {"type": "pie"}]], subplot_titles=["연간", "최근"])
         for col in self:
             fig.add_trace(
                 trace=self(

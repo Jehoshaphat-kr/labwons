@@ -50,9 +50,9 @@ TEST :: EQUITIES
 # ticker = random.sample(lw.MetaData.KRSTOCK.index.tolist(), 1)[0]
 # ticker = '017670'
 # equity = lw.Equity('QQQ', period=30)
-equity = lw.Equity('252990')
+# equity = lw.Equity('252990')
 # equity = lw.Equity('005930', period=20)
-# equity = lw.Equity('000660', period=10)
+equity = lw.Equity('000660', period=10)
 # equity = lw.Equity('012330', period=10)
 # equity = lw.Equity('058470', period=5)
 # equity = lw.Equity(ticker, period=5)
@@ -131,6 +131,11 @@ equity = lw.Equity('252990')
 # equity.performance.Q.save()
 # equity.performance.save()
 
+""" ========== < Expenses > ========== """
+# print(equity.expense)
+# equity.expense.show()
+# equity.expense.save()
+
 """ ========== < SOUNDNESS > ========== """
 # print(equity.soundness)
 # print(equity.soundness.Q)
@@ -153,9 +158,9 @@ equity = lw.Equity('252990')
 # equity.foreignRate.save()
 
 """ ========== < Consensus Price > ========== """
-# print(equity.consensusPrice)
-# equity.consensusPrice.show()
-# equity.consensusPrice.save()
+# print(equity.consensus)
+# equity.consensus.show()
+# equity.consensus.save()
 
 """ ========== < Consensus Profit > ========== """
 # print(equity.consensusProfit)
@@ -182,19 +187,9 @@ equity = lw.Equity('252990')
 # equity.short.show()
 # equity.short.save()
 
-""" ========== < Expenses > ========== """
-# print(equity.expense)
-# print(equity.expense._dataName_)
-# print(equity.expense._ticker_)
-# print(equity.expense._unit_)
-# print(equity.expense._form_)
-# print(equity.expense._path_)
-# equity.expense.show()
-# equity.expense.save()
-
 """ ========== < Benchmark Multiples > ========== """
-# print(equity.benchmarkMultiple)
-# equity.benchmarkMultiple.show()
+# print(equity.benchmarkMultiples)
+# equity.benchmarkMultiples.show()
 # equity.benchmarkMultiple.save()
 
 """ ========== < Multiple Band > ========== """
@@ -206,57 +201,3 @@ equity = lw.Equity('252990')
 # print(equity.similarities)
 # equity.similarities.figure().show()
 
-
-
-# print(lw.MetaData)
-# print(lw.MetaData[lw.MetaData['industry'] == 'WI26 반도체'])
-
-# print(equity.backtest)
-# print(equity.trend.backTestSignal())
-# equity.enddate = '20080130'
-# equity.trend.show()
-# equity.trend.show('flat')
-
-
-# signaled = equity.backtest.addSignal(
-    # equity.sma.goldenCross['longTerm']
-    # equity.trend.backTestSignal()
-# )
-# equity.backtest.figure('line').show()
-# equity.backtest.figure('box').show()
-# equity.backtest.figure('sig').show()
-# df = equity.backtest.evaluate()
-# print(df)
-
-# equity.trend.show()
-# import plotly.graph_objects as go
-#
-# backtest = pd.concat([equity.backtest['1Y'], equity.trend.backTest()], axis=1)
-# print(backtest)
-# print(backtest.sort_values(by='Score').dropna().head(10))
-# fig = go.Figure()
-# fig.add_trace(
-#     go.Scatter(
-#         x=backtest['Score'],
-#         y=backtest['Avg.Return'],
-#         mode='markers',
-#         meta=backtest.index,
-#         hovertemplate='%{meta:%Y/%m/%d}<br>%{y:.2f}%<extra></extra>'
-#     )
-# )
-# fig.show()
-
-
-# corr = Correlation(
-#     d1=Equity('316140'),
-#     d2=Indicator('121Y002', '저축성수신(금융채 제외) 1)')
-# )
-# equity = lw.Equity('105560')
-# rx = lw.Indicator('121Y002', '저축성수신(금융채 제외) 1)', name='수신금리', unit='%')
-# tx = lw.Indicator('121Y006', '대출평균 1)', name='여신금리', unit='%')
-# mg = lw.Indicator(series=(tx - rx), name='예대금리차', unit='%')
-# chart = lw.MultiChart(equity, rx, tx, mg)
-# kbfinance = lw.Equity('105560')
-# samsung = lw.Equity('005930')
-# chart = lw.MultiChart(kbfinance, samsung)
-# chart.show()

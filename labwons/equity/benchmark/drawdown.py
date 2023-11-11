@@ -6,20 +6,20 @@ import plotly.graph_objects as go
 import pandas as pd
 
 
-class benchmark(baseDataFrameChart):
+class drawdown(baseDataFrameChart):
 
-    def __init__(self, base: fetch):
+    def __init__(self, base:fetch):
         close = pd.concat(objs={base.name: base.ohlcv.c, base.benchmarkName: base.benchmark.close}, axis=1)
         objs = {}
         for yy in [5, 3, 2, 1, 0.5]:
             col = f"{yy}Y" if isinstance(yy, int) else f"{int(yy * 12)}M"
             date = close.index[-1] - timedelta(int(yy * 365))
             data = close[close.index >= date].dropna()
-            objs[col] = 100 * ((data.pct_change().fillna(0) + 1).cumprod() - 1)
+            objs[col] = 100 * (data - data.cummax()) / data.cummax()
 
-        super(benchmark, self).__init__(
+        super(drawdown, self).__init__(
             data=pd.concat(objs=objs, axis=1),
-            name="BENCHMARK",
+            name="BENCHMARK - DRAWDOWN",
             subject=f"{base.name}({base.ticker})",
             path=base.path,
             form='.2f',
@@ -38,7 +38,7 @@ class benchmark(baseDataFrameChart):
                 label=col[0],
                 args=[
                     dict(visible=[True if i in [n, n + 1] else False for i in range(len(self.columns))]),
-                    dict(title=f"<b>{self.subject}</b> :  Relative Returns - {col[0]}")
+                    dict(title=f"<b>{self.subject}</b> :  Draw Down - {col[0]}")
                 ]
             )
             steps.append(step)
@@ -57,11 +57,10 @@ class benchmark(baseDataFrameChart):
                 )
             ))
         fig.update_layout(
-            title=f"<b>{self.subject}</b> :  Relative Returns - {self.columns[0][0]}",
+            title=f"<b>{self.subject}</b> :  Draw Down - {self.columns[0][0]}",
             sliders=self.sliders,
             **kwargs
         )
         fig.update_xaxes(rangeselector=None)
-        fig.update_yaxes(zerolinewidth=1.8)
+        fig.update_yaxes(title="낙폭 [%]", zerolinewidth=1.8)
         return fig
-

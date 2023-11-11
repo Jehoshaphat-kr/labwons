@@ -5,7 +5,7 @@ from plotly import graph_objects as go
 import pandas as pd
 
 
-class multipleband(baseDataFrameChart):
+class perband(baseDataFrameChart):
 
     PBR = pd.DataFrame()
     def __init__(self, base:fetch):

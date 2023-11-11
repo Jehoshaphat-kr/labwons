@@ -145,8 +145,7 @@ class chart:
 
     def r1c2nsy(self, **kwargs) -> go.Figure:
         _kwargs_ = dict(
-            rows=1, cols=2,
-            specs=[[{"type": 'bar'}, {"type": "pie"}]]
+            rows=1, cols=2
         )
         _kwargs_.update(kwargs)
         fig = make_subplots(**_kwargs_)

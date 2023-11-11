@@ -2,27 +2,25 @@ from typing import Any
 from labwons.equity.fetch import fetch
 from labwons.equity.technical.trend import trend
 from labwons.equity.technical.sma import sma
-from labwons.equity.technical.benchmark import benchmark
-from labwons.equity.technical.drawdown import drawdown
+from labwons.equity.benchmark.performance import performance
+from labwons.equity.benchmark.drawdown import drawdown
 from labwons.equity.technical.bollingerband import bollingerband
 from labwons.equity.technical.rsi import rsi
 from labwons.equity.technical.moneyflow import moneyflow
 from labwons.equity.technical.psar import psar
 from labwons.equity.technical.macd import macd
-from labwons.equity.technical.backtest import backtest
-from labwons.equity.fundamental.performance import performance
+from labwons.equity.fundamental.profit import profit
 from labwons.equity.fundamental.soundness import soundness
-from labwons.equity.fundamental.foreigner import foreigner
-from labwons.equity.fundamental.consensusprice import consensusprice
-from labwons.equity.fundamental.consensusprofit import consensusprofit
+from labwons.equity.supply.foreigner import foreigner
+from labwons.equity.supply.consensus import consensus
+from labwons.equity.fundamental.profitestimate import profitestimate
 from labwons.equity.fundamental.per import per
-from labwons.equity.fundamental.consensustendency import consensustendency
-from labwons.equity.fundamental.short import short
+from labwons.equity.supply.shorts import shorts
 from labwons.equity.fundamental.products import products
-from labwons.equity.fundamental.expense import expense
-from labwons.equity.fundamental.multipleband import multipleband
-from labwons.equity.fundamental.benchmarkmultiple import benchmarkmultiple
-from labwons.equity.fundamental.similarity import similarity
+from labwons.equity.fundamental.profitexpenses import profitexpenses
+from labwons.equity.fundamental.perband import perband
+from labwons.equity.benchmark.multiples import multiples
+from labwons.equity.benchmark.similarities import similarities
 
 
 
@@ -53,17 +51,6 @@ class Equity(fetch):
     @property
     def trend(self) -> trend:
         return self.__attr__('trend', trend)
-
-    """
-    COMPARISON
-    """
-    @property
-    def benchmarkReturn(self) -> benchmark:
-        return self.__attr__('benchmarkreturn', benchmark)
-
-    @property
-    def drawDown(self) -> drawdown:
-        return self.__attr__('drawdown', drawdown)
 
     """
     VOLATILITY
@@ -105,29 +92,27 @@ class Equity(fetch):
         return self.__attr__('foreignrate', foreigner)
 
     @property
-    def consensusPrice(self) -> consensusprice:
-        return self.__attr__('consensusprice', consensusprice)
+    def consensus(self) -> consensus:
+        return self.__attr__('consensus', consensus)
 
     @property
-    def consensusProfit(self) -> consensusprofit:
-        return self.__attr__('consensusprofit', consensusprofit)
-
-    @property
-    def consensusTendency(self) -> consensustendency:
-        # TODO
-        return self.__attr__('consensustendency', consensustendency)
-
-    @property
-    def short(self) -> short:
-        # TODO
-        return
+    def shorts(self) -> shorts:
+        return self.__attr__('shorts', shorts)
 
     """
     FUNDAMENTALS
     """
     @property
-    def performance(self) -> performance:
-        return self.__attr__('performance', performance)
+    def profit(self) -> profit:
+        return self.__attr__('profit', profit)
+
+    @property
+    def profitEstimate(self) -> profitestimate:
+        return self.__attr__('profitestimate', profitestimate)
+
+    @property
+    def profitExpenses(self) -> profitexpenses:
+        return self.__attr__('profitexpenses', profitexpenses)
 
     @property
     def soundness(self) -> soundness:
@@ -138,29 +123,32 @@ class Equity(fetch):
         return self.__attr__('per', per)
 
     @property
+    def perBand(self) -> perband:
+        return self.__attr__('perband', perband)
+
+    @property
     def products(self) -> products:
         return self.__attr__('products', products)
 
-    @property
-    def expense(self) -> expense:
-        return self.__attr__('expense', expense)
-
     """
-    MULTIPLES
+    BENCHMARK
     """
     @property
-    def multipleBand(self) -> multipleband:
-        return self.__attr__('multipleband', multipleband)
+    def benchmarkReturns(self) -> performance:
+        return self.__attr__('benchmarkreturn', performance)
 
     @property
-    def benchmarkMultiple(self) -> benchmarkmultiple:
-        return self.__attr__('benchmarkmultiple', benchmarkmultiple)
+    def benchmarkDrawDowns(self) -> drawdown:
+        return self.__attr__('benchmarkdrawdown', drawdown)
+
+    @property
+    def benchmarkMultiples(self) -> multiples:
+        return self.__attr__('benchmarkmultiple', multiples)
 
     """
     ETC
     """
     @property
-    def similarities(self) -> similarity:
-        # TODO
-        return
+    def similarities(self) -> similarities:
+        return self.__attr__('similarities', similarities)
 

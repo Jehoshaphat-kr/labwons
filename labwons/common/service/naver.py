@@ -63,7 +63,7 @@ class naver(object):
         return np.nan if 'N/A' in src else int(src.replace('원', '').replace(' ', '').replace(',', ''))
 
     @property
-    def similarity(self) -> pd.DataFrame:
+    def similarities(self) -> pd.DataFrame:
         sim = self._tables[4]
         sim = sim.set_index(keys='종목명')
         sim = sim.drop(index=['전일대비'])
@@ -90,4 +90,4 @@ if __name__ == "__main__":
     print(nav.trailingEps)
     print(nav.estimatePE)
     print(nav.estimateEps)
-    # print(nav.similarity)
+    # print(nav.similarities)

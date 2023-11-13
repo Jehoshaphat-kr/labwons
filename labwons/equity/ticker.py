@@ -26,6 +26,7 @@ class _ticker(object):
         if ticker in MetaData.index:
             kwargs.update(MetaData.loc[ticker].to_dict())
 
+        self.language = kwargs['language'] if 'language' in kwargs else 'eng'
         self._valid_prop = {
             "ticker": np.nan,  # Metadata
             "name": np.nan,  # Metadata
@@ -82,7 +83,8 @@ class _ticker(object):
                     sharesOutstanding='shares',
                     trailingAnnualDividendRate='dividendYield',
                     targetMeanPrice='targetPrice',
-                    category='sector'
+                    category='sector',
+                    name='korName'
                 )
                 for k, v in matches.items():
                     if k in info:
@@ -100,6 +102,8 @@ class _ticker(object):
 
     @property
     def name(self) -> str:
+        if self.language == 'kor':
+            return self._valid_prop['korName']
         return self._valid_prop['name']
 
     @property

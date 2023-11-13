@@ -1,8 +1,6 @@
 from labwons.common.service.tools import stringDel
-from datetime import datetime
 import pandas as pd
 import numpy as np
-import re
 
 
 class naver(object):
@@ -64,6 +62,19 @@ class naver(object):
 
     @property
     def similarities(self) -> pd.DataFrame:
+        """
+        columns:
+            Index(['종목명', '현재가', '등락률', '시가총액(억)', '외국인비율(%)', '매출액(억)', '영업이익(억)',
+                   '조정영업이익(억)', '영업이익증가율(%)', '당기순이익(억)', '주당순이익(원)', 'ROE(%)', 'PER(%)',
+                   'PBR(배)']
+        :return:
+                    종목명  현재가 등락률 시가총액(억) 외국인비율(%)  매출액(억) 영업이익(억)  ...  PER(%) PBR(배)
+        058470    리노공업  143800  -1.57        21918         37.25         751          336  ...   21.69    4.35
+        005930    삼성전자   70600   0.14      4214666         53.21      600055         6685  ...   13.47    1.37
+        000660  SK하이닉스  132000   1.15       960963         52.59       73059       -28821  ...  -11.73    1.58
+        402340    SK스퀘어   48450   0.41        67336         45.29       -1274        -7345  ...   -3.64    0.43
+        042700  한미반도체   60200  -9.20        58598         12.38         491          112  ...   29.07   10.80
+        """
         sim = self._tables[4]
         sim = sim.set_index(keys='종목명')
         sim = sim.drop(index=['전일대비'])
@@ -86,8 +97,9 @@ if __name__ == "__main__":
     # ticker = '102780' # KODEX 삼성그룹
 
     nav = naver(ticker)
-    print(nav.trailingPE)
-    print(nav.trailingEps)
-    print(nav.estimatePE)
-    print(nav.estimateEps)
+    # print(nav.trailingPE)
+    # print(nav.trailingEps)
+    # print(nav.estimatePE)
+    # print(nav.estimateEps)
     # print(nav.similarities)
+    print(nav.similarities.columns)

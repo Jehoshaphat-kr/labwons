@@ -312,6 +312,15 @@ class fnguide(object):
     
     @property
     def annualProfitRate(self) -> pd.DataFrame:
+        """
+        :return:
+                 매출총이익율 세전계속사업이익률 영업이익률 EBITDA마진율    ROA    ROE   ROIC
+        2019/12          30.3                9.0       10.1         42.0    3.1    4.2    5.0
+        2020/12          33.9               19.6       15.7         46.4    7.0    9.5    7.4
+        2021/12          44.1               31.2       28.9         53.7   11.5   16.8   15.3
+        2022/12          35.0                9.0       15.3         47.0    2.2    3.6    5.5
+        2023/2Q         -22.8              -59.0      -50.7          6.3  -10.8  -18.5  -12.7
+        """
         data = self.__html__('SVD_FinanceRatio', self.__hold__())[0]
         index = data[data.columns[0]].tolist()
         return self._finance(data.iloc[index.index('수익성비율') + 1: index.index('활동성비율')])
@@ -675,10 +684,10 @@ if __name__ == "__main__":
     # print(guide.annualSalesShares)
     # print(guide.annualHolders)
     # print(guide.annualProfitLoss)
-    print(guide.annualAsset)
+    # print(guide.annualAsset)
     # print(guide.annualCashFlow)
     # print(guide.annualGrowthRate)
-    # print(guide.annualProfitRate)
+    print(guide.annualProfitRate)
     # print(guide.annualMultiples)
     # print(guide.quarterOverview)
     # print(guide.quarterProfitLoss)

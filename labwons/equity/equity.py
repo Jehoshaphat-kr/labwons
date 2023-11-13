@@ -2,26 +2,24 @@ from typing import Any
 from labwons.equity.fetch import fetch
 from labwons.equity.technical.trend import trend
 from labwons.equity.technical.sma import sma
-from labwons.equity.benchmark.performance import performance
-from labwons.equity.benchmark.drawdown import drawdown
 from labwons.equity.technical.bollingerband import bollingerband
 from labwons.equity.technical.rsi import rsi
 from labwons.equity.technical.moneyflow import moneyflow
 from labwons.equity.technical.psar import psar
 from labwons.equity.technical.macd import macd
 from labwons.equity.fundamental.profit import profit
-from labwons.equity.fundamental.soundness import soundness
-from labwons.equity.supply.foreigner import foreigner
-from labwons.equity.supply.consensus import consensus
 from labwons.equity.fundamental.profitestimate import profitestimate
-from labwons.equity.fundamental.per import per
-from labwons.equity.supply.shorts import shorts
-from labwons.equity.fundamental.products import products
 from labwons.equity.fundamental.profitexpenses import profitexpenses
+from labwons.equity.fundamental.soundness import soundness
+from labwons.equity.fundamental.per import per
 from labwons.equity.fundamental.perband import perband
+from labwons.equity.fundamental.products import products
+from labwons.equity.supply.foreigner import foreigner
+from labwons.equity.supply.shorts import shorts
+from labwons.equity.supply.consensus import consensus
+from labwons.equity.benchmark.performance import performance
+from labwons.equity.benchmark.drawdown import drawdown
 from labwons.equity.benchmark.multiples import multiples
-from labwons.equity.benchmark.similarities import similarities
-
 
 
 class Equity(fetch):
@@ -37,12 +35,6 @@ class Equity(fetch):
             else:
                 self.__setattr__(_attr, cls(self))
         return self.__getattribute__(_attr)
-
-    # @property
-    # def backtest(self) -> backtest:
-    #     if not self.__hasattr__(self._attr('backt')):
-    #         self.__setattr__(self._attr('backt'), backtest(self.ohlcv, **self._valid_prop))
-    #     return self.__getattribute__(self._attr('backt'))
 
     @property
     def sma(self) -> sma:
@@ -145,10 +137,10 @@ class Equity(fetch):
     def benchmarkMultiples(self) -> multiples:
         return self.__attr__('benchmarkmultiple', multiples)
 
-    """
-    ETC
-    """
-    @property
-    def similarities(self) -> similarities:
-        return self.__attr__('similarities', similarities)
-
+    # """
+    # ETC
+    # """
+    # @property
+    # def similarities(self) -> similarities:
+    #     return self.__attr__('similarities', similarities)
+    #

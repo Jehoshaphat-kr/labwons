@@ -36,15 +36,13 @@ class metadata(pd.DataFrame):
         'benchmarkTicker',
         'benchmarkName',
     ]
-    # def __init__(self):
-    #     data = pd.read_csv(
-    #         "https://raw.githubusercontent.com/Jehoshaphat-kr/labwons/master/labwons/common/metadata/metadata.csv",
-    #         # os.path.join(os.path.dirname(__file__), r'metadata.csv'),
-    #         encoding='utf-8',
-    #         index_col='ticker'
-    #     )
-    #     super().__init__(data=data.values, index=data.index, columns=data.columns)
-    #     return
+    def __init__(self):
+        data = pd.read_pickle(
+            # "https://github.com/Jehoshaphat-kr/labwons/raw/master/labwons/common/metadata/metadata.pkl"
+            os.path.join(os.path.dirname(__file__), r"metadata.pkl")
+        )
+        super().__init__(data=data.values, index=data.index, columns=data.columns)
+        return
 
     @property
     def API_STOCK_SYMBOL(self) -> str:
@@ -167,7 +165,6 @@ class metadata(pd.DataFrame):
             axis=0
         )[self._col]
         df = df[~df.index.duplicated(keep='last')]
-        df.to_csv(r'./metadata.csv', encoding='utf-8', index=True)
         df.to_pickle(r'./metadata.pkl')
         super().__init__(data=df.values, index=df.index, columns=df.columns)
         return
@@ -179,7 +176,7 @@ MetaData = metadata()
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
 
-    # print(MetaData)
+    print(MetaData)
     # print(MetaData.ECOS)
     # print(MetaData.FRED)
     # print(MetaData.OECD)
@@ -189,8 +186,8 @@ if __name__ == "__main__":
     # print(MetaData.USETF)
     # print(MetaData.KRSTOCKwMultiples)
 
-    MetaData.API_STOCK_SYMBOL = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
-    MetaData.API_ECOS = "CEW3KQU603E6GA8VX0O9"
-    MetaData.save()
+    # MetaData.API_STOCK_SYMBOL = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
+    # MetaData.API_ECOS = "CEW3KQU603E6GA8VX0O9"
+    # MetaData.save()
 
     # print(MetaData.index.value_counts())

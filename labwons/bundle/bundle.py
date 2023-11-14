@@ -55,10 +55,10 @@ class Bundle(object):
     def returns(self) -> performance:
         return performance(self._slots_, self.settings)
 
-    @property
-    def profitRate(self) -> _bars:
-        objs = [obj.annualProfitRate["영업이익률"] for e in self._slots_.values()]
-        return _bars(self._slots_, data=pd.)
+    # @property
+    # def profitRate(self) -> _bars:
+    #     objs = [obj.annualProfitRate["영업이익률"] for e in self._slots_.values()]
+    #     return _bars(self._slots_, data=pd.)
 
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)

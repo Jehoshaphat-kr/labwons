@@ -109,7 +109,7 @@ class fnguide(object):
                 "stkGb": "770"
             }
         }
-        if not page in pages or not hold in ['', 'D', 'B']:
+        if not page in pages or not hold in ['', 'D', 'B', 'A']:
             raise KeyError
         return self._u % (page, pages[page]["ReportGB"], pages[page]["NewMenuID"], pages[page]["stkGb"])
 
@@ -264,24 +264,43 @@ class fnguide(object):
 
     @property
     def annualSalesShares(self) -> pd.DataFrame:
-        data = self.__html__('SVD_Corp')[10 if self.__hold__() == 'D' else 11]
-        data = data[data.index.isin([0, len(data) - 1])]
-        data = data[[col for col in data if col.startswith('20')]]
-        values = []
-        for n in range(int(len(data.columns) / 2)):
-            value = data.iloc[-1][n * 2 : (n * 2) + 2]
-            value.name = value.index[0].replace('.', '/')
-            value.index = data.iloc[0][n * 2 : (n * 2) + 2]
-            values.append(value)
-        data = pd.concat(values, axis=1)
-        data.index.name = None
-        return data.T.fillna(0.0).astype(float)
+        """
+        :return:
+                        기타   드라마 판매   드라마 편성
+                  내수  수출   내수   수출    내수  수출
+        2020/12    NaN   NaN    NaN    NaN     NaN   NaN
+        2021/12    NaN   NaN    NaN    NaN     NaN   NaN
+        2022/12  97.20  2.80  23.40  76.60  100.00  0.00
+        """
+        src = self.__html__('SVD_Corp')[10 if self.__hold__() == 'D' else 11]
+        data = src[src.columns[1:]].set_index(keys=src.columns[1])
+        data = data.T.copy()
+        data.columns = [col.replace("\xa0", " ") for col in data.columns]
+        domestic = data[data[data.columns[0]] == "내수"].drop(columns=data.columns[0])
+        exported = data[data[data.columns[0]] == "수출"].drop(columns=data.columns[0])
+        domestic.index = exported.index = [i.replace('.1', '') for i in domestic.index]
+        domestic.columns.name = exported.columns.name = None
+        data = pd.concat(objs={"내수": domestic, "수출": exported}, axis=1)
+        # return data # 내수/수출 구분 우선 시
+
+        data = pd.concat(objs={(c[1], c[0]): data[c] for c in data}, axis=1)
+        return data[sorted(data.columns, key=lambda x: x[0])] # 상품 구분 우선 시
 
     @property
     def annualHolders(self) -> pd.DataFrame:
+        """
+        :return:
+                    최대주주등 10%이상주주 5%이상주주 임원 자기주식 우리사주조합
+        2021/01/01       56.03         NaN       6.26  NaN      NaN          NaN
+        2022/01/01       54.95         NaN       6.25  NaN      NaN          NaN
+        2023/01/01       54.79         NaN       6.25  NaN      NaN          NaN
+        2023/11/14       54.79         NaN       6.25  NaN      NaN          NaN
+        """
         data = self.__html__('SVD_Corp')[12]
         data = data.set_index(keys=[data.columns[0]])
         data.index.name = None
+        data.index = [col[:col.index("(") - 1] if "(" in col else col for col in data.index]
+        data.index = [i.replace(" ", "").replace("&nbsp;", "") for i in data.index]
         return data.T
 
     @property
@@ -297,12 +316,37 @@ class fnguide(object):
         return self._finance(self.__html__('SVD_Finance', self.__hold__())[0])
 
     @property
-    def annualAsset(self) -> pd.DataFrame:
-        return self._finance(self.__html__('SVD_Finance', self.__hold__())[2])
+    def annualInventory(self) -> pd.DataFrame:
+        """
+        :return:
+                재고자산
+        2020/12    49804
+        2021/12    54954
+        2022/12   103457
+        2023/2Q   112521
+        """
+        data = self._finance(self.__html__('SVD_Finance', 'A')[2])
+        return data[[c for c in data.columns if "재고" in c]].fillna(0).astype(int)
 
     @property
     def annualCashFlow(self) -> pd.DataFrame:
-        return self._finance(self.__html__('SVD_Finance', self.__hold__())[4])
+        """
+        :return:
+                 영업활동으로인한현금흐름 투자활동으로인한현금흐름 재무활동으로인한현금흐름 환율변동효과 기말현금및현금성자산
+        2020/12                    123146                  -118404                     2521         -563                29760
+        2021/12                    197976                  -223923                    44923         1843                50580
+        2022/12                    147805                  -178837                    28218         2005                49770
+        2023/2Q                     -6940                   -53509                    70579          508                60408
+        """
+        data = self._finance(self.__html__('SVD_Finance', self.__hold__())[4])
+        cols = [
+            "영업활동으로인한현금흐름",
+            "투자활동으로인한현금흐름",
+            "재무활동으로인한현금흐름",
+            "환율변동효과",
+            "기말현금및현금성자산"
+        ]
+        return data[cols].fillna(0).astype(int)
 
     @property
     def annualGrowthRate(self) -> pd.DataFrame:
@@ -662,6 +706,7 @@ if __name__ == "__main__":
     # ticker = '003800' # 에이스침대
     # ticker = '058470' # 리노공업
     # ticker = '102780' # KODEX 삼성그룹
+    # ticker = "253450" # 스튜디오드래곤
 
     guide = fnguide(ticker)
 
@@ -684,10 +729,10 @@ if __name__ == "__main__":
     # print(guide.annualSalesShares)
     # print(guide.annualHolders)
     # print(guide.annualProfitLoss)
-    # print(guide.annualAsset)
-    # print(guide.annualCashFlow)
+    # print(guide.annualInventory)
+    print(guide.annualCashFlow)
     # print(guide.annualGrowthRate)
-    print(guide.annualProfitRate)
+    # print(guide.annualProfitRate)
     # print(guide.annualMultiples)
     # print(guide.quarterOverview)
     # print(guide.quarterProfitLoss)

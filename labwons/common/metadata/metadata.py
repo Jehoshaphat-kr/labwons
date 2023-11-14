@@ -36,15 +36,15 @@ class metadata(pd.DataFrame):
         'benchmarkTicker',
         'benchmarkName',
     ]
-    def __init__(self):
-        data = pd.read_csv(
-            "https://raw.githubusercontent.com/Jehoshaphat-kr/labwons/master/labwons/common/metadata/metadata.csv",
-            # os.path.join(os.path.dirname(__file__), r'metadata.csv'),
-            encoding='utf-8',
-            index_col='ticker'
-        )
-        super().__init__(data=data.values, index=data.index, columns=data.columns)
-        return
+    # def __init__(self):
+    #     data = pd.read_csv(
+    #         "https://raw.githubusercontent.com/Jehoshaphat-kr/labwons/master/labwons/common/metadata/metadata.csv",
+    #         # os.path.join(os.path.dirname(__file__), r'metadata.csv'),
+    #         encoding='utf-8',
+    #         index_col='ticker'
+    #     )
+    #     super().__init__(data=data.values, index=data.index, columns=data.columns)
+    #     return
 
     @property
     def API_STOCK_SYMBOL(self) -> str:
@@ -168,6 +168,7 @@ class metadata(pd.DataFrame):
         )[self._col]
         df = df[~df.index.duplicated(keep='last')]
         df.to_csv(r'./metadata.csv', encoding='utf-8', index=True)
+        df.to_pickle(r'./metadata.pkl')
         super().__init__(data=df.values, index=df.index, columns=df.columns)
         return
 

@@ -104,10 +104,14 @@ class Equity(fetch):
 
     @property
     def profitExpenses(self) -> profitexpenses:
+        # TODO
+        # 특이산업 (매출 외) 예외 처리
         return self.__attr__('profitexpenses', profitexpenses)
 
     @property
     def soundness(self) -> soundness:
+        # TODO
+        # 재고비율 추가
         return self.__attr__('soundness', soundness)
 
     @property

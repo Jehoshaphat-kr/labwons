@@ -48,17 +48,16 @@ TEST :: INDICATORS
 TEST :: EQUITIES
 """
 # ticker = random.sample(lw.MetaData.KRSTOCK.index.tolist(), 1)[0]
-# ticker = '017670'
-# equity = lw.Equity('QQQ', period=30)
-# equity = lw.Equity('252990')
-# equity = lw.Equity('005930', period=20)
-equity = lw.Equity('000660', period=10)
-# equity = lw.Equity('012330', period=10)
-# equity = lw.Equity('058470', period=5)
-# equity = lw.Equity(ticker, period=5)
+# ticker = 'QQQ'
+# ticker = '005930' #
+# ticker = '000660' #
+# ticker = '012330' # 현대모비스
+# ticker = '058470' # 리노공업
+ticker = "316140" # 우리금융지주
+equity = lw.Equity(ticker, period=5)
 
 """ ========= < Description > =========="""
-# print(equity.description())
+# print(equity.describe())
 
 """ ========== < OHLCV > ========== """
 # print(equity.ohlcv)
@@ -124,17 +123,23 @@ equity = lw.Equity('000660', period=10)
 # equity.moneyFlow.show()
 # equity.moneyFlow.save()
 
-""" ========== < PERFORMANCE > ========== """
-# print(equity.performance)
-# print(equity.performance.Q)
-# equity.performance.show()
-# equity.performance.Q.save()
-# equity.performance.save()
+""" ========== < PROFIT > ========== """
+# print(equity.profit)
+# print(equity.profit.Q)
+# equity.profit.show()
+# equity.profit.Q.save()
+# equity.profit.save()
 
-""" ========== < Expenses > ========== """
-# print(equity.expense)
-# equity.expense.show()
-# equity.expense.save()
+""" ========== < PROFIT ESTIMATE > ========== """
+# print(equity.profitEstimate)
+# print(equity.profitEstimate.Q)
+# equity.consensusProfit.show()
+# equity.consensusProfit.save()
+
+""" ========== < PROFIT EXPENSES > ========== """
+# print(equity.profitExpenses)
+# equity.profitExpenses.show()
+# equity.profitExpenses.save()
 
 """ ========== < SOUNDNESS > ========== """
 # print(equity.soundness)
@@ -145,6 +150,10 @@ equity = lw.Equity('000660', period=10)
 """ ========== < PER > ========== """
 # print(equity.per)
 # equity.per.show()
+
+""" ========== < PER BAND > ========== """
+# print(equity.perBand)
+# equity.perBand.show()
 
 """ ========== < Products > ========== """
 # print(equity.products)
@@ -162,21 +171,6 @@ equity = lw.Equity('000660', period=10)
 # equity.consensus.show()
 # equity.consensus.save()
 
-""" ========== < Consensus Profit > ========== """
-# print(equity.consensusProfit)
-# print(equity.consensusProfit.Q)
-# equity.consensusProfit.show()
-# equity.consensusProfit.save()
-
-""" ========== < Consensus Tendency > ========== """
-# print(equity.consensusTendency)
-# print(equity.consensusTendency.N)
-# equity.consensusTendency.show('매출')
-# equity.consensusTendency.show('영업이익')
-# equity.consensusTendency.show('EPS')
-# equity.consensusTendency.show('PER')
-# equity.consensusTendency.save()
-
 """ ========== < Short > ========== """
 # print(equity.short)
 # print(equity.short._dataName_)
@@ -191,11 +185,6 @@ equity = lw.Equity('000660', period=10)
 # print(equity.benchmarkMultiples)
 # equity.benchmarkMultiples.show()
 # equity.benchmarkMultiple.save()
-
-""" ========== < Multiple Band > ========== """
-# print(equity.multipleBand)
-# equity.multipleBand.show()
-# equity.expense.save()
 
 """ ========== < Similarities > ========== """
 # print(equity.similarities)

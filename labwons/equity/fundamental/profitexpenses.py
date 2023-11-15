@@ -3,7 +3,6 @@ from labwons.common.chart import Chart
 from labwons.common.service.tools import int2won
 from labwons.equity.fetch import fetch
 from plotly import graph_objects as go
-import pandas as pd
 
 
 class profitexpenses(baseDataFrameChart):
@@ -15,8 +14,12 @@ class profitexpenses(baseDataFrameChart):
     }
 
     def __init__(self, base: fetch):
+        ao = getattr(base, '_fnguide').annualOverview
+        ar = getattr(base, '_fnguide').annualExpenses
+        i = ar.index[0]
+
         super().__init__(
-            data=getattr(base, '_fnguide').annualProfitLoss,
+            data=getattr(base, '_fnguide').annualProfit,
             name='PROFIT EXPENSES',
             subject=f"{base.name}({base.ticker})",
             path=base.path,

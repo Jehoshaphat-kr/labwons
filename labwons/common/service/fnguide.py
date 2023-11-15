@@ -26,50 +26,50 @@ class fnguide(object):
                   f"stkGb=%s"
         self._p = page = Soup(requests.get(self.__url__('SVD_Main')).content, 'lxml')
 
-        xml = etree.fromstring(
-            requests.get(
-                url=f"http://cdn.fnguide.com/SVO2/xml/Snapshot_all/{ticker}.xml"
-            ).text[39:]
-        ).find('price')
-        str2num = lambda x: np.nan if not x else int(x.replace(', ', '').replace(',', ''))
-        self.previousClose = str2num(xml.find('close_val').text)
-        self.previousForeignRate = float(xml.find('frgn_rate').text)
-        self.beta = float(xml.find('beta').text) if xml.find('beta').text else np.nan
-        self.volume = str2num(xml.find('deal_cnt').text)
-        self.shares = str2num(xml.find('listed_stock_1').text)
-        self.floatShares = str2num(xml.find('ff_sher').text)
-        self.marketCap = str2num(xml.find('mkt_cap_1').text) # 억원
-        self.fiftyTwoWeekLow = str2num(xml.find('low52week').text)
-        self.fiftyTwoWeekHigh = str2num(xml.find('high52week').text)
-        self.dividendYield = np.nan
-        self.trailingPE = np.nan # 직전 연말 결산 EPS / 어제 종가
-        self.forwardPE = np.nan  # 12개월 선행 EPS / 어제 종가
-        self.sectorPE = np.nan
-        self.priceToBook = np.nan
-        try:
-            header = [val for val in page.find('div', id='corp_group2').text.split('\n') if val]
-            forwardPE = header[header.index('12M PER') + 1]
-            try: self.dividendYield = float(header[header.index('배당수익률') + 1].replace('%', ''))
-            except ValueError: pass
-            try: self.trailingPE = float(header[header.index('PER') + 1])
-            except ValueError: pass
-            try: self.forwardPE = np.nan if '-' in forwardPE else float(forwardPE)
-            except ValueError: pass
-            try: self.sectorPE = float(header[header.index('업종 PER') + 1])
-            except ValueError: pass
-            self.priceToBook = float(header[header.index('PBR') + 1])
-        except AttributeError:
-            self.dividendYield = float(page.find_all('td', class_='r cle')[-1].text)
-            pattern = r"[-+]?\d*\.\d+|\d+"
-            script = page.find_all('script')[-1].text.split('\n')
-            for n, line in enumerate(script):
-                if "PER" in line:
-                    self.trailingPE = float(re.findall(pattern, script[n + 1])[-1])
-                if "PBR" in line:
-                    self.priceToBook = float(re.findall(pattern, script[n + 1])[-1])
-                    break
-            return
-        return
+        # xml = etree.fromstring(
+        #     requests.get(
+        #         url=f"http://cdn.fnguide.com/SVO2/xml/Snapshot_all/{ticker}.xml"
+        #     ).text[39:]
+        # ).find('price')
+        # str2num = lambda x: np.nan if not x else int(x.replace(', ', '').replace(',', ''))
+        # self.previousClose = str2num(xml.find('close_val').text)
+        # self.previousForeignRate = float(xml.find('frgn_rate').text)
+        # self.beta = float(xml.find('beta').text) if xml.find('beta').text else np.nan
+        # self.volume = str2num(xml.find('deal_cnt').text)
+        # self.shares = str2num(xml.find('listed_stock_1').text)
+        # self.floatShares = str2num(xml.find('ff_sher').text)
+        # self.marketCap = str2num(xml.find('mkt_cap_1').text) # 억원
+        # self.fiftyTwoWeekLow = str2num(xml.find('low52week').text)
+        # self.fiftyTwoWeekHigh = str2num(xml.find('high52week').text)
+        # self.dividendYield = np.nan
+        # self.trailingPE = np.nan # 직전 연말 결산 EPS / 어제 종가
+        # self.forwardPE = np.nan  # 12개월 선행 EPS / 어제 종가
+        # self.sectorPE = np.nan
+        # self.priceToBook = np.nan
+        # try:
+        #     header = [val for val in page.find('div', id='corp_group2').text.split('\n') if val]
+        #     forwardPE = header[header.index('12M PER') + 1]
+        #     try: self.dividendYield = float(header[header.index('배당수익률') + 1].replace('%', ''))
+        #     except ValueError: pass
+        #     try: self.trailingPE = float(header[header.index('PER') + 1])
+        #     except ValueError: pass
+        #     try: self.forwardPE = np.nan if '-' in forwardPE else float(forwardPE)
+        #     except ValueError: pass
+        #     try: self.sectorPE = float(header[header.index('업종 PER') + 1])
+        #     except ValueError: pass
+        #     self.priceToBook = float(header[header.index('PBR') + 1])
+        # except AttributeError:
+        #     self.dividendYield = float(page.find_all('td', class_='r cle')[-1].text)
+        #     pattern = r"[-+]?\d*\.\d+|\d+"
+        #     script = page.find_all('script')[-1].text.split('\n')
+        #     for n, line in enumerate(script):
+        #         if "PER" in line:
+        #             self.trailingPE = float(re.findall(pattern, script[n + 1])[-1])
+        #         if "PBR" in line:
+        #             self.priceToBook = float(re.findall(pattern, script[n + 1])[-1])
+        #             break
+        #     return
+        # return
 
     def __url__(self, page:str, hold:str='') -> str:
         """
@@ -236,6 +236,15 @@ class fnguide(object):
 
     @property
     def annualProducts(self) -> pd.DataFrame:
+        """
+        :return:
+                 반도체 부문
+        기말
+        2019/12        100.0
+        2020/12        100.0
+        2021/12        100.0
+        2022/12        100.0
+        """
         url = f"http://cdn.fnguide.com/SVO2//json/chart/02/chart_A{self._t}_01_N.json"
         src = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'), strict=False)
         header = pd.DataFrame(src['chart_H'])[['ID', 'NAME']].set_index(keys='ID').to_dict()['NAME']
@@ -304,8 +313,12 @@ class fnguide(object):
         return data.T
 
     @property
-    def annualProfitLoss(self) -> pd.DataFrame:
+    def annualProfit(self) -> pd.DataFrame:
         """
+        columns: ['매출액', '매출원가', '매출총이익', '판매비와관리비', '영업이익', '영업이익발표기준',
+                  '금융수익', '금융원가', '기타수익', '기타비용', '종속기업,공동지배기업및관계기업관련손익',
+                  '세전계속사업이익', '법인세비용', '계속영업이익', '중단영업이익', '당기순이익',
+                  '지배주주순이익', '비지배주주순이익']
         :return:
                  매출액 매출원가 매출총이익 판매비와관리비 영업이익 금융수익 금융원가 기타수익 기타비용 ... 당기순이익
         2020/12  319004   210898     108106          57980    50126    33279    19804      848     1716 ...      47589
@@ -319,37 +332,47 @@ class fnguide(object):
     def annualInventory(self) -> pd.DataFrame:
         """
         :return:
-                재고자산
-        2020/12    49804
-        2021/12    54954
-        2022/12   103457
-        2023/2Q   112521
+                재고자산 재고비율
+        2020/12   49804      7.77
+        2021/12   54954      6.47
+        2022/12  103457     11.27
+        2023/2Q  112521     12.13
         """
         data = self._finance(self.__html__('SVD_Finance', 'A')[2])
-        return data[[c for c in data.columns if "재고" in c]].fillna(0).astype(int)
+        data["재고비율"] = round(100 * data["재고자산"] / data["자산총계"], 2)
+        return data[["재고자산", "재고비율"]].fillna(0).astype(float)
 
     @property
     def annualCashFlow(self) -> pd.DataFrame:
         """
         :return:
-                 영업활동으로인한현금흐름 투자활동으로인한현금흐름 재무활동으로인한현금흐름 환율변동효과 기말현금및현금성자산
-        2020/12                    123146                  -118404                     2521         -563                29760
-        2021/12                    197976                  -223923                    44923         1843                50580
-        2022/12                    147805                  -178837                    28218         2005                49770
-        2023/2Q                     -6940                   -53509                    70579          508                60408
+                 영업현금흐름  투자현금흐름  재무현금흐름  환율변동손익  현금및현금성자산
+        2020/12        123146       -118404          2521          -563             29760
+        2021/12        197976       -223923         44923          1843             50580
+        2022/12        147805       -178837         28218          2005             49770
+        2023/2Q         -6940        -53509         70579           508             60408
         """
         data = self._finance(self.__html__('SVD_Finance', self.__hold__())[4])
-        cols = [
-            "영업활동으로인한현금흐름",
-            "투자활동으로인한현금흐름",
-            "재무활동으로인한현금흐름",
-            "환율변동효과",
-            "기말현금및현금성자산"
-        ]
-        return data[cols].fillna(0).astype(int)
+        cols = {
+            "영업활동으로인한현금흐름": "영업현금흐름",
+            "투자활동으로인한현금흐름": "투자현금흐름",
+            "재무활동으로인한현금흐름": "재무현금흐름",
+            "환율변동효과": "환율변동손익",
+            "기말현금및현금성자산": "현금및현금성자산"
+        }
+        return data[list(cols.keys())].rename(columns=cols).fillna(0).astype(int)
 
     @property
     def annualGrowthRate(self) -> pd.DataFrame:
+        """
+        :return:
+                매출액증가율 판매비와관리비증가율 영업이익증가율 EBITDA증가율 EPS증가율
+        2019/12        -33.3                 23.4          -87.0        -58.4     -87.1
+        2020/12         18.2                  6.3           84.3         30.4     137.1
+        2021/12         34.8                 12.8          147.6         56.0     101.9
+        2022/12          3.8                 34.8          -45.1         -9.1     -76.8
+        2023/2Q        -52.3                -26.0            NaN        -94.4       NaN
+        """
         data = self.__html__('SVD_FinanceRatio', self.__hold__())[0]
         index = data[data.columns[0]].tolist()
         return self._finance(data.iloc[index.index('성장성비율') + 1 : index.index('수익성비율')])
@@ -371,9 +394,23 @@ class fnguide(object):
 
     @property
     def annualMultiples(self) -> pd.DataFrame:
+        """
+        columns: ['EPS', 'EBITDAPS', 'CFPS', 'SPS', 'BPS', 'DPS보통주', 'DPS1우선주', '배당성향',
+                  'PER', 'PCR', 'PSR', 'PBR', 'EV/Sales', 'EV/EBITDA', '총현금흐름', '세후영업이익',
+                  '유무형자산상각비', '총투자', 'FCFF']
+        :return:
+                   EPS  EBITDAPS   CFPS    SPS    BPS  DPS보통주  DPS1우선주  배당성향   PER   PCR   PSR  ...   FCFF
+        2019/12   2755     15576  14597  37075  69271       1000         NaN     34.0  34.15  6.45  2.54  ... -98006
+        2020/12   6532     20309  19955  43819  74721       1170         NaN     17.0  18.14  5.94  2.70  ...  23760
+        2021/12  13190     31685  27828  59063  88543       1540         NaN     11.0   9.93  4.71  2.22  ... -27789
+        2022/12   3063     28792  22501  61293  90064       1200         NaN     37.0  24.49  3.33  1.22  ... -65070
+        2023/2Q  -7653      1078   2058  17025  82019        600         NaN      NaN    NaN   NaN   NaN  ... -65503
+        """
         data = self.__html__('SVD_Invest', self.__hold__())[3]
         data = data[~data[data.columns[0]].isin(["Per\xa0Share", "Dividends", "Multiples", "FCF"])]
-        return self._finance(data)
+        data = self._finance(data)
+        data.columns = [c.replace("원", "").replace(",현금", "").replace("현금%", "") for c in data.columns]
+        return data
 
     @property
     def quarterOverview(self) -> pd.DataFrame:
@@ -702,11 +739,12 @@ class fnguide(object):
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
     # ticker = '005930'
-    ticker = '000660' # SK하이닉스
+    # ticker = '000660' # SK하이닉스
     # ticker = '003800' # 에이스침대
     # ticker = '058470' # 리노공업
     # ticker = '102780' # KODEX 삼성그룹
     # ticker = "253450" # 스튜디오드래곤
+    ticker = "316140" # 우리금융지주
 
     guide = fnguide(ticker)
 
@@ -723,14 +761,14 @@ if __name__ == "__main__":
     # print(guide.forwardPE)
     # print(guide.priceToBook)
     # print(guide.businessSummary)
-    # print(guide.annualOverview)
+    print(guide.annualOverview)
     # print(guide.annualProducts)
-    # print(guide.annualExpenses)
+    print(guide.annualExpenses)
     # print(guide.annualSalesShares)
     # print(guide.annualHolders)
-    # print(guide.annualProfitLoss)
+    print(guide.annualProfit)
     # print(guide.annualInventory)
-    print(guide.annualCashFlow)
+    # print(guide.annualCashFlow)
     # print(guide.annualGrowthRate)
     # print(guide.annualProfitRate)
     # print(guide.annualMultiples)

@@ -10,9 +10,9 @@ class naver(object):
     def __init__(self, ticker:str):
         self._t = ticker
         self._io = f"https://finance.naver.com/item/main.naver?code={ticker}"
-        for n, t in enumerate(self._tables):
-            print(n, "+" * 80)
-            print(t)
+        # for n, t in enumerate(self._tables):
+        #     print(n, "+" * 80)
+        #     print(t)
         return
 
     @property
@@ -73,8 +73,11 @@ class naver(object):
 
     @property
     def sectorPE(self) -> float:
-
-        return
+        """
+        동일 업종 PE
+        :return:
+        """
+        return float(self._tables[9].columns[-1].replace("배", ""))
 
     @property
     def similarities(self) -> pd.DataFrame:
@@ -119,5 +122,6 @@ if __name__ == "__main__":
     # print(nav.trailingEps)
     # print(nav.estimatePE)
     # print(nav.estimateEps)
+    print(nav.sectorPE)
     # print(nav.similarities)
     # print(nav.similarities.columns)

@@ -9,9 +9,18 @@ from urllib.request import urlopen
 from lxml import etree
 import pandas as pd
 import numpy as np
-import requests, json, re
+import requests, json
 
 
+def str2num(src:str) -> int or float:
+    src = "".join([char for char in src if char.isdigit() or char == "."])
+    if not src:
+        return np.nan
+    if "." in src:
+        return float(src)
+    return int(src)
+
+str2int = lambda x: np.nan if not x else int(x.replace(', ', '').replace(',', ''))
 class fnguide(object):
 
     def __init__(self, ticker:str):
@@ -24,52 +33,7 @@ class fnguide(object):
                   f"ReportGB=%s&" \
                   f"NewMenuID=%s&" \
                   f"stkGb=%s"
-        self._p = page = Soup(requests.get(self.__url__('SVD_Main')).content, 'lxml')
-
-        # xml = etree.fromstring(
-        #     requests.get(
-        #         url=f"http://cdn.fnguide.com/SVO2/xml/Snapshot_all/{ticker}.xml"
-        #     ).text[39:]
-        # ).find('price')
-        # str2num = lambda x: np.nan if not x else int(x.replace(', ', '').replace(',', ''))
-        # self.previousClose = str2num(xml.find('close_val').text)
-        # self.previousForeignRate = float(xml.find('frgn_rate').text)
-        # self.beta = float(xml.find('beta').text) if xml.find('beta').text else np.nan
-        # self.volume = str2num(xml.find('deal_cnt').text)
-        # self.shares = str2num(xml.find('listed_stock_1').text)
-        # self.floatShares = str2num(xml.find('ff_sher').text)
-        # self.marketCap = str2num(xml.find('mkt_cap_1').text) # 억원
-        # self.fiftyTwoWeekLow = str2num(xml.find('low52week').text)
-        # self.fiftyTwoWeekHigh = str2num(xml.find('high52week').text)
-        # self.dividendYield = np.nan
-        # self.trailingPE = np.nan # 직전 연말 결산 EPS / 어제 종가
-        # self.forwardPE = np.nan  # 12개월 선행 EPS / 어제 종가
-        # self.sectorPE = np.nan
-        # self.priceToBook = np.nan
-        # try:
-        #     header = [val for val in page.find('div', id='corp_group2').text.split('\n') if val]
-        #     forwardPE = header[header.index('12M PER') + 1]
-        #     try: self.dividendYield = float(header[header.index('배당수익률') + 1].replace('%', ''))
-        #     except ValueError: pass
-        #     try: self.trailingPE = float(header[header.index('PER') + 1])
-        #     except ValueError: pass
-        #     try: self.forwardPE = np.nan if '-' in forwardPE else float(forwardPE)
-        #     except ValueError: pass
-        #     try: self.sectorPE = float(header[header.index('업종 PER') + 1])
-        #     except ValueError: pass
-        #     self.priceToBook = float(header[header.index('PBR') + 1])
-        # except AttributeError:
-        #     self.dividendYield = float(page.find_all('td', class_='r cle')[-1].text)
-        #     pattern = r"[-+]?\d*\.\d+|\d+"
-        #     script = page.find_all('script')[-1].text.split('\n')
-        #     for n, line in enumerate(script):
-        #         if "PER" in line:
-        #             self.trailingPE = float(re.findall(pattern, script[n + 1])[-1])
-        #         if "PBR" in line:
-        #             self.priceToBook = float(re.findall(pattern, script[n + 1])[-1])
-        #             break
-        #     return
-        # return
+        return
 
     def __url__(self, page:str, hold:str='') -> str:
         """
@@ -113,19 +77,73 @@ class fnguide(object):
             raise KeyError
         return self._u % (page, pages[page]["ReportGB"], pages[page]["NewMenuID"], pages[page]["stkGb"])
 
-    def __html__(self, page:str, hold:str='') -> list:
+    def __tb__(self, page:str, hold:str='') -> list:
         if not hasattr(self, f"_u{page}{hold}"):
             self.__setattr__(f'_u{page}{hold}', pd.read_html(self.__url__(page, hold), header=0))
         return self.__getattribute__(f'_u{page}{hold}')
 
-    def __hold__(self) -> str:
-        if not hasattr(self, f"_hold"):
-            html = self.__html__('SVD_Main')
-            if html[11].iloc[1].isnull().sum() > html[14].iloc[1].isnull().sum():
-                self.__setattr__('_hold', 'B') # 별도
-            else:
-                self.__setattr__('_hold', 'D') # 연결
-        return self.__getattribute__('_hold')
+    @property
+    def __gb__(self) -> str:
+        if not hasattr(self, f"_gb"):
+            html = self.__tb__('SVD_Main')
+            self.__setattr__('_gb', "B" if html[11].iloc[1].isnull().sum() > html[14].iloc[1].isnull().sum() else "D")
+        return self.__getattribute__('_gb')
+
+    @property
+    def __xml__(self) -> etree.ElementTree:
+        if not hasattr(self, "_xml"):
+            req = requests.get(url=f"http://cdn.fnguide.com/SVO2/xml/Snapshot_all/{self._t}.xml").text[39:]
+            self.__setattr__("_xml", etree.fromstring(req).find("price"))
+        return self.__getattribute__("_xml")
+
+    @property
+    def __pg__(self) -> Soup:
+        if not hasattr(self, "_page"):
+            self.__setattr__("_page", Soup(requests.get(self.__url__('SVD_Main')).content, 'lxml'))
+        return self.__getattribute__("_page")
+
+    @property
+    def __pgh__(self) -> list:
+        if not hasattr(self, "_page_header"):
+            try:
+                header = [val for val in self.__pg__.find('div', id='corp_group2').text.split('\n') if val]
+            except AttributeError:
+                header = self.__pg__.find_all('script')[-1].text.split('\n')
+                print(header)
+            self.__setattr__("_page_header", header)
+        return self.__getattribute__("_page_header")
+
+    @property
+    def __cap__(self) -> pd.DataFrame:
+        if not hasattr(self, '_cap'):
+            cap = get_market_cap_by_date(
+                fromdate=(datetime.today() - timedelta(365 * 5)).strftime("%Y%m%d"),
+                todate=datetime.today().strftime("%Y%m%d"),
+                freq='m',
+                ticker=self._t
+            )
+            cap = cap[
+                cap.index.astype(str).str.contains('03') | \
+                cap.index.astype(str).str.contains('06') | \
+                cap.index.astype(str).str.contains('09') | \
+                cap.index.astype(str).str.contains('12') | \
+                (cap.index == cap.index[-1])
+            ]
+            cap.index = cap.index.strftime("%Y/%m")
+            cap['시가총액'] = round(cap['시가총액'] / 100000000, 0)
+            self.__setattr__('_cap', cap[['시가총액']])
+        return self.__getattribute__('_cap')
+
+    @staticmethod
+    def _finance(data:pd.DataFrame) -> pd.DataFrame:
+        data = data.set_index(keys=[data.columns[0]])
+        data = data.drop(columns=[col for col in data if not col.startswith('20')])
+        data.index.name = None
+        data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/{int(data.columns[-1][-2:])//3}Q"]
+        data.index = [
+            i.replace('계산에 참여한 계정 펼치기', '').replace('(', '').replace(')', '').replace('*', '') for i in data.index
+        ]
+        return data.T.astype(float)
 
     def _overview(self, data:pd.DataFrame) -> pd.DataFrame:
         data = data.set_index(keys=[data.columns[0]])
@@ -139,7 +157,7 @@ class fnguide(object):
         data = data.head(len(data) - len([i for i in data.index if i.endswith(')')]) + 1)
         data.index.name = '기말'
 
-        cap = self.cap.copy()
+        cap = self.__cap__.copy()
         cap.index = cap.index[:-1].tolist() + [data.index[-1]]
         return data.join(other=cap, how='left')[cap.columns.tolist() + data.columns.tolist()].astype(float)
 
@@ -163,7 +181,7 @@ class fnguide(object):
             "SALES_R": "매출실적", "SALES_F": "매출전망",
             "OP_R": "영업이익실적", "OP_F": "영업이익전망"
         }
-        url = f"https://cdn.fnguide.com/SVO2/json/chart/07_01/chart_A{self._t}_{self.__hold__()}_{period}.json"
+        url = f"https://cdn.fnguide.com/SVO2/json/chart/07_01/chart_A{self._t}_{self.__gb__}_{period}.json"
         raw = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
         basis = pd.DataFrame(raw['CHART']).replace('-', np.nan)[columns.keys()]
         basis = basis.rename(columns=columns)
@@ -177,7 +195,7 @@ class fnguide(object):
             "EPS": "EPS", "EPS_MAX": "EPS(최대)", "EPS_MIN": "EPS(최소)",
             "PER": "PER", "PER_MAX": "PER(최대)", "PER_MIN": "PER(최소)", "PER_12F": "12M PER"
         }
-        url = f"https://cdn.fnguide.com/SVO2/json/chart/07_02/chart_A{self._t}_{self.__hold__()}_FY{year}.json"
+        url = f"https://cdn.fnguide.com/SVO2/json/chart/07_02/chart_A{self._t}_{self.__gb__}_FY{year}.json"
         raw = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
         basis = pd.DataFrame(raw['CHART'])[columns.keys()]
         basis = basis.rename(columns=columns)
@@ -187,41 +205,71 @@ class fnguide(object):
             basis[col] = basis[col].apply(lambda x: x.replace(',', '') if isinstance(x, str) else x)
         return basis.astype(float)
 
-    @staticmethod
-    def _finance(data:pd.DataFrame) -> pd.DataFrame:
-        data = data.set_index(keys=[data.columns[0]])
-        data = data.drop(columns=[col for col in data if not col.startswith('20')])
-        data.index.name = None
-        data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/{int(data.columns[-1][-2:])//3}Q"]
-        data.index = [
-            i.replace('계산에 참여한 계정 펼치기', '').replace('(', '').replace(')', '').replace('*', '') for i in data.index
-        ]
-        return data.T.astype(float)
+    @property
+    def previousClose(self) -> int:
+        return str2num(self.__xml__.find("close_val").text)
 
     @property
-    def cap(self) -> pd.DataFrame:
-        if not hasattr(self, '__cap'):
-            cap = get_market_cap_by_date(
-                fromdate=(datetime.today() - timedelta(365 * 5)).strftime("%Y%m%d"),
-                todate=datetime.today().strftime("%Y%m%d"),
-                freq='m',
-                ticker=self._t
-            )
-            cap = cap[
-                cap.index.astype(str).str.contains('03') | \
-                cap.index.astype(str).str.contains('06') | \
-                cap.index.astype(str).str.contains('09') | \
-                cap.index.astype(str).str.contains('12') | \
-                (cap.index == cap.index[-1])
-            ]
-            cap.index = cap.index.strftime("%Y/%m")
-            cap['시가총액'] = round(cap['시가총액'] / 100000000, 0)
-            self.__setattr__('__cap', cap[['시가총액']])
-        return self.__getattribute__('__cap')
+    def previousForeignRate(self) -> float:
+        return str2num(self.__xml__.find('frgn_rate').text)
+
+    @property
+    def beta(self) -> float:
+        return str2num(self.__xml__.find("beta").text)
+
+    @property
+    def volume(self) -> int:
+        return str2num(self.__xml__.find('deal_cnt').text)
+
+    @property
+    def shares(self) -> int:
+        return str2num(self.__xml__.find('listed_stock_1').text)
+
+    @property
+    def floatShares(self) -> int:
+        return str2num(self.__xml__.find('ff_sher').text)
+
+    @property
+    def marketCap(self) -> int:
+        return str2num(self.__xml__.find('mkt_cap_1').text)
+
+    @property
+    def fiftyTwoWeekLow(self) -> int:
+        return str2num(self.__xml__.find('low52week').text)
+
+    @property
+    def fiftyTwoWeekHigh(self) -> int:
+        return str2num(self.__xml__.find('high52week').text)
+
+    @property
+    def forwardPE(self) -> float:
+        try:
+            return str2num(self.__pgh__[self.__pgh__.index('12M PER') + 1])
+        except ValueError:
+            return np.nan
+
+    @property
+    def dividendYield(self) -> float:
+        try:
+            return str2num(self.__pgh__[self.__pgh__.index('배당수익률') + 1])
+        except ValueError:
+            return str2num(self.__pg__.find_all('td', class_='r cle')[-1].text)
+
+    @property
+    def fiscalPE(self) -> float:
+        return str2num(self.__pgh__[self.__pgh__.index('PER') + 1])
+
+    @property
+    def fiscalEps(self) -> int:
+        return int(1 / (self.fiscalPE / self.previousClose))
+
+    @property
+    def priceToBook(self) -> float:
+        return str2num(self.__pgh__[self.__pgh__.index('PBR') + 1])
 
     @property
     def businessSummary(self) -> str:
-        html = self._p.find('ul', id='bizSummaryContent').find_all('li')
+        html = self.__pg__.find('ul', id='bizSummaryContent').find_all('li')
         t = '\n\n '.join([e.text for e in html])
         w = [
             '.\n' if t[n] == '.' and not any([t[n - 1].isdigit(), t[n + 1].isdigit(), t[n + 1].isalpha()]) else t[n]
@@ -232,7 +280,7 @@ class fnguide(object):
 
     @property
     def annualOverview(self) -> pd.DataFrame:
-        return self._overview(self.__html__('SVD_Main')[11] if self.__hold__() == 'D' else self.__html__('SVD_Main')[14])
+        return self._overview(self.__tb__('SVD_Main')[11] if self.__gb__ == 'D' else self.__tb__('SVD_Main')[14])
 
     @property
     def annualProducts(self) -> pd.DataFrame:
@@ -260,11 +308,11 @@ class fnguide(object):
 
     @property
     def annualExpenses(self) -> pd.DataFrame:
-        html = self.__html__('SVD_Corp')
+        html = self.__tb__('SVD_Corp')
         data = pd.concat(
             objs=[
-                html[4 if self.__hold__() == 'D' else 6].set_index(keys=['항목']).T,  # 매출원가율
-                html[5 if self.__hold__() == 'D' else 7].set_index(keys=['항목']).T,  # 판관비
+                html[4 if self.__gb__ == 'D' else 6].set_index(keys=['항목']).T,  # 매출원가율
+                html[5 if self.__gb__ == 'D' else 7].set_index(keys=['항목']).T,  # 판관비
             ], axis=1
         )
         data.columns.name = None
@@ -281,7 +329,7 @@ class fnguide(object):
         2021/12    NaN   NaN    NaN    NaN     NaN   NaN
         2022/12  97.20  2.80  23.40  76.60  100.00  0.00
         """
-        src = self.__html__('SVD_Corp')[10 if self.__hold__() == 'D' else 11]
+        src = self.__tb__('SVD_Corp')[10 if self.__gb__ == 'D' else 11]
         data = src[src.columns[1:]].set_index(keys=src.columns[1])
         data = data.T.copy()
         data.columns = [col.replace("\xa0", " ") for col in data.columns]
@@ -305,7 +353,7 @@ class fnguide(object):
         2023/01/01       54.79         NaN       6.25  NaN      NaN          NaN
         2023/11/14       54.79         NaN       6.25  NaN      NaN          NaN
         """
-        data = self.__html__('SVD_Corp')[12]
+        data = self.__tb__('SVD_Corp')[12]
         data = data.set_index(keys=[data.columns[0]])
         data.index.name = None
         data.index = [col[:col.index("(") - 1] if "(" in col else col for col in data.index]
@@ -326,7 +374,7 @@ class fnguide(object):
         2022/12  446216   289937     156279  		 88184    68094    37143    50916     2414    18019 ...      22417
         2023/2Q  123940   152172     -28231  		 34613   -62844    15203    25144      261      739 ...     -55734
         """
-        return self._finance(self.__html__('SVD_Finance', self.__hold__())[0])
+        return self._finance(self.__tb__('SVD_Finance', self.__gb__)[0])
 
     @property
     def annualInventory(self) -> pd.DataFrame:
@@ -338,7 +386,7 @@ class fnguide(object):
         2022/12  103457     11.27
         2023/2Q  112521     12.13
         """
-        data = self._finance(self.__html__('SVD_Finance', 'A')[2])
+        data = self._finance(self.__tb__('SVD_Finance', 'A')[2])
         data["재고비율"] = round(100 * data["재고자산"] / data["자산총계"], 2)
         return data[["재고자산", "재고비율"]].fillna(0).astype(float)
 
@@ -352,7 +400,7 @@ class fnguide(object):
         2022/12        147805       -178837         28218          2005             49770
         2023/2Q         -6940        -53509         70579           508             60408
         """
-        data = self._finance(self.__html__('SVD_Finance', self.__hold__())[4])
+        data = self._finance(self.__tb__('SVD_Finance', self.__gb__)[4])
         cols = {
             "영업활동으로인한현금흐름": "영업현금흐름",
             "투자활동으로인한현금흐름": "투자현금흐름",
@@ -373,7 +421,7 @@ class fnguide(object):
         2022/12          3.8                 34.8          -45.1         -9.1     -76.8
         2023/2Q        -52.3                -26.0            NaN        -94.4       NaN
         """
-        data = self.__html__('SVD_FinanceRatio', self.__hold__())[0]
+        data = self.__tb__('SVD_FinanceRatio', self.__gb__)[0]
         index = data[data.columns[0]].tolist()
         return self._finance(data.iloc[index.index('성장성비율') + 1 : index.index('수익성비율')])
     
@@ -388,7 +436,7 @@ class fnguide(object):
         2022/12          35.0                9.0       15.3         47.0    2.2    3.6    5.5
         2023/2Q         -22.8              -59.0      -50.7          6.3  -10.8  -18.5  -12.7
         """
-        data = self.__html__('SVD_FinanceRatio', self.__hold__())[0]
+        data = self.__tb__('SVD_FinanceRatio', self.__gb__)[0]
         index = data[data.columns[0]].tolist()
         return self._finance(data.iloc[index.index('수익성비율') + 1: index.index('활동성비율')])
 
@@ -406,7 +454,7 @@ class fnguide(object):
         2022/12   3063     28792  22501  61293  90064       1200         NaN     37.0  24.49  3.33  1.22  ... -65070
         2023/2Q  -7653      1078   2058  17025  82019        600         NaN      NaN    NaN   NaN   NaN  ... -65503
         """
-        data = self.__html__('SVD_Invest', self.__hold__())[3]
+        data = self.__tb__('SVD_Invest', self.__gb__)[3]
         data = data[~data[data.columns[0]].isin(["Per\xa0Share", "Dividends", "Multiples", "FCF"])]
         data = self._finance(data)
         data.columns = [c.replace("원", "").replace(",현금", "").replace("현금%", "") for c in data.columns]
@@ -414,29 +462,29 @@ class fnguide(object):
 
     @property
     def quarterOverview(self) -> pd.DataFrame:
-        return self._overview(self.__html__('SVD_Main')[12] if self.__hold__() == 'D' else self.__html__('SVD_Main')[15])
+        return self._overview(self.__tb__('SVD_Main')[12] if self.__gb__ == 'D' else self.__tb__('SVD_Main')[15])
 
     @property
     def quarterProfitLoss(self) -> pd.DataFrame:
-        return self._finance(self.__html__('SVD_Finance', self.__hold__())[1])
+        return self._finance(self.__tb__('SVD_Finance', self.__gb__)[1])
 
     @property
     def quarterAsset(self) -> pd.DataFrame:
-        return self._finance(self.__html__('SVD_Finance', self.__hold__())[3])
+        return self._finance(self.__tb__('SVD_Finance', self.__gb__)[3])
 
     @property
     def quarterCashFlow(self) -> pd.DataFrame:
-        return self._finance(self.__html__('SVD_Finance', self.__hold__())[5])
+        return self._finance(self.__tb__('SVD_Finance', self.__gb__)[5])
 
     @property
     def quarterGrowthRate(self) -> pd.DataFrame:
-        data = self.__html__('SVD_FinanceRatio', self.__hold__())[1]
+        data = self.__tb__('SVD_FinanceRatio', self.__gb__)[1]
         index = data[data.columns[0]].tolist()
         return self._finance(data.iloc[index.index('성장성비율') + 1: index.index('수익성비율')])
 
     @property
     def quarterProfitRate(self) -> pd.DataFrame:
-        data = self.__html__('SVD_FinanceRatio', self.__hold__())[1]
+        data = self.__tb__('SVD_FinanceRatio', self.__gb__)[1]
         index = data[data.columns[0]].tolist()
         return self._finance(data.iloc[index.index('수익성비율') + 1: ])
 
@@ -571,7 +619,7 @@ class fnguide(object):
     @property
     def targetPrice(self) -> float:
         try:
-            return float(self.__html__('SVD_Main')[7]["목표주가"][0])
+            return float(self.__tb__('SVD_Main')[7]["목표주가"][0])
         except ValueError:
             return self.fiftyTwoWeekHigh
 
@@ -581,7 +629,7 @@ class fnguide(object):
         벤치마크 베수 비교
         :return: 
         """
-        url = f"http://cdn.fnguide.com/SVO2/json/chart/01_04/chart_A{self._t}_{self.__hold__()}.json"
+        url = f"http://cdn.fnguide.com/SVO2/json/chart/01_04/chart_A{self._t}_{self.__gb__}.json"
         data = json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace'))
         objs = dict()
         for label, index in (('PER', '02'), ('EV/EBITDA', '03'), ('ROE', '04'), ('배당수익률', '05')):
@@ -742,31 +790,32 @@ if __name__ == "__main__":
     # ticker = '000660' # SK하이닉스
     # ticker = '003800' # 에이스침대
     # ticker = '058470' # 리노공업
-    # ticker = '102780' # KODEX 삼성그룹
+    ticker = '102780' # KODEX 삼성그룹
     # ticker = "253450" # 스튜디오드래곤
-    ticker = "316140" # 우리금융지주
+    # ticker = "316140" # 우리금융지주
 
     guide = fnguide(ticker)
 
     # EQUITY
-    # print(guide.previousClose)
-    # print(guide.foreignHold)
-    # print(guide.beta)
-    # print(guide.volume)
-    # print(guide.marketCap)
-    # print(guide.fiftyTwoWeekLow)
-    # print(guide.fiftyTwoWeekHigh)
-    # print(guide.dividendYield)
-    # print(guide.trailingPE)
-    # print(guide.forwardPE)
-    # print(guide.priceToBook)
+    print(guide.previousClose)
+    print(guide.previousForeignRate)
+    print(guide.beta)
+    print(guide.volume)
+    print(guide.marketCap)
+    print(guide.fiftyTwoWeekLow)
+    print(guide.fiftyTwoWeekHigh)
+    print(guide.dividendYield)
+    print(guide.forwardPE)
+    print(guide.fiscalPE)
+    print(guide.fiscalEps)
+    print(guide.priceToBook)
     # print(guide.businessSummary)
-    print(guide.annualOverview)
+    # print(guide.annualOverview)
     # print(guide.annualProducts)
-    print(guide.annualExpenses)
+    # print(guide.annualExpenses)
     # print(guide.annualSalesShares)
     # print(guide.annualHolders)
-    print(guide.annualProfit)
+    # print(guide.annualProfit)
     # print(guide.annualInventory)
     # print(guide.annualCashFlow)
     # print(guide.annualGrowthRate)

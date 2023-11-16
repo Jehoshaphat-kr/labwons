@@ -109,7 +109,6 @@ class fnguide(object):
                 header = [val for val in self.__pg__.find('div', id='corp_group2').text.split('\n') if val]
             except AttributeError:
                 header = self.__pg__.find_all('script')[-1].text.split('\n')
-                print(header)
             self.__setattr__("_page_header", header)
         return self.__getattribute__("_page_header")
 
@@ -257,7 +256,11 @@ class fnguide(object):
 
     @property
     def fiscalPE(self) -> float:
-        return str2num(self.__pgh__[self.__pgh__.index('PER') + 1])
+        try:
+            return str2num(self.__pgh__[self.__pgh__.index('PER') + 1])
+        except ValueError:
+            val = self.__pgh__[[n for n, h in enumerate(self.__pgh__) if "PER" in h][0] + 1]
+            return str2num(val[val.index(":"): ])
 
     @property
     def fiscalEps(self) -> int:
@@ -265,7 +268,11 @@ class fnguide(object):
 
     @property
     def priceToBook(self) -> float:
-        return str2num(self.__pgh__[self.__pgh__.index('PBR') + 1])
+        try:
+            return str2num(self.__pgh__[self.__pgh__.index('PBR') + 1])
+        except ValueError:
+            val = self.__pgh__[[n for n, h in enumerate(self.__pgh__) if "PBR" in h][0] + 1]
+            return str2num(val[val.index(":"):])
 
     @property
     def businessSummary(self) -> str:

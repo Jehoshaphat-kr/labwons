@@ -14,8 +14,40 @@ class krstock(naver, fnguide):
     def __init__(self, ticker:str, **kwargs):
         super().__init__(ticker=ticker)
         super().__init__(ticker=ticker)
-        # super(fnguide, self).__init__(ticker=ticker)
-        # super(naver, self).__init__(ticker=ticker)
+        self._meta = meta = MetaData.loc[ticker].to_dict()
+
+        self.ticker = ticker
+        self.language = "kor"
+        self.country = "kor"
+        self.quoteType = "equity"
+        self.exchange = meta["exchange"]
+        self.currency = meta["currency"]
+        self.shortName = meta["shortName"]
+        self.longName = meta["longName"]
+        self.korName = meta["korName"]
+        self.sector = meta["sector"]
+        self.industry = meta["industry"]
+        self.benchmarkTicker = meta["benchmarkTicker"]
+        self.benchmarkName = meta["benchmarkName"]
+        return
+
+    def __str__(self) -> str:
+        return str(pd.Series(self.describe()))
+
+    def describe(self, mode:str="dict") -> Union[dict, pd.DataFrame, pd.Series]:
+        data = {
+            "ticker": self.ticker,
+            "country": self.country,
+        }
+        if mode.lower() == "series":
+            return pd.Series(data=data, name=self.ticker)
+        if mode.lower() == "dataframe":
+            return pd.DataFrame(data=data, index=[self.ticker])
+        return data
+
+    @property
+    def name(self) -> str:
+        return self._meta["korName"] if self.language == "kor" else self._meta["shortName"]
 
 
         # if ticker not in MetaData.index and 'exchange' not in kwargs:
@@ -110,4 +142,8 @@ if __name__ == "__main__":
     ticker = '316140'
 
     stock = krstock(ticker)
-    print(stock.previousClose)
+    print(stock)
+    print(stock.ticker)
+    # print(stock.previousClose)
+
+

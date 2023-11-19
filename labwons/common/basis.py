@@ -17,35 +17,34 @@ class baseDataFrameChart(DataFrame):
     def __init__(
         self,
         data:DataFrame,
-        name:str='',
-        subject:str='',
-        path:str=PATH.BASE,
-        form:str='.2f',
-        unit:str='',
-        ref:Any=None,
+        # ref:Any=None,
+        title:str="",
+        ticker:str="",
+        name:str="",
+        path:str="",
+
+        # form:str='.2f',
+        # unit:str='',
+        # ref:Any=None,
         **kwargs
     ):
         """
         Plotly Trace 를 포함한 Pandas DataFrame
-        :param data:    [DataFrame]* 기본 데이터프레임
-        :param name:    [str] 데이터프레임 이름
-        :param subject: [str] "{종목명(종목코드)}"
-        :param path:    [str] 데이터프레임 및 시각 그래프 저장 경로
-        :param form:    [str] 데이터프레임 포맷
-        :param unit:    [str] 데이터프레임 단위
-        :param ref:     [Any] 상위 레퍼런스 클래스
+        :param data   : [DataFrame]* 기본 데이터프레임
+        :param ref    : [      Any] 상위 레퍼런스 클래스
+
         """
         super(baseDataFrameChart, self).__init__(
             index=data.index,
             columns=data.columns,
             data=data.values
         )
+        self.ticker = ticker
         self.name = name
-        self.subject = subject
+        self.title = f"<b>{name}({ticker})</b> : {title}"
         self.path = path
-        self.form = form
-        self.unit = unit
-        self.ref = ref
+        self.form = kwargs["format"] if "format" in kwargs else ".2f"
+        self.unit = kwargs["unit"] if "unit" in kwargs else ""
         return
 
     def __call__(self, col:Union[str, tuple], style:str='lineTY', drop:bool=True, **kwargs):
@@ -150,7 +149,7 @@ class baseDataFrameChart(DataFrame):
             raise ValueError(f"Candlestick requires ['open', 'high', 'low', 'close'] column data")
         data = self.dropna() if drop else self
         trace = go.Candlestick(
-            name=self.subject,
+            name=f"{self.name}({self.ticker})",
             x=data.index,
             open=data['open'],
             high=data['high'],
@@ -182,7 +181,7 @@ class baseDataFrameChart(DataFrame):
         plot(
             figure_or_data=self.figure(),
             auto_open=False,
-            filename=f'{self.path}/{self.name}.html'
+            filename=f'{self.path}/{self.title.replace(f"<b>{self.name}({self.ticker})</b> : ", "")}.html'
         )
         return
 

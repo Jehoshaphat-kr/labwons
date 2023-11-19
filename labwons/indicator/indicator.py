@@ -1,6 +1,6 @@
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.config import PATH
-from labwons.common.service.tools import xml2df
+from labwons.common.tools import xml2df
 from labwons.common.basis import baseSeriesChart
 from pandas_datareader import get_data_fred
 from datetime import datetime, timedelta

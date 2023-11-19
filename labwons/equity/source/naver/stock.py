@@ -1,4 +1,4 @@
-from labwons.common.service.tools import stringDel
+from labwons.common.tools import stringDel
 from bs4 import BeautifulSoup as Soup
 import pandas as pd
 import numpy as np

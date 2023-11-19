@@ -25,14 +25,6 @@ class fnguide(object):
 
     def __init__(self, ticker:str):
         self._t = ticker
-        self._u = f"http://comp.fnguide.com/SVO2/ASP/%s.asp?" \
-                  f"pGB=1&" \
-                  f"gicode=A{ticker}&" \
-                  f"cID=&" \
-                  f"MenuYn=Y&" \
-                  f"ReportGB=%s&" \
-                  f"NewMenuID=%s&" \
-                  f"stkGb=%s"
         return
 
     def __url__(self, page:str, hold:str='') -> str:
@@ -41,6 +33,14 @@ class fnguide(object):
         :param hold : [str] 연결 - "D" 또는 "" / 별도 - "B"
         :return:
         """
+        url = f"http://comp.fnguide.com/SVO2/ASP/%s.asp?" \
+            f"pGB=1&" \
+            f"gicode=A{self._t}&" \
+            f"cID=&" \
+            f"MenuYn=Y&" \
+            f"ReportGB=%s&" \
+            f"NewMenuID=%s&" \
+            f"stkGb=%s"
         pages = {
             "SVD_Main": {
                 "ReportGB": "",
@@ -75,7 +75,7 @@ class fnguide(object):
         }
         if not page in pages or not hold in ['', 'D', 'B', 'A']:
             raise KeyError
-        return self._u % (page, pages[page]["ReportGB"], pages[page]["NewMenuID"], pages[page]["stkGb"])
+        return url % (page, pages[page]["ReportGB"], pages[page]["NewMenuID"], pages[page]["stkGb"])
 
     def __tb__(self, page:str, hold:str='') -> list:
         if not hasattr(self, f"_u{page}{hold}"):
@@ -221,12 +221,16 @@ class fnguide(object):
         return str2num(self.__xml__.find('deal_cnt').text)
 
     @property
-    def shares(self) -> int:
+    def sharesOutstanding(self) -> int:
         return str2num(self.__xml__.find('listed_stock_1').text)
 
     @property
     def floatShares(self) -> int:
         return str2num(self.__xml__.find('ff_sher').text)
+
+    @property
+    def floatSharesRate(self) -> float:
+        return round(100 * self.floatShares / self.sharesOutstanding, 2)
 
     @property
     def marketCap(self) -> int:
@@ -237,8 +241,16 @@ class fnguide(object):
         return str2num(self.__xml__.find('low52week').text)
 
     @property
+    def fiftyTwoWeekLowRate(self) -> float:
+        return round(100 * (self.previousClose / self.fiftyTwoWeekLow - 1), 2)
+
+    @property
     def fiftyTwoWeekHigh(self) -> int:
         return str2num(self.__xml__.find('high52week').text)
+
+    @property
+    def fiftyTwoWeekHighRate(self) -> float:
+        return  round(100 * (self.previousClose / self.fiftyTwoWeekHigh - 1), 2)
 
     @property
     def forwardPE(self) -> float:
@@ -273,6 +285,21 @@ class fnguide(object):
         except ValueError:
             val = self.__pgh__[[n for n, h in enumerate(self.__pgh__) if "PBR" in h][0] + 1]
             return str2num(val[val.index(":"):])
+
+    @property
+    def fiscalPS(self) -> float:
+        return round(self.previousClose / float(self.annualMultiples["SPS"].values[-2]), 2)
+
+    @property
+    def trailingEpsGrowth(self) -> float:
+        return float(self.annualGrowthRate["EPS증가율"].values[-1])
+
+    @property
+    def targetPrice(self) -> float:
+        try:
+            return float(self.__tb__('SVD_Main')[7]["목표주가"][0])
+        except ValueError:
+            return self.fiftyTwoWeekHigh
 
     @property
     def businessSummary(self) -> str:
@@ -624,13 +651,6 @@ class fnguide(object):
         return self._consensusSeries('2')
 
     @property
-    def targetPrice(self) -> float:
-        try:
-            return float(self.__tb__('SVD_Main')[7]["목표주가"][0])
-        except ValueError:
-            return self.fiftyTwoWeekHigh
-
-    @property
     def benchmarkMultiples(self) -> pd.DataFrame:
         """
         벤치마크 베수 비교
@@ -797,25 +817,25 @@ if __name__ == "__main__":
     # ticker = '000660' # SK하이닉스
     # ticker = '003800' # 에이스침대
     # ticker = '058470' # 리노공업
-    ticker = '102780' # KODEX 삼성그룹
+    # ticker = '102780' # KODEX 삼성그룹
     # ticker = "253450" # 스튜디오드래곤
-    # ticker = "316140" # 우리금융지주
+    ticker = "316140" # 우리금융지주
 
     guide = fnguide(ticker)
 
     # EQUITY
-    print(guide.previousClose)
-    print(guide.previousForeignRate)
-    print(guide.beta)
-    print(guide.volume)
-    print(guide.marketCap)
-    print(guide.fiftyTwoWeekLow)
-    print(guide.fiftyTwoWeekHigh)
-    print(guide.dividendYield)
-    print(guide.forwardPE)
-    print(guide.fiscalPE)
-    print(guide.fiscalEps)
-    print(guide.priceToBook)
+    # print(guide.previousClose)
+    # print(guide.previousForeignRate)
+    # print(guide.beta)
+    # print(guide.volume)
+    # print(guide.marketCap)
+    # print(guide.fiftyTwoWeekLow)
+    # print(guide.fiftyTwoWeekHigh)
+    # print(guide.dividendYield)
+    # print(guide.forwardPE)
+    # print(guide.fiscalPE)
+    # print(guide.fiscalEps)
+    # print(guide.priceToBook)
     # print(guide.businessSummary)
     # print(guide.annualOverview)
     # print(guide.annualProducts)
@@ -825,7 +845,7 @@ if __name__ == "__main__":
     # print(guide.annualProfit)
     # print(guide.annualInventory)
     # print(guide.annualCashFlow)
-    # print(guide.annualGrowthRate)
+    print(guide.annualGrowthRate)
     # print(guide.annualProfitRate)
     # print(guide.annualMultiples)
     # print(guide.quarterOverview)

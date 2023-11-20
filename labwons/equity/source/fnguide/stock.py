@@ -821,7 +821,8 @@ if __name__ == "__main__":
     # ticker = "253450" # 스튜디오드래곤
     ticker = "316140" # 우리금융지주
 
-    guide = fnguide(ticker)
+
+    # guide = fnguide(ticker)
 
     # EQUITY
     # print(guide.previousClose)
@@ -845,7 +846,7 @@ if __name__ == "__main__":
     # print(guide.annualProfit)
     # print(guide.annualInventory)
     # print(guide.annualCashFlow)
-    print(guide.annualGrowthRate)
+    # print(guide.annualGrowthRate)
     # print(guide.annualProfitRate)
     # print(guide.annualMultiples)
     # print(guide.quarterOverview)

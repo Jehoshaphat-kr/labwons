@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from bs4 import BeautifulSoup as Soup
+from bs4 import BeautifulSoup
 from pykrx.stock import (
     get_market_cap_by_date,
     get_etf_portfolio_deposit_file
@@ -19,10 +19,10 @@ def str2num(src:str) -> int or float:
         return float(src)
     return int(src)
 
-def snapshot(url:str) -> pd.Series:
+def fetchSnapShot(scrapper:BeautifulSoup) -> pd.Series:
     """
     * COMMON for EQUITY, ETF
-    :param url: [str] startswith('cdn.fnguide.com') ~ endswith('.xml')
+    :param scrapper: [BeautifulSoup]
     :return:
         date                 2023/11/17
         previousClose             12510
@@ -41,7 +41,7 @@ def snapshot(url:str) -> pd.Series:
         return3Y                  26.36
         dtype: object
     """
-    src = Soup(requests.get(url).content, 'xml').find('price')
+    src = scrapper.find('price')
     return pd.Series({
         "date": src.find("date").text,
         "previousClose": str2num(src.find("close_val").text),
@@ -60,10 +60,10 @@ def snapshot(url:str) -> pd.Series:
         "return3Y": str2num(src.find("change_36month").text),
     })
 
-def stockHeader(url:str) -> pd.Series:
+def fetchHeader(scrapper:BeautifulSoup) -> pd.Series:
     """
     * EQUITY ONLY
-    :param url: [str]
+    :param scrapper: [BeautifulSoup]
     :return:
         fiscalPE         2.90
         forwardPE        3.06
@@ -72,7 +72,7 @@ def stockHeader(url:str) -> pd.Series:
         dividendYield    9.03
         dtype: float64
     """
-    src = Soup(requests.get(url).content, 'lxml').find('div', id='corp_group2')
+    src = scrapper.find('div', id='corp_group2')
     src = [val for val in src.text.split('\n') if val]
     return pd.Series({
         "fiscalPE": str2num(src[src.index('PER') + 1]),
@@ -82,18 +82,17 @@ def stockHeader(url:str) -> pd.Series:
         "dividendYield": str2num(src[src.index('배당수익률') + 1]),
     })
 
-def etfMultiples(url:str):
+def etfMultiples(scrapper:BeautifulSoup):
     """
     * ETF ONLY
-    :param url: [str]
+    :param scrapper: [BeautifulSoup]
     :return:
         dividendYield     1.68
         fiscalPE         12.58
         priceToBook       1.15
         dtype: float64
     """
-    src = Soup(requests.get(url).content, 'lxml')
-    script = src.find_all('script')[-1].text.split('\n')
+    script = scrapper.find_all('script')[-1].text.split('\n')
     pe = script[[n for n, h in enumerate(script) if "PER" in h][0] + 1]
     pb = script[[n for n, h in enumerate(script) if "PBR" in h][0] + 1]
     return pd.Series({
@@ -112,6 +111,6 @@ if __name__ == "__main__":
     url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?pGB=1&gicode=A{ticker}&cID=&MenuYn=Y&ReportGB=&NewMenuID=101&stkGb=701"
     etf = f"http://comp.fnguide.com/SVO2/ASP/etf_snapshot.asp?pGB=1&gicode=A102780&cID=&MenuYn=Y&ReportGB=&NewMenuID=401&stkGb=770"
 
-    # print(snapshot(xml))
-    # print(stockHeader(url))
+    # print(fetchSnapShot(xml))
+    # print(fetchHeader(url))
     # print(etfMultiples(etf))

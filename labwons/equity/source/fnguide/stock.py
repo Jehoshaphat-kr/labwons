@@ -1,11 +1,6 @@
 from labwons.equity.source.fnguide._url import url
-from labwons.equity.source.fnguide._fetch import (
-    fetchSnapShot,
-    fetchHeader,
-)
+from labwons.equity.source.fnguide import _fetch
 import pandas
-
-
 
 
 class stock(object):
@@ -36,7 +31,7 @@ class stock(object):
         return3Y                  27.58
         dtype: object
         """
-        return fetchSnapShot(self.url.xml)
+        return _fetch.snapShot(self.url.xml)
 
 
 if __name__ == "__main__":

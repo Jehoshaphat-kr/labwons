@@ -33,7 +33,7 @@ class url(object):
         "기업개요" 탭
         :return:
         """
-        return self._url_("SVD_Corp", "", "102", "701")
+        return self._url_("SVD_Corp", self.gb, "102", "701")
 
     @property
     def finance(self) -> str:
@@ -122,6 +122,22 @@ class url(object):
         :return:
         """
         return f"http://cdn.fnguide.com/SVO2/json/chart/01_02/chart_A{self.t}.json"
+
+    @property
+    def consensusForward1Y(self) -> str:
+        """
+        "cdn" 1년 또는 당해 선행
+        :return:
+        """
+        return f"https://cdn.fnguide.com/SVO2/json/chart/07_02/chart_A{self.t}_{self.gb}_FY1.json"
+
+    @property
+    def consensusForward2Y(self) -> str:
+        """
+        "cdn" 2년 또는 다음 해 선행
+        :return:
+        """
+        return f"https://cdn.fnguide.com/SVO2/json/chart/07_02/chart_A{self.t}_{self.gb}_FY2.json"
 
     @property
     def foreignRate3M(self) -> str:

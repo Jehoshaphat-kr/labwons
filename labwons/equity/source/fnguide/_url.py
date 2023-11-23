@@ -1,14 +1,9 @@
-from typing import Union
-from bs4 import BeautifulSoup
-from urllib.request import urlopen
-import requests, json, pandas
+from labwons.common.web import web
 
 
-class urls(object):
+class url(object):
     def __init__(self, ticker:str):
         self.t = ticker
-
-        #
         return
 
     def __call__(self, code:str, GB:str, menuID:str, stkGb:str) -> str:
@@ -49,6 +44,14 @@ class urls(object):
         return self._url_("SVD_Finance", self.gb, "103", "701")
 
     @property
+    def separateFinance(self) -> str:
+        """
+        "재무제표" 탭 (별도)
+        :return:
+        """
+        return self._url_("SVD_Finance", 'A', "103", "701")
+
+    @property
     def ratio(self) -> str:
         """
         "재무비율" 탭
@@ -87,6 +90,14 @@ class urls(object):
         :return:
         """
         return f"http://cdn.fnguide.com/SVO2/json/chart/01_06/chart_A{self.t}_D.json"
+
+    @property
+    def expenses(self) -> str:
+        """
+        "cdn" 판관비 / 매출원가
+        :return:
+        """
+        return f"https://cdn.fnguide.com/SVO2/json/chart/02/chart_A{self.t}_D.json"
 
     @property
     def consensusAnnualProfit(self) -> str:
@@ -137,6 +148,14 @@ class urls(object):
         return f"http://cdn.fnguide.com/SVO2/json/chart/01_01/chart_A{self.t}_3Y.json"
 
     @property
+    def foreignRates(self) -> tuple:
+        """
+        "cdn" 외국인 소진율 : 3개월, 1년, 3년
+        :return:
+        """
+        return self.foreignRate3M, self.foreignRate1Y, self.foreignRate3Y
+
+    @property
     def benchmarkMultiples(self) -> str:
         """
         "cdn" 벤치마크 배수 비교
@@ -171,79 +190,10 @@ class urls(object):
     @property
     def gb(self) -> str:
         """
-        연결 또는 별도 기업 여부
+        연결 또는 별도 여부
         :return: [str] "D": 연결 / "B": 별도
         """
         if not hasattr(self, '_gb'):
-            tbs = self.req(self.snapshot, 'list')
+            tbs = web.list(self.snapshot)
             self.__setattr__('_gb', "B" if tbs[11].iloc[1].isnull().sum() > tbs[14].iloc[1].isnull().sum() else "D")
         return self.__getattribute__('_gb')
-
-    def req(self, url:str, by:str, **kwargs) -> Union[list, pandas.DataFrame, BeautifulSoup]:
-        attr = f"_{url}_{by}"
-        if not hasattr(self, attr):
-            if by == 'list':
-                self.__setattr__(attr, pandas.read_html(io=url, header=0))
-            elif by == 'json' or by == 'dataframe':
-                self.__setattr__(attr, json.loads(urlopen(url=url).read().decode('utf-8-sig', 'replace')))
-            elif by == 'scrap':
-                resp = requests.get(url)
-                if resp.status_code == 200:
-                    self.__setattr__(attr, BeautifulSoup(resp.content, 'xml' if url.endswith('.xml') else 'lxml'))
-                else:
-                    raise ConnectionError
-            else:
-                raise KeyError
-            if by == 'dataframe':
-                kv = kwargs['key'] if 'key' in kwargs else 'CHART'
-                self.__setattr__(attr, pandas.DataFrame(self.__getattribute__(attr)[kv]))
-        return self.__getattribute__(attr)
-
-    # def reqTables(self, url:str) -> list:
-    #     """
-    #     url에 대한 html table의 [pandas.DataFrame] list
-    #     :param url: [str]
-    #     :return:
-    #     """
-    #     if not hasattr(self, f'_{url}_tables'):
-    #         self.__setattr__(f'_{url}_tables', pandas.read_html(io=url, header=0))
-    #     return self.__getattribute__(f'_{url}_tables')
-    #
-    # def reqXml(self) -> BeautifulSoup:
-    #     """
-    #     공통 xml의 스크래퍼 응답
-    #     :return: [BeatifulSoup]
-    #     """
-    #     if not hasattr(self, '_basis'):
-    #         response = requests.get(url=)
-    #         if response.status_code == 200:
-    #             self.__setattr__('_basis', BeautifulSoup(response.content, 'xml'))
-    #         else:
-    #             raise ConnectionError
-    #     return self.__getattribute__('_basis')
-    #
-    # def reqSnapshot(self) -> BeautifulSoup:
-    #     """
-    #     "Snapshot" 탭의 스크래퍼 응답
-    #     :return: [BeautifulSoup]
-    #     """
-    #     if not hasattr(self, '_ssnap'):
-    #         response = requests.get(url=self.snapshot)
-    #         if response.status_code == 200:
-    #             self.__setattr__('_ssnap', BeautifulSoup(response.content, 'lxml'))
-    #         else:
-    #             raise ConnectionError
-    #     return self.__getattribute__('_ssnap')
-    #
-    # def reqEtfSnapshot(self) -> BeautifulSoup:
-    #     """
-    #     "ETF_Snapshot" 탭의 스크래퍼 응답
-    #     :return: [BeautifulSoup]
-    #     """
-    #     if not hasattr(self, '_esnap'):
-    #         response = requests.get(url=self.etf)
-    #         if response.status_code == 200:
-    #             self.__setattr__('_esnap', BeautifulSoup(response.content, 'lxml'))
-    #         else:
-    #             raise ConnectionError
-    #     return self.__getattribute__('_esnap')

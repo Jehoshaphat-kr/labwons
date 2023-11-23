@@ -1,4 +1,4 @@
-from labwons.common.tools import stringDel
+from labwons.common.tools import cutString
 from bs4 import BeautifulSoup as Soup
 import pandas as pd
 import numpy as np
@@ -99,7 +99,7 @@ class naver(object):
         sim = sim.drop(index=['전일대비'])
         sim.index.name = None
         for col in sim:
-            sim[col] = sim[col].apply(lambda x: stringDel(str(x), ['하향', '상향', '%', '+', ' ']))
+            sim[col] = sim[col].apply(lambda x: cutString(str(x), ['하향', '상향', '%', '+', ' ']))
         tickers = [c.replace('*', '')[-6:] for c in sim.columns]
         labels = [c.replace('*', '')[:-6] for c in sim.columns]
         sim.columns = tickers

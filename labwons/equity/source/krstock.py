@@ -1,6 +1,6 @@
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.config import PATH
-from labwons.equity.source.fnguide.stock import fnguide
+from labwons.equity.source.fnguide.__depr import fnguide
 from labwons.equity.source.naver.stock import naver
 from labwons.common.tools import int2won
 from pykrx.stock import get_market_ohlcv_by_date

@@ -1,37 +1,82 @@
-from labwons.equity.source.fnguide._url import url
-from labwons.equity.source.fnguide import _fetch
+from labwons.equity.source.fnguide import _url
+from labwons.equity.source.fnguide import _req
+from typing import Union, Callable
 import pandas
 
 
 class stock(object):
 
+    class _two_dataframes(pandas.DataFrame):
+        Y = pandas.DataFrame()
+        Q = pandas.DataFrame()
+        def __init__(self, Y:pandas.DataFrame, Q:pandas.DataFrame):
+            self.Y, self.Q = Y, Q
+            super().__init__(Y.values, Y.index, Y.columns)
+            pass
+
     def __init__(self, ticker:str):
+        self.__url__ = url = _url.url(ticker)
+        self.__arg__ = {
+            "abstract": {
+                "url": url.snapshot,
+                "gb" : url.gb,
+                "period" : "Y"
+            },
+            "benchmarkMultiples": {
+                "url": url.benchmarkMultiples
+            },
+            "businessSummary": {
+                "url": url.snapshot
+            },
+            "cashFlow": {
+                "url": url.finance,
+                "period": "Y"
+            },
+            "consensusOutstanding" :{
+                "url": url.snapshot
+            },
+            # "consensusPrice",
+            # "consensusProfit",
+            # "consensusTendency",
+            # "expenses",
+            # "financialStatement",
+            # "foreignRate",
+            # "growthRate",
+            # "incomeStatement",
+            # "marketCap",
+            # "marketShares",
+            # "multipleBand",
+            # "multiples",
+            # "multiplesOutstanding",
+            # "products",
+            # "profitRate",
+            # "shareHolders",
+            # "shortSell",
+            "snapShot": {
+                "url": url.xml
+            },
+            # "stabilityRate",
+        }
+        self.__mem__ = {}
         self.ticker = ticker
-        self.url = url(ticker)
         return
 
-    @property
-    def basic(self) -> pandas.Series:
-        """
-        :return:
-        date                 2023/11/21
-        previousClose             12720
-        fiftyTwoWeekHigh          13480
-        fiftyTwoWeekLow           10950
-        marketCap                 95648
-        sharesOutstanding     751949461
-        floatShares           662964566
-        volume                  2486148
-        foreignRate               37.34
-        beta                    0.76677
-        return1M                   1.52
-        return3M                  10.99
-        return6M                   5.65
-        return1Y                   5.12
-        return3Y                  27.58
-        dtype: object
-        """
-        return _fetch.snapShot(self.url.xml)
+    def __getattr__(self, attr:str):
+        if not attr in self.__arg__:
+            raise KeyError(f"""Invalid attribute name: {attr}""")
+        if not attr in self.__mem__:
+            self.__mem__[attr] = self.__slot__(attr)
+        return self.__mem__[attr]
+
+    def __slot__(self, attr:str):
+        if "period" in self.__arg__[attr]:
+            args = self.__arg__[attr].copy()
+            args["period"] = "Q"
+            return self._two_dataframes(
+                Y = getattr(_req, attr)(**self.__arg__[attr]),
+                Q = getattr(_req, attr)(**args)
+            )
+        return getattr(_req, attr)(**self.__arg__[attr])
 
 
 if __name__ == "__main__":
@@ -39,6 +84,13 @@ if __name__ == "__main__":
 
     t = '316140'
     myStock = stock(t)
-    print(myStock.basic)
-    print(myStock.basic['date'])
-    print(myStock.basic['volume'])
+    print(myStock.abstract)
+    print(myStock.abstract.Y)
+    print(myStock.abstract.Q)
+    print(myStock.benchmarkMultiples)
+    print(myStock.businessSummary)
+    print(myStock.cashFlow)
+    print(myStock.cashFlow.Y)
+    print(myStock.cashFlow.Q)
+    # print(myStock.snapShot)
+

@@ -19,7 +19,6 @@ class stock(object):
         self.__arg__ = {
             "abstract": {
                 "url": url.snapshot,
-                "gb" : url.gb,
                 "period" : "Y"
             },
             "benchmarkMultiples": {
@@ -32,10 +31,12 @@ class stock(object):
                 "url": url.finance,
                 "period": "Y"
             },
-            "consensusOutstanding" :{
+            "consensusOutstanding": {
                 "url": url.snapshot
             },
-            # "consensusPrice",
+            "consensusPrice": {
+                "url"
+            },
             # "consensusProfit",
             # "consensusTendency",
             # "expenses",
@@ -69,6 +70,8 @@ class stock(object):
         return self.__mem__[attr]
 
     def __slot__(self, attr:str):
+        func = getattr(_req, attr)
+
         if "period" in self.__arg__[attr]:
             args = self.__arg__[attr].copy()
             args["period"] = "Q"

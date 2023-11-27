@@ -6,6 +6,36 @@ import pandas
 
 class stock(object):
 
+    __slots__ = (
+        "__url__",
+        "__mem__",
+        "ticker",
+        "abstract",
+        "benchmarkMultiples",
+        "businessSummary",
+        "cashFlow",
+        "consensusOutstanding",
+        "consensusPrice",
+        "consensusProfit",
+        "consensusTendency",
+        "expenses",
+        "financialStatement",
+        "foreignRate",
+        "growthRate",
+        "incomeStatement",
+        "marketCap",
+        "marketShares",
+        "multipleBand",
+        "multiples",
+        "multiplesOutstanding",
+        "products",
+        "profitRate",
+        "shareHolders",
+        "shortSell",
+        "snapShot",
+        "stabilityRate",
+    )
+
     class _two_dataframes(pandas.DataFrame):
         Y = pandas.DataFrame()
         Q = pandas.DataFrame()
@@ -15,71 +45,24 @@ class stock(object):
             pass
 
     def __init__(self, ticker:str):
-        self.__url__ = url = _url.url(ticker)
-        self.__arg__ = {
-            "abstract": {
-                "url": url.snapshot,
-                "period" : "Y"
-            },
-            "benchmarkMultiples": {
-                "url": url.benchmarkMultiples
-            },
-            "businessSummary": {
-                "url": url.snapshot
-            },
-            "cashFlow": {
-                "url": url.finance,
-                "period": "Y"
-            },
-            "consensusOutstanding": {
-                "url": url.snapshot
-            },
-            "consensusPrice": {
-                "url"
-            },
-            # "consensusProfit",
-            # "consensusTendency",
-            # "expenses",
-            # "financialStatement",
-            # "foreignRate",
-            # "growthRate",
-            # "incomeStatement",
-            # "marketCap",
-            # "marketShares",
-            # "multipleBand",
-            # "multiples",
-            # "multiplesOutstanding",
-            # "products",
-            # "profitRate",
-            # "shareHolders",
-            # "shortSell",
-            "snapShot": {
-                "url": url.xml
-            },
-            # "stabilityRate",
-        }
+        self.__url__ = _url.url(ticker)
         self.__mem__ = {}
         self.ticker = ticker
         return
 
     def __getattr__(self, attr:str):
-        if not attr in self.__arg__:
-            raise KeyError(f"""Invalid attribute name: {attr}""")
         if not attr in self.__mem__:
             self.__mem__[attr] = self.__slot__(attr)
         return self.__mem__[attr]
 
     def __slot__(self, attr:str):
         func = getattr(_req, attr)
-
-        if "period" in self.__arg__[attr]:
-            args = self.__arg__[attr].copy()
+        args = {"_url": self.__url__}
+        if "period" in func.__code__.co_varnames:
+            args2 = args.copy()
             args["period"] = "Q"
-            return self._two_dataframes(
-                Y = getattr(_req, attr)(**self.__arg__[attr]),
-                Q = getattr(_req, attr)(**args)
-            )
-        return getattr(_req, attr)(**self.__arg__[attr])
+            return self._two_dataframes(Y=func(**args), Q=func(**args2))
+        return func(**args)
 
 
 if __name__ == "__main__":
@@ -95,5 +78,6 @@ if __name__ == "__main__":
     print(myStock.cashFlow)
     print(myStock.cashFlow.Y)
     print(myStock.cashFlow.Q)
+    # print(myStock.)
     # print(myStock.snapShot)
 

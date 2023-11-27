@@ -1,7 +1,7 @@
+from labwons.common.metadata.metadata import MetaData
 from labwons.common.web import web
 from labwons.common.tools import cutString
 from labwons.equity.source.fnguide._url import url
-from typing import Union
 from datetime import datetime, timedelta
 from pykrx.stock import get_market_cap_by_date
 from pykrx.stock import get_etf_portfolio_deposit_file
@@ -691,7 +691,7 @@ def consensusTendency(_url:url, forward:str='1Y') -> pandas.DataFrame:
         data[col] = data[col].apply(lambda x: x.replace(',', '') if isinstance(x, str) else x)
     return data.astype(float)
 
-def EtfMultiples(_url:url) -> pandas.Series:
+def etfMultiples(_url:url) -> pandas.Series:
     """
     * ETF ONLY
     :param _url: [<class; url>]
@@ -705,16 +705,15 @@ def EtfMultiples(_url:url) -> pandas.Series:
     pe = script[[n for n, h in enumerate(script) if "PER" in h][0] + 1]
     pb = script[[n for n, h in enumerate(script) if "PBR" in h][0] + 1]
     return pandas.Series({
-        "dividendYield": str2num(web.html(_url).find_all('td', class_='r cle')[-1].text),
+        "dividendYield": str2num(web.html(_url.etf).find_all('td', class_='r cle')[-1].text),
         "fiscalPE" : str2num(pe[pe.index(":"): ]),
         "priceToBook": str2num(pb[pb.index(":"):])
     })
 
-def EtfComponent(ticker:str, meta:pandas.DataFrame=pandas.DataFrame()) -> pandas.DataFrame:
+def etfComponents(ticker:str) -> pandas.DataFrame:
     """
     * ETF ONLY
-    :param ticker: [str]
-    :param meta  : [pandas.DataFrame]
+    :param ticker : [str]
     :return:
                             이름        비중
         티커
@@ -735,17 +734,14 @@ def EtfComponent(ticker:str, meta:pandas.DataFrame=pandas.DataFrame()) -> pandas
         029780          삼성카드   0.600000
     """
     data = get_etf_portfolio_deposit_file(ticker)
-    if meta.empty:
-        from labwons.common.metadata.metadata import MetaData as meta
-    data['이름'] = meta[meta.index.isin(data.index)]['korName']
+    data['이름'] = MetaData[MetaData.index.isin(data.index)]['korName']
     return data[['이름', '비중']]
 
-def EtfSectors(_url:url, ticker:str, meta:pandas.DataFrame=pandas.DataFrame()) -> pandas.DataFrame:
+def etfSectors(_url:url, ticker:str) -> pandas.DataFrame:
     """
     * ETF ONLY
     :param _url   : [<class; url>]
     :param ticker : [str]
-    :param meta   : [pandas.DataFrame]
     :return:
                     KODEX 삼성그룹  유사펀드   시장
     섹터
@@ -771,9 +767,7 @@ def EtfSectors(_url:url, ticker:str, meta:pandas.DataFrame=pandas.DataFrame()) -
             break
         n += 1
     data = pandas.DataFrame(data=eval(base)).drop(columns=['val05'])
-    if meta.empty:
-        from labwons.common.metadata.metadata import MetaData as meta
-    data.columns = np.array(["섹터", meta.loc[ticker, 'name'], "유사펀드", "시장"])
+    data.columns = np.array(["섹터", MetaData.loc[ticker, 'name'], "유사펀드", "시장"])
     return data.set_index(keys='섹터')
 
 
@@ -819,6 +813,6 @@ if __name__ == "__main__":
     print(consensusTendency(_url, forward='2Y'))
 
 
-    # print(EtfMultiples(_url.etf))
-    # print(EtfComponent(ticker))
-    # print(EtfSectors(_url.etf, ticker))
+    # print(etfMultiples(_url.etf))
+    # print(etfComponents(ticker))
+    # print(etfSectors(_url.etf, ticker))

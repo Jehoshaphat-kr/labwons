@@ -1,7 +1,7 @@
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.web import web
 from labwons.common.tools import cutString
-from labwons.equity.source.fnguide._url import url
+from labwons.equity.ticker.kr._url import url
 from datetime import datetime, timedelta
 from pykrx.stock import get_market_cap_by_date
 from pykrx.stock import get_etf_portfolio_deposit_file
@@ -16,6 +16,11 @@ def str2num(src:str) -> int or float:
     if "." in src:
         return float(src)
     return int(src)
+
+def currentPrice(_url:url) -> int or float:
+    html = web.html(_url.naver)
+    curr = [d.text for d in html.find_all("dd") if d.text.startswith("현재가")][0]
+    return str2num(curr[curr.index("현재가 ") + 4: curr.index(" 전일대비")])
 
 def marketCap(ticker:str) -> pandas.Series:
     """
@@ -109,6 +114,32 @@ def multiplesOutstanding(_url:url) -> pandas.Series:
         "sectorPE": str2num(src[src.index('업종 PER') + 1]),
         "priceToBook": str2num(src[src.index('PBR') + 1]),
         "dividendYield": str2num(src[src.index('배당수익률') + 1]),
+    })
+
+def multiplesTrailing(_url:url) -> pandas.Series:
+    """
+    * EQUITY ONLY
+    :param _url: [<class; url>]
+    :return:
+        trailingPE         30.53
+        trailingEps     16642.00
+        estimatePE         22.00
+        estimateEps     22901.00
+        PriceToBook         1.22
+        bookValue      416754.00
+        dtype: float64
+    """
+    data = web.list(_url.naver)[8]
+    per, eps = map(str, data.columns[-1].split('l'))
+    estPE, estEps = map(str, data.iloc[0, -1].split('l'))
+    pbr, bps = map(str, data.iloc[1, -1].split('l'))
+    return pandas.Series({
+        "trailingPE": str2num(per),
+        "trailingEps": str2num(eps),
+        "estimatePE": str2num(estPE),
+        "estimateEps": str2num(estEps),
+        "PriceToBook": str2num(pbr),
+        "bookValue": str2num(bps)
     })
 
 def businessSummary(_url:url) -> str:
@@ -450,7 +481,7 @@ def incomeStatement(_url:url, period:str='Y') -> pandas.DataFrame:
     data.index = [cutString(x, cutter) for x in data.index]
     return data.T.astype(float)
 
-def financialStatment(_url:url, period:str='Y', gb:str='D') -> pandas.DataFrame:
+def financialStatement(_url:url, period:str='Y', gb:str='D') -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url   : [<class; url>]
@@ -581,7 +612,9 @@ def profitRate(_url:url) -> pandas.DataFrame:
     cutter = ['계산에 참여한 계정 펼치기', '(', ')', '*', '&nbsp;', ' ', " "]
     data = web.list(_url.ratio)[0]
     cols = data[data.columns[0]].tolist()
-    data = data.iloc[cols.index('수익성비율') + 1: cols.index('활동성비율')]
+    idet = cols.index('수익성비율') + 1
+    iend = cols.index('활동성비율') if "활동성비율" in cols else len(cols) - 1
+    data = data.iloc[idet : iend]
     data = data.set_index(keys=[data.columns[0]])
     data = data.drop(columns=[col for col in data if not col.startswith('20')])
     data.index.name = None
@@ -691,6 +724,35 @@ def consensusTendency(_url:url, forward:str='1Y') -> pandas.DataFrame:
         data[col] = data[col].apply(lambda x: x.replace(',', '') if isinstance(x, str) else x)
     return data.astype(float)
 
+def analogy(_url:url) -> pandas.DataFrame:
+    """
+    * EQUITY ONLY
+    :param _url: [<class; url>]
+    :return:
+                    종목명  현재가 등락률 시가총액(억) 외국인비율(%)  매출액(억) 영업이익(억)  ...  PER(%) PBR(배)
+        058470    리노공업  143800  -1.57        21918         37.25         751          336  ...   21.69    4.35
+        005930    삼성전자   70600   0.14      4214666         53.21      600055         6685  ...   13.47    1.37
+        000660  SK하이닉스  132000   1.15       960963         52.59       73059       -28821  ...  -11.73    1.58
+        402340    SK스퀘어   48450   0.41        67336         45.29       -1274        -7345  ...   -3.64    0.43
+        042700  한미반도체   60200  -9.20        58598         12.38         491          112  ...   29.07   10.80
+
+    :columns: ['종목명', '현재가', '등락률', '시가총액(억)', '외국인비율(%)', '매출액(억)', '영업이익(억)',
+               '조정영업이익(억)', '영업이익증가율(%)', '당기순이익(억)', '주당순이익(원)', 'ROE(%)', 'PER(%)',
+               'PBR(배)']
+    """
+    data = web.list(_url.naver)[4]
+    data = data.set_index(keys='종목명')
+    data = data.drop(index=['전일대비'])
+    data.index.name = None
+    for col in data:
+        data[col] = data[col].apply(lambda x: cutString(str(x), ['하향', '상향', '%', '+', ' ']))
+    tickers = [c.replace('*', '')[-6:] for c in data]
+    labels = [c.replace('*', '')[:-6] for c in data]
+    data.columns = tickers
+    return pandas.concat(objs=[pandas.DataFrame(columns=tickers, index=['종목명'], data=[labels]), data], axis=0).T
+
+
+
 def etfMultiples(_url:url) -> pandas.Series:
     """
     * ETF ONLY
@@ -783,34 +845,37 @@ if __name__ == "__main__":
     # ticker = '102780' # KODEX
 
     _url = url(ticker)
-    print(marketCap(ticker))
-    print(snapShot(_url))
-    print(businessSummary(_url))
+    print(currentPrice(_url))
+    # print(marketCap(ticker))
+    # print(snapShot(_url))
+    # print(businessSummary(_url))
     print(multiplesOutstanding(_url))
-    print(abstract(_url))
-    print(foreignRate(_url))
-    print(consensusOutstanding(_url))
-    print(consensusPrice(_url))
-    print(benchmarkMultiples(_url))
-    print(shortSell(_url))
-    print(shortBalance(_url))
-    print(multipleBand(_url))
-    print(products(_url))
-    print(expenses(_url))
-    print(marketShares(_url, 'product'))
-    print(shareHolders(_url))
-    print(incomeStatement(_url))
-    print(financialStatment(_url))
-    print(financialStatment(_url, gb='B'))
-    print(cashFlow(_url))
-    print(stabilityRate(_url))
-    print(growthRate(_url))
-    print(profitRate(_url))
-    print(multiples(_url))
-    print(consensusProfit(_url))
-    print(consensusProfit(_url, period='Q'))
-    print(consensusTendency(_url))
-    print(consensusTendency(_url, forward='2Y'))
+    print(multiplesTrailing(_url))
+    # print(abstract(_url))
+    # print(foreignRate(_url))
+    # print(consensusOutstanding(_url))
+    # print(consensusPrice(_url))
+    # print(benchmarkMultiples(_url))
+    # print(shortSell(_url))
+    # print(shortBalance(_url))
+    # print(multipleBand(_url))
+    # print(products(_url))
+    # print(expenses(_url))
+    # print(marketShares(_url, 'product'))
+    # print(shareHolders(_url))
+    # print(incomeStatement(_url))
+    # print(financialStatement(_url))
+    # print(financialStatement(_url, gb='B'))
+    # print(cashFlow(_url))
+    # print(stabilityRate(_url))
+    # print(growthRate(_url))
+    # print(profitRate(_url))
+    # print(multiples(_url))
+    # print(consensusProfit(_url))
+    # print(consensusProfit(_url, period='Q'))
+    # print(consensusTendency(_url))
+    # print(consensusTendency(_url, forward='2Y'))
+    # print(analogy(_url))
 
 
     # print(etfMultiples(_url.etf))

@@ -15,7 +15,8 @@ class _web(object):
     def list(self, url:str) -> list:
         attr = f"_list_{url}_"
         if not hasattr(self, attr):
-            self.__setattr__(attr, pandas.read_html(io=url, header=0))
+            encoding = "euc-kr" if "naver" in url else "utf-8"
+            self.__setattr__(attr, pandas.read_html(io=url, header=0, encoding=encoding))
         return self.__getattribute__(attr)
 
     def json(self, url:str) -> json:

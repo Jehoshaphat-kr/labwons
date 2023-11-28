@@ -196,6 +196,14 @@ class url(object):
         return f"http://cdn.fnguide.com/SVO2/json/chart/11_01/chart_A{self.t}_BALANCE1Y.json"
 
     @property
+    def naver(self) -> str:
+        """
+        "네이버" 증권
+        :return:
+        """
+        return  f"https://finance.naver.com/item/main.naver?code={self.t}"
+
+    @property
     def etf(self) -> str:
         """
         "ETF Snapshot" 탭

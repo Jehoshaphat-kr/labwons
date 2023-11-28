@@ -1,5 +1,4 @@
-from labwons.equity.source.fnguide import _url
-from labwons.equity.source.fnguide import _req
+from labwons.equity.source.kr import _req, _url
 import pandas
 
 

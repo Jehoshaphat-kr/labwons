@@ -9,7 +9,7 @@ class _web(object):
         attr = f"_html_{url}_"
         if not hasattr(self, attr):
             feature = 'xml' if url.endswith('.xml') else 'lxml'
-            self.__setattr__(attr, BeautifulSoup(requests.get(url).content, feature))
+            self.__setattr__(attr, BeautifulSoup(requests.get(url).text, feature))
         return self.__getattribute__(attr)
 
     def list(self, url:str) -> list:

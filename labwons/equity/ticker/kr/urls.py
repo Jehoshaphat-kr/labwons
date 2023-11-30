@@ -164,14 +164,6 @@ class urls(object):
         return f"http://cdn.fnguide.com/SVO2/json/chart/01_01/chart_A{self.ticker}_3Y.json"
 
     @property
-    def foreignRates(self) -> tuple:
-        """
-        "cdn" 외국인 소진율 : 3개월, 1년, 3년
-        :return:
-        """
-        return self.foreignRate3M, self.foreignRate1Y, self.foreignRate3Y
-
-    @property
     def benchmarkMultiples(self) -> str:
         """
         "cdn" 벤치마크 배수 비교

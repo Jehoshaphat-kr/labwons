@@ -19,9 +19,16 @@ def int2won(x) -> str:
             ek = ek[1:]
         return f'{s}{zo}조 {ek}억'
 
+def str2num(src:str) -> int or float:
+    src = "".join([char for char in src if char.isdigit() or char == "."])
+    if not src:
+        return np.nan
+    if "." in src:
+        return float(src)
+    return int(src)
+
 def xml2df(url: str) -> pd.DataFrame:
     exclude = ['row', 'P_STAT_CODE']
-
     resp = requests.get(url)
     root = ElementTree(fromstring(resp.text)).getroot()
     data = list()
@@ -32,7 +39,6 @@ def xml2df(url: str) -> pd.DataFrame:
                 continue
             getter.update({t.tag: t.text})
         data.append(getter)
-
     return pd.DataFrame(data=data) if data else pd.DataFrame()
 
 def cutString(string:str, deleter:list) -> str:

@@ -1,7 +1,7 @@
 from labwons.common.metadata.metadata import MetaData
 from labwons.common.web import web
-from labwons.common.tools import cutString
-from labwons.equity.ticker.kr._url import url
+from labwons.common.tools import cutString, str2num
+from labwons.equity.ticker.kr.urls import urls
 from datetime import datetime, timedelta
 from pykrx.stock import get_market_cap_by_date
 from pykrx.stock import get_etf_portfolio_deposit_file
@@ -9,15 +9,320 @@ import pandas
 import numpy as np
 
 
-def str2num(src:str) -> int or float:
-    src = "".join([char for char in src if char.isdigit() or char == "."])
-    if not src:
-        return np.nan
-    if "." in src:
-        return float(src)
-    return int(src)
+class stock:
 
-def currentPrice(_url:url) -> int or float:
+    class _two_dataframes(pandas.DataFrame):
+        Y = pandas.DataFrame()
+        Q = pandas.DataFrame()
+        def __init__(self, Y:pandas.DataFrame, Q:pandas.DataFrame):
+            self.Y, self.Q = Y, Q
+            super().__init__(Y.values, Y.index, Y.columns)
+            return
+
+
+    def __init__(self, ticker:str):
+        self.ticker = ticker
+        self.urls   = urls(ticker)
+        return
+
+
+    @property
+    def abstract(self) -> pandas.DataFrame:
+        """
+        :return:
+                      이자수익 영업이익 당기순이익 ...   PER   PBR 발행주식수 배당수익률
+            기말
+            2018/12        NaN     NaN        NaN  ...   NaN   NaN       NaN        NaN
+            2019/12     105768   28000      20376  ...  4.29  0.39    722268       6.03
+            2020/12      95239   20804      15152  ...  5.38  0.30    722268       3.70
+            2021/12      98947   36597      28074  ...  3.56  0.36    728061       7.09
+            2022/12     146545   44305      33240  ...  2.68  0.29    728061       9.78
+            2023/12(E)  198704   40045      30132  ...  3.25  0.30       NaN        NaN
+
+        :columns: ['이자수익', '영업이익', '영업이익(발표기준)', '당기순이익',
+                   '지배주주순이익', '비지배주주순이익',
+                   '자산총계', '부채총계', '자본총계', '지배주주지분', '비지배주주지분',
+                   '자본금', '부채비율', '유보율', '영업이익률',
+                   '지배주주순이익률', 'ROA', 'ROE', 'EPS(원)', 'BPS(원)', 'DPS(원)', 'PER', 'PBR',
+                   '발행주식수', '배당수익률']
+        """
+        url = self.urls.snapshot
+        def _get_(index:int) -> pandas.DataFrame:
+            data = web.list(url)[index]
+            data = data.set_index(keys=[data.columns[0]])
+            if isinstance(data.columns[0], tuple):
+                data.columns = data.columns.droplevel()
+            else:
+                data.columns = data.iloc[0]
+                data = data.drop(index=data.index[0])
+            data = data.T
+            data = data.head(len(data) - len([i for i in data.index if i.endswith(')')]) + 1)
+            data.index.name = '기말'
+            data.columns.name = None
+            return data
+
+        if not hasattr(self, "_abstract"):
+            yy = 11 if self.urls.gb == 'D' else 14
+            qq = 12 if self.urls.gb == 'D' else 15
+            self.__setattr__("_abstract", self._two_dataframes(Y=_get_(yy), Q=_get_(qq)))
+        return self.__getattribute__("_abstract")
+
+
+    @property
+    def analogy(self) -> pandas.DataFrame:
+        """
+        :return:
+                        종목명  현재가 등락률 시가총액(억) 외국인비율(%)  매출액(억) 영업이익(억)  ...  PER(%) PBR(배)
+            058470    리노공업  143800  -1.57        21918         37.25         751          336  ...   21.69    4.35
+            005930    삼성전자   70600   0.14      4214666         53.21      600055         6685  ...   13.47    1.37
+            000660  SK하이닉스  132000   1.15       960963         52.59       73059       -28821  ...  -11.73    1.58
+            402340    SK스퀘어   48450   0.41        67336         45.29       -1274        -7345  ...   -3.64    0.43
+            042700  한미반도체   60200  -9.20        58598         12.38         491          112  ...   29.07   10.80
+
+        :columns: ['종목명', '현재가', '등락률', '시가총액(억)', '외국인비율(%)', '매출액(억)', '영업이익(억)',
+                   '조정영업이익(억)', '영업이익증가율(%)', '당기순이익(억)', '주당순이익(원)', 'ROE(%)', 'PER(%)',
+                   'PBR(배)']
+        """
+        if not hasattr(self, '_analogy'):
+            data = web.list(self.urls.naver)[4]
+            data = data.set_index(keys='종목명').drop(index=['전일대비'])
+            data.index.name = None
+            for col in data:
+                data[col] = data[col].apply(lambda x: cutString(str(x), ['하향', '상향', '%', '+', ' ']))
+            tickers = [c.replace('*', '')[-6:] for c in data]
+            labels = [c.replace('*', '')[:-6] for c in data]
+            data.columns = tickers
+            name = pandas.DataFrame(columns=tickers, index=['종목명'], data=[labels])
+            self.__setattr__("_analogy", pandas.concat(objs=[name, data], axis=0).T)
+        return self.__getattribute__("_analogy")
+
+
+    @property
+    def benchmarkMultiples(self) -> pandas.DataFrame:
+        """
+        :return:
+                                                  PER  ...                           배당수익률
+                  우리금융지주  코스피 금융업  코스피  ...  우리금융지주  코스피 금융업  코스피
+            2021          3.56           5.94   11.08  ...          7.09           3.48    1.78
+            2022          2.68           5.53   10.87  ...          9.78           4.32    2.22
+            2023E         3.25           6.08   17.54  ...           NaN            NaN     NaN
+
+        :columns: MultiIndex([(       'PER',  '우리금융지주'),
+                              (       'PER', '코스피 금융업'),
+                              (       'PER',     '코스피'),
+                              ( 'EV/EBITDA',  '우리금융지주'),
+                              ( 'EV/EBITDA', '코스피 금융업'),
+                              ( 'EV/EBITDA',     '코스피'),
+                              (       'ROE',  '우리금융지주'),
+                              (       'ROE', '코스피 금융업'),
+                              (       'ROE',     '코스피'),
+                              ('배당수익률',  '우리금융지주'),
+                              ('배당수익률', '코스피 금융업'),
+                              ('배당수익률',     '코스피')
+                            ])
+        """
+        json = web.json(self.urls.benchmarkMultiples)
+        def _get_(key: str) -> pandas.DataFrame:
+            head = pandas.DataFrame(json[f'{key}_H'])[['ID', 'NAME']].set_index(keys='ID')
+            head['NAME'] = head['NAME'].str.replace("'", "20")
+            head = head.to_dict()['NAME']
+            head.update({'CD_NM': '이름'})
+            data = pandas.DataFrame(json[key])[head.keys()].rename(columns=head).set_index(keys='이름')
+            data.index.name = None
+            return data.replace('-', np.nan).T.astype(float)
+
+        if not hasattr(self, "_benchmarkMultiples"):
+            attr = pandas.concat(
+                objs={
+                    'PER': _get_('02'),
+                    'EV/EBITDA': _get_('03'),
+                    'ROE': _get_('04'),
+                    '배당수익률': _get_('05')
+                }, axis=1
+            )
+            self.__setattr__("_benchmarkMultiples", attr)
+        return self.__getattribute__("_benchmarkMultiples")
+
+
+    @property
+    def businessSummary(self) -> str:
+        """
+        :return:
+            동사는 2019년 1월 설립한 지주회사로 주요 종속회사들의 사업은 은행업, 신용카드업, 종합금융업 등임.
+            ...
+            비금융 포트폴리오를 확대하기 위해 중형급 이상 증권사를 인수하는 방안도 지속 고려하고 있음.
+        """
+        html = web.html(self.urls.snapshot).find('ul', id='bizSummaryContent').find_all('li')
+        t = '\n\n '.join([e.text for e in html])
+        w = [
+            '.\n' if t[n] == '.' and not any([t[n - 1].isdigit(), t[n + 1].isdigit(), t[n + 1].isalpha()]) else t[n]
+            for n in range(1, len(t) - 2)
+        ]
+        s = ' ' + t[0] + ''.join(w) + t[-2] + t[-1]
+        return s.replace(' ', '').replace('\xa0\xa0', ' ').replace('\xa0', ' ').replace('\n ', '\n')
+
+
+    @property
+    def cashFlow(self) -> pandas.DataFrame:
+        """
+        :param period : [str] 연간 = 'Y', 분기 = 'Q'
+        :return:
+                     영업현금흐름  투자현금흐름  재무현금흐름  환율변동손익  현금및현금성자산
+            2020/12        123146       -118404          2521          -563             29760
+            2021/12        197976       -223923         44923          1843             50580
+            2022/12        147805       -178837         28218          2005             49770
+            2023/2Q         -6940        -53509         70579           508             60408
+        """
+        cut = ['계산에 참여한 계정 펼치기', '(', ')', '*', '&nbsp;', ' ', " "]
+        col = {
+            "영업활동으로인한현금흐름": "영업현금흐름",
+            "투자활동으로인한현금흐름": "투자현금흐름",
+            "재무활동으로인한현금흐름": "재무현금흐름",
+            "환율변동효과": "환율변동손익",
+            "기말현금및현금성자산": "현금및현금성자산"
+        }
+        url = self.urls.finance
+        def _get_(index:int) -> pandas.DataFrame:
+            data = web.list(url)[index]
+            data = data.set_index(keys=[data.columns[0]])
+            data = data.drop(columns=[c for c in data if not c.startswith('20')])
+            data.index.name = None
+            data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/{int(data.columns[-1][-2:]) // 3}Q"]
+            data.index = [cutString(x, cut) for x in data.index]
+            data = data.T
+            return data[col.keys()].rename(columns=col).fillna(0).astype(int)
+
+        if not hasattr(self, '_cashflow'):
+            self.__setattr__('_cashflow', self._two_dataframes(Y=_get_(4), Q=_get_(5)))
+        return self.__getattribute__('_cashflow')
+
+    @property
+    def consensusOutstanding(self) -> pandas.Series:
+        """
+        :return:
+            투자의견         4.0
+            목표주가     15411.0
+            EPS           3908.0
+            PER              3.3
+            추정기관수      18.0
+            dtype: float64
+        """
+        src = web.list(self.urls.snapshot)[7]
+        return pandas.Series(dict(zip(src.columns.tolist(), src.iloc[0].tolist())))
+
+    @property
+    def consensusPrice(self) -> pandas.DataFrame:
+        """
+        :return:
+                       투자의견  컨센서스     종가   격차
+            날짜
+            2022-11-23      4.0   16378.0  12300.0 -24.90
+            2022-11-24      4.0   16378.0  12550.0 -23.37
+            2022-11-25      4.0   16378.0  12450.0 -23.98
+            ...             ...       ...      ...    ...
+            2023-11-20      4.0   15411.0  12490.0 -18.95
+            2023-11-21      4.0   15411.0  12720.0 -17.46
+            2023-11-22      4.0   15411.0  12700.0 -17.59
+        """
+        cols = {'TRD_DT': '날짜', 'VAL1': '투자의견', 'VAL2': '컨센서스', 'VAL3': '종가'}
+        data = web.data(self.urls.consensusPrice, "CHART")
+        data = data.rename(columns=cols)
+        data = data.set_index(keys='날짜')
+        data.index = pandas.to_datetime(data.index)
+        data = data.astype(float)
+        data['격차'] = round(100 * (data['종가'] / data['컨센서스'] - 1), 2)
+        return data
+
+    @property
+    def consensusProfit(self) -> pandas.DataFrame:
+        """
+        :return:
+            [연간]
+                    매출실적  매출전망  영업이익실적  영업이익전망
+            기말
+            2020/12  2013.35   2032.00        778.82        784.67
+            2021/12  2801.67   2773.23       1171.04       1144.04
+            2022/12  3224.23   3340.00       1366.35       1460.00
+            2023/12      NaN   2578.67           NaN       1055.50
+            2024/12      NaN   3048.83           NaN       1278.83
+            2025/12      NaN   3469.00           NaN       1465.50
+
+            [분기]
+                    매출실적  매출전망  영업이익실적  영업이익전망
+            기말
+            2023/03   490.91    732.25        172.63         277.5
+            2023/06   751.31    696.25        335.62         266.0
+            2023/09   733.99    770.25        333.24         332.0
+            2023/12      NaN    601.60           NaN         213.0
+            2024/03      NaN    582.50           NaN         219.5
+            2024/06      NaN    817.00           NaN         366.5
+        """
+        cols = {
+            "GS_YM": "기말",
+            "SALES_R": "매출실적", "SALES_F": "매출전망",
+            "OP_R": "영업이익실적", "OP_F": "영업이익전망"
+        }
+        def _get_(url:str) -> pandas.DataFrame:
+            data = web.data(url, "CHART").replace('-', np.nan)[cols.keys()]
+            data = data.rename(columns=cols)
+            return data.set_index(keys="기말").astype(float)
+        return self._two_dataframes(Y=_get_(self.urls.consensusAnnualProfit), Q=_get_(self.urls.consensusQuarterProfit))
+
+    @property
+    def consensusTendency(self) -> pandas.DataFrame:
+        """
+        * EQUITY ONLY
+        :param _url    : [<class; url>]
+        :param forward : [str] '1Y' - 당해, '2Y' 내년
+        :return:
+                           매출  매출(최대)  매출(최소)   영업이익  영업이익(최대) 영업이익(최소)  ...  12M PER
+            날짜
+            2022/11   3063374.5     3288390     2826800     336985          419430         265250  ...     15.3
+            2022/12  2942704.08     3173270     2635050     291990          389990         196600  ...    15.97
+            2023/01  2820243.82     3073260     2635050  211293.59          342396         128930  ...    22.15
+            2023/02  2728378.14     3073260     2581450  168233.05          329278          97490  ...    22.45
+            2023/03   2723824.5     2900830     2594060  114761.09          184940          42540  ..     25.65
+            2023/04  2688688.59     2884560     2560260     100754          184940          46570  ...    25.21
+            2023/05  2678715.91     2884560     2540150   95985.36          122270          59390  ...    24.93
+            2023/06  2660441.74     2785651     2476590   95079.48          122270          59390  ...    23.27
+            2023/07  2604180.14     2708860     2527000   85640.81          126210          61590  ...    19.75
+            2023/08  2609199.41     2708860     2527000   85829.45          126210          46620  ...       18
+            2023/09   2613926.3     2708860     2527000   71636.43          100390          41620  ...    18.16
+            2023/10  2609787.67     2661845     2528300   72144.57           96690          57010  ...    19.22
+
+        :columns: ['매출', '매출(최대)', '매출(최소)', '영업이익', '영업이익(최대)', '영업이익(최소)', 'EPS',
+                   'EPS(최대)', 'EPS(최소)', 'PER', 'PER(최대)', 'PER(최소)', '12M PER']
+        """
+        cols = {
+            "STD_DT": "날짜",
+            "SALES": "매출", "SALES_MAX": "매출(최대)", "SALES_MIN": "매출(최소)",
+            "OP": "영업이익", "OP_MAX": "영업이익(최대)", "OP_MIN": "영업이익(최소)",
+            "EPS": "EPS", "EPS_MAX": "EPS(최대)", "EPS_MIN": "EPS(최소)",
+            "PER": "PER", "PER_MAX": "PER(최대)", "PER_MIN": "PER(최소)", "PER_12F": "12M PER"
+        }
+        u = _url.consensusForward1Y if forward == '1Y' else _url.consensusForward2Y
+        def _get_(url:str) -> pandas.DataFrame:
+            data = web.data(url, "CHART")[cols.keys()]
+            data = data.rename(columns=cols)
+            data = data.set_index(keys='날짜')
+            data = data.replace('', np.nan)
+            for col in data:
+                data[col] = data[col].apply(lambda x: x.replace(',', '') if isinstance(x, str) else x)
+            return data.astype(float)
+
+
+
+
+
+
+
+
+
+
+
+
+
+def currentPrice(_url:urls) -> int or float:
     html = web.html(_url.naver)
     curr = [d.text for d in html.find_all("dd") if d.text.startswith("현재가")][0]
     return str2num(curr[curr.index("현재가 ") + 4: curr.index(" 전일대비")])
@@ -53,7 +358,7 @@ def marketCap(ticker:str) -> pandas.Series:
     cap.index = cap.index.strftime("%Y/%m")
     return pandas.Series(index=cap.index, data=cap['시가총액'], dtype=int)  / 100000000
 
-def snapShot(_url:url) -> pandas.Series:
+def snapShot(_url:urls) -> pandas.Series:
     """
     * COMMON for EQUITY, ETF
     :param _url: [<class; url>]
@@ -94,7 +399,7 @@ def snapShot(_url:url) -> pandas.Series:
         "return3Y": str2num(src.find("change_36month").text),
     })
 
-def multiplesOutstanding(_url:url) -> pandas.Series:
+def multiplesOutstanding(_url:urls) -> pandas.Series:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -116,7 +421,7 @@ def multiplesOutstanding(_url:url) -> pandas.Series:
         "dividendYield": str2num(src[src.index('배당수익률') + 1]),
     })
 
-def multiplesTrailing(_url:url) -> pandas.Series:
+def multiplesTrailing(_url:urls) -> pandas.Series:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -142,61 +447,8 @@ def multiplesTrailing(_url:url) -> pandas.Series:
         "bookValue": str2num(bps)
     })
 
-def businessSummary(_url:url) -> str:
-    """
-    * EQUITY ONLY
-    :param _url: [<class; url>]
-    :return:
-        동사는 2019년 1월 설립한 지주회사로 주요 종속회사들의 사업은 은행업, 신용카드업, 종합금융업 등임.
-        ...
-        비금융 포트폴리오를 확대하기 위해 중형급 이상 증권사를 인수하는 방안도 지속 고려하고 있음.
-    """
-    html = web.html(_url.snapshot).find('ul', id='bizSummaryContent').find_all('li')
-    t = '\n\n '.join([e.text for e in html])
-    w = [
-        '.\n' if t[n] == '.' and not any([t[n - 1].isdigit(), t[n + 1].isdigit(), t[n + 1].isalpha()]) else t[n]
-        for n in range(1, len(t) - 2)
-    ]
-    s = ' ' + t[0] + ''.join(w) + t[-2] + t[-1]
-    return s.replace(' ', '').replace('\xa0\xa0', ' ').replace('\xa0', ' ').replace('\n ', '\n')
 
-def abstract(_url:url, period:str='Y') -> pandas.DataFrame:
-    """
-    * EQUITY ONLY
-    :param _url    : [<class; url>]
-    :param period  : [str] 연간 = 'Y', 분기 = 'Q'
-    :return:
-                  이자수익 영업이익 당기순이익 ...   PER   PBR 발행주식수 배당수익률
-        기말
-        2018/12        NaN     NaN        NaN  ...   NaN   NaN       NaN        NaN
-        2019/12     105768   28000      20376  ...  4.29  0.39    722268       6.03
-        2020/12      95239   20804      15152  ...  5.38  0.30    722268       3.70
-        2021/12      98947   36597      28074  ...  3.56  0.36    728061       7.09
-        2022/12     146545   44305      33240  ...  2.68  0.29    728061       9.78
-        2023/12(E)  198704   40045      30132  ...  3.25  0.30       NaN        NaN
-
-    :columns: ['이자수익', '영업이익', '영업이익(발표기준)', '당기순이익',
-               '지배주주순이익', '비지배주주순이익',
-               '자산총계', '부채총계', '자본총계', '지배주주지분', '비지배주주지분',
-               '자본금', '부채비율', '유보율', '영업이익률',
-               '지배주주순이익률', 'ROA', 'ROE', 'EPS(원)', 'BPS(원)', 'DPS(원)', 'PER', 'PBR',
-               '발행주식수', '배당수익률']
-    """
-    index = {'DY':11, 'BY':14, 'DQ':12, 'BQ':15}[f"{_url.gb}{period}"]
-    table = web.list(_url.snapshot)[index]
-    data = table.set_index(keys=[table.columns[0]])
-    if isinstance(data.columns[0], tuple):
-        data.columns = data.columns.droplevel()
-    else:
-        data.columns = data.iloc[0]
-        data = data.drop(index=data.index[0])
-    data = data.T
-    data = data.head(len(data) - len([i for i in data.index if i.endswith(')')]) + 1)
-    data.index.name = '기말'
-    data.columns.name = None
-    return data
-
-def foreignRate(_url:url) -> pandas.DataFrame:
+def foreignRate(_url:urls) -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -221,85 +473,11 @@ def foreignRate(_url:url) -> pandas.DataFrame:
         objs[u[u.rfind('_') + 1: u.rfind('.')]] = data.replace('', '0.0').replace('-', '0.0')
     return pandas.concat(objs=objs, axis=1).astype(float)
 
-def consensusOutstanding(_url:url) -> pandas.Series:
-    """
-    * EQUITY ONLY
-    :param _url: [<class; url>]
-    :return:
-        투자의견         4.0
-        목표주가     15411.0
-        EPS           3908.0
-        PER              3.3
-        추정기관수      18.0
-        dtype: float64
-    """
-    src = web.list(_url.snapshot)[7]
-    return pandas.Series(dict(zip(src.columns.tolist(), src.iloc[0].tolist())))
 
-def consensusPrice(_url:url) -> pandas.DataFrame:
-    """
-    * EQUITY ONLY
-    :param _url: [<class; url>]
-    :return:
-                   투자의견  컨센서스     종가   격차
-        날짜
-        2022-11-23      4.0   16378.0  12300.0 -24.90
-        2022-11-24      4.0   16378.0  12550.0 -23.37
-        2022-11-25      4.0   16378.0  12450.0 -23.98
-        ...             ...       ...      ...    ...
-        2023-11-20      4.0   15411.0  12490.0 -18.95
-        2023-11-21      4.0   15411.0  12720.0 -17.46
-        2023-11-22      4.0   15411.0  12700.0 -17.59
-    """
-    data = web.json2data(_url.consensusPrice)
-    data = data.rename(columns={'TRD_DT': '날짜', 'VAL1': '투자의견', 'VAL2': '컨센서스', 'VAL3': '종가'})
-    data = data.set_index(keys='날짜')
-    data.index = pandas.to_datetime(data.index)
-    data = data.astype(float)
-    data['격차'] = round(100 * (data['종가'] / data['컨센서스'] - 1), 2)
-    return data
 
-def benchmarkMultiples(_url:url) -> pandas.DataFrame:
-    """
-    * EQUITY ONLY
-    :param _url: [<class; url>]
-    :return:
-                                              PER  ...                           배당수익률
-              우리금융지주  코스피 금융업  코스피  ...  우리금융지주  코스피 금융업  코스피
-        2021          3.56           5.94   11.08  ...          7.09           3.48    1.78
-        2022          2.68           5.53   10.87  ...          9.78           4.32    2.22
-        2023E         3.25           6.08   17.54  ...           NaN            NaN     NaN
 
-    :columns: MultiIndex([(       'PER',  '우리금융지주'),
-                          (       'PER', '코스피 금융업'),
-                          (       'PER',     '코스피'),
-                          ( 'EV/EBITDA',  '우리금융지주'),
-                          ( 'EV/EBITDA', '코스피 금융업'),
-                          ( 'EV/EBITDA',     '코스피'),
-                          (       'ROE',  '우리금융지주'),
-                          (       'ROE', '코스피 금융업'),
-                          (       'ROE',     '코스피'),
-                          ('배당수익률',  '우리금융지주'),
-                          ('배당수익률', '코스피 금융업'),
-                          ('배당수익률',     '코스피')
-                        ])
-    """
-    json = web.json(_url.benchmarkMultiples)
-    def mul(key:str) -> pandas.DataFrame:
-        head = pandas.DataFrame(json[f'{key}_H'])[['ID', 'NAME']].set_index(keys='ID')
-        head['NAME'] = head['NAME'].str.replace("'", "20")
-        head = head.to_dict()['NAME']
-        head.update({'CD_NM': '이름'})
 
-        data = pandas.DataFrame(json[key])[head.keys()].rename(columns=head).set_index(keys='이름')
-        data.index.name = None
-        return data.replace('-', np.nan).T.astype(float)
-    return pandas.concat(
-        objs={'PER': mul('02'), 'EV/EBITDA': mul('03'), 'ROE': mul('04'), '배당수익률': mul('05')},
-        axis=1
-    )
-
-def multipleBand(_url:url) -> pandas.DataFrame:
+def multipleBand(_url:urls) -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -326,7 +504,7 @@ def multipleBand(_url:url) -> pandas.DataFrame:
         return data.rename(columns=head).set_index(keys='날짜').astype(float)
     return pandas.concat(objs={'PER': band('CHART_E'), 'PBR': band('CHART_B')}, axis=1)
 
-def shortSell(_url:url) -> pandas.DataFrame:
+def shortSell(_url:urls) -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -346,7 +524,7 @@ def shortSell(_url:url) -> pandas.DataFrame:
     data.index = pandas.to_datetime(data.index)
     return data.astype(float)
 
-def shortBalance(_url:url) -> pandas.DataFrame:
+def shortBalance(_url:urls) -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -366,7 +544,7 @@ def shortBalance(_url:url) -> pandas.DataFrame:
     data.index = pandas.to_datetime(data.index)
     return data.astype(float)
 
-def products(_url:url) -> pandas.DataFrame:
+def products(_url:urls) -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -390,7 +568,7 @@ def products(_url:url) -> pandas.DataFrame:
     data[i] = data[i] - (data.Sum - 100)
     return data.drop(columns=['Sum'])
 
-def expenses(_url:url, period:str='Y') -> pandas.DataFrame:
+def expenses(_url:urls, period:str='Y') -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url   : [<class; url>]
@@ -410,7 +588,7 @@ def expenses(_url:url, period:str='Y') -> pandas.DataFrame:
         return data.replace('-', np.nan).replace('', np.nan)
     return pandas.concat(objs={"판관비율": exp('05'), "매출원가율": exp('06')}, axis=1)
 
-def marketShares(_url:url, by:str='product') -> pandas.DataFrame:
+def marketShares(_url:urls, by:str='product') -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url : [<class; url>]
@@ -437,7 +615,7 @@ def marketShares(_url:url, by:str='product') -> pandas.DataFrame:
     data = pandas.concat(objs={(c[1], c[0]): data[c] for c in data}, axis=1)
     return data[sorted(data.columns, key=lambda x: x[0])] # 상품 구분 우선 시
 
-def shareHolders(_url:url) -> pandas.DataFrame:
+def shareHolders(_url:urls) -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -455,7 +633,7 @@ def shareHolders(_url:url) -> pandas.DataFrame:
     data.index = [i.replace(" ", "").replace("&nbsp;", "") for i in data.index]
     return data.T
 
-def incomeStatement(_url:url, period:str='Y') -> pandas.DataFrame:
+def incomeStatement(_url:urls, period:str='Y') -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url   : [<class; url>]
@@ -481,7 +659,7 @@ def incomeStatement(_url:url, period:str='Y') -> pandas.DataFrame:
     data.index = [cutString(x, cutter) for x in data.index]
     return data.T.astype(float)
 
-def financialStatement(_url:url, period:str='Y', gb:str='D') -> pandas.DataFrame:
+def financialStatement(_url:urls, period:str='Y', gb:str='D') -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url   : [<class; url>]
@@ -522,36 +700,9 @@ def financialStatement(_url:url, period:str='Y', gb:str='D') -> pandas.DataFrame
     data.index = [cutString(x, cutter) for x in data.index]
     return data.T.astype(float)
 
-def cashFlow(_url:url, period:str="Y") -> pandas.DataFrame:
-    """
-    * EQUITY ONLU
-    :param _url   : [<class; url>]
-    :param period : [str] 연간 = 'Y', 분기 = 'Q'
-    :return:
-                 영업현금흐름  투자현금흐름  재무현금흐름  환율변동손익  현금및현금성자산
-        2020/12        123146       -118404          2521          -563             29760
-        2021/12        197976       -223923         44923          1843             50580
-        2022/12        147805       -178837         28218          2005             49770
-        2023/2Q         -6940        -53509         70579           508             60408
-    """
-    cutter = ['계산에 참여한 계정 펼치기', '(', ')', '*', '&nbsp;', ' ', " "]
-    cols = {
-        "영업활동으로인한현금흐름": "영업현금흐름",
-        "투자활동으로인한현금흐름": "투자현금흐름",
-        "재무활동으로인한현금흐름": "재무현금흐름",
-        "환율변동효과": "환율변동손익",
-        "기말현금및현금성자산": "현금및현금성자산"
-    }
-    data = web.list(_url.finance)[{"Y": 4, "Q": 5}[period]]
-    data = data.set_index(keys=[data.columns[0]])
-    data = data.drop(columns=[col for col in data if not col.startswith('20')])
-    data.index.name = None
-    data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/{int(data.columns[-1][-2:]) // 3}Q"]
-    data.index = [cutString(x, cutter) for x in data.index]
-    data = data.T
-    return data[cols.keys()].rename(columns=cols).fillna(0).astype(int)
 
-def stabilityRate(_url:url) -> pandas.DataFrame:
+
+def stabilityRate(_url:urls) -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -574,7 +725,7 @@ def stabilityRate(_url:url) -> pandas.DataFrame:
     data.index = [cutString(x, cutter) for x in data.index]
     return data.T.astype(float)
 
-def growthRate(_url:url) -> pandas.DataFrame:
+def growthRate(_url:urls) -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -597,7 +748,7 @@ def growthRate(_url:url) -> pandas.DataFrame:
     data.index = [cutString(x, cutter) for x in data.index]
     return data.T.astype(float)
 
-def profitRate(_url:url) -> pandas.DataFrame:
+def profitRate(_url:urls) -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -622,7 +773,7 @@ def profitRate(_url:url) -> pandas.DataFrame:
     data.index = [cutString(x, cutter) for x in data.index]
     return data.T.astype(float)
 
-def multiples(_url:url) -> pandas.DataFrame:
+def multiples(_url:urls) -> pandas.DataFrame:
     """
     * EQUITY ONLY
     :param _url: [<class; url>]
@@ -648,112 +799,7 @@ def multiples(_url:url) -> pandas.DataFrame:
     data.index = [cutString(x, cutter) for x in data.index]
     return data.T.astype(float)
 
-def consensusProfit(_url:url, period:str='Y') -> pandas.DataFrame:
-    """
-    * EQUITY ONLY
-    :param _url   : [<class; url>]
-    :param period : [str] 연간 = 'Y', 분기 = 'Q'
-    :return:
-        [연간]
-                매출실적  매출전망  영업이익실적  영업이익전망
-        기말
-        2020/12  2013.35   2032.00        778.82        784.67
-        2021/12  2801.67   2773.23       1171.04       1144.04
-        2022/12  3224.23   3340.00       1366.35       1460.00
-        2023/12      NaN   2578.67           NaN       1055.50
-        2024/12      NaN   3048.83           NaN       1278.83
-        2025/12      NaN   3469.00           NaN       1465.50
-
-        [분기]
-                매출실적  매출전망  영업이익실적  영업이익전망
-        기말
-        2023/03   490.91    732.25        172.63         277.5
-        2023/06   751.31    696.25        335.62         266.0
-        2023/09   733.99    770.25        333.24         332.0
-        2023/12      NaN    601.60           NaN         213.0
-        2024/03      NaN    582.50           NaN         219.5
-        2024/06      NaN    817.00           NaN         366.5
-    """
-    cols = {
-        "GS_YM": "기말",
-        "SALES_R": "매출실적", "SALES_F": "매출전망",
-        "OP_R": "영업이익실적", "OP_F": "영업이익전망"
-    }
-    u = _url.consensusAnnualProfit if period == 'Y' else _url.consensusQuarterProfit
-    data = web.json2data(u).replace('-', np.nan)[cols.keys()]
-    data = data.rename(columns=cols)
-    return data.set_index(keys="기말").astype(float)
-
-def consensusTendency(_url:url, forward:str='1Y') -> pandas.DataFrame:
-    """
-    * EQUITY ONLY
-    :param _url    : [<class; url>]
-    :param forward : [str] '1Y' - 당해, '2Y' 내년
-    :return:
-                       매출  매출(최대)  매출(최소)   영업이익  영업이익(최대) 영업이익(최소)  ...  12M PER
-        날짜
-        2022/11   3063374.5     3288390     2826800     336985          419430         265250  ...     15.3
-        2022/12  2942704.08     3173270     2635050     291990          389990         196600  ...    15.97
-        2023/01  2820243.82     3073260     2635050  211293.59          342396         128930  ...    22.15
-        2023/02  2728378.14     3073260     2581450  168233.05          329278          97490  ...    22.45
-        2023/03   2723824.5     2900830     2594060  114761.09          184940          42540  ..     25.65
-        2023/04  2688688.59     2884560     2560260     100754          184940          46570  ...    25.21
-        2023/05  2678715.91     2884560     2540150   95985.36          122270          59390  ...    24.93
-        2023/06  2660441.74     2785651     2476590   95079.48          122270          59390  ...    23.27
-        2023/07  2604180.14     2708860     2527000   85640.81          126210          61590  ...    19.75
-        2023/08  2609199.41     2708860     2527000   85829.45          126210          46620  ...       18
-        2023/09   2613926.3     2708860     2527000   71636.43          100390          41620  ...    18.16
-        2023/10  2609787.67     2661845     2528300   72144.57           96690          57010  ...    19.22
-
-    :columns: ['매출', '매출(최대)', '매출(최소)', '영업이익', '영업이익(최대)', '영업이익(최소)', 'EPS',
-               'EPS(최대)', 'EPS(최소)', 'PER', 'PER(최대)', 'PER(최소)', '12M PER']
-    """
-    cols = {
-        "STD_DT": "날짜",
-        "SALES": "매출", "SALES_MAX": "매출(최대)", "SALES_MIN": "매출(최소)",
-        "OP": "영업이익", "OP_MAX": "영업이익(최대)", "OP_MIN": "영업이익(최소)",
-        "EPS": "EPS", "EPS_MAX": "EPS(최대)", "EPS_MIN": "EPS(최소)",
-        "PER": "PER", "PER_MAX": "PER(최대)", "PER_MIN": "PER(최소)", "PER_12F": "12M PER"
-    }
-    u = _url.consensusForward1Y if forward == '1Y' else _url.consensusForward2Y
-    data = web.json2data(u)[cols.keys()]
-    data = data.rename(columns=cols)
-    data = data.set_index(keys='날짜')
-    data = data.replace('', np.nan)
-    for col in data:
-        data[col] = data[col].apply(lambda x: x.replace(',', '') if isinstance(x, str) else x)
-    return data.astype(float)
-
-def analogy(_url:url) -> pandas.DataFrame:
-    """
-    * EQUITY ONLY
-    :param _url: [<class; url>]
-    :return:
-                    종목명  현재가 등락률 시가총액(억) 외국인비율(%)  매출액(억) 영업이익(억)  ...  PER(%) PBR(배)
-        058470    리노공업  143800  -1.57        21918         37.25         751          336  ...   21.69    4.35
-        005930    삼성전자   70600   0.14      4214666         53.21      600055         6685  ...   13.47    1.37
-        000660  SK하이닉스  132000   1.15       960963         52.59       73059       -28821  ...  -11.73    1.58
-        402340    SK스퀘어   48450   0.41        67336         45.29       -1274        -7345  ...   -3.64    0.43
-        042700  한미반도체   60200  -9.20        58598         12.38         491          112  ...   29.07   10.80
-
-    :columns: ['종목명', '현재가', '등락률', '시가총액(억)', '외국인비율(%)', '매출액(억)', '영업이익(억)',
-               '조정영업이익(억)', '영업이익증가율(%)', '당기순이익(억)', '주당순이익(원)', 'ROE(%)', 'PER(%)',
-               'PBR(배)']
-    """
-    data = web.list(_url.naver)[4]
-    data = data.set_index(keys='종목명')
-    data = data.drop(index=['전일대비'])
-    data.index.name = None
-    for col in data:
-        data[col] = data[col].apply(lambda x: cutString(str(x), ['하향', '상향', '%', '+', ' ']))
-    tickers = [c.replace('*', '')[-6:] for c in data]
-    labels = [c.replace('*', '')[:-6] for c in data]
-    data.columns = tickers
-    return pandas.concat(objs=[pandas.DataFrame(columns=tickers, index=['종목명'], data=[labels]), data], axis=0).T
-
-
-
-def etfMultiples(_url:url) -> pandas.Series:
+def etfMultiples(_url:urls) -> pandas.Series:
     """
     * ETF ONLY
     :param _url: [<class; url>]
@@ -799,7 +845,7 @@ def etfComponents(ticker:str) -> pandas.DataFrame:
     data['이름'] = MetaData[MetaData.index.isin(data.index)]['korName']
     return data[['이름', '비중']]
 
-def etfSectors(_url:url, ticker:str) -> pandas.DataFrame:
+def etfSectors(_url:urls, ticker:str) -> pandas.DataFrame:
     """
     * ETF ONLY
     :param _url   : [<class; url>]
@@ -844,13 +890,13 @@ if __name__ == "__main__":
     # ticker = '058470'  # 리노공업
     # ticker = '102780' # KODEX
 
-    _url = url(ticker)
-    print(currentPrice(_url))
+    # _url = url(ticker)
+    # print(currentPrice(_url))
     # print(marketCap(ticker))
     # print(snapShot(_url))
     # print(businessSummary(_url))
-    print(multiplesOutstanding(_url))
-    print(multiplesTrailing(_url))
+    # print(multiplesOutstanding(_url))
+    # print(multiplesTrailing(_url))
     # print(abstract(_url))
     # print(foreignRate(_url))
     # print(consensusOutstanding(_url))
@@ -876,6 +922,17 @@ if __name__ == "__main__":
     # print(consensusTendency(_url))
     # print(consensusTendency(_url, forward='2Y'))
     # print(analogy(_url))
+
+    myStock = stock(ticker)
+    # print(myStock.abstract)
+    # print(myStock.analogy)
+    # print(myStock.benchmarkMultiples)
+    # print(myStock.businessSummary)
+    # print(myStock.cashFlow)
+    print(myStock.consensusOutstanding)
+    print(myStock.consensusPrice)
+    print(myStock.consensusProfit)
+
 
 
     # print(etfMultiples(_url.etf))

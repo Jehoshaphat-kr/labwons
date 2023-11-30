@@ -1,4 +1,4 @@
-from labwons.equity.ticker.kr import _req, _url
+from labwons.equity.ticker.kr import _req, urls
 import pandas
 
 
@@ -47,7 +47,7 @@ class fetch(object):
             pass
 
     def __init__(self, ticker:str):
-        self.__url__ = _url.url(ticker)
+        self.__url__ = urls.url(ticker)
         self.__mem__ = {}
         self.ticker = ticker
         return

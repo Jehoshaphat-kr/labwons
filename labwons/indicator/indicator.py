@@ -1,4 +1,4 @@
-from labwons.common.metadata.metadata import MetaData
+from labwons.common.metadata import metaData
 from labwons.common.config import PATH
 from labwons.common.tools import xml2df
 from labwons.common.basis import baseSeriesChart

@@ -39,6 +39,9 @@ def fetchWiseIndustry(date:str, sec_cd:str) -> pd.DataFrame:
     for try_count in range(MAX_TRY_COUNT):
         req = requests.get(f'http://www.wiseindex.com/Index/GetIndexComponets?ceil_yn=0&dt={date}&sec_cd={sec_cd}')
         if req.status_code == 200:
+            print(pd.DataFrame(
+                data=req.json()['list']
+            ))
             return pd.DataFrame(
                 data=req.json()['list']
             ).rename(columns=columns)[columns.values()].set_index(keys='ticker')
@@ -233,12 +236,13 @@ def getEcosContains(api:str, ticker:str) -> pd.DataFrame:
 if __name__ == "__main__":
     pd.set_option('display.expand_frame_repr', False)
 
-    # print(fetchWiseIndustry('230627', 'WI100'))
+    print(fetchWiseDate())
+    # print(fetchWiseIndustry('231201', 'WI100'))
     # print(fetchKrxEnglish("95012214-44b0-4664-813f-a7ef5ad3b0b4"))
     # df = fetchNyse("95012214-44b0-4664-813f-a7ef5ad3b0b4")
-    df = fetchNyseEtfWikipedia()
-    print(df.loc['QQQ'])
-
-    df = fetchNyseEtfNasdaq()
-    print(df.loc['QQQ'])
+    # df = fetchNyseEtfWikipedia()
+    # print(df.loc['QQQ'])
+    #
+    # df = fetchNyseEtfNasdaq()
+    # print(df.loc['QQQ'])
 

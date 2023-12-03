@@ -1,4 +1,4 @@
-from labwons.common.metadata.metadata import MetaData
+from labwons.common.metadata import metaData
 from labwons.common.tools import normalDistribution
 from labwons.equity.equity import Equity
 from typing import Iterable

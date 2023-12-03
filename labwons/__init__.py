@@ -5,7 +5,7 @@ Web     : https://labwons.com
 Contact : jhlee_0319@naver.com
 License : MIT
 """
-from labwons.common.metadata.metadata import MetaData
+from labwons.common.metadata import metaData
 from labwons.common.config import PATH
 from labwons.common.chart import Chart
 from labwons.indicator import Indicator
@@ -25,7 +25,7 @@ class __apikey__(object):
     @SSYM.setter
     def SSYM(self, key:str):
         self.__setattr__('__stock_symbol__', key)
-        MetaData.API_STOCK_SYMBOL = key
+        metaData.API_STOCK_SYMBOL = key
         return
 
     @property
@@ -37,7 +37,7 @@ class __apikey__(object):
     @ECOS.setter
     def ECOS(self, key:str):
         self.__setattr__('__ecos__', key)
-        MetaData.API_ECOS = key
+        metaData.API_ECOS = key
         return
 
 API = __apikey__()

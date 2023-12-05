@@ -213,3 +213,10 @@ class urls(object):
             tbs = web.list(self.snapshot)
             self.__setattr__('_gb', "B" if tbs[11].iloc[1].isnull().sum() > tbs[14].iloc[1].isnull().sum() else "D")
         return self.__getattribute__('_gb')
+
+if __name__ == "__main__":
+    url = urls(
+        "323280"
+    )
+    print(url.xml)
+    print(url.snapshot)

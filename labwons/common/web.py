@@ -34,9 +34,9 @@ class _web(object):
             return pandas.read_pickle(url)
         else:
             raise KeyError(f"Unknown data type: {url}")
-
-    def json2data(self, url:str, key:str="CHART") -> pandas.DataFrame:
-        return pandas.DataFrame(self.json(url)[key])
+    #
+    # def json2data(self, url:str, key:str="CHART") -> pandas.DataFrame:
+    #     return pandas.DataFrame(self.json(url)[key])
 
 
 # Alias

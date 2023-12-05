@@ -20,6 +20,8 @@ def int2won(x) -> str:
         return f'{s}{zo}조 {ek}억'
 
 def str2num(src:str) -> int or float:
+    if isinstance(src, float):
+        return src
     src = "".join([char for char in src if char.isdigit() or char == "."])
     if not src:
         return np.nan

@@ -7,8 +7,7 @@ from datetime import datetime, timedelta
 from pykrx.stock import get_market_cap_by_date
 from pykrx.stock import get_etf_portfolio_deposit_file
 from pykrx.stock import get_market_ohlcv_by_date
-import pandas
-import numpy as np
+import pandas, numpy
 
 class _price:
 
@@ -62,7 +61,7 @@ class _price:
             )
             ohlcv = ohlcv.rename(columns=dict(시가='open', 고가='high', 저가='low', 종가='close', 거래량='volume'))
 
-            trade_stop = ohlcv[ohlcv.open == 0].copy()
+            trade_stop = ohlcv[ohlcv["open"] == 0].copy()
             if not trade_stop.empty:
                 ohlcv.loc[trade_stop.index, ['open', 'high', 'low']] = trade_stop['close']
             ohlcv.index.name = 'date'
@@ -199,7 +198,7 @@ class stock(_price):
             head.update({'CD_NM': '이름'})
             data = pandas.DataFrame(json[key])[head.keys()].rename(columns=head).set_index(keys='이름')
             data.index.name = None
-            return data.replace('-', np.nan).T.astype(float)
+            return data.replace('-', numpy.nan).T.astype(float)
 
         if not hasattr(self, "_benchmarkMultiples"):
             attr = pandas.concat(
@@ -279,7 +278,11 @@ class stock(_price):
             dtype: float64
         """
         src = web.list(self.urls.snapshot)[7]
-        return pandas.Series(dict(zip(src.columns.tolist(), src.iloc[0].tolist())))
+        data = []
+        for dat in src.iloc[0].tolist():
+            try: data.append(float(dat))
+            except ValueError: data.append(numpy.nan)
+        return pandas.Series(dict(zip(src.columns.tolist(), data)))
 
 
     @property
@@ -301,7 +304,7 @@ class stock(_price):
         data = data.rename(columns=cols)
         data = data.set_index(keys='날짜')
         data.index = pandas.to_datetime(data.index)
-        data = data.astype(float)
+        data = data.replace("", numpy.nan).astype(float)
         data['격차'] = round(100 * (data['종가'] / data['컨센서스'] - 1), 2)
         return data
 
@@ -336,7 +339,7 @@ class stock(_price):
             "OP_R": "영업이익실적", "OP_F": "영업이익전망"
         }
         def _get_(url:str) -> pandas.DataFrame:
-            data = web.data(url, "CHART").replace('-', np.nan)[cols.keys()]
+            data = web.data(url, "CHART").replace('-', numpy.nan)[cols.keys()]
             data = data.rename(columns=cols)
             return data.set_index(keys="기말").astype(float)
         return self._two_dataframes(Y=_get_(self.urls.consensusAnnualProfit), Q=_get_(self.urls.consensusQuarterProfit))
@@ -372,10 +375,12 @@ class stock(_price):
             "PER": "PER", "PER_MAX": "PER(최대)", "PER_MIN": "PER(최소)", "PER_12F": "12M PER"
         }
         def _get_(url:str) -> pandas.DataFrame:
-            data = web.data(url, "CHART")[cols.keys()]
-            data = data.rename(columns=cols)
+            data = web.data(url, "CHART")
+            if data.empty:
+                return pandas.DataFrame(columns=list(cols.values()))
+            data = data[cols.keys()].rename(columns=cols)
             data = data.set_index(keys='날짜')
-            data = data.replace('', np.nan)
+            data = data.replace('', numpy.nan)
             for col in data:
                 data[col] = data[col].apply(lambda x: x.replace(',', '') if isinstance(x, str) else x)
             return data.astype(float)
@@ -407,9 +412,9 @@ class stock(_price):
         json = web.json(self.urls.expenses)
         def exp(period: str) -> pandas.Series:
             manage = pandas.DataFrame(json[f"05_{period}"]).set_index(keys="GS_YM")["VAL1"]
-            manage = manage.replace('-', np.nan).replace('', np.nan)
+            manage = manage.replace('-', numpy.nan).replace('', numpy.nan)
             cost = pandas.DataFrame(json[f"06_{period}"]).set_index(keys="GS_YM")["VAL1"]
-            cost = cost.replace('-', np.nan).replace('', np.nan)
+            cost = cost.replace('-', numpy.nan).replace('', numpy.nan)
             manage.index.name = cost.index.name = '기말'
             return pandas.concat({"판관비율": manage, "매출원가율": cost}, axis=1)
         return self._two_dataframes(Y=exp('Y'), Q=exp('Q'))
@@ -592,6 +597,8 @@ class stock(_price):
         src = web.list(self.urls.corp)[{'D': 10, 'B': 11}[self.urls.gb]]
         data = src[src.columns[1:]].set_index(keys=src.columns[1])
         data = data.T.copy()
+        if all([i.startswith("Unnamed") for i in data.index]):
+            return pandas.DataFrame(columns=["내수", "수출"])
         data.columns = [col.replace("\xa0", " ") for col in data.columns]
 
         domestic = data[data[data.columns[0]] == "내수"].drop(columns=data.columns[0])
@@ -625,7 +632,7 @@ class stock(_price):
             head = head.to_dict()['NAME']
             head.update({'GS_YM': '날짜', 'PRICE': '종가'})
             data = pandas.DataFrame(json['CHART'])
-            data = data[head.keys()].replace('-', np.nan).replace('', np.nan)
+            data = data[head.keys()].replace('-', numpy.nan).replace('', numpy.nan)
             data['GS_YM'] = pandas.to_datetime(data['GS_YM'])
             return data.rename(columns=head).set_index(keys='날짜').astype(float)
         return pandas.concat(objs={'PER': _get_('CHART_E'), 'PBR': _get_('CHART_B')}, axis=1)
@@ -689,6 +696,7 @@ class stock(_price):
             estimateEps     22901.00
             PriceToBook         1.22
             bookValue      416754.00
+            dividendYield        2.1
             dtype: float64
         """
         data = web.list(self.urls.naver)[8]
@@ -701,7 +709,8 @@ class stock(_price):
             "estimatePE": str2num(estPE),
             "estimateEps": str2num(estEps),
             "PriceToBook": str2num(pbr),
-            "bookValue": str2num(bps)
+            "bookValue": str2num(bps),
+            "dividendYield": str2num(data.iloc[-1, -1])
         })
 
 
@@ -787,9 +796,9 @@ class stock(_price):
             2023-10-16        8.69  156800
         """
         cols = {'TRD_DT': '날짜', 'BALANCE_RT': '대차잔고비중', 'ADJ_PRC': '종가'}
-        data = web.json2data(self.urls.shortBalance).rename(columns=cols)[cols.values()].set_index(keys='날짜')
+        data = web.data(self.urls.shortBalance, "CHART").rename(columns=cols)[cols.values()].set_index(keys='날짜')
         data.index = pandas.to_datetime(data.index)
-        return data.astype(float)
+        return data.replace("", numpy.nan).astype(float)
 
 
     @property
@@ -807,9 +816,9 @@ class stock(_price):
             2023-11-20        0.13  12490.0
         """
         cols = {'TRD_DT': '날짜', 'VAL': '공매도비중', 'ADJ_PRC': '종가'}
-        data = web.json2data(self.urls.shortSell).rename(columns=cols).set_index(keys='날짜')
+        data = web.data(self.urls.shortSell, "CHART").rename(columns=cols).set_index(keys='날짜')
         data.index = pandas.to_datetime(data.index)
-        return data.astype(float)
+        return data.replace("", numpy.nan).astype(float)
 
 
     @property
@@ -886,29 +895,8 @@ class etf(_price):
         self.urls = urls(ticker)
         return
 
-
     @property
-    def etfMultiples(self) -> pandas.Series:
-        """
-        :return:
-            dividendYield     1.68
-            fiscalPE         12.58
-            priceToBook       1.15
-            dtype: float64
-        """
-        html = web.html(self.urls.etf)
-        script = html.find_all('script')[-1].text.split('\n')
-        pe = script[[n for n, h in enumerate(script) if "PER" in h][0] + 1]
-        pb = script[[n for n, h in enumerate(script) if "PBR" in h][0] + 1]
-        return pandas.Series({
-            "dividendYield": str2num(html.find_all('td', class_='r cle')[-1].text),
-            "fiscalPE" : str2num(pe[pe.index(":"): ]),
-            "priceToBook": str2num(pb[pb.index(":"):])
-        })
-
-
-    @property
-    def etfComponents(self) -> pandas.DataFrame:
+    def components(self) -> pandas.DataFrame:
         """
         :return:
                                 이름        비중
@@ -933,9 +921,35 @@ class etf(_price):
         data['이름'] = metaData[metaData.index.isin(data.index)]['korName']
         return data[['이름', '비중']]
 
+    @property
+    def currentPrice(self) -> int or float:
+        if not hasattr(self, '_curprc'):
+            html = web.html(self.urls.naver)
+            curr = [d.text for d in html.find_all("dd") if d.text.startswith("현재가")][0]
+            self.__setattr__('_curprc', str2num(curr[curr.index("현재가 ") + 4: curr.index(" 전일대비")]))
+        return self.__getattribute__('_curprc')
 
     @property
-    def etfSectors(self) -> pandas.DataFrame:
+    def multiples(self) -> pandas.Series:
+        """
+        :return:
+            dividendYield     1.68
+            fiscalPE         12.58
+            priceToBook       1.15
+            dtype: float64
+        """
+        html = web.html(self.urls.etf)
+        script = html.find_all('script')[-1].text.split('\n')
+        pe = script[[n for n, h in enumerate(script) if "PER" in h][0] + 1]
+        pb = script[[n for n, h in enumerate(script) if "PBR" in h][0] + 1]
+        return pandas.Series({
+            "dividendYield": str2num(html.find_all('td', class_='r cle')[-1].text),
+            "fiscalPE" : str2num(pe[pe.index(":"): ]),
+            "priceToBook": str2num(pb[pb.index(":"):])
+        })
+
+    @property
+    def sectorWeights(self) -> pandas.DataFrame:
         """
         :return:
                         KODEX 삼성그룹  유사펀드   시장
@@ -962,8 +976,51 @@ class etf(_price):
                 break
             n += 1
         data = pandas.DataFrame(data=eval(base)).drop(columns=['val05'])
-        data.columns = np.array(["섹터", metaData.loc[self.ticker, 'name'], "유사펀드", "시장"])
+        data.columns = numpy.array(["섹터", metaData.loc[self.ticker, 'name'], "유사펀드", "시장"])
         return data.set_index(keys='섹터')
+
+    @property
+    def snapShot(self) -> pandas.Series:
+        """
+        :return:
+            date                 2023/11/17
+            previousClose             12510
+            fiftyTwoWeekHigh          13480
+            fiftyTwoWeekLow           10950
+            marketCap                 94069
+            sharesOutstanding     751949461
+            floatShares           663064556
+            volume                   868029
+            foreignRate                37.2
+            beta                    0.74993
+            return1M                    0.0
+            return3M                  10.12
+            return6M                   6.83
+            return1Y                   5.13
+            return3Y                  26.36
+            dtype: object
+        """
+        if not hasattr(self, '_snapshot'):
+            src = web.html(self.urls.xml).find('price')
+            attr = pandas.Series({
+                "date": src.find("date").text,
+                "previousClose": str2num(src.find("close_val").text),
+                "fiftyTwoWeekHigh": str2num(src.find("high52week").text),
+                "fiftyTwoWeekLow": str2num(src.find("low52week").text),
+                "marketCap": str2num(src.find("mkt_cap_1").text),
+                "sharesOutstanding": str2num(src.find("listed_stock_1").text),
+                "floatShares": str2num(src.find("ff_sher").text),
+                "volume": str2num(src.find("deal_cnt").text),
+                "foreignRate": str2num(src.find("frgn_rate").text),
+                "beta": str2num(src.find("beta").text),
+                "return1M": str2num(src.find("change_1month").text),
+                "return3M": str2num(src.find("change_3month").text),
+                "return6M": str2num(src.find("change_6month").text),
+                "return1Y": str2num(src.find("change_12month").text),
+                "return3Y": str2num(src.find("change_36month").text),
+            })
+            self.__setattr__('_snapshot', attr)
+        return self.__getattribute__('_snapshot')
 
 
 
@@ -974,40 +1031,41 @@ if __name__ == "__main__":
     pandas.set_option('display.expand_frame_repr', False)
 
     myStock = stock(
-        '316140' # 우리금융지주
+        # '316140' # 우리금융지주
         # '051910'  # LG 화학
         # '058470'  # 리노공업
+        "323280" # 태성
     )
-    print(myStock.price)
-    print(myStock.abstract)
-    print(myStock.analogy)
-    print(myStock.benchmarkMultiples)
-    print(myStock.businessSummary)
-    print(myStock.cashFlow)
-    print(myStock.consensusOutstanding)
-    print(myStock.consensusPrice)
-    print(myStock.consensusProfit)
-    print(myStock.consensusTendency)
-    print(myStock.currentPrice)
-    print(myStock.expenses)
-    print(myStock.financialStatement)
-    print(myStock.financialStatementSeparate)
-    print(myStock.foreignRate)
-    print(myStock.growthRate)
-    print(myStock.incomeStatement)
-    print(myStock.marketCap)
-    print(myStock.marketShares)
-    print(myStock.multipleBand)
-    print(myStock.multiples)
-    print(myStock.multiplesOutstanding)
+    # print(myStock.price)
+    # print(myStock.abstract)
+    # print(myStock.analogy)
+    # print(myStock.benchmarkMultiples)
+    # print(myStock.businessSummary)
+    # print(myStock.cashFlow)
+    # print(myStock.consensusOutstanding)
+    # print(myStock.consensusPrice)
+    # print(myStock.consensusProfit)
+    # print(myStock.consensusTendency)
+    # print(myStock.currentPrice)
+    # print(myStock.expenses)
+    # print(myStock.financialStatement)
+    # print(myStock.financialStatementSeparate)
+    # print(myStock.foreignRate)
+    # print(myStock.growthRate)
+    # print(myStock.incomeStatement)
+    # print(myStock.marketCap)
+    # print(myStock.marketShares)
+    # print(myStock.multipleBand)
+    # print(myStock.multiples)
+    # print(myStock.multiplesOutstanding)
     print(myStock.multiplesTrailing)
-    print(myStock.products)
-    print(myStock.profitRate)
-    print(myStock.shareHolders)
-    print(myStock.shortBalance)
-    print(myStock.shortSell)
-    print(myStock.snapShot)
-    print(myStock.stabilityRate)
+    # print(myStock.products)
+    # print(myStock.profitRate)
+    # print(myStock.shareHolders)
+    # print(myStock.shortBalance)
+    # print(myStock.shortSell)
+    # print(myStock.snapShot)
+    # print(myStock.stabilityRate)
 
     myEtf = etf(
         # '102780' # KODEX 삼성그룹

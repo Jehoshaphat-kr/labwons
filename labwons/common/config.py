@@ -317,7 +317,6 @@ OECD = [
     dict(
         ticker='BSCICP03',
         name='BCI',
-        exchange='OECD',
         quoteType='INDICATOR',
         unit='-',
         comment='OECD Standard BCI, Amplitude adjusted (Long term average=100)'
@@ -325,7 +324,6 @@ OECD = [
     dict(
         ticker='CSCICP03',
         name='CCI',
-        exchange='OECD',
         quoteType='INDICATOR',
         unit='-',
         comment='OECD Standard CCI, Amplitude adjusted (Long term average=100)'
@@ -333,7 +331,6 @@ OECD = [
     dict(
         ticker='LOLITOAA',
         name='CLI(AA)',
-        exchange='OECD',
         quoteType='INDICATOR',
         unit='-',
         comment='Amplitude adjusted (CLI)'
@@ -341,7 +338,6 @@ OECD = [
     dict(
         ticker='LOLITONO',
         name='CLI(Norm)',
-        exchange='OECD',
         quoteType='INDICATOR',
         unit='-',
         comment='Normalised (CLI)'
@@ -349,7 +345,6 @@ OECD = [
     dict(
         ticker='LOLITOTR_STSA',
         name='CLI(TR)',
-        exchange='OECD',
         quoteType='INDICATOR',
         unit='-',
         comment='Trend restored (CLI)'
@@ -357,7 +352,6 @@ OECD = [
     dict(
         ticker='LOLITOTR_GYSA',
         name='CLI(%TR)',
-        exchange='OECD',
         quoteType='INDICATOR',
         unit='%',
         comment='12-month rate of change of the trend restored CLI'
@@ -365,7 +359,6 @@ OECD = [
     dict(
         ticker='LORSGPNO',
         name='GDP(Norm)',
-        exchange='OECD',
         quoteType='INDICATOR',
         unit='-',
         comment='Ratio to trend (GDP)'
@@ -373,7 +366,6 @@ OECD = [
     dict(
         ticker='LORSGPTD',
         name='GDP(T)',
-        exchange='OECD',
         quoteType='INDICATOR',
         unit='-',
         comment='Normalised (GDP)'
@@ -381,7 +373,6 @@ OECD = [
     dict(
         ticker='LORSGPRT',
         name='GDP(%T)',
-        exchange='OECD',
         quoteType='INDICATOR',
         unit='%',
         comment='Trend (GDP)'
@@ -607,25 +598,6 @@ FRED = [
     ),
 ]
 
-MAX_TRY_COUNT = 5
-
-# class __path__(object):
-#     _download_ = os.path.join(os.path.join(os.environ['USERPROFILE']), rf'Downloads')
-#     _desktop_ = os.path.join(os.path.join(os.environ['USERPROFILE']), rf'Desktop/labwons')
-#     _default_ = _download_
-#     os.makedirs(_default_, exist_ok=True)
-#     def __str__(self):
-#         return self._default_
-#
-#     @property
-#     def SAVE(self) -> str:
-#         return self._default_
-#
-#     @SAVE.setter
-#     def SAVE(self, path:str):
-#         self._default_ = path
-#         os.makedirs(path, exist_ok=True)
-#         return
 
 class __path__(object):
     _base_ = os.path.join(os.path.join(os.environ['USERPROFILE']), rf'Downloads')

@@ -23,7 +23,7 @@ def str2num(src:str) -> int or float:
     if isinstance(src, float):
         return src
     src = "".join([char for char in src if char.isdigit() or char == "."])
-    if not src:
+    if not src or src == ".":
         return np.nan
     if "." in src:
         return float(src)

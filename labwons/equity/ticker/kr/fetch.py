@@ -128,6 +128,8 @@ class stock(_price):
             data = data.head(len(data) - len([i for i in data.index if i.endswith(')')]) + 1)
             data.index.name = '기말'
             data.columns.name = None
+            for col in data:
+                data[col] = data[col].apply(str2num)
             return data
 
         if not hasattr(self, "_abstract"):
@@ -157,12 +159,11 @@ class stock(_price):
             data = data.set_index(keys='종목명').drop(index=['전일대비'])
             data.index.name = None
             for col in data:
-                data[col] = data[col].apply(lambda x: cutString(str(x), ['하향', '상향', '%', '+', ' ']))
-            tickers = [c.replace('*', '')[-6:] for c in data]
-            labels = [c.replace('*', '')[:-6] for c in data]
-            data.columns = tickers
-            name = pandas.DataFrame(columns=tickers, index=['종목명'], data=[labels])
-            self.__setattr__("_analogy", pandas.concat(objs=[name, data], axis=0).T)
+                data[col] = data[col].apply(str2num)
+            data = data.T
+            data["종목명"] = [i.replace('*', '')[:-6] for i in data.index]
+            data.index = [i[-6:] for i in data.index]
+            self.__setattr__("_analogy", data)
         return self.__getattribute__("_analogy")
 
 
@@ -227,7 +228,7 @@ class stock(_price):
             '.\n' if t[n] == '.' and not any([t[n - 1].isdigit(), t[n + 1].isdigit(), t[n + 1].isalpha()]) else t[n]
             for n in range(1, len(t) - 2)
         ]
-        s = ' ' + t[0] + ''.join(w) + t[-2] + t[-1]
+        s = f' {t[0]}{str().join(w)}{t[-2]}{t[-1]}'
         return s.replace(' ', '').replace('\xa0\xa0', ' ').replace('\xa0', ' ').replace('\n ', '\n')
 
 
@@ -304,9 +305,9 @@ class stock(_price):
         data = data.rename(columns=cols)
         data = data.set_index(keys='날짜')
         data.index = pandas.to_datetime(data.index)
-        data = data.replace("", numpy.nan).astype(float)
+        data = data.replace("", numpy.nan)
         data['격차'] = round(100 * (data['종가'] / data['컨센서스'] - 1), 2)
-        return data
+        return data.astype(float)
 
 
     @property
@@ -380,10 +381,9 @@ class stock(_price):
                 return pandas.DataFrame(columns=list(cols.values()))
             data = data[cols.keys()].rename(columns=cols)
             data = data.set_index(keys='날짜')
-            data = data.replace('', numpy.nan)
             for col in data:
-                data[col] = data[col].apply(lambda x: x.replace(',', '') if isinstance(x, str) else x)
-            return data.astype(float)
+                data[col] = data[col].apply(str2num)
+            return data
         return self._two_dataframes(
             ThisYear=_get_(self.urls.consensusForward1Y), NextYear=_get_(self.urls.consensusForward2Y)
         )
@@ -412,11 +412,12 @@ class stock(_price):
         json = web.json(self.urls.expenses)
         def exp(period: str) -> pandas.Series:
             manage = pandas.DataFrame(json[f"05_{period}"]).set_index(keys="GS_YM")["VAL1"]
-            manage = manage.replace('-', numpy.nan).replace('', numpy.nan)
             cost = pandas.DataFrame(json[f"06_{period}"]).set_index(keys="GS_YM")["VAL1"]
-            cost = cost.replace('-', numpy.nan).replace('', numpy.nan)
             manage.index.name = cost.index.name = '기말'
-            return pandas.concat({"판관비율": manage, "매출원가율": cost}, axis=1)
+            concat = pandas.concat({"판관비율": manage, "매출원가율": cost}, axis=1)
+            for col in concat:
+                concat[col] = concat[col].apply(str2num)
+            return concat
         return self._two_dataframes(Y=exp('Y'), Q=exp('Q'))
 
 
@@ -497,8 +498,10 @@ class stock(_price):
             data = web.data(u, "CHART")[cols.keys()]
             data = data.rename(columns=cols).set_index(keys='날짜')
             data.index = pandas.to_datetime(data.index)
-            objs[u[u.rfind('_') + 1: u.rfind('.')]] = data.replace('', '0.0').replace('-', '0.0')
-        return pandas.concat(objs=objs, axis=1).astype(float)
+            for col in data:
+                data[col] = data[col].apply(str2num)
+            objs[u[u.rfind('_') + 1: u.rfind('.')]] = data
+        return pandas.concat(objs=objs, axis=1)
 
 
     @property
@@ -631,10 +634,12 @@ class stock(_price):
             head = pandas.DataFrame(json[key])[['ID', 'NAME']].set_index(keys='ID')
             head = head.to_dict()['NAME']
             head.update({'GS_YM': '날짜', 'PRICE': '종가'})
-            data = pandas.DataFrame(json['CHART'])
-            data = data[head.keys()].replace('-', numpy.nan).replace('', numpy.nan)
-            data['GS_YM'] = pandas.to_datetime(data['GS_YM'])
-            return data.rename(columns=head).set_index(keys='날짜').astype(float)
+            data = pandas.DataFrame(json['CHART']).rename(columns=head)[head.values()]
+            data["날짜"] = pandas.to_datetime(data["날짜"])
+            data = data.set_index(keys='날짜')
+            for col in data:
+                data[col] = data[col].apply(str2num)
+            return data
         return pandas.concat(objs={'PER': _get_('CHART_E'), 'PBR': _get_('CHART_B')}, axis=1)
 
 
@@ -694,7 +699,7 @@ class stock(_price):
             trailingEps     16642.00
             estimatePE         22.00
             estimateEps     22901.00
-            PriceToBook         1.22
+            priceToBook         1.22
             bookValue      416754.00
             dividendYield        2.1
             dtype: float64
@@ -708,7 +713,7 @@ class stock(_price):
             "trailingEps": str2num(eps),
             "estimatePE": str2num(estPE),
             "estimateEps": str2num(estEps),
-            "PriceToBook": str2num(pbr),
+            "priceToBook": str2num(pbr),
             "bookValue": str2num(bps),
             "dividendYield": str2num(data.iloc[-1, -1])
         })
@@ -764,21 +769,23 @@ class stock(_price):
 
 
     @property
-    def shareHolders(self) -> pandas.DataFrame:
+    def shareHolders(self) -> pandas.Series:
         """
         :return:
-                        최대주주등  10%이상주주  5%이상주주  임원  자기주식  우리사주조합
-            2021/01/01       56.03          NaN        6.26   NaN       NaN           NaN
-            2022/01/01       54.95          NaN        6.25   NaN       NaN           NaN
-            2023/01/01       54.79          NaN        6.25   NaN       NaN           NaN
-            2023/11/14       54.79          NaN        6.25   NaN       NaN           NaN
+            최대주주등      9.13
+            5%이상주주    12.02
+            임원         0.04
+            자기주식       0.66
+            공시제외주주    78.15
+            dtype: float64
         """
-        data = web.list(self.urls.corp)[12]
-        data = data.set_index(keys=[data.columns[0]])
-        data.index.name = None
-        data.index = [col[:col.index("(") - 1] if "(" in col else col for col in data.index]
-        data.index = [i.replace(" ", "").replace("&nbsp;", "") for i in data.index]
-        return data.T
+        data = web.data(self.urls.shares).replace("", numpy.nan)
+        return pandas.Series(index=data["NM"].values, data=data["STK_RT"].values, dtype=float).dropna()
+
+    @property
+    def shareInstitutes(self) -> pandas.Series:
+        data = web.list(self.urls.snapshot)[2]
+        return data.replace("관련 데이터가 없습니다.", numpy.nan)
 
 
     @property
@@ -1034,7 +1041,8 @@ if __name__ == "__main__":
         # '316140' # 우리금융지주
         # '051910'  # LG 화학
         # '058470'  # 리노공업
-        "323280" # 태성
+        # "323280" # 태성
+        "359090"  # C&R Research
     )
     # print(myStock.price)
     # print(myStock.abstract)
@@ -1055,13 +1063,14 @@ if __name__ == "__main__":
     # print(myStock.incomeStatement)
     # print(myStock.marketCap)
     # print(myStock.marketShares)
-    # print(myStock.multipleBand)
+    print(myStock.multipleBand)
     # print(myStock.multiples)
     # print(myStock.multiplesOutstanding)
-    print(myStock.multiplesTrailing)
+    # print(myStock.multiplesTrailing)
     # print(myStock.products)
     # print(myStock.profitRate)
     # print(myStock.shareHolders)
+    # print(myStock.shareInstitutes)
     # print(myStock.shortBalance)
     # print(myStock.shortSell)
     # print(myStock.snapShot)

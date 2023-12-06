@@ -112,7 +112,11 @@ class equity(object):
                    "financialCurrency", "trailingPegRatio"]
         """
         try:
-            return pandas.Series(self._yahoo.info)
+            if not hasattr(self, '_desc'):
+                desc = pandas.Series(self._yahoo.info)
+                desc["name"] = desc["shortName"]
+                self.__setattr__('_desc', desc)
+            return self.__getattribute__('_desc')
         except requests.exceptions.HTTPError:
             warnings.warn("Warning: Server Blocked", Warning)
         return pandas.Series(dtype=float)
@@ -125,7 +129,5 @@ if __name__ == "__main__":
     myEquity = equity('AAPL')
     # print(myEquity.price)
     # print(myEquity.info)
-    # for i, v in myEquity.info.items():
-    #     print(i, v)
-    for i in myEquity.info.index:
-        print(i)
+    for i, v in myEquity.info.items():
+        print(i, v)

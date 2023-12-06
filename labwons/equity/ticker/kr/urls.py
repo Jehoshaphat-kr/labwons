@@ -172,6 +172,14 @@ class urls(object):
         return f"http://cdn.fnguide.com/SVO2/json/chart/01_04/chart_A{self.ticker}_{self.gb}.json"
 
     @property
+    def shares(self) -> str:
+        """
+        "지분분석" 탭
+        :return:
+        """
+        return f"http://cdn.fnguide.com/SVO2//json/chart/08_01/chart_A{self.ticker}.json"
+
+    @property
     def shortSell(self) -> str:
         """
         "cdn" 차입 공매도 비중

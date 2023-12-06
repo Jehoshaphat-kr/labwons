@@ -12,10 +12,10 @@ class Ticker(object):
         except KeyError:
             self._meta = {key: ticker if "name" in key.lower() else "" for key in metaData.columns}
 
-        if ticker in metaData.KRETF.index:
-            R = fetch.etf(ticker)
-        else:
+        if not ticker in metaData.etfKOR.index:
             R = fetch.stock(ticker)
+        else:
+            R = fetch.etf(ticker)
 
         for key, value in kwargs.items():
             if hasattr(R, key):
@@ -25,15 +25,18 @@ class Ticker(object):
         self.R = R
         return
 
-    def describe(self) -> pandas.Series:
-        data = {}
-        for attr in dir(self):
-            attribute = self.__getattribute__(attr)
-            if callable(attribute) or attr.startswith('_'):
-                continue
-            if isinstance(attribute, (str, int, float)):
-                data[attr] = attribute
-        return pandas.Series(data)
+    @property
+    def description(self) -> pandas.Series:
+        if not hasattr(self, "_describe"):
+            data = {}
+            for attr in dir(self):
+                if attr.startswith("_") or attr == "description":
+                    continue
+                attribute = self.__getattribute__(attr)
+                if isinstance(attribute, (str, int, float)):
+                    data[attr] = attribute
+            self.__setattr__("_describe", pandas.Series(data))
+        return self.__getattribute__("_describe")
 
     @property
     def name(self) -> str:
@@ -84,6 +87,12 @@ class Ticker(object):
         return self._meta['benchmarkName']
 
     @property
+    def ipo(self) -> Union[str, float]:
+        if pandas.isna(self._meta["IPO"]):
+            return numpy.nan
+        return self._meta['IPO'].strftime("%Y-%m-%d")
+
+    @property
     def currentPrice(self) -> Union[int, float]:
         return self.R.currentPrice
 
@@ -124,7 +133,7 @@ class Ticker(object):
         try:
             return round(100 * self.floatShares / self.sharesOutstanding, 2)
         except ZeroDivisionError:
-            return 100.0
+            return numpy.nan
 
     @property
     def foreignRate(self) -> float:
@@ -165,73 +174,158 @@ class Ticker(object):
             return numpy.nan
 
     @property
-    def dividendYield(self) -> float:
-        series = self.R.multiples if self.quoteType == "ETF" else self.R.multiplesOutstanding
-        return series["dividendYield"]
+    def dividendRate(self) -> float:
+        if self.quoteType == "ETF":
+            return numpy.nan
+        return self.R.abstract.배당수익률[-2]
+
+    @property
+    def fiveYearAverageDividendRate(self) -> float:
+        if self.quoteType == "ETF":
+            return numpy.nan
+        return round(self.R.abstract["배당수익률"].astype(float)[:-1].mean(), 2)
 
     @property
     def fiveYearAverageDividendYield(self) -> float:
-        if self.quoteType == "ETF":
+        return self.fiveYearAverageDividendRate
+
+    @property
+    def dividendYield(self) -> float:
+        return self.R.multiplesTrailing.dividendYield
+
+    @property
+    def fiscalPE(self) -> float:
+        return round(self.R.currentPrice / self.fiscalEps, 2)
+
+    @property
+    def trailingPE(self) -> float:
+        return self.R.multiplesTrailing.trailingPE
+
+    @property
+    def forwardPE(self) -> float:
+        return round(self.currentPrice / self.forwardEps, 2)
+
+    @property
+    def estimatePE(self) -> float:
+        return self.R.multiplesTrailing.estimatePE
+
+    @property
+    def sectorPE(self) -> float:
+        return self.R.multiplesOutstanding.sectorPE
+
+    @property
+    def fiscalEps(self) -> int:
+        try:
+            return int(self.previousClose / self.R.multiplesOutstanding.fiscalPE)
+        except ValueError:
             return numpy.nan
-        return self.R.abstract["배당수익률"].astype(float)[:-1].mean()
+
+    @property
+    def trailingEps(self) -> int:
+        return self.R.multiplesTrailing.trailingEps
+
+    @property
+    def forwardEps(self) -> int:
+        try:
+            return int(self.previousClose / self.R.multiplesOutstanding.forwardPE)
+        except ValueError:
+            return numpy.nan
+
+    @property
+    def estimateEps(self) -> int:
+        return self.R.multiplesTrailing.estimateEps
+
+    @property
+    def priceToBook(self) -> float:
+        return self.R.multiplesTrailing.priceToBook
+
+    @property
+    def bookValue(self) -> int:
+        return int(self.R.multiplesTrailing.bookValue)
+
+    @property
+    def heldPercentInsiders(self) -> float:
+        return round(100 - self.R.shareHolders.공시제외주주, 2)
+
+    @property
+    def heldPercentInstitutions(self) -> float:
+        return self.R.shareInstitutes.상장주식수내비중.sum()
+
+    @property
+    def returnOnAssets(self) -> float:
+        return self.R.abstract.ROA[-2]
+
+    @property
+    def returnOnEquity(self) -> float:
+        return self.R.abstract.ROE[-2]
+
+    @property
+    def fiscalSps(self) -> int:
+        return int(self.R.multiples.SPS[-2])
+
+    @property
+    def priceToSales(self) -> float:
+        return round(self.currentPrice / self.fiscalSps, 2)
+
+    @property
+    def earningsGrowth(self) -> float:
+        growth = self.R.growthRate
+        return growth.iloc[-2, 1]
+
+    @property
+    def revenueGrowth(self) -> float:
+        growth = self.R.growthRate
+        return growth.iloc[-2, 0]
+
+    @property
+    def pegRatio(self) -> float:
+        return round(self.trailingPE / self.earningsGrowth, 2)
+
 
 
 
 
 if __name__ == "__main__":
-
+    pandas.set_option('display.expand_frame_repr', False)
     t = Ticker(
-        "005930" # SamsungElec
+        # "005930" # SamsungElec
+        # "000660" # SK hynix
+        # "207940" # SAMSUNG BIOLOGICS
+        # "005380" # HyundaiMtr
+        # "005490" # POSCO
+        # "035420" # NAVER Corporation
+        # "000270" # Kia Corporation
+        # "051910" # LG Chem, Ltd.
+        # "006400" # Samsung SDI Co., Ltd.
+        # "068270" # Celltrion, Inc.
+        # "035720" # Kakao Corp.
+        # "028260" # Samsung C&T Corporation
+        # "105560" # KB Financial Group Inc.
+        # "012330" # Mobis
+        # "055550" # Shinhan Financial Group Co., Ltd.
+        # "066570" # LG Electronics Inc.
+        # "032830" # Samsung Life Insurance Co., Ltd.
+        # "096770" # SK Innovation Co., Ltd.
+        # "003550" # LG Corp.
+        # "015760" # Korea Electric Power Corporation
+        # "017670" # SK Telecom Co.,Ltd
+        # "316140" # Woori Financial Group Inc.
+
+        "359090" # C&R Research
+        # "042660"  # Daewoo Shipbuilding & Marine Engineering Co.,Ltd
+        # "021080" # Atinum Investment
+        # "130500" # GH Advanced Materials Inc.
         # "323280" # SHT-5 SPAC
+
         # "102780" # KODEX 삼성그룹
     )
-    # print(t.R.price)
     # print(t.name)
-    # print(t.quoteType)
-    # print(t.country)
-    # print(t.exchange)
-    # print(t.currency)
-    # print(t.shortName)
-    # print(t.longName)
-    # print(t.korName)
-    # print(t.sector)
-    # print(t.industry)
-    # print(t.benchmarkTicker)
-    # print(t.benchmarkName)
-    # print(t.currentPrice)
-    # print(t.previousClose)
-    # print(t.marketCap)
-    # print(t.fiftyTwoWeekHigh)
-    # print(t.fiftyTwoWeekLow)
-    # print(t.fiftyTwoWeekHighRatio)
-    # print(t.fiftyTwoWeekLowRatio)
-    # print(t.floatSharesRatio)
-    # print(t.foreignRate)
-    # print(t.beta)
-    # print(t.targetPrice)
-    # print(t.targetPriceRatio)
-    # print(t.numberOfAnalystOpinions)
-    print(t.dividendYield)
-    print(t.fiveYearAverageDividendYield)
+    # print(t.description)
 
 
-    # print(t.describe())
-    """
-    trailingPE
-    forwardPE
-    priceToSalesTrailing12Months
-    heldPercentInsiders
-    heldPercentInstitutions
-    shortRatio
-    bookValue
-    priceToBook
-    earningsQuarterlyGrowth
-    trailingEps
-    forwardEps
-    pegRatio
-    returnOnAssets
-    returnOnEquity
-    earningsGrowth
-    revenueGrowth
-    trailingPegRatio
-    """
+    import random
+    tickers = random.sample(metaData.equityKOR.index.tolist(), 25)
+    for ticker in tickers:
+        print(ticker, "...." * 15)
+        print(Ticker(ticker).description)
+

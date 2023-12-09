@@ -57,6 +57,7 @@ def barTY(data: pandas.Series, drop: bool = True, **kwargs) -> Bar:
         data = data.dropna()
     name = kwargs['name'] if 'name' in kwargs else '/'.join(data.name) if isinstance(data.name, tuple) else data.name
     unit = kwargs['unit'] if 'unit' in kwargs else ""
+    yformat = ".2f" if isinstance(data.dtype, float) else ",d"
     trace = Bar(
         name=name,
         x=data.index,
@@ -64,7 +65,7 @@ def barTY(data: pandas.Series, drop: bool = True, **kwargs) -> Bar:
         visible=True,
         showlegend=True,
         xhoverformat='%Y/%m/%d',
-        yhoverformat=".2f",
+        yhoverformat=yformat,
         hovertemplate=name + ": %{y}" + unit + "<extra></extra>",
     )
     return _overwrite(Bar, trace, **kwargs)
@@ -74,14 +75,16 @@ def barXY(data: pandas.Series, drop: bool = True, **kwargs) -> Bar:
         data = data.dropna()
     name = kwargs['name'] if 'name' in kwargs else '/'.join(data.name) if isinstance(data.name, tuple) else data.name
     unit = kwargs['unit'] if 'unit' in kwargs else ""
+    yformat = ".2f" if isinstance(data.dtype, float) else ",d"
     trace = Bar(
         name=name,
         x=data.index,
         y=data,
         visible=True,
         showlegend=True,
-        texttemplate="%{y}" + unit,
+        texttemplate="%{y:" + yformat + "}" + unit,
         textposition="inside",
+        yhoverformat=yformat,
         hovertemplate="%{y}" + unit + "<extra></extra>"
     )
     return _overwrite(Bar, trace, **kwargs)

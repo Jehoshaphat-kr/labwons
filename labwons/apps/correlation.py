@@ -1,5 +1,5 @@
 from typing import Union
-from labwons.equity.equity import Equity
+from labwons.equity._de.equity import Equity
 from labwons.indicator import Indicator
 import pandas as pd
 

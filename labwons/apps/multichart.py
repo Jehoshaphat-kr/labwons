@@ -1,5 +1,5 @@
 from labwons.common.config import PATH
-from labwons.equity.equity import Equity
+from labwons.equity._de.equity import Equity
 from labwons.indicator import Indicator
 from plotly.subplots import make_subplots
 from plotly.offline import plot

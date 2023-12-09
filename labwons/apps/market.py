@@ -1,6 +1,5 @@
-from labwons.common.metadata import metaData
 from labwons.common.tools import normalDistribution
-from labwons.equity.equity import Equity
+from labwons.equity._de.equity import Equity
 from typing import Iterable
 from tqdm.notebook import tqdm_notebook
 from plotly.subplots import make_subplots

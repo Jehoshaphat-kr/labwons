@@ -1,7 +1,6 @@
 from typing import Union
-from labwons.equity.equity import Equity
+from labwons.equity._de.equity import Equity
 from labwons.bundle.performance import performance
-from labwons.bundle._bars import _bars
 import pandas as pd
 
 

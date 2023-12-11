@@ -1,6 +1,7 @@
 from labwons.common.config import WI26, FRED, OECD
 from labwons.common.metadata import fetch
 from pykrx.stock import get_index_portfolio_deposit_file
+from typing import Union, Hashable
 import pandas, os
 
 class metadata(pandas.DataFrame):
@@ -30,6 +31,15 @@ class metadata(pandas.DataFrame):
         super().__init__(data=dat.values, index=dat.index, columns=dat.columns)
         self.api = self._api()
         return
+
+    def __call__(self, ticker:Union[str, Hashable]) -> pandas.Series:
+        try:
+            return self.loc[ticker]
+        except KeyError:
+            meta = pandas.Series(index=self.columns, name=ticker)
+            meta["name"] = ticker
+            meta["country"] = "KOR" if ticker.isdigit() and len(ticker) == 6 else "USA"
+            return meta
 
     @property
     def oecd(self) -> pandas.DataFrame:

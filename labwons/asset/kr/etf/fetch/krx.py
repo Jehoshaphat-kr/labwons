@@ -58,5 +58,4 @@ def getOhlcv(ticker:str, period:int=10, freq:str='d') -> DataFrame:
     if not trade_stop.empty:
         ohlcv.loc[trade_stop.index, ['시가', '고가', '저가']] = trade_stop.종가
     ohlcv.index.name = '날짜'
-    # return ohlcv.rename(columns=dict(시가='open', 고가='high', 저가='low', 종가='close', 거래량='volume'))
-    return ohlcv
+    return ohlcv.rename(columns=dict(시가='open', 고가='high', 저가='low', 종가='close', 거래량='volume'))

@@ -4,7 +4,7 @@ from pykrx.stock import get_index_portfolio_deposit_file
 from typing import Union, Hashable
 import pandas, os
 
-class metadata(pandas.DataFrame):
+class _metadata(pandas.DataFrame):
 
     class _api(object):
         _ss, _es = "", ""
@@ -72,7 +72,7 @@ class metadata(pandas.DataFrame):
     @property
     def icmKOR(self) -> pandas.DataFrame:
         if self.icm.empty:
-            self.icm = self.equityKOR.join(fetch.krxMarketCapMultipleIpo(), how='left')
+            self.icm = self.equityKOR.drop(columns=["IPO"]).join(fetch.krxMarketCapMultipleIpo(), how='left')
         return self.icm
 
     def ecosContains(self, symbol:str):
@@ -147,7 +147,7 @@ class metadata(pandas.DataFrame):
         return
 
 # Alias
-metaData = metadata()
+metaData = _metadata()
 
 
 if __name__ == "__main__":
@@ -155,7 +155,7 @@ if __name__ == "__main__":
     metaData.api.SS = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
     metaData.api.ES = "CEW3KQU603E6GA8VX0O9"
 
-    print(metaData)
+    # print(metaData)
     # print(metaData.ecos)
     # print(metaData.fred)
     # print(metaData.oecd)

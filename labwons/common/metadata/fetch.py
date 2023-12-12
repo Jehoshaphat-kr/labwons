@@ -64,8 +64,9 @@ def krxEtf() -> pd.DataFrame:
     key_curr = ['ticker', 'name', 'close', 'marketCap']
     df = pd.DataFrame(json.loads(req.urlopen(url).read().decode('cp949'))['result']['etfItemList'])
     df = df[key_prev].rename(columns=dict(zip(key_prev, key_curr)))
-    df[['exchange', 'quoteType', 'currency', 'country']] = ['KOSPI', 'ETF', 'KRW', 'KOR']
-    return df.set_index(keys='ticker')[["name", "quoteType", "currency", "country", "exchange"]]
+    columns = ['exchange', 'quoteType', 'currency', 'country', 'benchmarkTicker', 'benchmarkName']
+    df[columns] = ['KOSPI', 'ETF', 'KRW', 'KOR', "069500", "KODEX 200"]
+    return df.set_index(keys='ticker')[["name"] + columns]
 
 def nyseEquity(api:str) -> pd.DataFrame:
     """

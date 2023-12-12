@@ -50,25 +50,25 @@ class fetch:
         "marketCap"
     )
 
-    def __init__(self, ticker:Union[str, Hashable]):
+    def __init__(self, ticker:Union[str, Hashable], period:int=10, freq:str="d"):
         self.ticker = ticker
         self._url_ = __urls__.urls(ticker)
-        self._arg_ = {"ticker": self.ticker, "url": self._url_, "gb": self._url_.gb}
+        self._arg_ = {"ticker": self.ticker, "url": self._url_, "gb": self._url_.gb, "period": period, "freq": freq}
         self._mem_ = {}
         return
 
     def __getattr__(self, item:str):
+        _item_ = f"get{item[0].capitalize()}{item[1:]}"
         if item in self._mem_:
             return self._mem_[item]
-
         for _module_ in (fnguide, krx, naver):
-            _item_ = f"get{item[0].capitalize()}{item[1:]}"
             if hasattr(_module_, _item_):
                 _attr_ = getattr(_module_, _item_)
-                _args_ = {key: self._arg_[key] for key in signature(_attr_).parameters if key in self._arg_}
+                _args_ = {arg: self._arg_[arg] for arg in signature(_attr_).parameters if not "args" in arg}
                 self._mem_[item] = _attr_(**_args_)
                 return self._mem_[item]
-        raise AttributeError(f"No such attribute as : {item}")
+        if not item in self.__dir__():
+            raise AttributeError(f"No such attribute as : {item}")
 
 
 if __name__ == "__main__":
@@ -105,13 +105,13 @@ if __name__ == "__main__":
         # "130500" # GH Advanced Materials Inc.
         # "323280" # SHT-5 SPAC
     )
-    print(myStock.abstract)
-    print(myStock.analogy)
-    print(myStock.benchmarkMultiples)
-    print(myStock.businessSummary)
-    print(myStock.cashFlow)
-    print(myStock.consensusOutstanding)
-    print(myStock.consensusPrice)
+    # print(myStock.abstract)
+    # print(myStock.analogy)
+    # print(myStock.benchmarkMultiples)
+    # print(myStock.businessSummary)
+    # print(myStock.cashFlow)
+    # print(myStock.consensusOutstanding)
+    # print(myStock.consensusPrice)
     print(myStock.consensusProfit)
     print(myStock.consensusTendency)
     print(myStock.currentPrice)

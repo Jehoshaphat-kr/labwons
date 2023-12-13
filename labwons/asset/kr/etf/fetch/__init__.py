@@ -16,9 +16,10 @@ class fetch:
     __ref__ = (fnguide, krx, naver)
     def __init__(self, ticker:Union[str, Hashable], period:int=10, freq:str='d'):
         self.ticker = ticker
+        self.meta  =  metaData(ticker)
         self._url_ = _url_ = __urls__.urls(ticker)
         self._arg_ = {"ticker": ticker, "url": _url_, "period": period, "freq": freq}
-        self._mem_ = metaData(ticker).to_dict()
+        self._mem_ = self.meta.to_dict()
         return
 
     def __getitem__(self, item:str):

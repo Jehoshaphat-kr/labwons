@@ -130,6 +130,4 @@ if __name__ == "__main__":
     st = stat("102780")
     print(st.description)
     # print(st.name)
-    # print(st.IPO)
-    # print(st.NAV)
     # print(st.sector)

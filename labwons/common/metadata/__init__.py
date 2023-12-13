@@ -34,11 +34,12 @@ class _metadata(pandas.DataFrame):
 
     def __call__(self, ticker:Union[str, Hashable]) -> pandas.Series:
         try:
-            return self.loc[ticker]
+            meta = self.loc[ticker].copy()
+            meta["ticker"] = ticker
+            return meta
         except KeyError:
             meta = pandas.Series(index=self.columns, name=ticker)
-            meta["name"] = ticker
-            meta["country"] = "KOR" if ticker.isdigit() and len(ticker) == 6 else "USA"
+            meta[["name", "ticker", "country"]] = ticker, ticker, "KOR" if ticker.isdigit() else "USA"
             return meta
 
     @property

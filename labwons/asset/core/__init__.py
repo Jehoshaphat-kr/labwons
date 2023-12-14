@@ -1,5 +1,5 @@
-from labwons.asset.common.tech.ohlcv import ohlcv
-from labwons.asset.common.tech import typ, trend
+from labwons.asset.core.ohlcv import ohlcv
+from labwons.asset.core import deviation, typ, trend
 from inspect import signature
 from pandas import DataFrame, Series
 # from ta import add_all_ta_features
@@ -14,7 +14,6 @@ class tech(object):
         self.data = data
         self.meta = meta
         self._inst_ = {"data":data, "meta":meta, "ohlcv": ohlcv(data, meta)}
-        # self._args_ = {"data":data, "meta":meta, "ohlcv":self._inst_["ohlcv"]}
         return
 
     def __str__(self) -> str:
@@ -43,5 +42,8 @@ if __name__ == "__main__":
     mySrc = fetch("005930")
     myTech = tech(mySrc.ohlcv, mySrc.meta)
     # print(myTech.typ)
-    print(myTech.trend)
-    myTech.trend.show()
+    # print(myTech.trend)
+    # myTech.trend.show()
+
+    print(myTech.deviation)
+    myTech.deviation.show()

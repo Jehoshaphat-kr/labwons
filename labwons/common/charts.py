@@ -134,6 +134,23 @@ class r2c1nsy(Figure):
         self.update_layout(dict1=layout(legend=legend()))
         return
 
+class r2c3nsy(Figure):
+    def __init__(self, **kwargs):
+        super().__init__()
+        arg = dict(
+            rows=2, cols=3,
+            vertical_spacing=0.08,
+            horizontal_spacing=0.04,
+            x_title='Date',
+            y_title='[x1 Average]',
+        )
+        arg.update(kwargs)
+        self.set_subplots(**arg)
+        self.update_xaxes(patch=xaxis(rangeselector=None))
+        self.update_yaxes(patch=yaxis())
+        self.update_layout(dict1=layout(legend=legend()))
+        return
+
 
 # class chart:
 #

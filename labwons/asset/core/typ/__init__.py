@@ -1,4 +1,4 @@
-from labwons.asset.common.tech.typ.traces import traces
+from labwons.asset.core.typ.traces import traces
 from labwons.common.charts import r1c1nsy
 from pandas import DataFrame, Series
 from plotly.graph_objects import Figure
@@ -10,7 +10,7 @@ class typ(object):
         self.data = (data.high + data.low + data.close) / 3
         self.data.name = f"{meta['name']}/T"
         self.meta = meta
-        self.traces = traces(self.data)
+        self.traces = traces(self.data, meta)
         return
 
     def __call__(self, **kwargs):

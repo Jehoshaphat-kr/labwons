@@ -1,7 +1,7 @@
-from labwons.asset.common.tech.ohlcv import ohlcv
-from labwons.asset.common.tech.typ import typ
-from labwons.asset.common.tech.trend.data import gen
-from labwons.asset.common.tech.trend.traces import traces
+from labwons.asset.core.ohlcv import ohlcv
+from labwons.asset.core.typ import typ
+from labwons.asset.core.trend.data import gen
+from labwons.asset.core.trend.traces import traces
 from labwons.common.charts import r1c1nsy
 from pandas import Series
 from plotly.graph_objects import Figure
@@ -14,7 +14,7 @@ class trend(object):
         self.typ = typ
         self.data = gen(typ.data)
         self.meta = meta
-        self.traces = traces(self.data)
+        self.traces = traces(self.data, meta)
         return
 
     def __call__(self, **kwargs):

@@ -1,4 +1,4 @@
-from labwons.asset.common.tech.ohlcv.traces import traces
+from labwons.asset.core.ohlcv.traces import traces
 from labwons.common.charts import r2c1nsy
 from pandas import DataFrame, Series
 from plotly.graph_objects import Figure
@@ -31,7 +31,7 @@ class ohlcv(object):
     def figure(self, **kwargs) -> Figure:
         fig = r2c1nsy()
         fig.add_trace(row=1, col=1, trace=self.traces.ohlc)
-        fig.add_trace(row=2, col=1, trace=self.traces.volume)
+        fig.add_trace(row=2, col=1, trace=self.traces.vol)
         fig.update_layout(title=f"{self.meta['name']}({self.meta.name}): OHLCV", **kwargs)
         fig.update_yaxes(row=1, col=1, title=f"Price [{self.meta.currency}]")
         fig.update_yaxes(row=2, col=1, title=f"Vol.")

@@ -1,5 +1,5 @@
 from labwons.asset.core.ohlcv import ohlcv
-from labwons.asset.core import deviation, typ, trend
+from labwons.asset.core import deviation, typ, trend, sma, bband
 from inspect import signature
 from pandas import DataFrame, Series
 # from ta import add_all_ta_features
@@ -42,8 +42,13 @@ if __name__ == "__main__":
     mySrc = fetch("005930")
     myTech = tech(mySrc.ohlcv, mySrc.meta)
     # print(myTech.typ)
+
     # print(myTech.trend)
     # myTech.trend.show()
 
-    print(myTech.deviation)
-    myTech.deviation.show()
+    # print(myTech.deviation)
+    # myTech.deviation.show()
+
+    # print(myTech.sma)
+    print(myTech.sma.stat())
+    # myTech.sma.show()

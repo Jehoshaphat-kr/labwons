@@ -22,7 +22,7 @@ class traces(object):
     def trace(self) -> Scatter:
         if not hasattr(self, "_line"):
             trace = Scatter(
-                name=self.meta.name,
+                name=self.data.name,
                 x=self.data.index,
                 y=self.data,
                 mode='lines',
@@ -34,7 +34,7 @@ class traces(object):
                 connectgaps=True,
                 xhoverformat='%Y/%m/%d',
                 yhoverformat=".2f",
-                hovertemplate=str(self.meta.name) + ': %{y}' + self.meta.currency + '<extra></extra>'
+                hovertemplate=str(self.data.name) + ': %{y}' + self.meta.currency + '<extra></extra>'
             )
             setattr(self, "_line", trace)
         return getattr(self, "_line")

@@ -1,20 +1,19 @@
 from labwons.asset.core.ohlcv import ohlcv
 from labwons.asset.core.typ import typ
-from labwons.asset.core.trend.data import gen
-from labwons.asset.core.trend.traces import traces
-from labwons.common.charts import r1c1nsy
-from pandas import Series
+from labwons.asset.core.sma import data, traces, stat
+from pandas import concat, Series
 from plotly.graph_objects import Figure
 
 
-class trend(object):
+class sma(object):
 
     def __init__(self, ohlcv:ohlcv, typ:typ, meta:Series):
         self.ohlcv = ohlcv
         self.typ = typ
-        self.data = gen(typ.data)
+        self.data = data.gen(typ.data)
         self.meta = meta
-        self.traces = traces(self.data, meta)
+        self.stat = stat.stat(concat(objs=[ohlcv.data, self.data], axis=1))
+        self.trac = traces.traces(self.data, meta)
         return
 
     def __call__(self, **kwargs):
@@ -30,17 +29,16 @@ class trend(object):
     def __getattr__(self, item:str):
         if item in dir(self):
             return getattr(self, item)
-        if hasattr(self.data, item):
-            return getattr(self.data, item)
+        for obj in (self.stat, self.data):
+            if hasattr(obj, item):
+                return getattr(obj, item)
         raise AttributeError
 
     def figure(self, **kwargs) -> Figure:
-        fig = r1c1nsy()
-        fig.add_trace(trace=self.ohlcv.traces.ohlc)
+        fig = self.ohlcv.figure(**kwargs)
         fig.add_trace(trace=self.typ.traces(visible="legendonly"))
-        fig.add_traces(data=self.traces.all)
-        fig.update_layout(title=f"{self.meta['name']}({self.meta.name}): Trend", **kwargs)
-        fig.update_yaxes(title=f"Price [{self.meta.currency}]")
+        fig.add_traces(data=self.trac.all)
+        fig.update_layout(title=f"{self.meta['name']}({self.meta.name}): Moving Average", **kwargs)
         return fig
 
     def show(self, **kwargs):

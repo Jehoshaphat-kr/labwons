@@ -23,10 +23,11 @@ class ohlcv(object):
         return self.data[item]
 
     def __getattr__(self, item:str):
+        if item in dir(self):
+            return getattr(self, item)
         if hasattr(self.data, item):
             return getattr(self.data, item)
-        if not item in dir(self):
-            raise AttributeError
+        raise AttributeError
 
     def figure(self, **kwargs) -> Figure:
         fig = r2c1nsy()

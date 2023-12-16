@@ -1,16 +1,12 @@
 from labwons.asset.core.ohlcv import ohlcv
-from labwons.asset.core import deviation, typ, trend, sma, bband
+from labwons.asset.core import deviation, typ, trend, sma, bband, rsi
 from inspect import signature
 from pandas import DataFrame, Series
-# from ta import add_all_ta_features
-# from warnings import filterwarnings
-# filterwarnings("ignore", category=RuntimeWarning)
 
 
 class tech(object):
 
     def __init__(self, data:DataFrame, meta:Series):
-        # self.data = add_all_ta_features(data, "open", "high", "low", "close", "volume")
         self.data = data
         self.meta = meta
         self._inst_ = {"data":data, "meta":meta, "ohlcv": ohlcv(data, meta)}
@@ -50,5 +46,11 @@ if __name__ == "__main__":
     # myTech.deviation.show()
 
     # print(myTech.sma)
-    print(myTech.sma.stat())
+    # print(myTech.sma.stat())
     # myTech.sma.show()
+
+    # print(myTech.bband)
+    # myTech.bband()
+
+    print(myTech.rsi)
+    myTech.rsi()

@@ -129,8 +129,7 @@ class r2c1nsy(Figure):
         self.set_subplots(**arg)
         self.update_xaxes(row=1, col=1, patch=xaxis(showticklabels=False))
         self.update_xaxes(row=2, col=1, patch=xaxis(rangeselector=None))
-        self.update_yaxes(row=1, col=1, patch=yaxis())
-        self.update_yaxes(row=2, col=1, patch=yaxis())
+        self.update_yaxes(patch=yaxis())
         self.update_layout(dict1=layout(legend=legend()))
         return
 
@@ -151,6 +150,69 @@ class r2c3nsy(Figure):
         self.update_layout(dict1=layout(legend=legend()))
         return
 
+class r4c1nsy(Figure):
+    def __init__(self, **kwargs):
+        super().__init__()
+        arg = dict(
+            rows=4, cols=1,
+            shared_xaxes=True,
+            row_width=[0.12, 0.12, 0.1, 0.66],
+            vertical_spacing=0.01,
+            x_title='Date',
+        )
+        arg.update(kwargs)
+        self.set_subplots(**arg)
+        self.update_xaxes(row=1, col=1, patch=xaxis(showticklabels=False))
+        self.update_xaxes(row=2, col=1, patch=xaxis(showticklabels=False, rangeselector=None))
+        self.update_xaxes(row=3, col=1, patch=xaxis(showticklabels=False, rangeselector=None))
+        self.update_xaxes(row=4, col=1, patch=xaxis(rangeselector=None))
+        self.update_yaxes(patch=yaxis())
+        self.update_layout(dict1=layout(legend=legend()))
+        return
+
+class r5c1nsy(Figure):
+    def __init__(self, **kwargs):
+        super().__init__()
+        arg = dict(
+            rows=5, cols=1,
+            shared_xaxes=True,
+            row_width=[0.15, 0.15, 0.15, 0.1, 0.45],
+            vertical_spacing=0.01,
+            x_title='Date',
+        )
+        arg.update(kwargs)
+        self.set_subplots(**arg)
+        self.update_xaxes(row=1, col=1, patch=xaxis(showticklabels=False))
+        self.update_xaxes(row=2, col=1, patch=xaxis(showticklabels=False, rangeselector=None))
+        self.update_xaxes(row=3, col=1, patch=xaxis(showticklabels=False, rangeselector=None))
+        self.update_xaxes(row=4, col=1, patch=xaxis(showticklabels=False, rangeselector=None))
+        self.update_xaxes(row=5, col=1, patch=xaxis(rangeselector=None))
+        self.update_yaxes(patch=yaxis())
+        self.update_layout(dict1=layout(legend=legend()))
+        return
+
+#     def r5c1nsy(self, **kwargs) -> go.Figure:
+#         _kwargs_ = dict(
+#             rows=5, cols=1,
+#             shared_xaxes=True,
+#             row_width=[0.15, 0.15, 0.15, 0.1, 0.45],
+#             vertical_spacing=0.01
+#         )
+#         _kwargs_.update(kwargs)
+#         fig = make_subplots(**_kwargs_)
+#
+#         fig.update_layout(**self.layout(legend=self.legend()))
+#         fig.update_xaxes(row=1, col=1, patch=self.xaxis(showticklabels=False))
+#         fig.update_xaxes(row=2, col=1, patch=self.xaxis(showticklabels=False, rangeselector=None))
+#         fig.update_xaxes(row=3, col=1, patch=self.xaxis(showticklabels=False, rangeselector=None))
+#         fig.update_xaxes(row=4, col=1, patch=self.xaxis(showticklabels=False, rangeselector=None))
+#         fig.update_xaxes(row=5, col=1, patch=self.xaxis(rangeselector=None))
+#         fig.update_yaxes(row=1, col=1, patch=self.yaxis())
+#         fig.update_yaxes(row=2, col=1, patch=self.yaxis())
+#         fig.update_yaxes(row=3, col=1, patch=self.yaxis())
+#         fig.update_yaxes(row=4, col=1, patch=self.yaxis())
+#         fig.update_yaxes(row=5, col=1, patch=self.yaxis())
+#         return fig
 
 # class chart:
 #
@@ -324,3 +386,4 @@ class r2c3nsy(Figure):
 #     myChart.add_trace(go.Scatter(x=[0, 2], y=[4, 2]), row=1, col=1)
 #     myChart.add_trace(go.Scatter(x=[1, 2], y=[1, 2]), row=2, col=1)
 #     myChart.show()
+

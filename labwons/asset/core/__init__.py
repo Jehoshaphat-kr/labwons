@@ -35,9 +35,15 @@ if __name__ == "__main__":
     from labwons.asset.kr.etf.fetch import fetch
     set_option('display.expand_frame_repr', False)
 
-    mySrc = fetch("005930")
+    mySrc = fetch(
+        # "005930"
+        # "091170"
+        "316140"
+    )
     myTech = tech(mySrc.ohlcv, mySrc.meta)
     # print(myTech.typ)
+
+    # myTech.ohlcv()
 
     # print(myTech.trend)
     # myTech.trend.show()
@@ -52,5 +58,14 @@ if __name__ == "__main__":
     # print(myTech.bband)
     # myTech.bband()
 
-    print(myTech.rsi)
-    myTech.rsi()
+    # print(myTech.rsi)
+    # myTech.rsi()
+
+    from plotly.offline import plot
+    from labwons.common.config import PATH
+
+    plot(
+        figure_or_data=myTech.ohlcv.figure(),
+        auto_open=False,
+        filename=f'{PATH.BASE}/{myTech.meta.name}_{myTech.meta["name"]}.html'
+    )

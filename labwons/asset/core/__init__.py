@@ -1,5 +1,5 @@
 from labwons.asset.core.ohlcv import ohlcv
-from labwons.asset.core import deviation, typ, trend, sma, bband, rsi
+from labwons.asset.core import deviation, typ, trend, sma, bband, rsi, psar, macd
 from inspect import signature
 from pandas import DataFrame, Series
 
@@ -61,11 +61,17 @@ if __name__ == "__main__":
     # print(myTech.rsi)
     # myTech.rsi()
 
-    from plotly.offline import plot
-    from labwons.common.config import PATH
+    # print(myTech.psar)
+    # myTech.psar()
 
-    plot(
-        figure_or_data=myTech.ohlcv.figure(),
-        auto_open=False,
-        filename=f'{PATH.BASE}/{myTech.meta.name}_{myTech.meta["name"]}.html'
-    )
+    print(myTech.macd)
+    myTech.macd()
+
+    # from plotly.offline import plot
+    # from labwons.common.config import PATH
+    #
+    # plot(
+    #     figure_or_data=myTech.ohlcv.figure(),
+    #     auto_open=False,
+    #     filename=f'{PATH.BASE}/{myTech.meta.name}_{myTech.meta["name"]}.html'
+    # )

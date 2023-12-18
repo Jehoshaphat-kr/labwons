@@ -150,13 +150,58 @@ class r2c3nsy(Figure):
         self.update_layout(dict1=layout(legend=legend()))
         return
 
+class r3c1nsy(Figure):
+    def __init__(self, **kwargs):
+        super().__init__()
+        arg = dict(
+            rows=3, cols=1,
+            shared_xaxes=True,
+            row_heights=[0.65, 0.15, 0.2],
+            vertical_spacing=0.01,
+            x_title='Date',
+        )
+        arg.update(kwargs)
+        self.set_subplots(**arg)
+        self.update_xaxes(row=1, col=1, patch=xaxis(showticklabels=False))
+        self.update_xaxes(row=2, col=1, patch=xaxis(showticklabels=False, rangeselector=None))
+        self.update_xaxes(row=3, col=1, patch=xaxis(rangeselector=None))
+        self.update_yaxes(patch=yaxis())
+        self.update_layout(dict1=layout(legend=legend()))
+        return
+
+class r3c1sy3(Figure):
+    def __init__(self, **kwargs):
+        super().__init__()
+        arg = dict(
+            rows=3, cols=1,
+            shared_xaxes=True,
+            row_width=[0.35, 0.15, 0.5],
+            vertical_spacing=0.01,
+            x_title='Date',
+            specs=[
+                [{"secondary_y": False, "r": -0.06}],
+                [{"secondary_y": False, "r": -0.06}],
+                [{"secondary_y": True, "r": -0.06}]
+            ]
+        )
+        arg.update(kwargs)
+        self.set_subplots(**arg)
+        self.update_xaxes(row=1, col=1, patch=xaxis(showticklabels=False))
+        self.update_xaxes(row=2, col=1, patch=xaxis(showticklabels=False, rangeselector=None))
+        self.update_xaxes(row=3, col=1, patch=xaxis(rangeselector=None))
+        self.update_yaxes(row=1, col=1, patch=yaxis())
+        self.update_yaxes(row=2, col=1, patch=yaxis())
+        self.update_yaxes(row=3, col=1, patch=yaxis(), secondary_y=False)
+        self.update_layout(dict1=layout(legend=legend()))
+        return
+
 class r4c1nsy(Figure):
     def __init__(self, **kwargs):
         super().__init__()
         arg = dict(
             rows=4, cols=1,
             shared_xaxes=True,
-            row_width=[0.12, 0.12, 0.1, 0.66],
+            row_height=[0.66, 0.1, 0.12, 0.12],
             vertical_spacing=0.01,
             x_title='Date',
         )
@@ -176,7 +221,7 @@ class r5c1nsy(Figure):
         arg = dict(
             rows=5, cols=1,
             shared_xaxes=True,
-            row_width=[0.15, 0.15, 0.15, 0.1, 0.45],
+            row_height=[0.45, 0.1, 0.15, 0.15, 0.15],
             vertical_spacing=0.01,
             x_title='Date',
         )

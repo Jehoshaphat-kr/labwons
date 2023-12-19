@@ -9,34 +9,29 @@ class traces(object):
         self.meta = meta
         return
 
-    def __getattr__(self, item:str) -> Scatter:
-        data = Series()
-        for col in self.data:
-            if col in item:
-                data = self.data[col].dropna()
-                break
-        if not data.empty:
-            return Scatter(
-                name=data.name,
-                x=data.index,
-                y=data,
-                mode='lines',
-                visible="legendonly",
-                showlegend=True,
-                line={
-                    "color":"black",
-                    "dash":"dash",
-                    "width": 0.8
-                },
-                connectgaps=True,
-                xhoverformat='%Y/%m/%d',
-                yhoverformat=".2f",
-                hovertemplate=str(data.name) + ': %{y}' + self.meta.currency + '<extra></extra>'
-            )
-        if not item in dir(self):
-            raise AttributeError
+    def __line__(self, item:str) -> Scatter:
+        if not item in self.data:
+            return Scatter()
+        data = self.data[item].dropna()
+        return Scatter(
+            name=data.name,
+            x=data.index,
+            y=data,
+            mode='lines',
+            visible="legendonly",
+            showlegend=True,
+            line={
+                "color":"black",
+                "dash":"dash",
+                "width": 0.8
+            },
+            connectgaps=True,
+            xhoverformat='%Y/%m/%d',
+            yhoverformat=".2f",
+            hovertemplate=str(data.name) + ': %{y}' + self.meta.currency + '<extra></extra>'
+        )
 
     @property
     def all(self) -> list:
-        return [getattr(self, f"T{col}") for col in self.data]
+        return [self.__line__(col) for col in self.data]
 

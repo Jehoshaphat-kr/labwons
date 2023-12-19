@@ -175,7 +175,7 @@ class r3c1sy3(Figure):
         arg = dict(
             rows=3, cols=1,
             shared_xaxes=True,
-            row_width=[0.35, 0.15, 0.5],
+            row_heights=[0.5, 0.15, 0.35],
             vertical_spacing=0.01,
             x_title='Date',
             specs=[
@@ -201,7 +201,7 @@ class r4c1nsy(Figure):
         arg = dict(
             rows=4, cols=1,
             shared_xaxes=True,
-            row_height=[0.66, 0.1, 0.12, 0.12],
+            row_heights=[0.66, 0.1, 0.12, 0.12],
             vertical_spacing=0.01,
             x_title='Date',
         )
@@ -221,7 +221,7 @@ class r5c1nsy(Figure):
         arg = dict(
             rows=5, cols=1,
             shared_xaxes=True,
-            row_height=[0.45, 0.1, 0.15, 0.15, 0.15],
+            row_heights=[0.45, 0.1, 0.15, 0.15, 0.15],
             vertical_spacing=0.01,
             x_title='Date',
         )

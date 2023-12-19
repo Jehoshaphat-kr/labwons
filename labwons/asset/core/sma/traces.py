@@ -10,11 +10,9 @@ class traces(object):
         return
 
     def __getattr__(self, item:str) -> Scatter:
-        data = Series()
-        for col in self.data:
-            if col in item:
-                data = self.data[col].dropna()
-                break
+        if not item in self.data:
+            return Scatter()
+        data = self.data[item].dropna()
         if not data.empty:
             return Scatter(
                 name=data.name,
@@ -36,4 +34,4 @@ class traces(object):
 
     @property
     def all(self) -> list:
-        return [getattr(self, f"T{col}") for col in self.data]
+        return [getattr(self, col) for col in self.data]

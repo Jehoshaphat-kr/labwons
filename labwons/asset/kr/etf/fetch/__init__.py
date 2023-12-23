@@ -1,9 +1,4 @@
-from labwons.asset.kr.etf.fetch import (
-    __urls__,
-    fnguide,
-    krx,
-    naver
-)
+from labwons.asset.kr.etf.fetch import __urls__, fnguide, krx, naver
 from labwons.common.metadata import metaData
 from inspect import signature
 from typing import Union, Hashable
@@ -13,13 +8,27 @@ class fetch:
     """
     Back data of ETF,
     """
+    __slots__ = (
+        "ticker",
+        "_url_",
+        "_arg_",
+        "_mem_",
+        "multiplesOutstanding",
+        "sectorWeights",
+        "snapShot",
+        "components",
+        "ohlcv",
+        "currentPrice",
+        "ipo",
+        "underlyingAsset",
+        "nav"
+    )
     __ref__ = (fnguide, krx, naver)
     def __init__(self, ticker:Union[str, Hashable], period:int=10, freq:str='d'):
         self.ticker = ticker
-        self.meta  =  metaData(ticker)
         self._url_ = _url_ = __urls__.urls(ticker)
         self._arg_ = {"ticker": ticker, "url": _url_, "period": period, "freq": freq}
-        self._mem_ = self.meta.to_dict()
+        self._mem_ = metaData(ticker).to_dict()
         return
 
     def __getitem__(self, item:str):

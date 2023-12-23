@@ -27,7 +27,8 @@ def getComponents(ticker:str) -> DataFrame:
     """
     data = get_etf_portfolio_deposit_file(ticker)
     data['이름'] = metaData[metaData.index.isin(data.index)]['korName']
-    return data[['이름', '비중']]
+    data = data[['이름', '비중']]
+    return data[~data["이름"].isna()]
 
 def getOhlcv(ticker:str, period:int=10, freq:str='d') -> DataFrame:
     """

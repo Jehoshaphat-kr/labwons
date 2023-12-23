@@ -52,7 +52,6 @@ class fetch:
 
     def __init__(self, ticker:Union[str, Hashable], period:int=10, freq:str="d"):
         self.ticker = ticker
-        self.meta = metaData(ticker)
         self._url_ = __urls__.urls(ticker)
         self._arg_ = {"ticker": self.ticker, "url": self._url_, "gb": self._url_.gb, "period": period, "freq": freq}
         self._mem_ = {}

@@ -1,9 +1,5 @@
-from labwons.asset.kr.stock.fetch import (
-    __urls__,
-    fnguide,
-    krx,
-    naver
-)
+from labwons.asset.kr.stock.fetch import __urls__, fnguide, krx, naver
+from labwons.common.metadata import metaData
 from inspect import signature
 from typing import Union, Hashable
 
@@ -54,7 +50,7 @@ class fetch:
         self.ticker = ticker
         self._url_ = __urls__.urls(ticker)
         self._arg_ = {"ticker": self.ticker, "url": self._url_, "gb": self._url_.gb, "period": period, "freq": freq}
-        self._mem_ = {}
+        self._mem_ = metaData(ticker).to_dict()
         return
 
     def __getattr__(self, item:str):

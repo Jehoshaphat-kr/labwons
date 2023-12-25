@@ -115,6 +115,22 @@ class r1c1nsy(Figure):
         self.update_layout(dict1=layout(legend=legend()), **kwargs)
         return
 
+class r1c1sy1(Figure):
+    def __init__(self, **kwargs):
+        super().__init__()
+        args = dict(
+            rows=1, cols=1,
+            shared_xaxes=True,
+            x_title='Date',
+            specs=[[{"secondary_y": True, "r":-0.06}]]
+        )
+        args.update(kwargs)
+        self.set_subplots(**args)
+        self.update_xaxes(patch=xaxis(rangeselector=None))
+        self.update_yaxes(patch=yaxis(), secondary_y=False)
+        self.update_layout(dict1=layout(legend=legend()))
+        return
+
 class r2c1nsy(Figure):
     def __init__(self, **kwargs):
         super().__init__()
@@ -261,19 +277,7 @@ class r5c1nsy(Figure):
 
 # class chart:
 #
-#     def r1c1sy1(self, **kwargs) -> go.Figure:
-#         _kwargs_ = dict(
-#             rows=1, cols=1,
-#             shared_xaxes=True,
-#             x_title='Date',
-#             specs=[[{"secondary_y": True, "r":-0.06}]]
-#         )
-#         _kwargs_.update(kwargs)
-#         fig = make_subplots(**_kwargs_)
-#         fig.update_layout(**self.layout(legend=self.legend()))
-#         fig.update_xaxes(patch=self.xaxis(rangeselector=None))
-#         fig.update_yaxes(patch=self.yaxis(), secondary_y=False)
-#         return fig
+
 #
 #     def r1c2nsy(self, **kwargs) -> go.Figure:
 #         _kwargs_ = dict(

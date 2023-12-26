@@ -2,7 +2,6 @@ from labwons.common.tools import xml2df
 from labwons.common.web import web
 from datetime import datetime
 from stocksymbol import StockSymbol
-from bs4 import BeautifulSoup
 from pykrx.stock import (
     get_nearest_business_day_in_a_week,
     get_market_cap_by_ticker,

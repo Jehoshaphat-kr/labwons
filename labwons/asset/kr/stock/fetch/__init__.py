@@ -32,6 +32,7 @@ class fetch:
         "multiples",
         "multiplesOutstanding",
         "multiplesTrailing",
+        "ohlcv",
         "products",
         "profitRate",
         "shareHolders",
@@ -40,8 +41,6 @@ class fetch:
         "shortSell",
         "snapShot",
         "stabilityRate",
-        "analogy",
-        "currentPrice",
         "multiplesTrailing",
         "marketCap"
     )

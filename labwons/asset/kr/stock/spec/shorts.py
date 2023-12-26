@@ -1,15 +1,15 @@
 from labwons.asset.kr.stock.fetch import fetch
 from labwons.common.charts import r1c1sy1
-from pandas import DataFrame, Series
+from pandas import concat, DataFrame, Series
 from plotly.graph_objects import Scatter, Figure
-from typing import Union, Iterable, Tuple
+from typing import Union, Iterable
 
 
 class _data_(object):
 
     def __init__(self, src:fetch):
-        self.data = self.__reform__(src.foreignRate)
-        self.title = f"<b>{src.name}({src.ticker})</b> : 외국인 비중"
+        self.data = self.__reform__(src.shortSell, src.shortBalance)
+        self.title = f"<b>{src.name}({src.ticker})</b> : 공매도와 대차 잔고"
         return
 
     def __str__(self) -> str:
@@ -25,74 +25,45 @@ class _data_(object):
         return self.data[item]
 
     @staticmethod
-    def __reform__(data:Union[DataFrame, Series]):
-        return data
+    def __reform__(data:Union[DataFrame, Series], *args) -> DataFrame:
+        return concat(objs=[data, args[0].drop(columns="종가")], axis=1)[["종가", "공매도비중", "대차잔고비중"]]
 
 
 class _line_(object):
-
+    colors = {'종가': 'royalblue', '공매도비중': 'brown', '대차잔고비중': 'red'}
     def __init__(self, data:_data_):
         self.data = data
         return
 
-    def __call__(self, col:Tuple[str, str], unit:str="", **kwargs):
+    def __call__(self, col:str, unit:str="", **kwargs):
         return self.__line__(col, unit, **kwargs)
 
-    def __line__(self, col:Tuple[str, str], unit:str="", **kwargs) -> Scatter:
+    def __line__(self, col:str, unit:str="", **kwargs) -> Scatter:
         data = self.data[col].dropna()
         trace = Scatter(
-            name=col[1],
+            name=col,
             x=data.index,
             y=data,
             mode="lines",
             line={
-                "dash": "dot" if col[1] == "비중" else "solid",
-                "color": "black" if col[1] == "비중" else "royalblue"
+                "dash": "dot" if col.endswith("비중") else "solid",
+                "color": self.colors[col]
             },
             connectgaps=True,
-            visible=True if col[0] == "3M" else False,
+            visible="legendonly" if col.startswith("대차잔고") else True,
             showlegend=True,
             xhoverformat="%Y/%m/%d",
-            yhoverformat=".2f" if col[1] == "비중" else ",d",
-            hovertemplate=col[1] + ": %{y}" + unit + "<extra></extra>"
+            yhoverformat=".2f" if col.endswith("비중") else ",d",
+            hovertemplate=col + ": %{y}" + unit + "<extra></extra>"
         )
         for key, value in kwargs.items():
             if hasattr(trace, key):
                 setattr(trace, key, value)
         return trace
 
-    @property
-    def buttons(self) -> list:
-        buttons = [
-            {
-                "label": "3개월",
-                "method": "update",
-                "args": [
-                    {"visible": [True, True, False, False, False, False]},
-                    {"title": f"{self.data.title} (3개월)"}
-                ]
-            },
-            {
-                "label": "1년",
-                "method": "update",
-                "args": [
-                    {"visible": [False, False, True, True, False, False]},
-                    {"title": f"{self.data.title} (1년)"}
-                ]
-            },
-            {
-                "label": "3년",
-                "method": "update",
-                "args": [
-                    {"visible": [False, False, False, False, True, True]},
-                    {"title": f"{self.data.title} (3년)"}
-                ]
-            }
-        ]
-        return buttons
 
 
-class foreignRate(_data_):
+class shorts(_data_):
 
     def __init__(self, src:fetch):
         super().__init__(src)
@@ -106,22 +77,11 @@ class foreignRate(_data_):
     def figure(self, **kwargs) -> Figure:
         fig = r1c1sy1(**kwargs)
         for col in self.columns:
-            secondary_y = True if col[1] == "비중" else False
-            unit = "%" if col[1] == "비중" else "KRW"
+            secondary_y = True if col.endswith("비중") else False
+            unit = "%" if col.endswith("비중") else "KRW"
             fig.add_trace(row=1, col=1, secondary_y=secondary_y, trace=self.T(col, unit))
-        fig.update_layout(
-            title=f"{self.title} (3개월)",
-            updatemenus=[
-                dict(
-                    direction="down",
-                    active=0,
-                    xanchor='left', x=0.005,
-                    yanchor='bottom', y=0.99,
-                    buttons=self.T.buttons
-                )
-            ],
-        )
-        fig.update_yaxes(secondary_y=True, patch={"title": "외국인 비중 [%]"})
+        fig.update_layout(title=f"{self.title}")
+        fig.update_yaxes(secondary_y=True, patch={"title": "비중 [%]"})
         fig.update_yaxes(secondary_y=False, patch={"title": "종가 [KRW]"})
         return fig
 
@@ -159,6 +119,6 @@ if __name__ == "__main__":
         # "323280" # SHT-5 SPAC
     )
 
-    comp = foreignRate(test)
+    comp = shorts(test)
     print(comp)
     comp()

@@ -39,7 +39,8 @@ class _metadata(pandas.DataFrame):
             return meta
         except KeyError:
             meta = pandas.Series(index=self.columns, name=ticker)
-            meta[["name", "ticker", "country"]] = ticker, ticker, "KOR" if ticker.isdigit() else "USA"
+            meta[["name", "country"]] = ticker, "KOR" if ticker.isdigit() else "USA"
+            meta.name = ticker
             return meta
 
     @property
@@ -168,5 +169,7 @@ if __name__ == "__main__":
     # print(metaData.getKrse())
     # print(metaData.getNyse())
 
-    metaData.save()
-    print(metaData)
+    # metaData.save()
+    # print(metaData)
+
+    print(metaData("900140"))

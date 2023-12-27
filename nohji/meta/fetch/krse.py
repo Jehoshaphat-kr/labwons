@@ -1,5 +1,6 @@
+from nohji._config import api
 from nohji.util.web import web
-from nohji.config import api
+
 from stocksymbol import StockSymbol
 from pandas import concat, DataFrame, merge, to_datetime
 from urllib.request import urlopen

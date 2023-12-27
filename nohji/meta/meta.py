@@ -1,10 +1,12 @@
+from nohji._config import api
 from nohji.meta import fetch
-from nohji.config import api
+
 from pandas import concat, DataFrame, read_pickle, Series
 from typing import Any, Hashable, Union
 from requests import exceptions
 from yfinance import Ticker
 import os
+
 
 class _meta:
     """
@@ -18,7 +20,8 @@ class _meta:
                        'quoteType', 'country', 'exchange', 'nav', 'marketCap', 'currency']
         example     : pass
 
-    @__call__
+    @__call__()
+        :param      : <str; ticker>
         type        : Series
         description : single asset meta data
                       for yfinance(Yahoo) accessible asset, try Ticker(*).info once for full meta data.

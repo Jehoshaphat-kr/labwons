@@ -1,5 +1,6 @@
+from nohji._config import api
 from nohji.util.brush import xml2df
-from nohji.config import api
+
 from pandas import DataFrame, Series, to_datetime
 from typing import Any
 

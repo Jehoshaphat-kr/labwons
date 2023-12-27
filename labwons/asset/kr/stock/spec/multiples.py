@@ -1,7 +1,7 @@
 from labwons.asset.kr.stock.fetch import fetch
 from labwons.common.charts import r2c2nsy
 from pandas import concat, DataFrame, Series
-from plotly.graph_objects import Scatter, Figure
+from plotly.graph_objects import Bar, Figure
 from typing import Union, Iterable, Tuple
 
 
@@ -33,7 +33,7 @@ class _data_(object):
 
 
 class _line_(object):
-    colors = ["royalblue", "orange", "green"]
+    colors = ["#00B7EB", "#98FB98", "#FFD700"]
     def __init__(self, data:_data_):
         self.data = data
         return
@@ -41,25 +41,23 @@ class _line_(object):
     def __call__(self, col:Tuple[str, str], **kwargs):
         return self.__line__(col, **kwargs)
 
-    def __line__(self, col:Tuple[str, str], **kwargs) -> Scatter:
-        data = self.data[col].dropna()
-        yy, column = col
-        name, ticker = tuple(column.split("_"))
-        trace = Scatter(
+    def __line__(self, col:Tuple[str, str], **kwargs) -> Bar:
+        mul, name = col
+        data = self.data[col]
+        unit = "" if mul.startswith("PER") or mul.startswith("EV") else "%"
+        trace = Bar(
             name=name,
             x=data.index,
             y=data,
-            mode="lines",
-            line={
-                "dash": "solid" if ticker == self.data.ticker else "dash",
-                "color": self.colors[self.data.columns.tolist().index(col) % self.nAsset]
+            marker={
+                "color": self.colors[self.data.columns.tolist().index(col) % 3],
+                "opacity": 0.9
             },
-            connectgaps=True,
-            visible=True if yy == "5Y" else False,
-            showlegend=True,
-            xhoverformat="%Y/%m/%d",
+            visible=True,
+            legendgroup=name,
+            showlegend=True if mul == "PER" else False,
             yhoverformat=".2f",
-            hovertemplate=name.split("_")[0] + ": %{y}%<extra></extra>"
+            hovertemplate=name + ": %{y}" + unit + "<extra></extra>"
         )
         for key, value in kwargs.items():
             if hasattr(trace, key):
@@ -85,9 +83,14 @@ class returns(_data_):
             horizontal_spacing=0.08,
             **kwargs
         )
-        # for col in self.columns:
-        #     fig.add_trace(trace=self.T(col))
-
+        for col in self.columns:
+            _row_ = 1 if col[0] == "PER" or col[0].startswith("EV") else 2
+            _col_ = 1 if col[0].startswith('PER') or col[0].startswith('ROE') else 2
+            fig.add_trace(row=_row_, col=_col_, trace=self.T(col))
+        fig.update_yaxes(row=1, col=1, title='[-]')
+        fig.update_yaxes(row=1, col=2, title='[-]')
+        fig.update_yaxes(row=2, col=1, title='[%]')
+        fig.update_yaxes(row=2, col=2, title='[%]')
         return fig
 
 

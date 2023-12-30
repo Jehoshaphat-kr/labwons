@@ -43,3 +43,16 @@ class etfonly(property):
         if not __key__ in mem:
             mem[__key__] = super().__get__(*args, **kwargs)
         return mem[__key__]
+
+
+class krmarket(property):
+    def __get__(self, *args, **kwargs):
+        if not hasattr(args[0], "meta"):
+            raise AttributeError("Usage of decorator @krmarket requires 'meta' attribute, but not found")
+
+        if not args[0].meta.country == "KOR":
+            raise TypeError(f"Asset listed Country is not KOR")
+        __key__ = f"{self.fget.__name__}_{args[0].meta.name}"
+        if not __key__ in mem:
+            mem[__key__] = super().__get__(*args, **kwargs)
+        return mem[__key__]

@@ -174,8 +174,8 @@ if __name__ == "__main__":
     set_option('display.expand_frame_repr', False)
 
     api.stockSymbol = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
-    # meta.update()
-    print(meta)
-    print(meta.columns)
-    print(meta("005930"))
-    print(meta("AAPL"))
+    meta.update()
+    # print(meta)
+    # print(meta.columns)
+    # print(meta("005930"))
+    # print(meta("AAPL"))

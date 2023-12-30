@@ -108,7 +108,7 @@ class _krse:
         data2[['ticker', 'exchange']] = tuple(data2.symbol.str.split('.'))
         data2[['currency', 'country']] = ['KRW', 'KOR']
         data2["exchange"] = data2["exchange"].apply(lambda x: {"KS": "KOSPI", "KQ": "KOSDAQ"}[x])
-        data2 = data2.set_index(keys='ticker')[['shortName', 'longName', 'quoteType', 'country', 'exchange']]
+        data2 = data2.set_index(keys='ticker')[['shortName', 'longName', 'quoteType', 'country', 'currency', 'exchange']]
 
         data = merge(data1, data2, how="outer", left_index=True, right_index=True)
         return data[~data.korName.isna()].copy()
@@ -155,3 +155,4 @@ if __name__ == "__main__":
     print(krse.stock)
     print(krse.etf)
     print(krse)
+    print(krse.stock.loc["005930"])

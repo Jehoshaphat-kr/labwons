@@ -88,7 +88,7 @@ class krx:
     @stockonly
     def marketCap(self) -> Series:
         cap = get_market_cap_by_date(
-            fromdate=(datetime.today() - timedelta(365 * 5)).strftime("%Y%m%d"),
+            fromdate=(datetime.today() - timedelta(365 * 8)).strftime("%Y%m%d"),
             todate=datetime.today().strftime("%Y%m%d"),
             freq='m',
             ticker=self.ticker
@@ -102,7 +102,7 @@ class krx:
         ]
         cap.index = cap.index.strftime("%Y/%m")
         cap.index.name = "month"
-        return Series(index=cap.index, data=cap['시가총액'] / 100000000, name="marketCap", dtype=int)
+        return Series(index=cap.index, data=cap['시가총액'] / 100000000, dtype=int)
 
     @etfonly
     def components(self) -> DataFrame:
@@ -118,9 +118,9 @@ if __name__ == "__main__":
     set_option('display.expand_frame_repr', False)
 
     krx = krx(
-        # "005930"
-        "069500"
+        "005930"
+        # "069500"
     )
     # print(krx.ohlcv)
-    # print(krx.marketCap)
-    print(krx.components)
+    print(krx.marketCap)
+    # print(krx.components)

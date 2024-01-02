@@ -16,7 +16,11 @@ class profit:
         else:
             raise AttributeError
         self.title = f"{_fetch.meta['name']}({_fetch.meta.name}) : 실적"
+        self.currency = _fetch.meta.currency
         return
+
+    def __str__(self) -> str:
+        return str(self.data)
 
     def __call__(self, **kwargs):
         self.figure(**kwargs).show()
@@ -58,7 +62,7 @@ class profit:
                         visible=False if n else True,
                         showlegend=True,
                         yhoverformat=",d",
-                        hovertemplate=col + ": %{y}KRW<extra></extra>"
+                        hovertemplate=col + ": %{y}원<extra></extra>"
                     )
                     secondary_y = True
                 else:
@@ -72,8 +76,8 @@ class profit:
                             "opacity":0.85 if col == self.data.columns[0] else 1.0
                         },
                         meta=[int2won(x) for x in data],
-                        texttemplate="%{meta}KRW",
-                        hovertemplate=col + ": %{meta}KRW<extra></extra>"
+                        texttemplate="%{meta}원",
+                        hovertemplate=col + ": %{meta}원<extra></extra>"
                     )
                     secondary_y = False
                 fig.add_trace(secondary_y=secondary_y, trace=trace)
@@ -90,6 +94,6 @@ class profit:
             ],
             **kwargs
         )
-        fig.update_yaxes(secondary_y=True, patch={"title": "EPS [원]"})
-        fig.update_yaxes(secondary_y=False, patch={"title": "[억원]"})
+        fig.update_yaxes(secondary_y=True, patch={f"title": f"EPS [원]"})
+        fig.update_yaxes(secondary_y=False, patch={f"title": f"[억원]"})
         return fig

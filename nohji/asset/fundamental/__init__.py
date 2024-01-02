@@ -16,8 +16,6 @@ class fundamental(object):
 
     def __init__(self, _fetch:fetch):
         self.__src__ = _fetch
-        # self.data = data
-        # self.meta = meta
         self.__mem__ = {}
         return
 
@@ -32,8 +30,6 @@ class fundamental(object):
             return self.__mem__[item]
         if item in self.__slots__:
             _attr_ = getattr(globals()[item], item)
-            # _args_ = {arg: getattr(self, arg) for arg in signature(_attr_).parameters}
-            # self.__mem__[item] = _attr_(**_args_)
             self.__mem__[item] = _attr_(self.__src__)
             return self.__mem__[item]
         return object.__getattribute__(self, item)

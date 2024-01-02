@@ -551,6 +551,8 @@ class fnguide:
             data.columns.name = None
             for col in data:
                 data[col] = data[col].apply(str2num)
+            data = data.drop(columns=[col for col in data.columns if "발표기준" in col])
+            data = data.rename(columns={col:col[:col.find("(")] if "(" in col else col for col in data.columns})
             return data
         return multiframes(dict(
             Y=_get_(11 if self.url.gb == 'D' else 14),
@@ -931,11 +933,11 @@ if __name__ == "__main__":
     set_option('display.expand_frame_repr', False)
 
     fn = fnguide(
-        # "005930"
-        "069500"
+        "005930"
+        # "069500"
     )
 
-    # print(fn.abstract)
+    print(fn.abstract)
     # print(fn.abstract.Y)
     # print(fn.abstract.Q)
     # print(fn.benchmarkMultiples)
@@ -976,4 +978,4 @@ if __name__ == "__main__":
     # print(fn.snapShot)
     # print(fn.stabilityRate)
 
-    print(fn.sectorWeights)
+    # print(fn.sectorWeights)

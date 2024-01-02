@@ -5,7 +5,7 @@ from nohji.asset.core.datatype import multiframes
 def genKr(_fetch:fetch) -> multiframes:
     abstract = _fetch.fnguide.abstract
     columns = abstract.columns.tolist()
-    columns = columns[: columns.index('당기순이익') + 1] + ["EPS"]
+    columns = columns[: columns.index('영업이익') + 1] + ["자본총계", "부채총계", "자산총계", "부채비율"]
 
     yCap = _fetch.krx.marketCap.copy()
     qCap = _fetch.krx.marketCap.copy()

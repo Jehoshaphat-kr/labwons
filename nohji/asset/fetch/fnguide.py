@@ -88,10 +88,6 @@ class _url:
         return self.__html__("SVD", "Finance", self.gb, "701")
 
     @stockonly
-    def financeB(self) -> str:
-        return self.__html__("SVD", "Finance", 'A', "701")
-
-    @stockonly
     def ratio(self) -> str:
         return self.__html__("SVD", "FinanceRatio", self.gb, "701")
 
@@ -273,32 +269,26 @@ class fnguide:
         constraint  : stockonly
         type        : DataFrame (multi frames included)
         description : financial statement of the prior (auto detected by linked or separated)
-        columns     : ['자산', '유동자산', '비유동자산', '기타금융업자산',
-                       '부채', '유동부채', '비유동부채', '기타금융업부채',
-                       '자본', '자본금', '신종자본증권', '자본잉여금', '기타자본',
-                       '기타포괄손익누계액', '이익잉여금결손금']
+        columns     : ['자산', '유동자산', '재고자산', '유동생물자산', '유동금융자산',
+                       '매출채권및기타유동채권', '당기법인세자산', '계약자산', '반품환불자산', '배출권',
+                       '기타유동자산', '현금및현금성자산', '매각예정비유동자산및처분자산집단',
+                       '비유동자산', '유형자산', '무형자산', '비유동생물자산', '투자부동산', '장기금융자산',
+                       '관계기업등지분관련투자자산', '장기매출채권및기타비유동채권', '이연법인세자산',
+                       '장기당기법인세자산', '계약자산', '반품환불자산', '배출권', '기타비유동자산', '기타금융업자산',
+                       '부채', '유동부채', '단기사채', '단기차입금', '유동성장기부채', '유동금융부채',
+                       '매입채무및기타유동채무', '유동종업원급여충당부채', '기타단기충당부채', '당기법인세부채',
+                       '계약부채', '반품환불부채', '배출부채', '기타유동부채',
+                       '매각예정으로분류된처분자산집단에포함된부채', '비유동부채', '사채', '장기차입금',
+                       '비유동금융부채', '장기매입채무및기타비유동채무', '비유동종업원급여충당부채', '기타장기충당부채',
+                       '이연법인세부채', '장기당기법인세부채', '계약부채', '반품환불부채', '배출부채',
+                       '기타비유동부채', '기타금융업부채', '자본', '지배기업주주지분', '자본금', '신종자본증권',
+                       '자본잉여금', '기타자본', '기타포괄손익누계액', '이익잉여금결손금', '비지배주주지분']
         example     :
                      자산  유동자산  비유동자산  기타금융업자산  부채  유동부채  비유동부채  ...  이익잉여금결손금
             2020/12  3615      2577        1038             NaN   242       219          23  ...              3265
             2021/12  4664      3357        1306             NaN   487       460          27  ...              4068
             2022/12  5315      3770        1545             NaN   383       364          19  ...              4823
             2023/3Q  5773      4194        1579             NaN   460       438          22  ...              5205
-
-    @financialSeparatedStatement
-        constraint  : stockonly
-        type        : DataFrame (multi frames included)
-        description : financial statement of the separated statement
-        columns     : ['유동자산', '현금및단기예금', '유가증권', '매출채권', '재고자산', '임대주택자산', '비유동자산',
-                       '투자자산', '유형자산', '감가상각자산', '무형자산', '자산총계', '유동부채', '매입채무',
-                       '단기차입금', '유동성장기부채', '비유동부채', '사채', '장기차입금', '이연부채', '부채총계',
-                       '자본금', '자본잉여금', '자본조정', '자기주식', '기타포괄손익누계액', '이익잉여금', '자본총계',
-                       '순운전자본', '순차입금', '투하자본']
-        example     :
-                     유동자산  현금및단기예금  유가증권  매출채권  재고자산  임대주택자산  비유동자산  ...  투하자본
-            2020/12      2577            2066       NaN       291       123           NaN        1038  ...      1235
-            2021/12      3357    	     2830       NaN       354       116           NaN        1306  ...      1340
-            2022/12      3770            3171       NaN       393       131           NaN        1545  ...      1740
-            2023/3Q      4194            3545       NaN       433       143           NaN        1579  ...      1719
 
     @foreignExhaustRate
         constraint  : stockonly
@@ -453,11 +443,11 @@ class fnguide:
         type        : Series
         description : stock shares holded by affiliate person
         example     :
-            최대주주등      9.13
+            최대주주등    9.13
             5%이상주주    12.02
-            임원         0.04
-            자기주식       0.66
-            공시제외주주    78.15
+            임원          0.04
+            자기주식      0.66
+            공시제외주주  78.15
             dtype: float64
 
     @shareInstitutes
@@ -548,6 +538,7 @@ class fnguide:
             data = data.T
             data = data.head(len(data) - len([i for i in data.index if i.endswith(')')]) + 1)
             data.index.name = '기말'
+            data.index = [idx.replace("(E) : Estimate 컨센서스, 추정치 ", "") for idx in data.index]
             data.columns.name = None
             for col in data:
                 data[col] = data[col].apply(str2num)
@@ -604,7 +595,8 @@ class fnguide:
             data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/{int(data.columns[-1][-2:]) // 3}Q"]
             data.index = [cutString(x, cut) for x in data.index]
             data = data.T
-            return data[col.keys()].rename(columns=col).fillna(0).astype(int)
+            # return data[col.keys()].rename(columns=col).fillna(0).astype(int)
+            return data.rename(columns=col).fillna(0).astype(int)
         return multiframes(dict(
             Y=_get_(4),
             Q=_get_(5)
@@ -639,8 +631,8 @@ class fnguide:
             "SALES_R": "매출실적", "SALES_F": "매출전망",
             "OP_R": "영업이익실적", "OP_F": "영업이익전망"
         }
-        yy = web.data(self.url.cdn.profitConsensusAnnual, "CHART")[cols.keys()].rename(columns=cols)
-        qq = web.data(self.url.cdn.profitConsensusQuarter, "CHART")[cols.keys()].rename(columns=cols)
+        yy = web.data(self.url.cdn.profitConsensusAnnual, "CHART")[cols.keys()].rename(columns=cols).set_index(keys="기말")
+        qq = web.data(self.url.cdn.profitConsensusQuarter, "CHART")[cols.keys()].rename(columns=cols).set_index(keys="기말")
         for y, q in zip(yy, qq):
             yy[y] = yy[y].apply(str2num)
             qq[q] = qq[q].apply(str2num)
@@ -707,19 +699,6 @@ class fnguide:
         return multiframes(dict(Y=_get_("Y"), Q=_get_("Q")))
 
     @stockonly
-    def financialSeparatedStatement(self) -> DataFrame:
-        cutter = ['계산에 참여한 계정 펼치기', '(', ')', '*', '&nbsp;', ' ', " "]
-        def _get_(period: str) -> DataFrame:
-            data = web.list(self.url.financeB)[{"Y": 2, "Q": 3}[period]]
-            data = data.set_index(keys=[data.columns[0]])
-            data = data.drop(columns=[col for col in data if not col.startswith('20')])
-            data.index.name = None
-            data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/{int(data.columns[-1][-2:]) // 3}Q"]
-            data.index = [cutString(x, cutter) for x in data.index]
-            return data.T.astype(float)
-        return multiframes(dict(Y=_get_("Y"), Q=_get_("Q")))
-
-    @stockonly
     def foreignExhaustRate(self) -> DataFrame:
         urls = [self.url.cdn.foreignRate3Months, self.url.cdn.foreignRate1Year, self.url.cdn.foreignRate3Years]
         cols = {'TRD_DT': '날짜', 'J_PRC': '종가', 'FRG_RT': '비중'}
@@ -737,7 +716,7 @@ class fnguide:
     def growthRate(self) -> DataFrame:
         cutter = ['계산에 참여한 계정 펼치기', '(', ')', '*', '&nbsp;', ' ', " "]
         def _get_(index:int):
-            data = web.list(self.url.ratio)[index]
+            data = web.list(self.url.ratio, displayed_only=True)[index]
             cols = data[data.columns[0]].tolist()
             data = data.iloc[cols.index('성장성비율') + 1: cols.index('수익성비율')]
             data = data.set_index(keys=[data.columns[0]])
@@ -937,12 +916,12 @@ if __name__ == "__main__":
         # "069500"
     )
 
-    print(fn.abstract)
+    # print(fn.abstract)
     # print(fn.abstract.Y)
     # print(fn.abstract.Q)
     # print(fn.benchmarkMultiples)
     # print(fn.businessSummary)
-    # print(fn.cashFlow)
+    print(fn.cashFlow)
     # print(fn.consensusOutstanding)
     # print(fn.consensusPrice)
     # print(fn.consensusProfit)
@@ -956,9 +935,6 @@ if __name__ == "__main__":
     # print(fn.financialStatement)
     # print(fn.financialStatement.Y)
     # print(fn.financialStatement.Q)
-    # print(fn.financialSeparatedStatement)
-    # print(fn.financialSeparatedStatement.Y)
-    # print(fn.financialSeparatedStatement.Q)
     # print(fn.foreignExhaustRate)
     # print(fn.growthRate)
     # print(fn.growthRate.Y)

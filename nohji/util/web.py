@@ -21,11 +21,11 @@ class _web(object):
             self.__setattr__(attr, BeautifulSoup(self.req(url).text, parser))
         return self.__getattribute__(attr)
 
-    def list(self, url:str, encoding:str='utf-8') -> list:
+    def list(self, url:str, encoding:str='utf-8', displayed_only:bool=False) -> list:
         attr = f"_list_{url}_"
         if not hasattr(self, attr):
             encoding = "euc-kr" if "naver" in url else encoding
-            self.__setattr__(attr, pandas.read_html(io=url, header=0, encoding=encoding))
+            self.__setattr__(attr, pandas.read_html(io=url, header=0, encoding=encoding, displayed_only=displayed_only))
         return self.__getattribute__(attr)
 
     def json(self, url:str) -> json:

@@ -30,19 +30,19 @@ class profit:
     def buttons(self) -> list:
         buttons = [
             {
-                "label" : "Annual",
+                "label" : "연간",
                 "method" : "update",
                 "args" : [
                     {"visible" : [True] * len(self.data.columns) + [False] * len(self.data.columns)},
-                    {"title" : f"{self.title} (Annual)"}
+                    {"title" : f"{self.title} (연간)"}
                 ]
             },
             {
-                "label": "Quarter",
+                "label": "분기",
                 "method": "update",
                 "args": [
                     {"visible": [False] * len(self.data.columns) + [True] * len(self.data.columns)},
-                    {"title" : f"{self.title} (Quarter)"}
+                    {"title" : f"{self.title} (분기)"}
                 ]
             }
         ]
@@ -82,7 +82,7 @@ class profit:
                     secondary_y = False
                 fig.add_trace(secondary_y=secondary_y, trace=trace)
         fig.update_layout(
-            title=f"{self.title} (Annual)",
+            title=f"{self.title} (연간)",
             updatemenus=[
                 dict(
                     direction="down",

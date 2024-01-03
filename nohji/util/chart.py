@@ -130,6 +130,19 @@ class r1c1sy1(Figure):
         self.update_layout(dict1=layout(legend=legend()))
         return
 
+class r1c2nsy(Figure):
+    def __init__(self, **kwargs):
+        super().__init__()
+        args = dict(
+            rows=1, cols=2
+        )
+        args.update(kwargs)
+        self.set_subplots(**args)
+        self.update_xaxes(patch=xaxis(rangeselector=None))
+        self.update_yaxes(patch=yaxis())
+        self.update_layout(dict1=layout(legend=legend()))
+        return
+
 class r2c1nsy(Figure):
     def __init__(self, **kwargs):
         super().__init__()
@@ -289,20 +302,6 @@ class r5c1nsy(Figure):
 #         return fig
 
 # class chart:
-#
-
-#
-#     def r1c2nsy(self, **kwargs) -> go.Figure:
-#         _kwargs_ = dict(
-#             rows=1, cols=2
-#         )
-#         _kwargs_.update(kwargs)
-#         fig = make_subplots(**_kwargs_)
-#         fig.update_layout(**self.layout(legend=self.legend()))
-#         fig.update_xaxes(patch=self.xaxis(rangeselector=None))
-#         fig.update_yaxes(patch=self.yaxis())
-#         return fig
-#
 #     def r2c1nsy(self, **kwargs) -> go.Figure:
 #         _kwargs_ = dict(
 #             rows=2, cols=1,

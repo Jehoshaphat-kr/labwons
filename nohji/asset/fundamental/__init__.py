@@ -1,5 +1,5 @@
 from nohji.asset.fetch import fetch
-from nohji.asset.fundamental import assetQuality, products, profit
+from nohji.asset.fundamental import assetQuality, products, profit, profitExpense
 
 from inspect import signature
 from pandas import DataFrame, Series
@@ -13,6 +13,7 @@ class fundamental(object):
         "assetQuality",
         "products",
         "profit",
+        "profitExpense"
 
 
     )
@@ -42,19 +43,23 @@ if __name__ == "__main__":
     from pandas import set_option
     set_option('display.expand_frame_repr', False)
 
-    # ticker = "000660" #
-    # ticker = "005930"
-    ticker = "001230"
+    # ticker = "000660"
+    ticker = "005930"
+    # ticker = "001230"
+    # ticker = "138080"
+    # ticker = "316140"
 
     mySrc = fetch(ticker)
     myTech = fundamental(mySrc)
 
-    # myTech.profit()
-    # myTech.assetQuality()
+    myTech.profit()
+    myTech.assetQuality()
     myTech.products()
+    myTech.profitExpense()
 
     # print(myTech.profit)
     # print(myTech.assetQuality)
+    # print(myTech.profitExpense)
 
 
     # from plotly.offline import plot

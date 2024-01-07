@@ -1,6 +1,5 @@
 from nohji.asset.core.datatype import multiframes
 from nohji.asset.core.decorator import etfonly, stockonly, common
-from nohji.meta import meta
 from nohji.util.brush import cutString, str2num
 from nohji.util.web import web
 
@@ -520,9 +519,10 @@ class fnguide:
             2023/3Q     956.9     924.2       8.7  6902.7           NaN       11841.9          92.0
     """
 
-    def __init__(self, ticker:str):
-        self.ticker = ticker
-        self.url = _url(ticker)
+    def __init__(self, meta:Union[Series, str]):
+        self.meta = Series(data={"ticker":meta, "quoteType":"EQUITY"}) if isinstance(meta, str) else meta
+        self.ticker = self.meta.ticker
+        self.url = _url(self.ticker)
         return
 
     @stockonly
@@ -544,6 +544,10 @@ class fnguide:
                 data[col] = data[col].apply(str2num)
             data = data.drop(columns=[col for col in data.columns if "발표기준" in col])
             data = data.rename(columns={col:col[:col.find("(")] if "(" in col else col for col in data.columns})
+            if index in [12, 15]:
+                data.index = [
+                    col.replace("03","1Q").replace("06","2Q").replace("09","3Q").replace("12","4Q") for col in data.index
+                ]
             return data
         return multiframes(dict(
             Y=_get_(11 if self.url.gb == 'D' else 14),
@@ -595,7 +599,10 @@ class fnguide:
             data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/{int(data.columns[-1][-2:]) // 3}Q"]
             data.index = [cutString(x, cut) for x in data.index]
             data = data.T
-            # return data[col.keys()].rename(columns=col).fillna(0).astype(int)
+            if index == 5:
+                data.index = [
+                    c.replace("03", "1Q").replace("06", "2Q").replace("09", "3Q").replace("12", "4Q") for c in data.index
+                ]
             return data.rename(columns=col).fillna(0).astype(int)
         return multiframes(dict(
             Y=_get_(4),
@@ -682,6 +689,10 @@ class fnguide:
             data = concat({"판관비율": manage, "매출원가율": cost}, axis=1)
             for col in data:
                 data[col] = data[col].apply(str2num)
+            if period == "Q":
+                data.index = [
+                    c.replace("03", "1Q").replace("06", "2Q").replace("09", "3Q").replace("12", "4Q") for c in data.index
+                ]
             return data
         return multiframes(dict(Y=_get_('Y'), Q=_get_('Q')))
 
@@ -695,7 +706,12 @@ class fnguide:
             data.index.name = None
             data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/{int(data.columns[-1][-2:]) // 3}Q"]
             data.index = [cutString(x, cutter) for x in data.index]
-            return data.T.astype(float)
+            data = data.T.astype(float)
+            if period == "Q":
+                data.index = [
+                    c.replace("03", "1Q").replace("06", "2Q").replace("09", "3Q").replace("12", "4Q") for c in data.index
+                ]
+            return data
         return multiframes(dict(Y=_get_("Y"), Q=_get_("Q")))
 
     @stockonly
@@ -724,7 +740,12 @@ class fnguide:
             data.index.name = None
             data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/{int(data.columns[-1][-2:]) // 3}Q"]
             data.index = [cutString(x, cutter) for x in data.index]
-            return data.T.astype(float)
+            data = data.T.astype(float)
+            if index == 1:
+                data.index = [
+                    c.replace("03", "1Q").replace("06", "2Q").replace("09", "3Q").replace("12", "4Q") for c in data.index
+                ]
+            return data
         return multiframes(dict(Y=_get_(0), Q=_get_(1)))
 
     @stockonly
@@ -737,7 +758,12 @@ class fnguide:
             data.index.name = None
             data.columns = data.columns.tolist()[:-1] + [f"{data.columns[-1][:4]}/{int(data.columns[-1][-2:]) // 3}Q"]
             data.index = [cutString(x, cutter) for x in data.index]
-            return data.T.astype(float)
+            data = data.T.astype(float)
+            if period == "Q":
+                data.index = [
+                    c.replace("03", "1Q").replace("06", "2Q").replace("09", "3Q").replace("12", "4Q") for c in data.index
+                ]
+            return data
         return multiframes(dict(Y=_get_("Y"), Q=_get_("Q")))
 
     @stockonly
@@ -775,7 +801,7 @@ class fnguide:
 
     @common
     def multiplesOutstanding(self) -> Series:
-        if meta(self.ticker).quoteType == "ETF":
+        if self.meta.quoteType == "ETF":
             html = web.html(self.url.etf)
             script = html.find_all('script')[-1].text.split('\n')
             pe = script[[n for n, h in enumerate(script) if "PER" in h][0] + 1]
@@ -917,11 +943,11 @@ if __name__ == "__main__":
     )
 
     # print(fn.abstract)
-    # print(fn.abstract.Y)
-    # print(fn.abstract.Q)
+    print(fn.abstract.Y)
+    print(fn.abstract.Q)
     # print(fn.benchmarkMultiples)
     # print(fn.businessSummary)
-    print(fn.cashFlow)
+    # print(fn.cashFlow)
     # print(fn.consensusOutstanding)
     # print(fn.consensusPrice)
     # print(fn.consensusProfit)

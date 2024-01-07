@@ -21,8 +21,8 @@ class assetQuality:
         else:
             raise AttributeError
         self.title = f"{_fetch.meta['name']}({_fetch.meta.name}) : 자산"
-        if not self.data.columns[1] in self.colors:
-            self.colors[self.data.columns[1]] = "#9BC2E6"
+        if not self.data.columns[5] in self.colors:
+            self.colors[self.data.columns[5]] = "#9BC2E6"
         return
 
     def __str__(self) -> str:
@@ -75,10 +75,10 @@ class assetQuality:
                     base=0 if col == "시가총액" else None,
                     width=0.4,
                     offset=-0.4 if col == "시가총액" else 0.0,
-                    visible='legendonly' if col in self.data.columns[1:3] else True,
+                    visible='legendonly' if col in self.data.columns[5:7] else True,
                     marker=dict(
                         color=self.colors[col],
-                        opacity=0.8 if col == '영업이익' else 0.9
+                        opacity=0.85 if col in ['시가총액', '영업이익'] else 0.9
                     ),
                     meta=[int2won(x) for x in series],
                     texttemplate="%{meta}원",

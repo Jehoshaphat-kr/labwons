@@ -1,9 +1,9 @@
-from nohji.meta import meta
 from nohji.asset.core.decorator import common, stockonly, etfonly
 
 from datetime import datetime, timedelta
 from pandas import Series, DataFrame
 from pykrx.stock import get_market_ohlcv_by_date, get_market_cap_by_date, get_etf_portfolio_deposit_file
+from typing import Union
 
 
 class krx:
@@ -62,11 +62,23 @@ class krx:
             014820     동원시스템즈   0.02
     """
 
-    def __init__(self, ticker:str, period:int=10, freq:str="d"):
-        self.ticker = ticker
+    def __init__(self, meta:Union[Series, str], period:int=10, freq:str="d"):
+        self.meta = Series(data={"ticker":meta}) if isinstance(meta, str) else meta
+        self.ticker = self.meta.ticker
         self.period = period
         self.freq = freq
         return
+
+    def _getMarketCap(self) -> DataFrame:
+        if not hasattr(self, "__cap"):
+            cap = get_market_cap_by_date(
+                fromdate=(datetime.today() - timedelta(365 * 8)).strftime("%Y%m%d"),
+                todate=datetime.today().strftime("%Y%m%d"),
+                freq='m',
+                ticker=self.ticker
+            )
+            self.__setattr__("__cap", cap)
+        return self.__getattribute__("__cap")
 
     @common
     def ohlcv(self) -> DataFrame:
@@ -86,13 +98,8 @@ class krx:
         return ohlcv.rename(columns=dict(시가='open', 고가='high', 저가='low', 종가='close', 거래량='volume'))
 
     @stockonly
-    def marketCap(self) -> Series:
-        cap = get_market_cap_by_date(
-            fromdate=(datetime.today() - timedelta(365 * 8)).strftime("%Y%m%d"),
-            todate=datetime.today().strftime("%Y%m%d"),
-            freq='m',
-            ticker=self.ticker
-        )
+    def quarterlyMarketCap(self) -> Series:
+        cap = self._getMarketCap()
         cap = cap[
             cap.index.astype(str).str.contains('03') | \
             cap.index.astype(str).str.contains('06') | \
@@ -101,11 +108,23 @@ class krx:
             (cap.index == cap.index[-1])
         ]
         cap.index = cap.index.strftime("%Y/%m")
+        cap.index = [
+            col.replace("03", "1Q").replace("06", "2Q").replace("09", "3Q").replace("12", "4Q") for col in cap.index
+        ]
         cap.index.name = "month"
+        return Series(index=cap.index, data=cap['시가총액'] / 100000000, dtype=int)
+
+    @stockonly
+    def yearlyMarketCap(self) -> Series:
+        cap = self._getMarketCap()
+        cap = cap[cap.index.astype(str).str.contains('12') | (cap.index == cap.index[-1])]
+        cap.index = cap.index.strftime("%Y/%m")
+        cap.index.name = "year"
         return Series(index=cap.index, data=cap['시가총액'] / 100000000, dtype=int)
 
     @etfonly
     def components(self) -> DataFrame:
+        from nohji.meta import meta
         data = get_etf_portfolio_deposit_file(self.ticker)
         data['이름'] = meta[meta.index.isin(data.index)]['korName']
         data = data[['이름', '비중']]
@@ -122,5 +141,5 @@ if __name__ == "__main__":
         # "069500"
     )
     # print(krx.ohlcv)
-    print(krx.marketCap)
+    print(krx.quarterlyMarketCap)
     # print(krx.components)

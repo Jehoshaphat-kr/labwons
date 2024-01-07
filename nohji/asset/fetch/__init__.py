@@ -14,12 +14,12 @@ class fetch:
 
     @krmarket
     def fnguide(self) -> fnguide:
-        return fnguide(self.meta.name)
+        return fnguide(self.meta)
 
     @krmarket
     def krx(self) -> krx:
-        return krx(self.meta.name)
+        return krx(self.meta)
 
     @krmarket
     def naver(self) -> naver:
-        return naver(self.meta.name)
+        return naver(self.meta)

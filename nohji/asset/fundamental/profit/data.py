@@ -7,8 +7,8 @@ def genKr(_fetch:fetch) -> multiframes:
     columns = abstract.columns.tolist()
     columns = columns[: columns.index('당기순이익') + 1] + ["EPS"]
 
-    yCap = _fetch.krx.marketCap.copy()
-    qCap = _fetch.krx.marketCap.copy()
+    yCap = _fetch.krx.yearlyMarketCap.copy()
+    qCap = _fetch.krx.quarterlyMarketCap.copy()
 
     yCap.index = yCap.index[:-1].tolist() + [abstract.Y.index[-1]]
     qCap.index = qCap.index[:-1].tolist() + [abstract.Q.index[-1]]

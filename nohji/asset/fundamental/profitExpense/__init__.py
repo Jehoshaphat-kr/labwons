@@ -1,20 +1,28 @@
 from nohji.asset.fetch import fetch
 from nohji.util.brush import int2won
-from nohji.util.chart import r1c2nsy
+from nohji.util.chart import r1c1sy1
+from nohji.asset.fundamental.profitExpense import data
 
-from plotly.graph_objects import Bar, Figure, Pie
+from plotly.graph_objects import Bar, Figure, Scatter
 
 
-class products:
+class profitExpense:
+
+    # colors = {
+    #     "매출액": "#9BC2E6",
+    #     "매출원가": "#FF7C80",
+    #     "판매비와관리비": "#F4B084",
+    #     "영업이익": "#A9D08E",
+    # }
 
     def __init__(self, _fetch:fetch):
         if _fetch.meta.country == "KOR":
-            self.data = _fetch.fnguide.products
+            self.data = data.genKr(_fetch)
         elif _fetch.meta.country == "USA":
-            self.data = _fetch.fnguide.products
+            self.data = data.genKr(_fetch)
         else:
             raise AttributeError
-        self.title = f"{_fetch.meta['name']}({_fetch.meta.name}) : 상품"
+        self.title = f"{_fetch.meta['name']}({_fetch.meta.name}) : 비용"
         return
 
     def __str__(self) -> str:
@@ -25,40 +33,60 @@ class products:
         return
 
     def figure(self, **kwargs) -> Figure:
-        fig = r1c2nsy(specs=[[{"type": 'bar'}, {"type": "pie"}]], subplot_titles=["연간", "최근"])
-        for col in self.data:
-            trace = Bar(
-                name=col,
-                x=self.data.index,
-                y=self.data[col],
-                visible=True,
-                showlegend=False,
-                marker={
-                    "opacity":0.85
-                },
-            )
-            fig.add_trace(row=1, col=1, trace=trace)
-        fig.add_trace(
-            row=1, col=2,
-            trace=Pie(
-                labels=self.data.iloc[-1].index,
-                values=self.data.iloc[-1],
-                showlegend=False,
-                visible=True,
-                automargin=True,
-                opacity=0.85,
-                textfont=dict(color='white'),
-                textinfo='label+percent',
-                insidetextorientation='radial',
-                hoverinfo='label+percent',
-            )
-        )
+        fig = r1c1sy1(x_title='기말')
+        for col in self.data.columns:
+            series = self.data[col].dropna()
+            secondary_y = False
+            if col == "영업이익률":
+                trace = Scatter(
+                    name=col,
+                    x=series.index,
+                    y=series,
+                    mode="lines+text+markers",
+                    visible=True,
+                    showlegend=True,
+                    yhoverformat=".2f",
+                    texttemplate="%{y:.2f}%",
+                    hovertemplate=col + ": %{y}%<extra></extra>"
+                )
+                secondary_y = True
+            elif col == self.data.columns[0]:
+                trace = Bar(
+                    name=col,
+                    x=series.index,
+                    y=series,
+                    visible=True,
+                    showlegend=True,
+                    base=0,
+                    width=0.4,
+                    offset=-0.4,
+                    meta=[int2won(x) for x in series],
+                    texttemplate="%{meta}원",
+                    hovertemplate=col + ": %{meta}원<extra></extra>",
+                )
+            else:
+                trace = Bar(
+                    name=col,
+                    x=series.index,
+                    y=series,
+                    base=None,
+                    width=0.4,
+                    offset=0.0,
+                    visible=True,
+                    # marker=dict(
+                    #     color=self.colors[col],
+                    #     opacity=0.85 if col in ['시가총액', '영업이익'] else 0.9
+                    # ),
+                    meta=[int2won(x) for x in series],
+                    texttemplate="%{meta}원",
+                    hovertemplate=col + ": %{meta}원<extra></extra>"
+                )
+            fig.add_trace(secondary_y=secondary_y, trace=trace)
         fig.update_layout(
             title=f"{self.title}",
             barmode="stack",
-
             **kwargs
         )
-        fig.update_xaxes(row=1, col=1, patch={"title": "기말"})
-        fig.update_yaxes(row=1, col=1, patch={"title": "비중 [%]"})
+        fig.update_yaxes(row=1, col=1, secondary_y=False, patch={"title": "[억원]"})
+        fig.update_yaxes(row=1, col=1, secondary_y=True, patch={"title": "영업이익률 [%]"})
         return fig

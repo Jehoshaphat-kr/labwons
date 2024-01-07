@@ -1,6 +1,5 @@
 from nohji.util.brush import str2num
 from nohji.util.web import web
-from nohji.meta import meta
 from nohji.asset.core.decorator import common, stockonly, etfonly
 
 from datetime import datetime
@@ -57,8 +56,9 @@ class naver:
         description : current price (close)
     """
 
-    def __init__(self, ticker:str):
-        self.ticker = ticker
+    def __init__(self, meta:Series):
+        self.meta = meta
+        self.ticker = str(meta.name)
         self._url_ = f"https://finance.naver.com/item/main.naver?code={ticker}"
         return
 
@@ -98,7 +98,7 @@ class naver:
 
     @common
     def ipo(self) -> Union[datetime.date, float]:
-        data = meta(self.ticker).ipo
+        data = self.meta.ipo
         if not isna(data) and data:
             return data
         try:

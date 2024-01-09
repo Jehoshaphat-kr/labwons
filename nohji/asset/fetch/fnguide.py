@@ -67,8 +67,11 @@ class _url:
 
     @stockonly
     def gb(self) -> str:
-        tbs = web.list(self.snapshot)
-        return "B" if tbs[11].iloc[1].isnull().sum() > tbs[14].iloc[1].isnull().sum() else "D"
+        try:
+            tbs = web.list(self.snapshot)
+            return "B" if tbs[11].iloc[1].isnull().sum() > tbs[14].iloc[1].isnull().sum() else "D"
+        except IndexError:
+            return "D"
 
     @stockonly
     def cdn(self):
@@ -941,10 +944,9 @@ if __name__ == "__main__":
         "005930"
         # "069500"
     )
-
     # print(fn.abstract)
-    print(fn.abstract.Y)
-    print(fn.abstract.Q)
+    # print(fn.abstract.Y)
+    # print(fn.abstract.Q)
     # print(fn.benchmarkMultiples)
     # print(fn.businessSummary)
     # print(fn.cashFlow)
@@ -969,7 +971,7 @@ if __name__ == "__main__":
     # print(fn.incomeStatement.Y)
     # print(fn.incomeStatement.Q)
     # print(fn.marketShares)
-    # print(fn.multipleBand)
+    print(fn.multipleBand)
     # print(fn.multiplesOutstanding)
     # print(fn.products)
     # print(fn.profitRate)

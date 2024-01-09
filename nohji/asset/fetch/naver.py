@@ -56,21 +56,22 @@ class naver:
         description : current price (close)
     """
 
-    def __init__(self, meta:Series):
-        self.meta = meta
-        self.ticker = str(meta.name)
-        self._url_ = f"https://finance.naver.com/item/main.naver?code={ticker}"
+    def __init__(self, meta:Union[Series, str]):
+        self.meta = Series(data={"ticker": meta}) if isinstance(meta, str) else meta
+        self.ticker = self.meta.ticker
+        self._url_main = f"https://finance.naver.com/item/main.naver?code={self.ticker}"
+        self._url_finn = f"https://finance.naver.com/item/coinfo.naver?code={self.ticker}"
         return
 
     @common
     def currentPrice(self) -> Union[int, float]:
-        html = web.html(self._url_)
+        html = web.html(self._url_main)
         curr = [d.text for d in html.find_all("dd") if d.text.startswith("현재가")][0]
         return str2num(curr[curr.index("현재가 ") + 4: curr.index(" 전일대비")])
 
     @stockonly
     def resemblances(self) -> DataFrame:
-        data = web.list(self._url_)[4]
+        data = web.list(self._url_main)[4]
         data = data.set_index(keys='종목명').drop(index=['전일대비'])
         data.index.name = None
         for col in data:
@@ -82,7 +83,7 @@ class naver:
 
     @stockonly
     def multiplesTrailing(self) -> Series:
-        data = web.list(self._url_)[8]
+        data = web.list(self._url_main)[8]
         per, eps = map(str, data.columns[-1].split('l'))
         estPE, estEps = map(str, data.iloc[0, -1].split('l'))
         pbr, bps = map(str, data.iloc[1, -1].split('l'))
@@ -102,17 +103,17 @@ class naver:
         if not isna(data) and data:
             return data
         try:
-            return datetime.strptime(str(str2num(web.list(self._url_)[6].iloc[-1, -1])), "%Y%m%d").date()
+            return datetime.strptime(str(str2num(web.list(self._url_main)[6].iloc[-1, -1])), "%Y%m%d").date()
         except (AttributeError, KeyError, TypeError, ValueError):
             return nan
 
     @etfonly
     def underlyingAsset(self) -> str:
-        return web.list(self._url_)[6].columns[-1]
+        return web.list(self._url_main)[6].columns[-1]
 
     @etfonly
     def nav(self) -> Union[int, float]:
-        return str2num(web.list(self._url_)[8].columns[-1])
+        return str2num(web.list(self._url_main)[8].columns[-1])
 
 
 if __name__ == "__main__":
@@ -123,9 +124,67 @@ if __name__ == "__main__":
         "005930"
         # "069500"
     )
-    print(naver.currentPrice)
-    print(naver.resemblances)
+    # print(naver.currentPrice)
+    # print(naver.resemblances)
     # print(naver.multiplesTrailing)
     # print(naver.ipo)
     # print(naver.underlyingAsset)
     # print(naver.nav)
+
+    import pandas as pd
+    import requests
+    import re
+
+    url = "https://navercomp.wisereport.co.kr/v2/company/"
+
+    def GetNvrEncparam(code="005930"):
+        re_enc = re.compile("encparam: '(.*)'", re.IGNORECASE)
+        re_id = re.compile("id: '([a-zA-Z0-9]*)' ?", re.IGNORECASE)
+        _url = f"{url}c1010001.aspx?cmp_cd={code}"
+        html = requests.get(_url).text
+        encparam = re_enc.search(html).group(1)
+        encid = re_id.search(html).group(1)
+        print(html)
+        params = {
+            "cmp_cd": '000660',
+            "fin_typ": 0,
+            "freq_typ": "A",
+            # "extY": 0,
+            # "extQ": 0,
+            # "encparam": 'bExFc2UxdWlVYTdlaENLZlNLQWs2UT09',
+            "encparam": encparam,
+            # "id": 'ZTRzQlVCd0'
+            "id": encid
+        }
+        resp = requests.get(
+            url=f"{url}/ajax/cF1001.aspx",
+            headers={'User-agent': 'Mozilla/5.0'},
+            params=params,
+        )
+        print(resp.text)
+        return encparam, encid
+
+    _enc, _id = GetNvrEncparam("000660")
+
+    print(_enc, _id)
+
+
+    params = {
+        "cmp_cd": '000660',
+        "fin_typ": 0,
+        "freq_typ": "A",
+        # "extY": 0,
+        # "extQ": 0,
+        # "encparam": 'bExFc2UxdWlVYTdlaENLZlNLQWs2UT09',
+        "encparam": _enc,
+        # "id": 'ZTRzQlVCd0'
+        "id": _id
+    }
+    resp = requests.get(
+        url=f"{url}/ajax/cF1001.aspx",
+        headers={'User-agent': 'Mozilla/5.0'},
+        params=params,
+    )
+    print(resp.text)
+    # for t in pd.read_html(resp.text):
+    #     print(t)

@@ -52,7 +52,7 @@ class profit:
         fig = r1c1sy1(x_title='기말')
         for n, df in enumerate([self.data.Y, self.data.Q]):
             for col in df:
-                data = df[col].dropna()
+                data = df[col].fillna(0)
                 if col.startswith('EPS'):
                     trace = Scatter(
                         name=col,

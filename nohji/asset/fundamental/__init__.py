@@ -44,10 +44,11 @@ if __name__ == "__main__":
     set_option('display.expand_frame_repr', False)
 
     # ticker = "000660"
-    ticker = "005930"
+    # ticker = "005930"
     # ticker = "001230"
     # ticker = "138080"
     # ticker = "316140"
+    ticker = "247540"
 
     mySrc = fetch(ticker)
     myTech = fundamental(mySrc)

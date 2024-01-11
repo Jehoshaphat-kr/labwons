@@ -35,7 +35,7 @@ class profitExpense:
     def figure(self, **kwargs) -> Figure:
         fig = r1c1sy1(x_title='기말')
         for col in self.data.columns:
-            series = self.data[col].dropna()
+            series = self.data[col].fillna(0)
             secondary_y = False
             if col == "영업이익률":
                 trace = Scatter(

@@ -1,5 +1,11 @@
 from nohji.asset.fetch import fetch
-from nohji.asset.fundamental import assetQuality, products, profit, profitExpense
+from nohji.asset.fundamental import (
+    assetQuality,
+    products,
+    profit,
+    profitExpense,
+    multipleBand
+)
 
 from inspect import signature
 from pandas import DataFrame, Series
@@ -13,8 +19,8 @@ class fundamental(object):
         "assetQuality",
         "products",
         "profit",
-        "profitExpense"
-
+        "profitExpense",
+        "multipleBand"
 
     )
 
@@ -44,19 +50,20 @@ if __name__ == "__main__":
     set_option('display.expand_frame_repr', False)
 
     # ticker = "000660"
-    # ticker = "005930"
+    ticker = "005930"
     # ticker = "001230"
     # ticker = "138080"
     # ticker = "316140"
-    ticker = "247540"
+    # ticker = "247540"
 
     mySrc = fetch(ticker)
     myTech = fundamental(mySrc)
 
-    myTech.profit()
-    myTech.assetQuality()
-    myTech.products()
-    myTech.profitExpense()
+    # myTech.profit()
+    # myTech.assetQuality()
+    # myTech.products()
+    # myTech.profitExpense()
+    myTech.multipleBand()
 
     # print(myTech.profit)
     # print(myTech.assetQuality)

@@ -1,4 +1,4 @@
-from snob.header.mem import mem
+from snob.core.mem import mem
 
 
 class memorize(property):
@@ -9,6 +9,7 @@ class memorize(property):
         if not _key_ in mem:
             mem[_key_] = super().__get__(*args, **kwargs)
         return mem[_key_]
+
 
 class common(property):
     def __get__(self, *args, **kwargs):

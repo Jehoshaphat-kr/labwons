@@ -1,8 +1,8 @@
-from nohji.asset.fetch import fetch
-from nohji.util.brush import int2won
+from nohji.util.tools import int2won
 from nohji.util.chart import r1c1sy1
 from nohji.asset.fundamental.assetQuality import data
 
+from pandas import DataFrame, Series
 from plotly.graph_objects import Bar, Figure, Scatter
 
 
@@ -13,14 +13,14 @@ class assetQuality:
         "부채총계": "red",
         "영업이익": "cadetblue"
     }
-    def __init__(self, _fetch:fetch):
-        if _fetch.meta.country == "KOR":
-            self.data = data.genKr(_fetch)
-        elif _fetch.meta.country == "USA":
-            self.data = data.genKr(_fetch)
+    def __init__(self, asset:DataFrame, yearlyMarketCap:Series, meta:Series):
+        if meta.country == "KOR":
+            self.data = data.genKr(asset, yearlyMarketCap)
+        elif meta.country == "USA":
+            self.data = data.genKr(asset, yearlyMarketCap)
         else:
             raise AttributeError
-        self.title = f"{_fetch.meta['name']}({_fetch.meta.name}) : 자산"
+        self.title = f"{meta['name']}({meta.name}) : 자산"
         if not self.data.columns[5] in self.colors:
             self.colors[self.data.columns[5]] = "#9BC2E6"
         return

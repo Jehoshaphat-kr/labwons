@@ -1,4 +1,5 @@
-from nohji.asset.core.decorator import common, stockonly, etfonly
+from nohji.asset.core.deco import common, stockonly, etfonly
+from nohji.meta import meta
 
 from datetime import datetime, timedelta
 from pandas import Series, DataFrame
@@ -62,9 +63,8 @@ class krx:
             014820     동원시스템즈   0.02
     """
 
-    def __init__(self, meta:Union[Series, str], period:int=10, freq:str="d"):
-        self.meta = Series(data={"ticker":meta}) if isinstance(meta, str) else meta
-        self.ticker = self.meta.ticker
+    def __init__(self, ticker:str, period:int=10, freq:str="d"):
+        self.meta = meta(ticker)
         self.period = period
         self.freq = freq
         return
@@ -75,7 +75,7 @@ class krx:
                 fromdate=(datetime.today() - timedelta(365 * 8)).strftime("%Y%m%d"),
                 todate=datetime.today().strftime("%Y%m%d"),
                 freq='m',
-                ticker=self.ticker
+                ticker=self.meta.ticker
             )
             self.__setattr__("__cap", cap)
         return self.__getattribute__("__cap")
@@ -87,7 +87,7 @@ class krx:
         ohlcv = get_market_ohlcv_by_date(
             fromdate=frdate,
             todate=todate,
-            ticker=self.ticker,
+            ticker=self.meta.ticker,
             freq=self.freq
         )
 
@@ -111,7 +111,7 @@ class krx:
         cap.index = [
             col.replace("03", "1Q").replace("06", "2Q").replace("09", "3Q").replace("12", "4Q") for col in cap.index
         ]
-        cap.index.name = "month"
+        cap.index.name = "quarter"
         return Series(index=cap.index, data=cap['시가총액'] / 100000000, dtype=int)
 
     @stockonly
@@ -125,7 +125,7 @@ class krx:
     @etfonly
     def components(self) -> DataFrame:
         from nohji.meta import meta
-        data = get_etf_portfolio_deposit_file(self.ticker)
+        data = get_etf_portfolio_deposit_file(self.meta.ticker)
         data['이름'] = meta[meta.index.isin(data.index)]['korName']
         data = data[['이름', '비중']]
         return data[~data["이름"].isna()]
@@ -140,6 +140,6 @@ if __name__ == "__main__":
         "005930"
         # "069500"
     )
-    # print(krx.ohlcv)
+    print(krx.ohlcv)
     print(krx.quarterlyMarketCap)
     # print(krx.components)

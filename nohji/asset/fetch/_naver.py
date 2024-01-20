@@ -1,6 +1,7 @@
-from nohji.util.brush import str2num
+from nohji.util.tools import str2num
 from nohji.util.web import web
-from nohji.asset.core.decorator import common, stockonly, etfonly
+from nohji.meta import meta
+from nohji.asset.core.deco import common, stockonly, etfonly
 
 from datetime import datetime
 from pandas import DataFrame, Series, isna
@@ -56,11 +57,9 @@ class naver:
         description : current price (close)
     """
 
-    def __init__(self, meta:Union[Series, str]):
-        self.meta = Series(data={"ticker": meta}) if isinstance(meta, str) else meta
-        self.ticker = self.meta.ticker
-        self._url_main = f"https://finance.naver.com/item/main.naver?code={self.ticker}"
-        self._url_finn = f"https://finance.naver.com/item/coinfo.naver?code={self.ticker}"
+    def __init__(self, ticker:str):
+        self.meta = meta(ticker)
+        self._url_main = f"https://finance.naver.com/item/main.naver?code={ticker}"
         return
 
     @common
@@ -124,67 +123,68 @@ if __name__ == "__main__":
         "005930"
         # "069500"
     )
-    # print(naver.currentPrice)
-    # print(naver.resemblances)
-    # print(naver.multiplesTrailing)
-    # print(naver.ipo)
+    print(naver.currentPrice)
+    print(naver.resemblances)
+    print(naver.multiplesTrailing)
+    print(naver.ipo)
+
     # print(naver.underlyingAsset)
     # print(naver.nav)
 
-    import pandas as pd
-    import requests
-    import re
-
-    url = "https://navercomp.wisereport.co.kr/v2/company/"
-
-    def GetNvrEncparam(code="005930"):
-        re_enc = re.compile("encparam: '(.*)'", re.IGNORECASE)
-        re_id = re.compile("id: '([a-zA-Z0-9]*)' ?", re.IGNORECASE)
-        _url = f"{url}c1010001.aspx?cmp_cd={code}"
-        html = requests.get(_url).text
-        encparam = re_enc.search(html).group(1)
-        encid = re_id.search(html).group(1)
-        print(html)
-        params = {
-            "cmp_cd": '000660',
-            "fin_typ": 0,
-            "freq_typ": "A",
-            # "extY": 0,
-            # "extQ": 0,
-            # "encparam": 'bExFc2UxdWlVYTdlaENLZlNLQWs2UT09',
-            "encparam": encparam,
-            # "id": 'ZTRzQlVCd0'
-            "id": encid
-        }
-        resp = requests.get(
-            url=f"{url}/ajax/cF1001.aspx",
-            headers={'User-agent': 'Mozilla/5.0'},
-            params=params,
-        )
-        print(resp.text)
-        return encparam, encid
-
-    _enc, _id = GetNvrEncparam("000660")
-
-    print(_enc, _id)
-
-
-    params = {
-        "cmp_cd": '000660',
-        "fin_typ": 0,
-        "freq_typ": "A",
-        # "extY": 0,
-        # "extQ": 0,
-        # "encparam": 'bExFc2UxdWlVYTdlaENLZlNLQWs2UT09',
-        "encparam": _enc,
-        # "id": 'ZTRzQlVCd0'
-        "id": _id
-    }
-    resp = requests.get(
-        url=f"{url}/ajax/cF1001.aspx",
-        headers={'User-agent': 'Mozilla/5.0'},
-        params=params,
-    )
-    print(resp.text)
-    # for t in pd.read_html(resp.text):
-    #     print(t)
+    # import pandas as pd
+    # import requests
+    # import re
+    #
+    # url = "https://navercomp.wisereport.co.kr/v2/company/"
+    #
+    # def GetNvrEncparam(code="005930"):
+    #     re_enc = re.compile("encparam: '(.*)'", re.IGNORECASE)
+    #     re_id = re.compile("id: '([a-zA-Z0-9]*)' ?", re.IGNORECASE)
+    #     _url = f"{url}c1010001.aspx?cmp_cd={code}"
+    #     html = requests.get(_url).text
+    #     encparam = re_enc.search(html).group(1)
+    #     encid = re_id.search(html).group(1)
+    #     print(html)
+    #     params = {
+    #         "cmp_cd": '000660',
+    #         "fin_typ": 0,
+    #         "freq_typ": "A",
+    #         # "extY": 0,
+    #         # "extQ": 0,
+    #         # "encparam": 'bExFc2UxdWlVYTdlaENLZlNLQWs2UT09',
+    #         "encparam": encparam,
+    #         # "id": 'ZTRzQlVCd0'
+    #         "id": encid
+    #     }
+    #     resp = requests.get(
+    #         url=f"{url}/ajax/cF1001.aspx",
+    #         headers={'User-agent': 'Mozilla/5.0'},
+    #         params=params,
+    #     )
+    #     print(resp.text)
+    #     return encparam, encid
+    #
+    # _enc, _id = GetNvrEncparam("000660")
+    #
+    # print(_enc, _id)
+    #
+    #
+    # params = {
+    #     "cmp_cd": '000660',
+    #     "fin_typ": 0,
+    #     "freq_typ": "A",
+    #     # "extY": 0,
+    #     # "extQ": 0,
+    #     # "encparam": 'bExFc2UxdWlVYTdlaENLZlNLQWs2UT09',
+    #     "encparam": _enc,
+    #     # "id": 'ZTRzQlVCd0'
+    #     "id": _id
+    # }
+    # resp = requests.get(
+    #     url=f"{url}/ajax/cF1001.aspx",
+    #     headers={'User-agent': 'Mozilla/5.0'},
+    #     params=params,
+    # )
+    # print(resp.text)
+    # # for t in pd.read_html(resp.text):
+    # #     print(t)

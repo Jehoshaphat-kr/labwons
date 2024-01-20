@@ -1,6 +1,7 @@
-from nohji.asset.core.datatype import multiframes
-from nohji.asset.core.decorator import etfonly, stockonly, common
-from nohji.util.brush import cutString, str2num
+from nohji.meta import meta
+from nohji.asset.core.dtype import multiframes
+from nohji.asset.core.deco import etfonly, stockonly, common
+from nohji.util.tools import cutString, str2num
 from nohji.util.web import web
 
 from numpy import nan
@@ -522,10 +523,9 @@ class fnguide:
             2023/3Q     956.9     924.2       8.7  6902.7           NaN       11841.9          92.0
     """
 
-    def __init__(self, meta:Union[Series, str]):
-        self.meta = Series(data={"ticker":meta, "quoteType":"EQUITY"}) if isinstance(meta, str) else meta
-        self.ticker = self.meta.ticker
-        self.url = _url(self.ticker)
+    def __init__(self, ticker:str):
+        self.meta = meta(ticker)
+        self.url = _url(ticker)
         return
 
     @stockonly
@@ -541,7 +541,10 @@ class fnguide:
             data = data.T
             data = data.head(len(data) - len([i for i in data.index if i.endswith(')')]) + 1)
             data.index.name = '기말'
-            data.index = [idx.replace("(E) : Estimate 컨센서스, 추정치 ", "") for idx in data.index]
+            data.index = [
+                idx.replace("(E) : Estimate 컨센서스, 추정치 ", "").replace("(P) : Provisional 잠정실적 ", "")
+                for idx in data.index
+            ]
             data.columns.name = None
             for col in data:
                 data[col] = data[col].apply(str2num)
@@ -944,9 +947,9 @@ if __name__ == "__main__":
         "005930"
         # "069500"
     )
-    # print(fn.abstract)
-    # print(fn.abstract.Y)
-    # print(fn.abstract.Q)
+    print(fn.abstract)
+    print(fn.abstract.Y)
+    print(fn.abstract.Q)
     # print(fn.benchmarkMultiples)
     # print(fn.businessSummary)
     # print(fn.cashFlow)
@@ -971,7 +974,7 @@ if __name__ == "__main__":
     # print(fn.incomeStatement.Y)
     # print(fn.incomeStatement.Q)
     # print(fn.marketShares)
-    print(fn.multipleBand)
+    # print(fn.multipleBand)
     # print(fn.multiplesOutstanding)
     # print(fn.products)
     # print(fn.profitRate)

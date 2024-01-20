@@ -1,14 +1,13 @@
-from nohji.asset.fetch import fetch
-from nohji.asset.core.datatype import multiframes
+from nohji.asset.core.dtype import multiframes
+from pandas import DataFrame, Series
 
 
-def genKr(_fetch:fetch) -> multiframes:
-    abstract = _fetch.fnguide.abstract
+def genKr(abstract:DataFrame, yearlyMarketCap:Series, quarterlyMarketCap:Series) -> multiframes:
     columns = abstract.columns.tolist()
     columns = columns[: columns.index('당기순이익') + 1] + ["EPS"]
 
-    yCap = _fetch.krx.yearlyMarketCap.copy()
-    qCap = _fetch.krx.quarterlyMarketCap.copy()
+    yCap = yearlyMarketCap.copy()
+    qCap = quarterlyMarketCap.copy()
 
     yCap.index = yCap.index[:-1].tolist() + [abstract.Y.index[-1]]
     qCap.index = qCap.index[:-1].tolist() + [abstract.Q.index[-1]]

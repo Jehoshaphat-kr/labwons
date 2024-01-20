@@ -1,87 +1,53 @@
-from nohji.asset.fetch import fetch
+from nohji.asset.core.deco import common
+from nohji.asset.fetch import Data
 from nohji.asset.technical.ohlcv import ohlcv
-from nohji.asset.technical import (
-    bollingerband,
-    deviation,
-    macd,
-    moneyflow,
-    psar,
-    rsi,
-    sma,
-    tp,
-    trend,
-)
-
-from inspect import signature
+from nohji.asset.technical.tp import tp
 
 
-class tech(object):
+class Technical(object):
 
-    __slots__ = (
-        "__mem__",
-        "data",
-        "meta",
-        "bollingerband",
-        "deviation",
-        "macd",
-        "moneyflow",
-        "psar",
-        "rsi",
-        "sma",
-        "trend",
-        "tp"
-    )
-
-    def __init__(self, fetch:fetch):
-        self.data = fetch.krx.ohlcv
-        self.meta = fetch.meta
-        self.__mem__ = {"data": self.data, "meta": self.meta, "ohlcv": ohlcv(self.data, self.meta)}
+    def __init__(self, src:Data):
+        self.meta = src.meta
+        self.Ohlcv = ohlcv(src.ohlcv, src.meta)
+        self.TypicalPrice = tp(src.ohlcv, src.meta)
         return
 
-    def __str__(self) -> str:
-        return str(self.data)
+    @common
+    def Trend(self):
+        from nohji.asset.technical.trend import trend
+        return trend(self.Ohlcv, self.TypicalPrice, self.meta)
 
-    def __getitem__(self, item:str):
-        return self.data[item]
+    @common
+    def Deviation(self):
+        from nohji.asset.technical.deviation import deviation
+        return deviation(self.Trend, self.meta)
 
-    def __getattr__(self, item:str):
-        if item in self.__mem__:
-            return self.__mem__[item]
-        if item in self.__slots__:
-            _attr_ = getattr(globals()[item], item)
-            _args_ = {arg: getattr(self, arg) for arg in signature(_attr_).parameters}
-            self.__mem__[item] = _attr_(**_args_)
-            return self.__mem__[item]
-        return object.__getattribute__(self, item)
+    @common
+    def SMA(self):
+        from nohji.asset.technical.sma import sma
+        return sma(self.Ohlcv, self.TypicalPrice, self.meta)
 
+    @common
+    def BollingerBand(self):
+        from nohji.asset.technical.bollingerband import bollingerband
+        return bollingerband(self.Ohlcv, self.TypicalPrice, self.meta)
 
-if __name__ == "__main__":
-    from pandas import set_option
-    set_option('display.expand_frame_repr', False)
+    @common
+    def MACD(self):
+        from nohji.asset.technical.macd import macd
+        return macd(self.Ohlcv, self.TypicalPrice, self.meta)
 
-    ticker = "000660"
+    @common
+    def PSAR(self):
+        from nohji.asset.technical.psar import psar
+        return psar(self.Ohlcv, self.TypicalPrice, self.meta)
 
-    mySrc = fetch(ticker)
-    myTech = tech(mySrc)
+    @common
+    def RSI(self):
+        from nohji.asset.technical.rsi import rsi
+        return rsi(self.Ohlcv, self.meta)
 
-    # myTech.bollingerband()
-    # myTech.deviation()
-    # myTech.macd()
-    myTech.moneyflow()
-    myTech.psar()
-    # myTech.ohlcv()
-    # myTech.rsi()
-    myTech.sma()
-    # myTech.tp()
-    # myTech.trend()
-
-
-    # from plotly.offline import plot
-    # from labwons.common.config import PATH
-    #
-    # plot(
-    #     figure_or_data=myTech.ohlcv.figure(),
-    #     auto_open=False,
-    #     filename=f'{PATH.BASE}/{myTech.meta.name}_{myTech.meta["name"]}.html'
-    # )
-
+    @common
+    def MoneyFlow(self):
+        from nohji.asset.technical.moneyflow import moneyflow
+        return moneyflow(self.Ohlcv, self.TypicalPrice, self.meta)

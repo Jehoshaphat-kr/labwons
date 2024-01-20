@@ -1,17 +1,16 @@
 from nohji.util.tools import int2won
-from nohji.util.chart import r1c1sy1
-from nohji.asset.fundamental.profit import data
+from nohji.util.chart import r1c1nsy
 
 from pandas import DataFrame, Series
-from plotly.graph_objects import Bar, Figure, Scatter
+from plotly.graph_objects import Bar, Figure
 
 
-class profit:
+class perCompare:
 
     def __init__(
         self,
-        profit:DataFrame,
-        yearlyMarketCap: Series,
+        resembles:DataFrame,
+        multipleOut,
         quarterlyMarketCap: Series,
         meta:Series
     ):

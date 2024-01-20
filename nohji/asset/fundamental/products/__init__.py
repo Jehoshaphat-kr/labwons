@@ -1,20 +1,19 @@
-from nohji.asset.fetch import fetch
-from nohji.util.brush import int2won
 from nohji.util.chart import r1c2nsy
 
+from pandas import DataFrame, Series
 from plotly.graph_objects import Bar, Figure, Pie
 
 
 class products:
 
-    def __init__(self, _fetch:fetch):
-        if _fetch.meta.country == "KOR":
-            self.data = _fetch.fnguide.products
-        elif _fetch.meta.country == "USA":
-            self.data = _fetch.fnguide.products
+    def __init__(self, products:DataFrame, meta:Series):
+        if meta.country == "KOR":
+            self.data = products
+        elif meta.country == "USA":
+            self.data = products
         else:
             raise AttributeError
-        self.title = f"{_fetch.meta['name']}({_fetch.meta.name}) : 상품"
+        self.title = f"{meta['name']}({meta.name}) : 상품"
         return
 
     def __str__(self) -> str:

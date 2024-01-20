@@ -1,19 +1,19 @@
-from nohji.asset.fetch import fetch
 from nohji.util.chart import r1c1nsy
 
+from pandas import DataFrame, Series
 from plotly.graph_objects import Figure, Scatter
 
 
 class multipleBand:
 
-    def __init__(self, _fetch:fetch):
-        if _fetch.meta.country == "KOR":
-            self.data = fetch.fnguide.multipleBand
-        elif _fetch.meta.country == "USA":
-            self.data = fetch.fnguide.multipleBand
+    def __init__(self, multipleBand:DataFrame, meta:Series):
+        if meta.country == "KOR":
+            self.data = multipleBand
+        elif meta.country == "USA":
+            self.data = multipleBand
         else:
             raise AttributeError
-        self.title = f"{_fetch.meta['name']}({_fetch.meta.name}) : Multiple Band"
+        self.title = f"{meta['name']}({meta.name}) : Multiple Band"
         return
 
     def __str__(self) -> str:
@@ -45,7 +45,7 @@ class multipleBand:
         ]
 
     def figure(self, **kwargs) -> Figure:
-        fig = r1c1nsy(x_title='기말')
+        fig = r1c1nsy()
         for n, obj in enumerate([self.data["PER"], self.data["PBR"]]):
             for col in obj:
                 fig.add_trace(
@@ -59,7 +59,7 @@ class multipleBand:
                             "color": "black" if col == "종가" else None,
                             "dash": "solid" if col == "종가" else 'dash'
                         },
-                        yhoverformat=",d" if col == "종가" else ".2f",
+                        yhoverformat=",d",
                         hovertemplate=col + ": %{y}KRW<extra></extra>"
                 ))
 

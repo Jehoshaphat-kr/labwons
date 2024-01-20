@@ -1,48 +1,88 @@
-from nohji.asset.fetch import fetch
-from nohji.asset.fundamental import (
-    assetQuality,
-    products,
-    profit,
-    profitExpense,
-    multipleBand
-)
+from nohji.asset.core.deco import stockonly, etfonly
+from nohji.asset.fetch import Data
+# from nohji.asset.fundamental import (
+#     assetQuality,
+#     products,
+#     profit,
+#     profitExpense,
+#     multipleBand
+# )
 
 from inspect import signature
 from pandas import DataFrame, Series
 
 
-class fundamental(object):
+class Fundamental(object):
 
-    __slots__ = (
-        "__mem__",
-        "__src__",
-        "assetQuality",
-        "products",
-        "profit",
-        "profitExpense",
-        "multipleBand"
+    # __slots__ = (
+    #     "__mem__",
+    #     "__src__",
+    #     "assetQuality",
+    #     "products",
+    #     "profit",
+    #     "profitExpense",
+    #     "multipleBand"
+    #
+    # )
 
-    )
-
-    def __init__(self, _fetch:fetch):
-        self.__src__ = _fetch
-        self.__mem__ = {}
+    def __init__(self, src:Data):
+        self.src = src
+        self.meta = src.meta
         return
 
     def __str__(self) -> str:
         return ""
 
-    def __getitem__(self, item:str):
-        return self.__mem__[item]
+    @stockonly
+    def AssetQuality(self):
+        from nohji.asset.fundamental.assetQuality import assetQuality
+        return assetQuality(
+            self.src.abstract,
+            self.src.yearlyMarketCap,
+            self.meta
+        )
 
-    def __getattr__(self, item:str):
-        if item in self.__mem__:
-            return self.__mem__[item]
-        if item in self.__slots__:
-            _attr_ = getattr(globals()[item], item)
-            self.__mem__[item] = _attr_(self.__src__)
-            return self.__mem__[item]
-        return object.__getattribute__(self, item)
+    @stockonly
+    def Profit(self):
+        from nohji.asset.fundamental.profit import profit
+        return profit(
+            self.src.abstract,
+            self.src.yearlyMarketCap,
+            self.src.quarterlyMarketCap,
+            self.meta
+        )
+
+    @stockonly
+    def ProfitExpenses(self):
+        from nohji.asset.fundamental.profitExpense import profitExpense
+        return profitExpense(
+            self.src.incomeStatement,
+            self.meta
+        )
+
+    @stockonly
+    def ProfitEstimate(self):
+        from nohji.asset.fundamental.profitEstimate import profitEstimate
+        return profitEstimate(
+            self.src.consensusProfit,
+            self.meta
+        )
+
+    @stockonly
+    def Products(self):
+        from nohji.asset.fundamental.products import products
+        return products(
+            self.src.products,
+            self.meta
+        )
+
+    @stockonly
+    def MultipleBands(self):
+        from nohji.asset.fundamental.multipleBand import multipleBand
+        return multipleBand(
+            self.src.multipleBand,
+            self.meta
+        )
 
 
 if __name__ == "__main__":

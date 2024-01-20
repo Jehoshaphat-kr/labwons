@@ -129,8 +129,7 @@ class _meta:
             return asset
 
         asset = Series(index=self.columns, name=ticker)
-        asset[["name", "country"]] = ticker, "KOR" if ticker.isdigit() else "USA"
-        asset.name = ticker
+        asset[["name", "country", "ticker"]] = ticker, "KOR" if ticker.isdigit() else "USA", ticker
         return asset
 
     def __str__(self) -> str:

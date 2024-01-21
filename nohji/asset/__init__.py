@@ -17,7 +17,7 @@ if __name__ == "__main__":
     set_option('display.expand_frame_repr', False)
 
 
-    asset = Asset("005930")
+    asset = Asset("000660")
 
     # asset.Ohlcv()
     # asset.TypicalPrice()
@@ -36,7 +36,9 @@ if __name__ == "__main__":
     # asset.Products()
     # asset.MultipleBands()
     # asset.ProfitEstimate()
+    asset.PERs()
 
 
     # print(asset.MultipleBands)
     # print(asset.ProfitEstimate)
+    # print(asset.PERs)

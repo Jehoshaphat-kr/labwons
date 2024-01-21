@@ -947,9 +947,9 @@ if __name__ == "__main__":
         "005930"
         # "069500"
     )
-    print(fn.abstract)
-    print(fn.abstract.Y)
-    print(fn.abstract.Q)
+    # print(fn.abstract)
+    # print(fn.abstract.Y)
+    # print(fn.abstract.Q)
     # print(fn.benchmarkMultiples)
     # print(fn.businessSummary)
     # print(fn.cashFlow)

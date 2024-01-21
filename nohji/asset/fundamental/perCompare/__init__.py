@@ -1,5 +1,6 @@
 from nohji.util.tools import int2won
 from nohji.util.chart import r1c1nsy
+from nohji.asset.fundamental.perCompare import data
 
 from pandas import DataFrame, Series
 from plotly.graph_objects import Bar, Figure
@@ -9,18 +10,21 @@ class perCompare:
 
     def __init__(
         self,
+        abstract:DataFrame,
         resembles:DataFrame,
-        multipleOut,
-        quarterlyMarketCap: Series,
+        multipleOutstanding:Series,
+        snapShot:Series,
+        currentPrice:int,
         meta:Series
     ):
         if meta.country == "KOR":
-            self.data = data.genKr(profit, yearlyMarketCap, quarterlyMarketCap)
+            self.data = data.genKr(abstract, resembles, multipleOutstanding, snapShot, currentPrice)
         elif meta.country == "USA":
-            self.data = data.genKr(profit, yearlyMarketCap, quarterlyMarketCap)
+            self.data = data.genKr(abstract, resembles, multipleOutstanding, snapShot, currentPrice)
         else:
             raise AttributeError
-        self.title = f"{meta['name']}({meta.name}) : 실적"
+        self.meta = meta
+        self.title = f"{meta['name']}({meta.name}) : PER 비교"
         self.currency = meta.currency
         return
 
@@ -31,74 +35,31 @@ class perCompare:
         self.figure(**kwargs).show()
         return
 
-    @property
-    def buttons(self) -> list:
-        buttons = [
-            {
-                "label" : "연간",
-                "method" : "update",
-                "args" : [
-                    {"visible" : [True] * len(self.data.columns) + [False] * len(self.data.columns)},
-                    {"title" : f"{self.title} (연간)"}
-                ]
-            },
-            {
-                "label": "분기",
-                "method": "update",
-                "args": [
-                    {"visible": [False] * len(self.data.columns) + [True] * len(self.data.columns)},
-                    {"title" : f"{self.title} (분기)"}
-                ]
-            }
-        ]
-        return buttons
-
     def figure(self, **kwargs) -> Figure:
-        fig = r1c1sy1(x_title='기말')
-        for n, df in enumerate([self.data.Y, self.data.Q]):
-            for col in df:
-                data = df[col].fillna(0)
-                if col.startswith('EPS'):
-                    trace = Scatter(
-                        name=col,
-                        x=data.index,
-                        y=data,
-                        mode="lines+text+markers",
-                        visible=False if n else True,
-                        showlegend=True,
-                        yhoverformat=",d",
-                        hovertemplate=col + ": %{y}원<extra></extra>"
-                    )
-                    secondary_y = True
-                else:
-                    trace = Bar(
-                        name=col,
-                        x=data.index,
-                        y=data,
-                        visible=False if n else True,
-                        marker={
-                            "color":"#9BC2E6" if col == self.data.columns[1] else "#A9D08E" if col == self.data.columns[2] else None,
-                            "opacity":0.85 if col == self.data.columns[0] else 1.0
-                        },
-                        meta=[int2won(x) for x in data],
-                        texttemplate="%{meta}원",
-                        hovertemplate=col + ": %{meta}원<extra></extra>"
-                    )
-                    secondary_y = False
-                fig.add_trace(secondary_y=secondary_y, trace=trace)
-        fig.update_layout(
-            title=f"{self.title} (연간)",
-            updatemenus=[
-                dict(
-                    direction="down",
-                    active=0,
-                    xanchor='left', x=0.005,
-                    yanchor='bottom', y=0.99,
-                    buttons=self.buttons
-                )
-            ],
-            **kwargs
+        fig = r1c1nsy()
+        names = []
+        for i, x in self.data.iterrows():
+            if i == self.meta.name:
+                names.append(x.종목명)
+            elif not x.종목명.startswith("Sector"):
+                names.append(f"{x.종목명}({i})")
+            else:
+                names.append(x.종목명)
+        trace = Bar(
+            name="",
+            x=names,
+            y=self.data.PER,
+            visible=True,
+            showlegend=False,
+            marker={
+                "color":["#70AD47", "#A9D08E", "#A9D08E", "#A9D08E", "#C6E0B4",
+                         "royalblue", "#800080", "#FFA500", "#FFC0CB", "#808080"]
+            },
+            texttemplate="%{y:.2f}",
+            hovertemplate="%{y:.2f}<extra></extra>"
         )
-        fig.update_yaxes(secondary_y=True, patch={f"title": f"EPS [원]"})
-        fig.update_yaxes(secondary_y=False, patch={f"title": f"[억원]"})
+        fig.add_trace(trace=trace)
+
+        fig.update_layout(title=f"{self.title}", **kwargs)
+        fig.update_yaxes(title="PER[-]")
         return fig

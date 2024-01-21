@@ -1,29 +1,10 @@
 from nohji.asset.core.deco import stockonly, etfonly
 from nohji.asset.fetch import Data
-# from nohji.asset.fundamental import (
-#     assetQuality,
-#     products,
-#     profit,
-#     profitExpense,
-#     multipleBand
-# )
 
-from inspect import signature
 from pandas import DataFrame, Series
 
 
 class Fundamental(object):
-
-    # __slots__ = (
-    #     "__mem__",
-    #     "__src__",
-    #     "assetQuality",
-    #     "products",
-    #     "profit",
-    #     "profitExpense",
-    #     "multipleBand"
-    #
-    # )
 
     def __init__(self, src:Data):
         self.src = src
@@ -84,38 +65,14 @@ class Fundamental(object):
             self.meta
         )
 
-
-if __name__ == "__main__":
-    from pandas import set_option
-    set_option('display.expand_frame_repr', False)
-
-    # ticker = "000660"
-    ticker = "005930"
-    # ticker = "001230"
-    # ticker = "138080"
-    # ticker = "316140"
-    # ticker = "247540"
-
-    mySrc = fetch(ticker)
-    myTech = fundamental(mySrc)
-
-    # myTech.profit()
-    # myTech.assetQuality()
-    # myTech.products()
-    # myTech.profitExpense()
-    myTech.multipleBand()
-
-    # print(myTech.profit)
-    # print(myTech.assetQuality)
-    # print(myTech.profitExpense)
-
-
-    # from plotly.offline import plot
-    # from labwons.common.config import PATH
-    #
-    # plot(
-    #     figure_or_data=myTech.ohlcv.figure(),
-    #     auto_open=False,
-    #     filename=f'{PATH.BASE}/{myTech.meta.name}_{myTech.meta["name"]}.html'
-    # )
-
+    @stockonly
+    def PERs(self):
+        from nohji.asset.fundamental.perCompare import perCompare
+        return perCompare(
+            self.src.abstract,
+            self.src.resemblances,
+            self.src.multiplesOutstanding,
+            self.src.snapShot,
+            self.src.currentPrice,
+            self.meta
+        )

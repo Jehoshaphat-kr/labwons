@@ -12,6 +12,7 @@ class Asset(Technical, Fundamental):
         return
 
 
+
 if __name__ == "__main__":
     from pandas import set_option
     set_option('display.expand_frame_repr', False)
@@ -36,8 +37,11 @@ if __name__ == "__main__":
     # asset.Products()
     # asset.MultipleBands()
     # asset.ProfitEstimate()
-    asset.PERs()
-
+    # asset.PERs()
+    # asset.Consensus()
+    # asset.ForeignRate()
+    # asset.Shorts()
+    # asset.BenchmarkMultiples()
 
     # print(asset.MultipleBands)
     # print(asset.ProfitEstimate)

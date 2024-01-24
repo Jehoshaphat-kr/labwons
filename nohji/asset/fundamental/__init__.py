@@ -75,3 +75,8 @@ class Fundamental(object):
     def BenchmarkMultiples(self):
         from nohji.asset.fundamental.benchmarkMultiples import benchmarkMultiples
         return benchmarkMultiples(self.src.benchmarkMultiples, self.meta)
+
+    @stockonly
+    def Benchmarks(self):
+        from nohji.asset.fundamental.benchmarks import benchmarks
+        return benchmarks(self.src.resembles, self.meta)

@@ -2,9 +2,31 @@ from nohji.asset.core.deco import common, stockonly, etfonly
 from nohji.meta import meta
 
 from datetime import datetime, timedelta
-from pandas import Series, DataFrame
+from pandas import concat, Series, DataFrame
 from pykrx.stock import get_market_ohlcv_by_date, get_market_cap_by_date, get_etf_portfolio_deposit_file
-from typing import Union
+
+
+def get_multi_ohlcv(ticker:str, *args, period:int=5, freq:str='d') -> DataFrame:
+    tickers = [ticker]
+    if args:
+        tickers += list(args)
+    todate = datetime.today().strftime("%Y%m%d")
+    frdate = (datetime.today() - timedelta(365 * period)).strftime("%Y%m%d")
+    objs = {}
+    for tic in tickers:
+        ohlcv = get_market_ohlcv_by_date(
+            fromdate=frdate,
+            todate=todate,
+            ticker=tic,
+            freq=freq
+        )
+
+        trade_stop = ohlcv[ohlcv.시가 == 0].copy()
+        if not trade_stop.empty:
+            ohlcv.loc[trade_stop.index, ['시가', '고가', '저가']] = trade_stop.종가
+        ohlcv.index.name = 'date'
+        objs[tic] = ohlcv.rename(columns=dict(시가='open', 고가='high', 저가='low', 종가='close', 거래량='volume'))
+    return concat(objs, axis=1)
 
 
 class krx:

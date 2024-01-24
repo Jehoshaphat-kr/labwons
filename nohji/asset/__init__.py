@@ -46,3 +46,4 @@ if __name__ == "__main__":
     # print(asset.MultipleBands)
     # print(asset.ProfitEstimate)
     # print(asset.PERs)
+    print(asset.Benchmarks)

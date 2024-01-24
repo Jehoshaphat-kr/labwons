@@ -10,13 +10,14 @@ class benchmarks:
 
     def __init__(self, resembles:DataFrame, meta: Series):
         if meta.country == "KOR":
-            self.data = data.genKr(resembles)
+            self.data = data.genKr(resembles, meta)
         elif meta.country == "USA":
-            self.data = data.genKr(resembles)
+            self.data = data.genKr(resembles, meta)
         else:
             raise AttributeError
         self.meta = meta
         self.title = f"{meta['name']}({meta.name}) : Relative Returns"
+        self.n_asset = len(self.data.columns) / 5
         return
 
     def __str__(self) -> str:
@@ -56,8 +57,8 @@ class benchmarks:
                 y=data,
                 mode="lines",
                 line={
-                    "dash": "solid" if ticker == self.data.ticker else "dash",
-                    "color": self.colors[self.data.columns.tolist().index(col) % self.nAsset]
+                    "dash": "solid" if ticker == self.meta.ticker else "dash",
+                    "color": self.colors[int(self.data.columns.tolist().index(col) % self.n_asset)]
                 },
                 connectgaps=True,
                 visible=True if yy == "5Y" else False,

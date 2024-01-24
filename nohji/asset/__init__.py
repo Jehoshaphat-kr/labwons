@@ -42,8 +42,9 @@ if __name__ == "__main__":
     # asset.ForeignRate()
     # asset.Shorts()
     # asset.BenchmarkMultiples()
+    asset.Benchmarks()
 
     # print(asset.MultipleBands)
     # print(asset.ProfitEstimate)
     # print(asset.PERs)
-    print(asset.Benchmarks)
+    # print(asset.Benchmarks)

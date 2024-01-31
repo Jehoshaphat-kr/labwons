@@ -17,5 +17,5 @@ def genKr(resembles: DataFrame, meta:Series) -> DataFrame:
         date = close.index[-1] - timedelta(int(yy * 365))
         data = close[close.index >= date].dropna()
         if len(data) >= 0.95 * yy * 252:
-            objs[col] = 100 * ((data.pct_change().fillna(0) + 1).cumprod() - 1)
+            objs[col] = 100 * (data - data.cummax()) / data.cummax()
     return concat(objs, axis=1)

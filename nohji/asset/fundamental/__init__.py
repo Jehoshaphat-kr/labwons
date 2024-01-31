@@ -80,3 +80,8 @@ class Fundamental(object):
     def Benchmarks(self):
         from nohji.asset.fundamental.benchmarks import benchmarks
         return benchmarks(self.src.resemblances, self.meta)
+
+    @stockonly
+    def DrawDowns(self):
+        from nohji.asset.fundamental.drawdowns import drawDown
+        return drawDown(self.src.resemblances, self.meta)

@@ -1,11 +1,11 @@
 from nohji.util.chart import r1c1nsy
-from nohji.asset.fundamental.benchmarks import data
+from nohji.asset.fundamental.drawdowns import data
 
 from pandas import DataFrame, Series
 from plotly.graph_objects import Figure, Scatter
 
 
-class benchmarks:
+class drawDown:
     colors = ["royalblue", "red", "green", "purple", "orange", "grey"]
 
     def __init__(self, resembles:DataFrame, meta: Series):
@@ -16,7 +16,7 @@ class benchmarks:
         else:
             raise AttributeError
         self.meta = meta
-        self.title = f"{meta['name']}({meta.name}) : Relative Returns"
+        self.title = f"{meta['name']}({meta.name}) : Draw Down"
 
         self.periods = []
         self.assets = []
@@ -77,6 +77,6 @@ class benchmarks:
             fig.add_trace(trace=trace)
         fig.add_hline(y=0, line_width=1.0, line_color="grey")
         fig.update_layout(title=f"{self.title} - {self.periods[0]}", sliders=self.sliders)
-        fig.update_yaxes(title="수익률 [%]")
+        fig.update_yaxes(title="낙폭 [%]")
         return fig
 

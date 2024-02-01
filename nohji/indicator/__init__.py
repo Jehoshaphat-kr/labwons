@@ -1,0 +1,1 @@
+from nohji.indicator.indicator import Indicator

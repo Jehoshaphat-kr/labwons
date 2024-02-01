@@ -7,10 +7,17 @@ from nohji.asset.technical.tp import tp
 class Technical(object):
 
     def __init__(self, src:Data):
+        self.__src__ = src
         self.meta = src.meta
-        self.Ohlcv = ohlcv(src.ohlcv, src.meta)
-        self.TypicalPrice = tp(src.ohlcv, src.meta)
         return
+
+    @common
+    def Ohlcv(self):
+        return ohlcv(self.__src__.ohlcv, self.meta)
+
+    @common
+    def TypicalPrice(self):
+        return tp(self.__src__.ohlcv, self.meta)
 
     @common
     def Trend(self):

@@ -103,7 +103,6 @@ class _meta:
             financialCurrency                   USD
             trailingPegRatio                 2.2706
     """
-    ecos = fetch.ecos
     krse = fetch.krse
     nyse = fetch.nyse
     wise = fetch.wise

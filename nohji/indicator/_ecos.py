@@ -1,4 +1,3 @@
-from nohji._config import api
 from nohji.util.tools import xml2df
 
 from pandas import DataFrame, Series, to_datetime
@@ -66,54 +65,57 @@ class _ecos:
             2022-12-31    120.600
             Freq: Q-DEC, Name: 총지수, Length: 68, dtype: float64
     """
-    __data__: DataFrame = DataFrame()
-
+    _api_:str = ""
+    _src_:DataFrame = DataFrame()
     def __init__(self):
-        self.__data__ = DataFrame()
         return
 
     def __call__(self, symbol:str, *args) -> Series:
         return self.fetch(symbol, *args)
 
-    def __str__(self) -> str:
-        return str(self.data)
+    def __repr__(self) -> str:
+        return repr(self.src)
 
     def __getattr__(self, item:Any):
         if hasattr(self.data, item):
             return getattr(self.data, item)
-        if not item in dir(self):
-            raise AttributeError
+        return object.__getattribute__(self, item)
 
     def __getitem__(self, item:Any):
-        return self.data[item]
+        return self.src[item]
 
     def __iter__(self):
-        return iter(self.data)
+        return iter(self.src)
 
     def __len__(self):
-        return len(self.data)
+        return len(self.src)
 
     @property
-    def data(self) -> DataFrame:
-        """
-        Fetch ECOS tickers from ECOS
-        :return:
-        """
-        columns = {
-            "STAT_CODE": "symbol",
-            "STAT_NAME": "name",
-            "CYCLE": "cycle",
-            "ORG_NAME": "by"
-        }
-        url = f'http://ecos.bok.or.kr/api/StatisticTableList/{api.ecos}/xml/kr/1/10000/'
-        data = xml2df(url=url, parser="xml")
-        data = data[data.SRCH_YN == 'Y'].copy()
-        data['STAT_NAME'] = data["STAT_NAME"].apply(lambda x: x[x.find(' ') + 1:])
-        data = data.rename(columns=columns)
-        return data[columns.values()].set_index(keys='symbol')
+    def api(self) -> str:
+        return self._api_
 
-    @staticmethod
-    def contains(symbol: str) -> DataFrame:
+    @api.setter
+    def api(self, key: str):
+        self._api_ = key
+
+    @property
+    def src(self) -> DataFrame:
+        if self._src_.empty:
+            columns = {
+                "STAT_CODE": "symbol",
+                "STAT_NAME": "name",
+                "CYCLE": "cycle",
+                "ORG_NAME": "by"
+            }
+            url = f'http://ecos.bok.or.kr/api/StatisticTableList/{self.api}/xml/kr/1/10000/'
+            data = xml2df(url=url, parser="xml")
+            data = data[data.SRCH_YN == 'Y'].copy()
+            data['STAT_NAME'] = data["STAT_NAME"].apply(lambda x: x[x.find(' ') + 1:])
+            data = data.rename(columns=columns)
+            self._src_ = data[columns.values()].set_index(keys='symbol')
+        return self._src_
+
+    def contains(self, symbol: str) -> DataFrame:
         columns = {
             "ITEM_NAME":'이름',
             "ITEM_CODE":'코드',
@@ -122,7 +124,7 @@ class _ecos:
             "END_TIME":'종점',
             "DATA_CNT":'개수'
         }
-        url = f"http://ecos.bok.or.kr/api/StatisticItemList/{api.ecos}/xml/kr/1/10000/{symbol}"
+        url = f"http://ecos.bok.or.kr/api/StatisticItemList/{self.api}/xml/kr/1/10000/{symbol}"
         return xml2df(url=url, parser="xml")[columns.keys()].rename(columns=columns)
 
     def fetch(self, symbol: str, *args) -> Series:
@@ -136,7 +138,7 @@ class _ecos:
         name, code, c, s, e, _ = tuple(key.values[0])
         code += ('/' + '/'.join([contained[(contained.이름 == l) & (contained.주기 == c)].iat[0, 1] for l in keys]))
 
-        url = f'http://ecos.bok.or.kr/api/StatisticSearch/{api.ecos}/xml/kr/1/100000/{symbol}/{c}/{s}/{e}/{code}'
+        url = f'http://ecos.bok.or.kr/api/StatisticSearch/{self.api}/xml/kr/1/100000/{symbol}/{c}/{s}/{e}/{code}'
         fetch = xml2df(url=url, parser="xml")
         if c == "Y":
             index = to_datetime(fetch.TIME, format="%Y")
@@ -153,6 +155,7 @@ class _ecos:
             series.index = series.index.to_period('M').to_timestamp('M')
         return series
 
+
 # Alias
 ecos = _ecos()
 
@@ -161,8 +164,7 @@ if __name__ == "__main__":
     from pandas import set_option
     set_option('display.expand_frame_repr', False)
 
-    # api.stockSymbol = "95012214-44b0-4664-813f-a7ef5ad3b0b4"
-    api.ecos = "CEW3KQU603E6GA8VX0O9"
+    ecos.api = "CEW3KQU603E6GA8VX0O9"
 
     print(ecos)
     print(ecos.contains("252Y001"))

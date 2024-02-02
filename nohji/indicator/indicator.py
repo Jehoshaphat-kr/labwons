@@ -1,21 +1,27 @@
 from nohji.indicator._ecos import ecos
 from nohji.indicator._fred import fred
-from nohji.indicator._fred import fred
-from nohji.util.tools import xml2df
-
-
-from datetime import datetime, timedelta
-import requests
+from nohji.indicator._oecd import oecd
 
 
 class Indicator:
 
-    def __init__(self, symbol: str, period: int = 10, **kwargs):
+    def __init__(self, symbol: str, *args, period: int = 10, **kwargs):
         self.symbol = symbol
         self.period = period
 
         if symbol in oecd:
+            if not "country" in kwargs:
+                raise KeyError(f"<oecd symbol; {symbol}> requires <country:str> code, but not found.")
             self.name = oecd[symbol]["name"]
+            self.data = oecd(symbol=symbol, country=kwargs["country"], period=period)
+        elif symbol in ecos:
+            if not args:
+                raise KeyError(f"<ecos symbol; {symbol} requires subset code, but not found.")
+            self.name = args[0] if not "name" in kwargs else kwargs["name"]
+            self.data = ecos(symbol=symbol, *args)
+        elif symbol in fred:
+            self.name = fred[symbol]['name']
+            self.data = fred(symbol=symbol, period=period)
         return
 
 
@@ -83,31 +89,3 @@ class Indicator:
 #         self.MoM = baseSeriesChart(100 * M.pct_change(), name=f'{ticker}(MoM)', dtype='.2f', unit='%', path=PATH())
 #         self.YoY = baseSeriesChart(100 * M.pct_change(12), name=f'{ticker}(YoY)', dtype='.2f', unit='%', path=PATH())
 #         return
-#
-#     @staticmethod
-#     def fetchOecd(ticker: str, startdate: str, enddate: str, country: str) -> pd.Series:
-#         """
-#         :param ticker    : OECD provided data symbol
-#         :param startdate : [str] %Y-%m
-#         :param enddate   : [str] %Y-%m
-#         :param country   : [str] DEU@Germany, FRA@France, JPN@Japan, KOR@Korea, USA@United States, G7M@G7, G-20@G20 ...
-#         :return:
-#         1990-01-31     99.80950
-#         1990-02-28     99.74467
-#         1990-03-31     99.69218
-#                             ...
-#         2022-12-31     99.81123
-#         2023-01-31     99.72019
-#         2023-02-28     99.64526
-#         Freq: M, Name: LORSGPNO, Length: 398, dtype: float64
-#         """
-#         curr = datetime.strptime(enddate, "%Y%m%d").strftime("%Y-%m")
-#         prev = datetime.strptime(startdate, "%Y%m%d").strftime("%Y-%m")
-#         url = f"https://stats.oecd.org/SDMX-JSON/data/MEI_CLI/{ticker}.{country}.M/all?startTime={prev}&endTime={curr}"
-#         load = requests.get(url).json()
-#
-#         times = [d['id'] for d in load['structure']['dimensions']['observation'][0]['values']]
-#         value = [v[0] for v in load['dataSets'][0]['series']['0:0:0']['observations'].values()]
-#         series = pd.Series(data=value, index=times, name=ticker, dtype=float)
-#         series.index = pd.to_datetime(series.index).to_period('M').to_timestamp('M')
-#         return series

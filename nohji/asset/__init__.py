@@ -13,11 +13,19 @@ class Asset(Technical, Fundamental):
         return
 
     def __getitem__(self, item):
-        if hasattr(self._src_, item):
+        try:
             return getattr(self._src_, item)
-        if hasattr(self, item):
-            return getattr(self, item)
-        raise KeyError(f"No such <item; {item}> in <Asset; {self['ticker']}>")
+        except AttributeError:
+            try:
+                return getattr(self, item)
+            except AttributeError:
+                raise KeyError(f"No such <item; {item}> in <Asset; {self['ticker']}>")
+
+        # if hasattr(self._src_, item):
+        #     return getattr(self._src_, item)
+        # if hasattr(self, item):
+        #     return getattr(self, item)
+        # raise KeyError(f"No such <item; {item}> in <Asset; {self['ticker']}>")
 
 
 
@@ -31,34 +39,35 @@ if __name__ == "__main__":
     asset = Asset(
         # "316140" # 우리금융지주
         # "058470" # 리노공업
-        "403870" # HPSP
+        "096770" # SK이노베이션
     )
     print(asset["meta"])
+    print(asset._src_.businessSummary)
 
     # asset.Ohlcv()
     # asset.TypicalPrice()
-    # asset.Trend()
-    # asset.Deviation()
-    # asset.SMA()
-    # asset.BollingerBand()
-    # asset.RSI()
-    # asset.MACD()
-    # asset.PSAR()
-    # asset.MoneyFlow()
-    #
-    # asset.AssetQuality()
-    # asset.Profit()
-    # asset.ProfitExpenses()
-    # asset.Products()
-    # asset.MultipleBands()
-    # asset.ProfitEstimate()
-    # asset.PERs()
-    # asset.Consensus()
-    # asset.ForeignRate()
-    # asset.Shorts()
-    # asset.BenchmarkMultiples()
-    # asset.Benchmarks()
-    # asset.DrawDowns()
+    asset.Trend()
+    asset.Deviation()
+    asset.SMA()
+    asset.BollingerBand()
+    asset.RSI()
+    asset.MACD()
+    asset.PSAR()
+    asset.MoneyFlow()
+
+    asset.AssetQuality()
+    asset.Profit()
+    asset.ProfitExpenses()
+    asset.Products()
+    asset.MultipleBands()
+    asset.ProfitEstimate()
+    asset.PERs()
+    asset.Consensus()
+    asset.ForeignRate()
+    asset.Shorts()
+    asset.BenchmarkMultiples()
+    asset.Benchmarks()
+    asset.DrawDowns()
 
     # print(asset.MultipleBands)
     # print(asset.ProfitEstimate)

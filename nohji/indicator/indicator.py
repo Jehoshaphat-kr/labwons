@@ -2,6 +2,8 @@ from nohji.indicator._ecos import ecos
 from nohji.indicator._fred import fred
 from nohji.indicator._oecd import oecd
 
+from plotly.graph_objects import Scatter
+
 
 class Indicator:
 
@@ -22,7 +24,28 @@ class Indicator:
         elif symbol in fred:
             self.name = fred[symbol]['name']
             self.data = fred(symbol=symbol, period=period)
+        else:
+            self.name = symbol
+            try:
+                self.data = fred(symbol=symbol, period=period)
+            except IOError:
+                raise IOError(f"No Such Symbol as <symbol; {symbol}> in ECOS, FRED or OECD")
         return
+
+    def __repr__(self):
+        return repr(self.data)
+
+    def Trace(self, **kwargs) -> Scatter:
+        return
+
+if __name__ == "__main__":
+    from pandas import set_option
+    set_option('display.expand_frame_repr', False)
+    ecos.api = "CEW3KQU603E6GA8VX0O9"
+
+
+    ind = Indicator("ZZZZZ")
+    print(ind)
 
 
 # from labwons.common.metadata import metaData

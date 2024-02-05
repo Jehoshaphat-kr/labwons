@@ -73,13 +73,11 @@ class _ecos:
     def __call__(self, symbol:str, *args) -> Series:
         return self.fetch(symbol, *args)
 
+    def __contains__(self, item):
+        return item in self.src.index
+
     def __repr__(self) -> str:
         return repr(self.src)
-
-    def __getattr__(self, item:Any):
-        if hasattr(self.data, item):
-            return getattr(self.data, item)
-        return object.__getattribute__(self, item)
 
     def __getitem__(self, item:Any):
         return self.src[item]

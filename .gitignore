@@ -3,8 +3,10 @@
 .vscode
 *.pyc
 example.py
-note/ex.ipynb
+usage.py
 labwons.code-workspace
+nohji.code-workspace
+nohji/post/
 
 
 ### Python ###

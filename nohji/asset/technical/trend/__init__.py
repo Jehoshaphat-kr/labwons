@@ -1,6 +1,6 @@
 from nohji.asset.technical.ohlcv import ohlcv
 from nohji.asset.technical.tp import tp
-from nohji.asset.technical.trend import data, traces
+from nohji.asset.technical.trend import data, traces, stat
 from nohji.util.chart import r1c1nsy
 
 from pandas import Series
@@ -14,6 +14,7 @@ class trend(object):
         self.tp = tp
         self.data = data.gen(tp.data)
         self.meta = meta
+        self.stat = stat.stat(self.data, self.meta)
         self.traces = traces.traces(self.data, meta)
         return
 

@@ -1,5 +1,5 @@
 from nohji.asset.technical.trend import trend
-from nohji.asset.technical.deviation import data, traces
+from nohji.asset.technical.deviation import data, traces, stat
 from nohji.util.chart import r2c3nsy
 
 from pandas import Series
@@ -12,6 +12,7 @@ class deviation(object):
         self.trend = trend
         self.data = data.gen(trend.data)
         self.meta = meta
+        self.stat = stat.stat(self.data)
         self.traces = traces.traces(self.data, meta)
         return
 

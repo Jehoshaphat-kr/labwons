@@ -1,0 +1,1 @@
+from nohji.asset import Asset

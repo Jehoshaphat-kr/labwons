@@ -1,4 +1,4 @@
-from plotly.graph_objects import Figure
+from plotly.graph_objects import Figure, Layout
 
 def xaxis(**kwargs) -> dict:
     axis = {
@@ -106,12 +106,25 @@ def layout(**kwargs) -> dict:
     layout.update(kwargs)
     return layout
 
+def image(**kwargs) -> dict:
+    image = {
+        "source": r"C:\Users\wpgur\OneDrive\프로젝트\LABWONS\_logo\LOGO-LABWONS-Watermark.png",
+        "xref": "paper", "yref": "paper",
+        "x":1.0, "y":1.05,
+        "sizex":0.2, "sizey":0.2,
+        "xanchor":"right", "yanchor":"bottom",
+        # "opacity":0.7
+    }
+    image.update(kwargs)
+    return image
+
 class r1c1nsy(Figure):
     def __init__(self, **kwargs):
         super().__init__()
         self.update_xaxes(patch=xaxis())
         self.update_yaxes(patch=yaxis())
         self.update_layout(dict1=layout(legend=legend()), **kwargs)
+        self.add_layout_image(image())
         return
 
 class r1c1sy1(Figure):
@@ -442,9 +455,7 @@ class r5c1nsy(Figure):
 # # Alias
 # Chart = chart()
 #
-# if __name__ == "__main__":
-#     myChart = Chart.r2c1nsy()
-#     myChart.add_trace(go.Scatter(x=[0, 2], y=[4, 2]), row=1, col=1)
-#     myChart.add_trace(go.Scatter(x=[1, 2], y=[1, 2]), row=2, col=1)
-#     myChart.show()
+if __name__ == "__main__":
+    myChart = r1c1nsy()
+    myChart.show()
 

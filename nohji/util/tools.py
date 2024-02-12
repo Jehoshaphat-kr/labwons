@@ -2,9 +2,10 @@ from nohji.util.web import web
 from pandas import DataFrame
 from numpy import isnan, nan
 from xml.etree.ElementTree import ElementTree, fromstring
+from typing import Iterable, Union
 
 
-def int2won(x) -> str:
+def int2won(x) -> Union[str, Iterable]:
     if isnan(x) or (not x):
         return nan
     s = '-' if int(x) < 0 else ''

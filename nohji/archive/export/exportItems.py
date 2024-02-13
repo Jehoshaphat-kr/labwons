@@ -1,4 +1,4 @@
-from nohji.util.chart import r1c1nsy
+from nohji.util.chart import image, r1c1nsy
 from nohji.util.tools import int2won
 
 from pandas import DataFrame
@@ -149,6 +149,7 @@ def pie(data:DataFrame):
         insidetextorientation='radial',
         hoverinfo='label+percent',
     ))
+    fig.add_layout_image(image())
     fig.show()
     return
 

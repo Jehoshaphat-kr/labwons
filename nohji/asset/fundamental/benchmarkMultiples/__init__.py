@@ -49,7 +49,16 @@ class benchmarkMultiples:
             col = 1 if col[0].startswith('PER') or col[0].startswith('ROE') else 2
             fig.add_trace(row=row, col=col, trace=trace)
 
-        fig.update_layout(title=self.title, legend=dict(y=1.025), **kwargs)
+        # fig.update_layout(title=self.title, legend=dict(y=1.025), **kwargs)
+        fig.update_layout(
+            title=self.title,
+            legend={
+                "orientation": "v",
+                "yanchor": "bottom",
+                "x": 0.99, "y": 0.01
+            },
+            **kwargs
+        )
         fig.update_yaxes(row=1, col=1, title='[-]')
         fig.update_yaxes(row=1, col=2, title='[-]')
         fig.update_yaxes(row=2, col=1, title='[%]')

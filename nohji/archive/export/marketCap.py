@@ -47,10 +47,17 @@ def KoreanMarket():
     fig.add_traces(trace)
     fig.update_layout(
         hovermode="closest",
+        legend={
+            "orientation": "v",
+            "xanchor": "auto",
+            "yanchor": "auto",
+            "x": 1.00, "y": 1.0
+        },
         xaxis={"title": "KOSPI 상장 기업 수"},
         yaxis={"title": "KOSDAQ 상장 기업 수"}
     )
     fig.show()
+    return
 
 if __name__ == "__main__":
     KoreanMarket()

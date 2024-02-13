@@ -1,5 +1,6 @@
-from labwons.asset.core.ohlcv.traces import traces
-from labwons.common.charts import r2c1nsy
+from nohji.asset.technical.ohlcv.traces import traces
+from nohji.util.chart import r2c1nsy
+
 from pandas import DataFrame, Series
 from plotly.graph_objects import Figure
 

@@ -2,7 +2,9 @@ from nohji.indicator._ecos import ecos
 from nohji.indicator._fred import fred
 from nohji.indicator._oecd import oecd
 
-from plotly.graph_objects import Scatter
+from datetime import datetime
+from pandas import to_datetime
+from plotly.graph_objects import Bar, Scatter
 
 
 class Indicator:
@@ -20,7 +22,7 @@ class Indicator:
             if not args:
                 raise KeyError(f"<ecos symbol; {symbol} requires subset code, but not found.")
             self.name = args[0] if not "name" in kwargs else kwargs["name"]
-            self.data = ecos(symbol=symbol, *args)
+            self.data = ecos(symbol, *args)
         elif symbol in fred:
             self.name = fred[symbol]['name']
             self.data = fred(symbol=symbol, period=period)
@@ -30,13 +32,53 @@ class Indicator:
                 self.data = fred(symbol=symbol, period=period)
             except IOError:
                 raise IOError(f"No Such Symbol as <symbol; {symbol}> in ECOS, FRED or OECD")
+
+        self.unit = kwargs["unit"] if "unit" in kwargs else ""
+
+        if "by" in kwargs:
+            self.data = self.data.resample(kwargs["by"]).ffill()
+        if "sum_by" in kwargs:
+            if kwargs["sum_by"] == "Y":
+                self.data = self.data.groupby(self.data.index.year).sum()
+                self.data.index = [to_datetime(f"{i}-12-31") for i in self.data.index]
+
+        self.YoY = 100 * self.data.pct_change(12)
+        self.MoM = 100 * self.data.pct_change()
+
         return
 
     def __repr__(self):
         return repr(self.data)
 
-    def Trace(self, **kwargs) -> Scatter:
-        return
+    def line(self, src:str="original", **kwargs) -> Scatter:
+        data = self.YoY if src == "yoy" else self.MoM if src == "mom" else self.data
+        name = f"{self.name}(YoY)" if src == "yoy" else f"{self.name}(MoM)" if src == "mom" else self.name
+        trace = Scatter(
+            name=name,
+            x=data.index,
+            y=data,
+            visible=True,
+            showlegend=True,
+            hovertemplate=name + ": %{y}" + self.unit + "<extra></extra>"
+        )
+        for key, value in kwargs.items():
+            setattr(trace, key, value)
+        return trace
+
+    def bar(self, src:str="oroginal", **kwargs) -> Bar:
+        data = self.YoY if src == "yoy" else self.MoM if src == "mom" else self.data
+        name = f"{self.name}(YoY)" if src == "yoy" else f"{self.name}(MoM)" if src == "mom" else self.name
+        trace = Bar(
+            name=name,
+            x=data.index,
+            y=data,
+            visible=True,
+            showlegend=True,
+            hovertemplate=name + ": %{y}" + self.unit + "<extra></extra>"
+        )
+        for key, value in kwargs.items():
+            setattr(trace, key, value)
+        return trace
 
 if __name__ == "__main__":
     from pandas import set_option
@@ -44,8 +86,10 @@ if __name__ == "__main__":
     ecos.api = "CEW3KQU603E6GA8VX0O9"
 
 
-    ind = Indicator("ZZZZZ")
+    ind = Indicator("301Y013", "경상수지", sum_by="Y")
     print(ind)
+    print(ind.YoY)
+
 
 
 # from labwons.common.metadata import metaData

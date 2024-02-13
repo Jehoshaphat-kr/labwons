@@ -80,8 +80,10 @@ def legend(**kwargs) -> dict:
         "valign": "middle",                 # [str] one of ( "top" | "middle" | "bottom" )
         "xanchor": "right",                 # [str] one of ( "auto" | "left" | "center" | "right" )
         "x": 1.0,                           # [float] 1.02 for "v", 0.96 for "h"
-        "yanchor": "bottom",                # [str] one of ( "auto" | "top" | "middle" | "bottom" )
-        "y": 1.0,                           # [float] 1.0 for both "v" and "h",
+        # "yanchor": "bottom",                # [str] one of ( "auto" | "top" | "middle" | "bottom" )
+        # "y": 1.0,                           # [float] 1.0 for both "v" and "h",
+        "yanchor": "top",
+        "y": 1.0
 
     }
     legend.update(kwargs)
@@ -108,12 +110,16 @@ def layout(**kwargs) -> dict:
 
 def image(**kwargs) -> dict:
     image = {
-        "source": r"C:\Users\wpgur\OneDrive\프로젝트\LABWONS\_logo\LOGO-LABWONS-Watermark.png",
+        "source": "https://raw.githubusercontent.com/"
+                  "Jehoshaphat-kr/"
+                  "labwons/"
+                  "master/"
+                  "nohji/archive/image/LOGO-LABWONS-Watermark.png",
         "xref": "paper", "yref": "paper",
-        "x":1.0, "y":1.05,
-        "sizex":0.2, "sizey":0.2,
+        "x": 1.01, "y": 1.0,
+        "sizex": 0.15, "sizey": 0.15,
         "xanchor":"right", "yanchor":"bottom",
-        # "opacity":0.7
+        "opacity": 0.5
     }
     image.update(kwargs)
     return image
@@ -141,6 +147,7 @@ class r1c1sy1(Figure):
         self.update_xaxes(patch=xaxis(rangeselector=None))
         self.update_yaxes(patch=yaxis(), secondary_y=False)
         self.update_layout(dict1=layout(legend=legend()))
+        self.add_layout_image(image())
         return
 
 class r1c2nsy(Figure):
@@ -154,6 +161,7 @@ class r1c2nsy(Figure):
         self.update_xaxes(patch=xaxis(rangeselector=None))
         self.update_yaxes(patch=yaxis())
         self.update_layout(dict1=layout(legend=legend()))
+        self.add_layout_image(image())
         return
 
 class r2c1nsy(Figure):
@@ -172,6 +180,7 @@ class r2c1nsy(Figure):
         self.update_xaxes(row=2, col=1, patch=xaxis(rangeselector=None))
         self.update_yaxes(patch=yaxis())
         self.update_layout(dict1=layout(legend=legend()))
+        self.add_layout_image(image())
         return
 
 class r2c2nsy(Figure):
@@ -179,6 +188,8 @@ class r2c2nsy(Figure):
         super().__init__()
         arg = dict(
             rows=2, cols=2,
+            row_heights=[0.5, 0.5],
+            vertical_spacing=0.1,
             x_title="기말"
         )
         arg.update(kwargs)
@@ -186,6 +197,7 @@ class r2c2nsy(Figure):
         self.update_yaxes(patch=yaxis())
         self.update_xaxes(patch=xaxis(rangeselector=None))
         self.update_layout(dict1=layout(legend=legend()))
+        self.add_layout_image(image())
         return
 
 class r2c3nsy(Figure):
@@ -203,6 +215,7 @@ class r2c3nsy(Figure):
         self.update_xaxes(patch=xaxis(rangeselector=None))
         self.update_yaxes(patch=yaxis())
         self.update_layout(dict1=layout(legend=legend()))
+        self.add_layout_image(image())
         return
 
 class r3c1nsy(Figure):
@@ -222,6 +235,7 @@ class r3c1nsy(Figure):
         self.update_xaxes(row=3, col=1, patch=xaxis(rangeselector=None))
         self.update_yaxes(patch=yaxis())
         self.update_layout(dict1=layout(legend=legend()))
+        self.add_layout_image(image())
         return
 
 class r3c1sy3(Figure):
@@ -248,6 +262,7 @@ class r3c1sy3(Figure):
         self.update_yaxes(row=2, col=1, patch=yaxis())
         self.update_yaxes(row=3, col=1, patch=yaxis(), secondary_y=False)
         self.update_layout(dict1=layout(legend=legend()))
+        self.add_layout_image(image())
         return
 
 class r4c1nsy(Figure):
@@ -268,6 +283,7 @@ class r4c1nsy(Figure):
         self.update_xaxes(row=4, col=1, patch=xaxis(rangeselector=None))
         self.update_yaxes(patch=yaxis())
         self.update_layout(dict1=layout(legend=legend()))
+        self.add_layout_image(image())
         return
 
 class r5c1nsy(Figure):
@@ -289,6 +305,7 @@ class r5c1nsy(Figure):
         self.update_xaxes(row=5, col=1, patch=xaxis(rangeselector=None))
         self.update_yaxes(patch=yaxis())
         self.update_layout(dict1=layout(legend=legend()))
+        self.add_layout_image(image())
         return
 
 #     def r5c1nsy(self, **kwargs) -> go.Figure:

@@ -1,9 +1,10 @@
 from nohji.indicator._ecos import ecos
 from nohji.indicator._fred import fred
 from nohji.indicator._oecd import oecd
+from nohji.util.chart import r3c1nsy
 
 from datetime import datetime
-from pandas import to_datetime
+from pandas import to_datetime, Series
 from plotly.graph_objects import Bar, Scatter
 
 
@@ -44,7 +45,10 @@ class Indicator:
 
         self.YoY = 100 * self.data.pct_change(12)
         self.MoM = 100 * self.data.pct_change()
-
+        if "by" in kwargs:
+            if kwargs["by"] == "Y":
+                self.YoY = 100 * self.data.pct_change()
+                self.MoM = Series(index=self.data.index)
         return
 
     def __repr__(self):
@@ -53,42 +57,70 @@ class Indicator:
     def line(self, src:str="original", **kwargs) -> Scatter:
         data = self.YoY if src == "yoy" else self.MoM if src == "mom" else self.data
         name = f"{self.name}(YoY)" if src == "yoy" else f"{self.name}(MoM)" if src == "mom" else self.name
+        unit = kwargs["unit"] if "unit" in kwargs else self.unit
         trace = Scatter(
             name=name,
             x=data.index,
             y=data,
             visible=True,
             showlegend=True,
-            hovertemplate=name + ": %{y}" + self.unit + "<extra></extra>"
+            xhoverformat="%Y-%m-%d",
+            hovertemplate=name + ": %{y}" + unit + "<extra></extra>"
         )
         for key, value in kwargs.items():
-            setattr(trace, key, value)
+            if hasattr(Scatter, key):
+                setattr(trace, key, value)
         return trace
 
     def bar(self, src:str="oroginal", **kwargs) -> Bar:
         data = self.YoY if src == "yoy" else self.MoM if src == "mom" else self.data
         name = f"{self.name}(YoY)" if src == "yoy" else f"{self.name}(MoM)" if src == "mom" else self.name
+        unit = kwargs["unit"] if "unit" in kwargs else self.unit
         trace = Bar(
             name=name,
             x=data.index,
             y=data,
             visible=True,
             showlegend=True,
-            hovertemplate=name + ": %{y}" + self.unit + "<extra></extra>"
+            hovertemplate=name + ": %{y}" + unit + "<extra></extra>"
         )
         for key, value in kwargs.items():
-            setattr(trace, key, value)
+            if hasattr(Bar, key):
+                setattr(trace, key, value)
         return trace
+
+    def show(self, mode:str='line', **kwargs):
+        fig = r3c1nsy()
+        fig.add_trace(row=1, col=1, trace=self.line())
+        fig.add_trace(row=2, col=1, trace=self.line("yoy", yhoverformat=".2f"))
+        fig.add_trace(row=3, col=1, trace=self.line("mom", yhoverformat=".2f"))
+        fig.update_layout(**kwargs)
+        fig.show()
+        return
+
 
 if __name__ == "__main__":
     from pandas import set_option
     set_option('display.expand_frame_repr', False)
     ecos.api = "CEW3KQU603E6GA8VX0O9"
 
+    # print(ecos.contains("200Y004"))
 
-    ind = Indicator("301Y013", "경상수지", sum_by="Y")
-    print(ind)
-    print(ind.YoY)
+    # ind = Indicator("301Y013", "경상수지", sum_by="Y")
+    ind = Indicator("200Y004", "국내총생산(시장가격, GDP)", by="Y")
+    # print(ind)
+    # print(ind.YoY)
+
+    # ind.show()
+    ind.show(
+        legend={
+            # "bgcolor": "#e9e9e9",
+            "orientation": "v",
+            "xanchor": "left",
+            "yanchor": "top",
+            "x": 0.01, "y": 0.99
+        },
+    )
 
 
 

@@ -57,6 +57,14 @@ def KoreanMarket():
         yaxis={"title": "KOSDAQ 상장 기업 수"}
     )
     fig.show()
+    with open(r"C:\Users\wpgur\Downloads\plotly\div-marketcap.html", mode="w", encoding="utf-8") as file:
+        tag = fig.to_html(
+            include_plotlyjs=False,
+            full_html=False,
+            div_id="snob-plotly",
+            default_height=750,
+        )
+        file.write(tag)
     return
 
 if __name__ == "__main__":

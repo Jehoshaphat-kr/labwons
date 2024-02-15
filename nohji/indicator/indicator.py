@@ -4,7 +4,7 @@ from nohji.indicator._oecd import oecd
 from nohji.util.chart import r3c1nsy
 
 from datetime import datetime
-from pandas import to_datetime, Series
+from pandas import DatetimeIndex, to_datetime, Series
 from plotly.graph_objects import Bar, Scatter
 
 
@@ -37,7 +37,7 @@ class Indicator:
         self.unit = kwargs["unit"] if "unit" in kwargs else ""
 
         if "by" in kwargs:
-            self.data = self.data.resample(kwargs["by"]).ffill()
+            self.data = self.data.resample(f'{kwargs["by"]}E').ffill()
         if "sum_by" in kwargs:
             if kwargs["sum_by"] == "Y":
                 self.data = self.data.groupby(self.data.index.year).sum()
@@ -54,40 +54,45 @@ class Indicator:
     def __repr__(self):
         return repr(self.data)
 
+    @property
+    def index(self) -> DatetimeIndex:
+        return self.data.index
+
     def line(self, src:str="original", **kwargs) -> Scatter:
         data = self.YoY if src == "yoy" else self.MoM if src == "mom" else self.data
         name = f"{self.name}(YoY)" if src == "yoy" else f"{self.name}(MoM)" if src == "mom" else self.name
         unit = kwargs["unit"] if "unit" in kwargs else self.unit
-        trace = Scatter(
-            name=name,
-            x=data.index,
-            y=data,
-            visible=True,
-            showlegend=True,
-            xhoverformat="%Y-%m-%d",
-            hovertemplate=name + ": %{y}" + unit + "<extra></extra>"
-        )
+        setter = {
+            "name": name,
+            "x": data.index,
+            "y": data,
+            "visible": True,
+            "showlegend": True,
+            "xhoverformat": "%Y-%m-%d",
+            "hovertemplate": name + ": %{y}" + unit + "<extra></extra>"
+        }
         for key, value in kwargs.items():
             if hasattr(Scatter, key):
-                setattr(trace, key, value)
-        return trace
+                setter[key] = value
+        return Scatter(**setter)
 
-    def bar(self, src:str="oroginal", **kwargs) -> Bar:
+    def bar(self, src:str="original", **kwargs) -> Bar:
         data = self.YoY if src == "yoy" else self.MoM if src == "mom" else self.data
         name = f"{self.name}(YoY)" if src == "yoy" else f"{self.name}(MoM)" if src == "mom" else self.name
         unit = kwargs["unit"] if "unit" in kwargs else self.unit
-        trace = Bar(
-            name=name,
-            x=data.index,
-            y=data,
-            visible=True,
-            showlegend=True,
-            hovertemplate=name + ": %{y}" + unit + "<extra></extra>"
-        )
+        setter = {
+            "name":name,
+            "x":data.index,
+            "y":data,
+            "visible":True,
+            "showlegend":True,
+            "xhoverformat": "%Y-%m-%d",
+            "hovertemplate":name + ": %{y}" + unit + "<extra></extra>"
+        }
         for key, value in kwargs.items():
             if hasattr(Bar, key):
-                setattr(trace, key, value)
-        return trace
+                setter[key] = value
+        return Bar(**setter)
 
     def show(self, mode:str='line', **kwargs):
         fig = r3c1nsy()

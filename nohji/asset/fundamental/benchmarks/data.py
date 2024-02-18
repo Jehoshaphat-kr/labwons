@@ -8,8 +8,14 @@ def genKr(resembles: DataFrame, meta:Series) -> DataFrame:
     names = {row[1]: row[0] for row in resembles["종목명"].items()}
     names[meta.benchmark] = meta.benchmarkTicker
 
+    objs = {}
     ohlcv = get_multi_ohlcv(*names.values())
-    close = concat({f"{name}_{ticker}": ohlcv[ticker].close for name, ticker in names.items()}, axis=1)
+    for name, ticker in names.items():
+        price = ohlcv[ticker].close.dropna()
+        if len(price) < 252:
+            continue
+        objs[f"{name}_{ticker}"] = price
+    close = concat(objs, axis=1)
 
     objs = {}
     for yy in [5, 3, 2, 1, 0.5]:

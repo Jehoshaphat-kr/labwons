@@ -43,10 +43,15 @@ def pie(data:DataFrame):
             automargin=True,
             opacity=0.85,
             textfont=dict(color='black'),
+            textposition="inside",
             textinfo='label+percent',
             insidetextorientation='radial',
             hoverinfo='label+percent',
         )
+    )
+    fig.update_layout(
+        font=dict(size=16),
+        uniformtext_minsize=16, uniformtext_mode='hide'
     )
     fig.show()
     return

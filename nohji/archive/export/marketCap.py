@@ -49,22 +49,40 @@ def KoreanMarket():
         hovermode="closest",
         legend={
             "orientation": "v",
-            "xanchor": "auto",
-            "yanchor": "auto",
-            "x": 1.00, "y": 1.0
+            "xanchor": "left",
+            "yanchor": "top",
+            "x": 1.00, "y": 1.0,
+            "font": {
+                "size": 14
+            }
         },
-        xaxis={"title": "KOSPI 상장 기업 수"},
-        yaxis={"title": "KOSDAQ 상장 기업 수"}
+        xaxis={
+            "title": {
+                "text": "KOSPI 상장 기업 수",
+                "font": {
+                    "size": 16
+                }
+            }
+        },
+        yaxis={
+            "title": {
+                "text": "KOSDAQ 상장 기업 수",
+                "font": {
+                    "size": 16
+                }
+            }
+        }
     )
     fig.show()
-    with open(r"C:\Users\wpgur\Downloads\plotly\div-marketcap.html", mode="w", encoding="utf-8") as file:
-        tag = fig.to_html(
-            include_plotlyjs=False,
-            full_html=False,
-            div_id="snob-plotly",
-            default_height=750,
-        )
-        file.write(tag)
+
+    # with open(r"C:\Users\wpgur\Downloads\plotly\div-marketcap.html", mode="w", encoding="utf-8") as file:
+    #     tag = fig.to_html(
+    #         include_plotlyjs=True,
+    #         full_html=False,
+    #         div_id="snob-plotly",
+    #         default_height=750,
+    #     )
+    #     file.write(tag)
     return
 
 if __name__ == "__main__":

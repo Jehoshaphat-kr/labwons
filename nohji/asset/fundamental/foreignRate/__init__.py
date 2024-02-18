@@ -57,7 +57,7 @@ class foreignRate:
     def figure(self, **kwargs) -> Figure:
         fig = r1c1sy1()
         for col in self.data:
-            data = self.data[col].dropna()
+            data = self.data[col].dropna().sort_index()
             unit = "KRW" if col[1] == "종가" else "%"
             fig.add_trace(
                 secondary_y=False if col[1] == "종가" else True,

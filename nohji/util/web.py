@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-import requests, json, pandas
+import requests, json, pandas, warnings
+warnings.filterwarnings("ignore")
 
 
 class _web(object):

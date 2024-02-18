@@ -117,9 +117,10 @@ def image(**kwargs) -> dict:
                   "nohji/archive/image/LOGO-LABWONS-Watermark.png",
         "xref": "paper", "yref": "paper",
         "x": 1.01, "y": 1.0,
+        # "x": 1.12, "y": 1.0,
         "sizex": 0.15, "sizey": 0.15,
         "xanchor":"right", "yanchor":"bottom",
-        "opacity": 0.5
+        "opacity": 0.7
     }
     image.update(kwargs)
     return image

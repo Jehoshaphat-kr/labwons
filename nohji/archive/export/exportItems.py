@@ -71,21 +71,43 @@ def timeSeries(data:DataFrame):
         x0=2007,
         x1=2011,
         fillcolor="lightgrey",
-        opacity=0.5,
+        opacity=0.4,
         line_width=0,
     )
     fig.add_annotation(
         text="제외된 데이터<br>(분류 기준 상이)",
         x=2009,
         y=600,
-        showarrow=False
+        showarrow=False,
+        font={
+            "size": 16
+        }
     )
     fig.update_layout(
-        xaxis={"title": "연도"},
-        yaxis={"title": "수출액 [억불]"}
+        legend={
+            "font": {
+                "size": 14
+            }
+        },
+        xaxis={
+            "title": {
+                "text": "연도",
+                "font": {
+                    "size": 18
+                }
+            },
+        },
+        yaxis={
+            "title": {
+                "text": "수출액 [억불]",
+                "font": {
+                    "size": 18
+                }
+            }
+        }
     )
     fig.show()
-    return
+    return fig
 
 def stackedBar(data:DataFrame):
     data = data.copy()
@@ -119,12 +141,35 @@ def stackedBar(data:DataFrame):
         text="제외된 데이터<br>(분류 기준 상이)",
         x=2009,
         y=50,
-        showarrow=False
+        showarrow=False,
+        font={
+            "size": 16
+        }
     )
     fig.update_layout(
+        legend={
+            "font": {
+                "size": 14
+            }
+        },
         barmode="stack",
-        xaxis={"title": "연도", "tickmode":"linear"},
-        yaxis={"title": "비중[%]"}
+        xaxis={
+            "title": {
+                "text": "연도",
+                "font": {
+                    "size": 18
+                }
+            },
+            "tickmode":"linear"
+        },
+        yaxis={
+            "title": {
+                "text": "비중 [%]",
+                "font": {
+                    "size": 18
+                }
+            }
+        }
     )
     fig.show()
     return
@@ -150,6 +195,9 @@ def pie(data:DataFrame):
         hoverinfo='label+percent',
     ))
     fig.add_layout_image(image())
+    fig.update_layout(
+        font=dict(size=18),
+    )
     fig.show()
     return
 
@@ -158,6 +206,6 @@ if __name__ == "__main__":
     set_option('display.expand_frame_repr', False)
     # print(src)
 
-    timeSeries(src)
-    stackedBar(src)
+    # timeSeries(src)
+    # stackedBar(src)
     pie(src)

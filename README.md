@@ -154,7 +154,7 @@ myEquity.ohlcv()
 ```
 
 * 결과:
-![Alt text](labwons/common/archive/ohlcv.png)
+![Alt text](nohji/deprecated/labwons/common/archive/ohlcv.png)
 
 20년치의 데이터가 호출되었습니다. 시계열 기간은 period 속성으로 조절할 수 있음을 참고하시기 바랍니다.
 
@@ -204,4 +204,4 @@ fig.show()
 ```
 
 * 결과:
-![Alt text](labwons/common/archive/t-c.png)
+![Alt text](nohji/deprecated/labwons/common/archive/t-c.png)
